@@ -58,7 +58,7 @@ button {
 
 .talk-logo {
   --talk-logo-size: 122px;
-  background-image: url("../images/togetherLogo.svg");
+  background-image: url("../images/talkLogo.svg");
   background-size: var(--talk-logo-size) var(--talk-logo-size);
   width: var(--talk-logo-size);
   height: var(--talk-logo-size);
