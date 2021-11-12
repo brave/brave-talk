@@ -1,0 +1,14 @@
+{
+  "compilerOptions": {
+    "outDir": "tsbuild",
+    "strict": true,
+    "module": "ES2020",
+    "target": "ES2017",
+    "jsx": "react",
+    "allowJs": true,
+    "downlevelIteration": true,
+    "moduleResolution": "node",
+    "esModuleInterop": true
+  },
+  "include": ["src"]
+}

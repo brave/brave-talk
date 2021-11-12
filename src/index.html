@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html
+  itemscope=""
+  itemtype="http://schema.org/Product"
+  prefix="og: http://ogp.me/ns#"
+  xmlns="http://www.w3.org/1999/html"
+>
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="content-type" content="text/html;charset=utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0"
+    />
+    <link
+      rel="icon"
+      href="https://brave.com/wp-content/uploads/2018/02/cropped-brave_appicon_release-32x32.png"
+      sizes="32x32"
+    />
+    <link
+      rel="icon"
+      href="https://brave.com/wp-content/uploads/2018/02/cropped-brave_appicon_release-192x192.png"
+      sizes="192x192"
+    />
+    <link
+      rel="apple-touch-icon-precomposed"
+      href="https://brave.com/wp-content/uploads/2018/02/cropped-brave_appicon_release-180x180.png"
+    />
+    <link rel="manifest" href="/manifest.json" />
+
+    <title>Brave Talk</title>
+    <meta property="og:title" content="Brave Talk" />
+    <meta
+      property="og:image"
+      content="https://talk.brave.com/images/brave-together-tweet.jpg"
+    />
+    <meta
+      property="og:description"
+      content="Unlimited, private video calls. Right in the Brave browser."
+    />
+    <meta
+      description="Unlimited, private video calls. Right in the Brave browser."
+    />
+    <meta itemprop="name" content="Brave Talk" />
+    <meta
+      itemprop="description"
+      content="Unlimited, private video calls. Right in the Brave browser."
+    />
+    <meta
+      itemprop="image"
+      content="https://talk.brave.com/images/brave-together-tweet.jpg"
+    />
+
+    <!-- insertable-streams trial for origin together.brave.com -->
+    <meta
+      http-equiv="origin-trial"
+      content="AvOTJlgHvrjeQMMjZyMA6XRalMYRX4Cr5tBvel6Wu1vJSE0g6RxxhKldinn2K4kNUkH3eTXatwVe/mGIF9EL8wAAAAB6eyJvcmlnaW4iOiAiaHR0cHM6Ly90b2dldGhlci5icmF2ZS5jb206NDQzIiwgImlzU3ViZG9tYWluIjogdHJ1ZSwgImZlYXR1cmUiOiAiUlRDSW5zZXJ0YWJsZVN0cmVhbXMiLCAiZXhwaXJ5IjogMTc2Mzk0NTkzNn0="
+    />
+    <!-- insertable-streams trial for origin confab.homespun.io -->
+    <meta
+      http-equiv="origin-trial"
+      content="AjcfkV/iaVkU4w8zHEuot1ICCb7+JlhQqNA2ny6uaxxj+BoErHqyyXoa6/CV2WicL3N8ALSKcEbLVpfnU9vjIQ8AAAB6eyJvcmlnaW4iOiAiaHR0cHM6Ly9jb25mYWIuaG9tZXNwdW4uaW86NDQzIiwgImlzU3ViZG9tYWluIjogdHJ1ZSwgImZlYXR1cmUiOiAiUlRDSW5zZXJ0YWJsZVN0cmVhbXMiLCAiZXhwaXJ5IjogMTc2Mzk0NjA5N30="
+    />
+
+    <script src="https://8x8.vc/libs/external_api.min.js"></script>
+  </head>
+
+  <body id="together">
+    <div id="meet" class="full-screen"></div>
+
+    <div class="full-screen" id="welcome_page">
+      <div class="welcome">
+        <a
+          class="welcome-watermark"
+          id="watermark"
+          href="https://brave.com/download/bravetalk"
+        ></a>
+        <a
+          class="welcome-my-account"
+          id="my_account_link"
+          href="https://account.brave.com"
+          >My Account</a
+        >
+        <div class="header">
+          <div class="section join-call">
+            <div class="talk-logo"></div>
+            <div class="join-call-text">
+              <h1 class="join-call-text-title" id="talk_title">Brave Talk</h1>
+              <p class="join-call-text-description" id="notice_text">
+                Unlimited private video calls with your friends and colleagues
+              </p>
+            </div>
+            <button class="welcome-page-button" id="enter_room_button">
+              Start call
+            </button>
+            <div
+              class="
+                welcome-page-button
+                welcome-page-button-with-icon
+                welcome-page-button-loading
+              "
+              id="enter_room_loading"
+            >
+              <div class="spinner"></div>
+              <div>Loading...</div>
+            </div>
+            <div class="download-brave" id="download_brave">
+              <div class="download-brave-text">
+                Want better privacy than Zoom? Download the Brave browser to
+                start a call with Brave Talk.
+              </div>
+              <div class="download-button-container">
+                <a
+                  class="welcome-page-button welcome-page-button-with-icon"
+                  href="https://brave.com/download/bravetalk"
+                >
+                  <div class="brave-icon"></div>
+                  <div class="welcome-page-button-download-text">
+                    Download Brave
+                  </div>
+                </a>
+              </div>
+            </div>
+            <div class="desktop-needed" id="desktop_needed">
+              <div class="desktop-needed-info">
+                You can only join Brave Talk calls from your mobile device on
+                the free plan.
+              </div>
+              <div class="desktop-needed-cta">
+                Use Brave Browser on your desktop to start a free call, or
+                upgrade to Premium.
+              </div>
+            </div>
+          </div>
+          <div class="section subscribe" id="subscribe">
+            <p class="subscribe-text">
+              Upgrade to host video calls with hundreds of participants.
+            </p>
+            <button class="welcome-page-button-hollow" id="subscribe_button">
+              <div>Start free trial</div>
+            </button>
+            <div class="subscribe-login">
+              Get 30 days of access to Brave Talk Premium, free of charge. After
+              30 days, the credit card you enter will be charged $7.00 US
+              monthly. You can cancel any time.
+            </div>
+            <div class="subscribe-login">
+              Already have Premium?
+              <a href="https://account.brave.com" id="subscribe_login_link"
+                >Log in</a
+              >.
+            </div>
+          </div>
+
+          <div
+            class="section subscribe subscribe-loading"
+            id="subscribe_loading"
+          >
+            <div class="spinner"></div>
+            <div>Checking subscription status...</div>
+          </div>
+
+          <div id="enter_1on1_button"></div>
+        </div>
+
+        <div class="footer">
+          <div class="footer-text" id="footer_text">
+            Your personal information always stays private, per our
+            <a href="https://brave.com/privacy/browser/#brave-together-learn"
+              >privacy policy</a
+            >.
+          </div>
+        </div>
+
+        <div class="opt-in" id="opt_in">
+          <div class="opt-in-panel">
+            <div class="opt-in-close" id="opt_in_close"></div>
+            <h2 class="opt-in-title">
+              To start a free call, turn on Brave Rewards
+            </h2>
+            <div class="opt-in-description">
+              With Brave Rewards, you can view a new kind of private ad, and
+              earn tokens for doing so. (Think of them like frequent flyer
+              points.) Turn those tokens into cash, gift cards...or even tip the
+              websites you love.
+            </div>
+            <div class="opt-in-description-sub">
+              Note: not available on private windows, or private windows with
+              Tor.
+            </div>
+            <div class="opt-in-steps" id="opt_in_manual_steps">
+              <div class="opt-in-step">
+                <div class="opt-in-step-header">
+                  <div class="opt-in-step-header-num">1.</div>
+                  <div>Click the triangle icon in the browser address bar.</div>
+                </div>
+                <div class="opt-in-step-1-screenshot"></div>
+              </div>
+              <div class="opt-in-step">
+                <div class="opt-in-step-header">
+                  <div class="opt-in-step-header-num">2.</div>
+                  <div>Click “Start using Brave Rewards.”</div>
+                </div>
+                <div class="opt-in-step-2-screenshot"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

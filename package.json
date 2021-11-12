@@ -1,0 +1,42 @@
+{
+  "name": "brave-together-app",
+  "version": "0.1.0",
+  "description": "private and unlimited video calling by Brave",
+  "main": "index.js",
+  "scripts": {
+    "build": "webpack --config webpack.config.js --mode production",
+    "format": "prettier --write .",
+    "start": "webpack serve --config webpack.config.js --mode development",
+    "test": "jest",
+    "prepare": "husky install"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/brave/brave-together.git"
+  },
+  "homepage": "https://github.com/brave/brave-together#readme",
+  "devDependencies": {
+    "@types/jest": "27.0.2",
+    "autoprefixer": "10.4.0",
+    "brave-rewards-js-sdk": "git+ssh://git@github.com/brave-intl/br-rs.git#skus",
+    "copy-webpack-plugin": "9.0.1",
+    "css-loader": "6.5.1",
+    "css-minimizer-webpack-plugin": "3.1.1",
+    "html-webpack-plugin": "5.5.0",
+    "husky": "7.0.4",
+    "jest": "27.3.1",
+    "mini-css-extract-plugin": "2.4.4",
+    "postcss": "8.3.11",
+    "postcss-loader": "6.2.0",
+    "postcss-nesting": "9.0.0",
+    "prettier": "2.4.1",
+    "pretty-quick": "3.1.1",
+    "svgo-loader": "3.0.0",
+    "ts-jest": "27.0.7",
+    "ts-loader": "9.2.6",
+    "typescript": "4.4.4",
+    "webpack": "5.61.0",
+    "webpack-cli": "4.9.1",
+    "webpack-dev-server": "4.4.0"
+  }
+}

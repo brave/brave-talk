@@ -1,0 +1,6 @@
+.DS_Store
+get_params.js
+.vscode
+html/
+node_modules
+tsbuild
