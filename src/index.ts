@@ -31,7 +31,7 @@ if (document.readyState === "complete") {
 const main = async () => {
   // these envvars are set by the EnvironmentPlugin in webpack.config.js
   console.log(
-    `!!! version 0.11.52 (${process.env.GIT_VERSION} ${process.env.ENVIRONMENT})`
+    `!!! version 0.11.53 (${process.env.GIT_VERSION} ${process.env.ENVIRONMENT})`
   );
 
   if (useBraveRequestAdsEnabledApi) {
@@ -451,7 +451,7 @@ const renderConferencePage = (roomName: string, jwt: string) => {
     }
   });
 
-  document.getElementById("together")!.style.backgroundColor =
+  document.getElementById("talk")!.style.backgroundColor =
     options.interfaceConfigOverwrite.DEFAULT_BACKGROUND;
 
   const askOnUnload = (e: any) => {
