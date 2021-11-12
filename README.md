@@ -23,6 +23,14 @@ To build for production:
 
 which creates a `./html` directory containing compiled assets.
 
+# Branching Strategy
+
+Make your changes to the `development` branch. This auto-deploys to https://talk.brave.software.
+
+Then merge to `staging`. This auto-deploys to https://talk.bravesoftware.com.
+
+Then PR from `staging` to `main`. This auto-deploys to https://talk.brave.com.
+
 # Prettier
 
 This codebase uses [prettier](https://prettier.io/) to keep the code formatted nicely and avoid needless changes in diff. It's recommended
