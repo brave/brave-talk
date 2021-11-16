@@ -29,6 +29,12 @@ body {
   font-weight: 400;
   font-family: "Poppins", "Open Sans Pro", Arial, sans-serif;
   color: #f1f1f1;
+  overflow: hidden;
+}
+
+#container {
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
 }
 
 button {
