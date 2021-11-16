@@ -31,7 +31,7 @@ if (document.readyState === "complete") {
 const main = async () => {
   // these envvars are set by the EnvironmentPlugin in webpack.config.js
   console.log(
-    `!!! version 0.11.54 (${process.env.GIT_VERSION} ${process.env.ENVIRONMENT})`
+    `!!! version 0.11.55 (${process.env.GIT_VERSION} ${process.env.ENVIRONMENT})`
   );
 
   if (useBraveRequestAdsEnabledApi) {
@@ -372,7 +372,9 @@ const renderConferencePage = (roomName: string, jwt: string) => {
       },
       inviteAppName: "Brave Talk",
       prejoinPageEnabled: true,
+      /* !!! temporary for testing
       startLastN: 2,
+ */
       startWithAudioMuted: true,
       startWithVideoMuted: true,
       transcribingEnabled: false,
