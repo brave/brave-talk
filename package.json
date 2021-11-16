@@ -30,7 +30,7 @@
     "postcss-loader": "6.2.0",
     "postcss-nesting": "9.0.0",
     "prettier": "2.4.1",
-    "pretty-quick": "3.1.1",
+    "pretty-quick": "3.1.2",
     "svgo-loader": "3.0.0",
     "ts-jest": "27.0.7",
     "ts-loader": "9.2.6",
