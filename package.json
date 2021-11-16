@@ -1,5 +1,5 @@
 {
-  "name": "brave-together-app",
+  "name": "brave-talk-app",
   "version": "0.1.0",
   "description": "private and unlimited video calling by Brave",
   "main": "index.js",
@@ -12,9 +12,9 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/brave/brave-together.git"
+    "url": "git+https://github.com/brave/brave-talk.git"
   },
-  "homepage": "https://github.com/brave/brave-together#readme",
+  "homepage": "https://github.com/brave/brave-talk#readme",
   "devDependencies": {
     "@types/jest": "27.0.2",
     "autoprefixer": "10.4.0",
