@@ -374,7 +374,7 @@ const renderConferencePage = (roomName: string, jwt: string) => {
       prejoinPageEnabled: true,
       /* !!! temporary for testing
       startLastN: 2,
- */
+       */
       startWithAudioMuted: true,
       startWithVideoMuted: true,
       transcribingEnabled: false,
