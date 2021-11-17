@@ -31,7 +31,7 @@ if (document.readyState === "complete") {
 const main = async () => {
   // these envvars are set by the EnvironmentPlugin in webpack.config.js
   console.log(
-    `!!! version 0.11.57 (${process.env.GIT_VERSION} ${process.env.ENVIRONMENT})`
+    `!!! version 0.11.58 (${process.env.GIT_VERSION} ${process.env.ENVIRONMENT})`
   );
 
   if (useBraveRequestAdsEnabledApi) {
@@ -497,6 +497,12 @@ const renderConferencePage = (roomName: string, jwt: string) => {
   })
     .on("videoQualityChanged", (params: any) => {
       reportAction("videoQualityChanged", params);
+    })
+    .on("recordingLinkAvailable", (params: any) => {
+      reportAction("recordingLinkAvailable", params);
+    })
+    .on("recordingStatusChanged", (params: any) => {
+      reportAction("recordingStatusChanged", params);
     })
     .on("readyToClose", (params: any) => {
       reportAction("readyToClose", params);
