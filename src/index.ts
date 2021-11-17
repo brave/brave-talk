@@ -31,7 +31,7 @@ if (document.readyState === "complete") {
 const main = async () => {
   // these envvars are set by the EnvironmentPlugin in webpack.config.js
   console.log(
-    `!!! version 0.11.55 (${process.env.GIT_VERSION} ${process.env.ENVIRONMENT})`
+    `!!! version 0.11.57 (${process.env.GIT_VERSION} ${process.env.ENVIRONMENT})`
   );
 
   if (useBraveRequestAdsEnabledApi) {
@@ -374,7 +374,7 @@ const renderConferencePage = (roomName: string, jwt: string) => {
       prejoinPageEnabled: true,
       /* !!! temporary for testing
       startLastN: 2,
- */
+       */
       startWithAudioMuted: true,
       startWithVideoMuted: true,
       transcribingEnabled: false,
@@ -467,11 +467,6 @@ const renderConferencePage = (roomName: string, jwt: string) => {
     window.addEventListener("beforeunload", askOnUnload);
   };
 
-  // onpagehide appears to be a no-op on iOS...
-  const askOnPageHide = (e: any) => {
-    e.returnValue = !!"Leave Brave Talk?";
-  };
-
   reportMethod("JitsiMeetExternalAPI", options);
   JitsiMeetJS = new JitsiMeetExternalAPI(config.webrtc_domain, options);
   reportAction("JitsiMeetExternalAPI", { status: "activated!" });
@@ -484,12 +479,12 @@ const renderConferencePage = (roomName: string, jwt: string) => {
     reportAction("subjectChange", params);
 
     if (process.env.ENVIRONMENT !== "production") {
+      // window.addEventListener("onpagehide", (e) => { ... }) appears to be a no-op on iOS
+      // and listening for "onbeforeunload" works for both desktop and Android
+
       if ("onbeforeunload" in window) {
         console.log("!!! listening for beforeunload");
         window.addEventListener("beforeunload", askOnUnload);
-      } else if ("onpagehide" in window) {
-        console.log("!!! listening for pagehide");
-        window.addEventListener("pagehide", askOnPageHide);
       }
     }
 
@@ -506,7 +501,6 @@ const renderConferencePage = (roomName: string, jwt: string) => {
     .on("readyToClose", (params: any) => {
       reportAction("readyToClose", params);
       window.removeEventListener("beforeunload", askOnUnload);
-      window.removeEventListener("pagehide", askOnPageHide);
       JitsiMeetJS.dispose();
       JitsiMeetJS = null;
       window.open(
