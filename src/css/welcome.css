@@ -29,6 +29,17 @@ body {
   font-weight: 400;
   font-family: "Poppins", "Open Sans Pro", Arial, sans-serif;
   color: #f1f1f1;
+  overflow: hidden;
+}
+
+#container {
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  right: 0;
+  left: 0;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
 }
 
 button {
@@ -37,7 +48,7 @@ button {
 }
 
 .full-screen {
-  height: 100vh;
+  height: 100%;
 }
 
 .welcome {
