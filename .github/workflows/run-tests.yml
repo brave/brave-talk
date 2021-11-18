@@ -1,0 +1,29 @@
+name: Run Tests
+on: [push]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          persist-credentials: false
+      - name: Use Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: 16.13.0
+          cache: npm
+      - name: Install Dependencies
+        run: |
+          git config --global url."https://${{ secrets.PAT }}@github.com/".insteadOf ssh://git@github.com/
+          npm ci
+      - name: Run Tests
+        run: |
+          npm test
+          npm audit
+      - name: Check build
+        run: |
+          npm run build
+          cd ./html
+          # fail the build if any generated javascript contains 'eval' to help mitigate the need for script-src unsafe-eval CSP
+          grep -l eval html/static/*.js && exit 99
