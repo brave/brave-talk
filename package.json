@@ -28,7 +28,7 @@
     "mini-css-extract-plugin": "2.4.4",
     "postcss": "8.3.11",
     "postcss-loader": "6.2.0",
-    "postcss-nesting": "9.0.0",
+    "postcss-nesting": "10.0.1",
     "prettier": "2.4.1",
     "pretty-quick": "3.1.1",
     "svgo-loader": "3.0.0",
