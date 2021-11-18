@@ -169,6 +169,11 @@ button {
   &:active {
     background: rgba(255, 255, 255, 0.32);
   }
+
+  &:disabled {
+    background: rgba(255, 255, 255, 0.32);
+    color: rgba(255, 255, 255, 0.5);
+  }
 }
 
 .welcome-page-button-loading {
@@ -222,6 +227,10 @@ button {
   color: #ffffff;
 }
 
+.welcome-page-gutter-top {
+  margin-top: 16px;
+}
+
 @media only screen and (max-width: 600px) {
   .welcome-page-button,
   .welcome-page-button-hollow {
@@ -232,6 +241,15 @@ button {
 
 .brave-icon {
   background: url("../images/brave_icon.svg") no-repeat;
+  background-size: 22px 22px;
+  width: 26px;
+  height: 22px;
+  display: inline-block;
+  margin-right: 12px;
+}
+
+.copy-icon {
+  background: url("../images/content_copy.svg") no-repeat;
   background-size: 22px 22px;
   width: 26px;
   height: 22px;
@@ -499,6 +517,7 @@ button {
 #download_brave,
 #subscribe,
 #my_account_link,
+#copy_link,
 #opt_in,
 #desktop_needed,
 #enter_1on1_button,

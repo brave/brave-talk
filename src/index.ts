@@ -19,6 +19,8 @@ const config = {
   webrtc_domain: "8x8.vc",
 };
 
+const isProduction: boolean = process.env.ENVIRONMENT === "production";
+
 const params = new URLSearchParams(window.location.search);
 
 // there's a chance that window.onload has already fired by the time this code runs
@@ -100,7 +102,7 @@ const main = async () => {
 };
 
 const checkDevOverride = (code: string): boolean | null => {
-  if (process.env.ENVIRONMENT !== "production") {
+  if (!isProduction) {
     const paramValue = extractValueFromFragment(code);
     if (paramValue === "yes") {
       return true;
@@ -248,6 +250,25 @@ const hideLoadingIndicators = () => {
   findElement("enter_room_loading").style.display = "none";
 };
 
+const copyRoomLink = async () => {
+  try {
+    const roomName = generateRoomName();
+    const { url } = await fetchJWT(roomName, true, notice);
+
+    if (!url) {
+      throw new Error("Failed to create meeting room");
+    }
+
+    const absoluteUrl = new URL(url, window.location.href);
+    await window.navigator.clipboard.writeText(absoluteUrl.href);
+
+    notice("Meeting room link copied to clipboard");
+  } catch (error: any) {
+    console.error(error);
+    notice(error.message);
+  }
+};
+
 const renderHomePage = (options: WelcomeScreenOptions) => {
   reportMethod("renderHomePage", options);
 
@@ -258,6 +279,7 @@ const renderHomePage = (options: WelcomeScreenOptions) => {
   const downloadCta = findElement("download_brave");
   const adsOptIn = findElement("opt_in");
   const adsOptInManualSteps = findElement("opt_in_manual_steps");
+  const copyLinkEl = findElement<HTMLButtonElement>("copy_link");
 
   if (options.showDownload) {
     downloadCta.style.display = "flex";
@@ -320,6 +342,15 @@ const renderHomePage = (options: WelcomeScreenOptions) => {
     myAccountElement.style.display = "block";
 
     findElement("talk_title").innerText = "Brave Talk Premium";
+
+    if (!isProduction) {
+      copyLinkEl.style.display = "flex";
+      copyLinkEl.onclick = async () => {
+        copyLinkEl.disabled = true;
+        await copyRoomLink();
+        copyLinkEl.disabled = false;
+      };
+    }
   }
 
   if (options.showUseDesktopMessage) {
@@ -478,7 +509,7 @@ const renderConferencePage = (roomName: string, jwt: string) => {
   JitsiMeetJS.on("subjectChange", (params: any) => {
     reportAction("subjectChange", params);
 
-    if (process.env.ENVIRONMENT !== "production") {
+    if (!isProduction) {
       // window.addEventListener("onpagehide", (e) => { ... }) appears to be a no-op on iOS
       // and listening for "onbeforeunload" works for both desktop and Android
 
