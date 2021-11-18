@@ -24,6 +24,3 @@ jobs:
       - name: Check build
         run: |
           npm run build
-          cd ./html
-          # fail the build if any generated javascript contains 'eval' to help mitigate the need for script-src unsafe-eval CSP
-          grep -l eval static/*.js && exit 99
