@@ -10,6 +10,11 @@ import { resolveService } from "./services";
 import "./css/main.css";
 import "./js/jwt-decode";
 import { fetchJWT } from "./rooms";
+import {
+  availableRecordings,
+  upsertRecordingForRoom,
+  refreshRecording,
+} from "./recordings";
 
 const useBraveRequestAdsEnabledApi: boolean =
   !!window.chrome && !!window.chrome.braveRequestAdsEnabled;
@@ -475,6 +480,8 @@ const renderConferencePage = (roomName: string, jwt: string) => {
     options.interfaceConfigOverwrite.APP_NAME
   );
 
+  let recordingLink: string | undefined;
+
   JitsiMeetJS.on("subjectChange", (params: any) => {
     reportAction("subjectChange", params);
 
@@ -500,9 +507,17 @@ const renderConferencePage = (roomName: string, jwt: string) => {
     })
     .on("recordingLinkAvailable", (params: any) => {
       reportAction("recordingLinkAvailable", params);
+      recordingLink = params.link;
+      upsertRecordingForRoom(params.link, roomName, undefined);
     })
     .on("recordingStatusChanged", (params: any) => {
       reportAction("recordingStatusChanged", params);
+      if (recordingLink) {
+        upsertRecordingForRoom(recordingLink, roomName, undefined);
+        if (!params.on) {
+          recordingLink = undefined;
+        }
+      }
     })
     .on("readyToClose", (params: any) => {
       reportAction("readyToClose", params);

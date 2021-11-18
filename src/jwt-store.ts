@@ -20,6 +20,19 @@ export interface JwtStore {
     encodedRefreshToken?: string | undefined
   ) => void;
   isNewMonthlyActiveUser: () => boolean;
+  availableRecordings: () => object;
+  findRecordingAtURL: (url: string) => Recording;
+  upsertRecordingForRoom: (
+    url: string,
+    roomName: string,
+    expiresAt: number | undefined
+  ) => void;
+}
+
+export interface Recording {
+  roomName: string;
+  createdAt: number;
+  expiresAt: number;
 }
 
 export function loadLocalJwtStore(): JwtStore {
@@ -38,6 +51,29 @@ export function loadLocalJwtStore(): JwtStore {
       saveToStorage(confabs);
     },
     isNewMonthlyActiveUser: () => performMauCheck(confabs),
+    availableRecordings: () => confabs.recordings,
+    findRecordingAtURL: (url: string) => confabs.recordings[url],
+    upsertRecordingForRoom: (
+      url: string,
+      roomName: string,
+      expiresAt: number | undefined
+    ) => {
+      const now = Math.ceil(new Date().getTime() / 1000);
+
+      if (typeof expiresAt === "undefined") {
+        expiresAt = now + 24 * 60 * 60;
+      }
+      if (!confabs.recordings[url]) {
+        confabs.recordings[url] = {
+          roomName: roomName,
+          createdAt: now,
+          expiresAt: expiresAt,
+        };
+      } else {
+        confabs.recordings[url].expiresAt = expiresAt;
+      }
+      saveToStorage(confabs);
+    },
   };
 }
 
@@ -52,6 +88,8 @@ interface ConfabStructure {
 
   // map from roomid -> encoded refresh token (which is itself a jwt, just not one valid for creating or joining a room)
   refresh: Record<string, string>;
+
+  recordings: Record<string, Recording>;
 }
 
 const LOCAL_STORAGE_KEY = "confabs";
@@ -60,6 +98,7 @@ const defaults: ConfabStructure = {
   JWTs: {},
   refresh: {},
   mauStamp: 0,
+  recordings: {},
 };
 
 const loadFromStorage = (): ConfabStructure => {
@@ -101,6 +140,14 @@ const garbageCollect = (confabs: ConfabStructure) => {
   Object.entries(confabs.refresh).forEach(([roomName, refreshJwt]) => {
     if (expiredP(roomName, refreshJwt)) {
       delete confabs.refresh[roomName];
+      didP = true;
+    }
+  });
+
+  const now = Math.ceil(new Date().getTime() / 1000);
+  Object.entries(confabs.recordings).forEach(([url, recording]) => {
+    if (recording.expiresAt >= now) {
+      delete confabs.recordings[url];
       didP = true;
     }
   });
