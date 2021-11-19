@@ -1,4 +1,4 @@
-import { loadLocalJwtStore } from "./jwt-store";
+import { loadLocalJwtStore } from "./store";
 
 afterAll(() => {
   // set the system time back to normal

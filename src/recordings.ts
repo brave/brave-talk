@@ -1,4 +1,4 @@
-import { Recording, loadLocalJwtStore } from "./jwt-store";
+import { Recording, loadLocalJwtStore } from "./store";
 
 export const availableRecordings = () => {
   return loadLocalJwtStore().availableRecordings();

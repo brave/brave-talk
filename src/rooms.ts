@@ -1,4 +1,4 @@
-import { loadLocalJwtStore } from "./jwt-store";
+import { loadLocalJwtStore } from "./store";
 
 // the subscriptions service is forwarded by CloudFront onto talk.brave* so we're not
 // making a cross domain call - see https://github.com/brave/devops/issues/5445.
