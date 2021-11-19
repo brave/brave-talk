@@ -20,7 +20,7 @@ export interface JwtStore {
     encodedRefreshToken?: string | undefined
   ) => void;
   isNewMonthlyActiveUser: () => boolean;
-  availableRecordings: () => object;
+  availableRecordings: () => Readonly<Record<string, Recording>>;
   findRecordingAtURL: (url: string) => Recording;
   upsertRecordingForRoom: (
     url: string,
