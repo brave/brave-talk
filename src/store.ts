@@ -60,6 +60,17 @@ export function loadLocalJwtStore(): JwtStore {
     ) => {
       const now = Math.ceil(new Date().getTime() / 1000);
 
+      console.log(
+        "!!! upsertRecording " +
+          url +
+          " for room " +
+          roomName +
+          " expiresAt=" +
+          expiresAt +
+          "  updateP=" +
+          !!confabs.recordings[url]
+      );
+      console.log("!!! before=" + confabs.recordings);
       if (typeof expiresAt === "undefined") {
         expiresAt = now + 24 * 60 * 60;
       }
@@ -72,6 +83,7 @@ export function loadLocalJwtStore(): JwtStore {
       } else {
         confabs.recordings[url].expiresAt = expiresAt;
       }
+      console.log("!!!  after=" + confabs.recordings);
       saveToStorage(confabs);
     },
   };
