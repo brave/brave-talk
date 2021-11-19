@@ -172,7 +172,6 @@ button {
 
   &:disabled {
     background: rgba(255, 255, 255, 0.32);
-    color: rgba(255, 255, 255, 0.5);
   }
 }
 
@@ -221,6 +220,7 @@ button {
   justify-content: center;
   align-items: center;
   text-decoration: none;
+  min-height: 58px;
 }
 
 .welcome-page-button-download-text {
@@ -254,7 +254,7 @@ button {
   width: 26px;
   height: 22px;
   display: inline-block;
-  margin-right: 12px;
+  margin-right: 6px;
 }
 
 .download-brave {

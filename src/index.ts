@@ -250,10 +250,14 @@ const hideLoadingIndicators = () => {
   findElement("enter_room_loading").style.display = "none";
 };
 
-const copyRoomLink = async () => {
+const copyRoomLink = async (button: HTMLButtonElement) => {
+  button.disabled = true;
+  const originalButtonContent = button.innerHTML;
+  const updateButtonText = (msg: string) => (button.innerText = msg);
+
   try {
     const roomName = generateRoomName();
-    const { url } = await fetchJWT(roomName, true, notice);
+    const { url } = await fetchJWT(roomName, true, updateButtonText);
 
     if (!url) {
       throw new Error("Failed to create meeting room");
@@ -262,10 +266,17 @@ const copyRoomLink = async () => {
     const absoluteUrl = new URL(url, window.location.href);
     await window.navigator.clipboard.writeText(absoluteUrl.href);
 
-    notice("Meeting room link copied to clipboard");
+    updateButtonText("Room link copied to clipboard");
+    await wait(5_000);
   } catch (error: any) {
     console.error(error);
     notice(error.message);
+  } finally {
+    button.disabled = false;
+
+    // although we're setting innerHTML here, the content is only that extracted
+    // at the top of this function - there is no user entered text involved
+    button.innerHTML = originalButtonContent;
   }
 };
 
@@ -346,9 +357,7 @@ const renderHomePage = (options: WelcomeScreenOptions) => {
     if (!isProduction) {
       copyLinkEl.style.display = "flex";
       copyLinkEl.onclick = async () => {
-        copyLinkEl.disabled = true;
-        await copyRoomLink();
-        copyLinkEl.disabled = false;
+        await copyRoomLink(copyLinkEl);
       };
     }
   }
@@ -621,3 +630,6 @@ const reportAction = (action: string, params: object) => {
 const reportMethod = (method: string, params: object) => {
   console.log("!!! > " + method + ": ", params);
 };
+
+const wait = (ms: number): Promise<void> =>
+  new Promise((resolve) => window.setTimeout(resolve, ms));
