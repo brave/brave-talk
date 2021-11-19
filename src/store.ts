@@ -44,9 +44,7 @@ export interface Recording {
 export function loadLocalJwtStore(): JwtStore {
   const confabs: ConfabStructure = loadFromStorage();
 
-  console.log("!!! begin=", confabs);
   garbageCollect(confabs);
-  console.log("!!!   end=", confabs);
 
   return {
     findJwtForRoom: (roomName) => confabs.JWTs[roomName],
@@ -84,7 +82,6 @@ export function loadLocalJwtStore(): JwtStore {
           "  updateP=" +
           !!confabs.recordings[url]
       );
-      console.log("!!! before=", confabs.recordings);
       if (typeof expiresAt === "undefined") {
         expiresAt = now + 24 * 60 * 60;
       }
@@ -97,7 +94,6 @@ export function loadLocalJwtStore(): JwtStore {
       } else {
         confabs.recordings[url].expiresAt = expiresAt;
       }
-      console.log("!!!  after=", confabs.recordings);
       saveToStorage(confabs);
     },
   };
@@ -132,7 +128,6 @@ const loadFromStorage = (): ConfabStructure => {
     const item = window.localStorage.getItem(LOCAL_STORAGE_KEY);
     if (item) {
       const value = JSON.parse(item);
-      console.log("!!! good return ");
       return {
         ...defaults,
         ...value,
@@ -145,7 +140,6 @@ const loadFromStorage = (): ConfabStructure => {
     } catch (error) {}
   }
 
-  console.log("!!! oops return ");
   return {
     ...defaults,
   };
