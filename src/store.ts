@@ -192,7 +192,6 @@ const expiredP = (roomName: string, jwt: string): boolean => {
 };
 
 const saveToStorage = (confabs: ConfabStructure): void => {
-  console.log("!!! saveToStorage", confabs);
   try {
     window.localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(confabs));
   } catch (error) {
