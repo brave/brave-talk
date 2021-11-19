@@ -174,7 +174,7 @@ const garbageCollect = (confabs: ConfabStructure) => {
 
   const now = Math.ceil(new Date().getTime() / 1000);
   Object.entries(confabs.recordings).forEach(([url, recording]) => {
-    if (recording.expiresAt >= now) {
+    if (recording.expiresAt < now) {
       delete confabs.recordings[url];
       didP = true;
     }
