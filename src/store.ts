@@ -38,7 +38,9 @@ export interface Recording {
 export function loadLocalJwtStore(): JwtStore {
   const confabs: ConfabStructure = loadFromStorage();
 
+  console.log("!!! begin=", confabs.recordings);
   garbageCollect(confabs);
+  console.log("!!!   end=", confabs.recordings);
 
   return {
     findJwtForRoom: (roomName) => confabs.JWTs[roomName],
