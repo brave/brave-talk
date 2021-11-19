@@ -1,7 +1,16 @@
-import { Recording, loadLocalJwtStore } from "./store";
+import { JwtStore, Recording, loadLocalJwtStore } from "./store";
+
+let _singleton: JwtStore | undefined;
+
+const singleton = () => {
+  if (!_singleton) {
+    _singleton = loadLocalJwtStore();
+  }
+  return _singleton;
+};
 
 export const availableRecordings = () => {
-  return loadLocalJwtStore().availableRecordings();
+  return singleton().availableRecordings();
 };
 
 export const upsertRecordingForRoom = (
@@ -9,11 +18,11 @@ export const upsertRecordingForRoom = (
   roomName: string,
   expiresAt: number | undefined
 ) => {
-  return loadLocalJwtStore().upsertRecordingForRoom(url, roomName, expiresAt);
+  return singleton().upsertRecordingForRoom(url, roomName, expiresAt);
 };
 
 export const refreshRecording = async (url: string): Promise<boolean> => {
-  const recording = loadLocalJwtStore().findRecordingAtURL(url);
+  const recording = singleton().findRecordingAtURL(url);
 
   if (!recording) {
     return false;
