@@ -70,7 +70,7 @@ export function loadLocalJwtStore(): JwtStore {
           "  updateP=" +
           !!confabs.recordings[url]
       );
-      console.log("!!! before=" + confabs.recordings);
+      console.log("!!! before=", confabs.recordings);
       if (typeof expiresAt === "undefined") {
         expiresAt = now + 24 * 60 * 60;
       }
@@ -83,7 +83,7 @@ export function loadLocalJwtStore(): JwtStore {
       } else {
         confabs.recordings[url].expiresAt = expiresAt;
       }
-      console.log("!!!  after=" + confabs.recordings);
+      console.log("!!!  after=", confabs.recordings);
       saveToStorage(confabs);
     },
   };
