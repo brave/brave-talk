@@ -13,15 +13,21 @@
 
 export interface JwtStore {
   findJwtForRoom: (roomName: string) => string | undefined;
+
   findRefreshTokenForRoom: (roomName: string) => string | undefined;
+
   storeJwtForRoom: (
     roomName: string,
     encodedJwt: string,
     encodedRefreshToken?: string | undefined
   ) => void;
+
   isNewMonthlyActiveUser: () => boolean;
+
   availableRecordings: () => Readonly<Record<string, Recording>>;
+
   findRecordingAtURL: (url: string) => Recording;
+
   upsertRecordingForRoom: (
     url: string,
     roomName: string,
@@ -38,13 +44,15 @@ export interface Recording {
 export function loadLocalJwtStore(): JwtStore {
   const confabs: ConfabStructure = loadFromStorage();
 
-  console.log("!!! begin=", confabs.recordings);
+  console.log("!!! begin=", confabs);
   garbageCollect(confabs);
-  console.log("!!!   end=", confabs.recordings);
+  console.log("!!!   end=", confabs);
 
   return {
     findJwtForRoom: (roomName) => confabs.JWTs[roomName],
+
     findRefreshTokenForRoom: (roomName) => confabs.refresh[roomName],
+
     storeJwtForRoom: (roomName, encodedJwt, encodedRefreshToken) => {
       confabs.JWTs[roomName] = encodedJwt;
       if (encodedRefreshToken) {
@@ -52,9 +60,13 @@ export function loadLocalJwtStore(): JwtStore {
       }
       saveToStorage(confabs);
     },
+
     isNewMonthlyActiveUser: () => performMauCheck(confabs),
+
     availableRecordings: () => confabs.recordings,
+
     findRecordingAtURL: (url: string) => confabs.recordings[url],
+
     upsertRecordingForRoom: (
       url: string,
       roomName: string,
@@ -120,6 +132,7 @@ const loadFromStorage = (): ConfabStructure => {
     const item = window.localStorage.getItem(LOCAL_STORAGE_KEY);
     if (item) {
       const value = JSON.parse(item);
+      console.log("!!! good return ");
       return {
         ...defaults,
         ...value,
@@ -132,6 +145,7 @@ const loadFromStorage = (): ConfabStructure => {
     } catch (error) {}
   }
 
+  console.log("!!! oops return ");
   return {
     ...defaults,
   };
@@ -184,6 +198,7 @@ const expiredP = (roomName: string, jwt: string): boolean => {
 };
 
 const saveToStorage = (confabs: ConfabStructure): void => {
+  console.log("!!! saveToStorage", confabs);
   try {
     window.localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(confabs));
   } catch (error) {
