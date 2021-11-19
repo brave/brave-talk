@@ -251,6 +251,9 @@ button {
   max-width: 377px;
 }
 
+.recordings {
+}
+
 .subscribe {
   margin-top: 16px;
   min-height: calc(167px + 36px);

@@ -36,12 +36,14 @@ if (document.readyState === "complete") {
 const main = async () => {
   // these envvars are set by the EnvironmentPlugin in webpack.config.js
   console.log(
-    `!!! version 0.11.64 (${process.env.GIT_VERSION} ${process.env.ENVIRONMENT})`
+    `!!! version 0.11.65 (${process.env.GIT_VERSION} ${process.env.ENVIRONMENT})`
   );
 
   if (useBraveRequestAdsEnabledApi) {
     console.log("--> will use braveRequestAdsEnabled");
   }
+
+  populateRecordings();
 
   const intent = params.get("intent");
   const order = params.get("order");
@@ -102,6 +104,36 @@ const main = async () => {
     joinRoom !== "widget" ? joinRoom : generateRoomName(),
     false
   );
+};
+
+const populateRecordings = () => {
+  const recordings = availableRecordings();
+
+  /* sort by descending creation timestamp and then group by roomName
+   */
+  const records = new Array();
+  Object.entries(recordings).forEach(([url, recording]) => {
+    const entry = Object.assign(recording, { url: url });
+
+    entry.url = url;
+    records.push(entry);
+  });
+  records.sort((a, b) => {
+    return b.createdAt - a.createdAt;
+  });
+  records.sort((a, b) => {
+    if (a.roomName === b.roomName) return 0;
+
+    for (let i = 0; i < records.length; i++) {
+      const roomName = records[i].roomName;
+
+      if (a.roomName === roomName) return -1;
+      if (b.roomName === roomName) return 1;
+    }
+
+    return 0;
+  });
+  console.log("!!! records", records);
 };
 
 const checkDevOverride = (code: string): boolean | null => {
