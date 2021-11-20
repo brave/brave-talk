@@ -21,6 +21,8 @@ export const upsertRecordingForRoom = (
   return singleton().upsertRecordingForRoom(url, roomName, expiresAt);
 };
 
+/* most likely OBE
+
 export const refreshRecording = async (url: string): Promise<boolean> => {
   const recording = singleton().findRecordingAtURL(url);
 
@@ -33,3 +35,5 @@ export const refreshRecording = async (url: string): Promise<boolean> => {
 
   return false;
 };
+
+*/
