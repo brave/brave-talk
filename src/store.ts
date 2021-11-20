@@ -31,13 +31,14 @@ export interface JwtStore {
   upsertRecordingForRoom: (
     url: string,
     roomName: string,
-    expiresAt: number | undefined
+    ttl: number | undefined
   ) => void;
 }
 
 export interface Recording {
   roomName: string;
   createdAt: number;
+  ttl: number;
   expiresAt: number;
 }
 
@@ -68,31 +69,34 @@ export function loadLocalJwtStore(): JwtStore {
     upsertRecordingForRoom: (
       url: string,
       roomName: string,
-      expiresAt: number | undefined
+      ttl: number | undefined
     ) => {
-      const now = Math.ceil(new Date().getTime() / 1000);
-
       console.log(
         "!!! upsertRecording " +
           url +
           " for room " +
           roomName +
-          " expiresAt=" +
-          expiresAt +
-          "  updateP=" +
-          !!confabs.recordings[url]
+          " ttl=" +
+          ttl +
+          "  createP=" +
+          !confabs.recordings[url]
       );
-      if (typeof expiresAt === "undefined") {
-        expiresAt = now + 24 * 60 * 60;
+
+      const now = Math.ceil(new Date().getTime() / 1000);
+      if (typeof ttl === "undefined") {
+        ttl = 24 * 60 * 60;
       }
+      const expiresAt = now + ttl;
+
       if (!confabs.recordings[url]) {
         confabs.recordings[url] = {
           roomName: roomName,
           createdAt: now,
+          ttl: ttl,
           expiresAt: expiresAt,
         };
       } else {
-        confabs.recordings[url].expiresAt = expiresAt;
+        confabs.recordings[url].expiresAt = now + ttl;
       }
       saveToStorage(confabs);
     },

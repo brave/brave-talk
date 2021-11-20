@@ -16,24 +16,7 @@ export const availableRecordings = () => {
 export const upsertRecordingForRoom = (
   url: string,
   roomName: string,
-  expiresAt: number | undefined
+  ttl: number | undefined
 ) => {
-  return singleton().upsertRecordingForRoom(url, roomName, expiresAt);
+  return singleton().upsertRecordingForRoom(url, roomName, ttl);
 };
-
-/* most likely OBE
-
-export const refreshRecording = async (url: string): Promise<boolean> => {
-  const recording = singleton().findRecordingAtURL(url);
-
-  if (!recording) {
-    return false;
-  }
-
-  // async call to https://api-vo.jitsi.net/jaas-recordings/link/details?url={{url}}
-  // on success, upsertRecordingForRoom(url, recording.roomName, result.expiresAt);
-
-  return false;
-};
-
-*/
