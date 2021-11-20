@@ -10,11 +10,7 @@ import { resolveService } from "./services";
 import "./css/main.css";
 import "./js/jwt-decode";
 import { fetchJWT } from "./rooms";
-import {
-  availableRecordings,
-  upsertRecordingForRoom,
-  //  refreshRecording,
-} from "./recordings";
+import { availableRecordings, upsertRecordingForRoom } from "./recordings";
 
 const useBraveRequestAdsEnabledApi: boolean =
   !!window.chrome && !!window.chrome.braveRequestAdsEnabled;
@@ -38,7 +34,7 @@ if (document.readyState === "complete") {
 const main = async () => {
   // these envvars are set by the EnvironmentPlugin in webpack.config.js
   console.log(
-    `!!! version 0.11.67 (${process.env.GIT_VERSION} ${process.env.ENVIRONMENT})`
+    `!!! version 0.11.68 (${process.env.GIT_VERSION} ${process.env.ENVIRONMENT})`
   );
 
   if (useBraveRequestAdsEnabledApi) {
@@ -560,12 +556,13 @@ const renderConferencePage = (roomName: string, jwt: string) => {
   );
 
   let recordingLink: string | undefined;
+  let recordingTTL: number | undefined;
   const updateRecTimestamp = () => {
     if (!recordingLink) {
       return;
     }
 
-    upsertRecordingForRoom(recordingLink, roomName, undefined);
+    upsertRecordingForRoom(recordingLink, roomName, recordingTTL);
     setTimeout(updateRecTimestamp, 5 * 60 * 1000);
   };
 
