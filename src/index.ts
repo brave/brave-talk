@@ -34,7 +34,7 @@ if (document.readyState === "complete") {
 const main = async () => {
   // these envvars are set by the EnvironmentPlugin in webpack.config.js
   console.log(
-    `!!! version 0.11.69 (${process.env.GIT_VERSION} ${process.env.ENVIRONMENT})`
+    `!!! version 0.11.70 (${process.env.GIT_VERSION} ${process.env.ENVIRONMENT})`
   );
 
   if (useBraveRequestAdsEnabledApi) {
@@ -108,6 +108,12 @@ const main = async () => {
 };
 
 const populateRecordings = () => {
+  const records = sortRecordings();
+
+  console.log("!!! records", records);
+};
+
+const sortRecordings = () => {
   const recordings = availableRecordings();
 
   /* sort by descending creation timestamp and then group by roomName
@@ -134,7 +140,8 @@ const populateRecordings = () => {
 
     return 0;
   });
-  console.log("!!! records", records);
+
+  return records;
 };
 
 const checkDevOverride = (code: string): boolean | null => {
@@ -596,6 +603,22 @@ const renderConferencePage = (roomName: string, jwt: string) => {
     })
     .on("recordingStatusChanged", (params: any) => {
       reportAction("recordingStatusChanged", params);
+      if (params.on && !recordingLink) {
+        const records = sortRecordings();
+
+        for (let i = 0; i < records.length; i++) {
+          const record = records[i];
+
+          if (record.roomName == roomName) {
+            console.log("resuming recording", record);
+            recordingLink = record.url;
+            break;
+          }
+        }
+        if (!recordingLink) {
+          console.log("!!! unable to find recording for this room");
+        }
+      }
       updateRecTimestamp();
       if (!params.on) {
         recordingLink = undefined;
