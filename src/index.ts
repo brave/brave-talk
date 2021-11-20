@@ -34,7 +34,7 @@ if (document.readyState === "complete") {
 const main = async () => {
   // these envvars are set by the EnvironmentPlugin in webpack.config.js
   console.log(
-    `!!! version 0.11.68 (${process.env.GIT_VERSION} ${process.env.ENVIRONMENT})`
+    `!!! version 0.11.69 (${process.env.GIT_VERSION} ${process.env.ENVIRONMENT})`
   );
 
   if (useBraveRequestAdsEnabledApi) {
@@ -114,7 +114,7 @@ const populateRecordings = () => {
    */
   const records = new Array();
   Object.entries(recordings).forEach(([url, recording]) => {
-    const entry = Object.assign(recording, { url: url });
+    const entry = Object.assign({}, recording, { url: url });
 
     entry.url = url;
     records.push(entry);
