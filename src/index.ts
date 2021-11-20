@@ -13,7 +13,7 @@ import { fetchJWT } from "./rooms";
 import {
   availableRecordings,
   upsertRecordingForRoom,
-  refreshRecording,
+  //  refreshRecording,
 } from "./recordings";
 
 const useBraveRequestAdsEnabledApi: boolean =
@@ -36,7 +36,7 @@ if (document.readyState === "complete") {
 const main = async () => {
   // these envvars are set by the EnvironmentPlugin in webpack.config.js
   console.log(
-    `!!! version 0.11.66 (${process.env.GIT_VERSION} ${process.env.ENVIRONMENT})`
+    `!!! version 0.11.67 (${process.env.GIT_VERSION} ${process.env.ENVIRONMENT})`
   );
 
   if (useBraveRequestAdsEnabledApi) {
@@ -513,6 +513,14 @@ const renderConferencePage = (roomName: string, jwt: string) => {
   );
 
   let recordingLink: string | undefined;
+  const updateRecTimestamp = () => {
+    if (!recordingLink) {
+      return;
+    }
+
+    upsertRecordingForRoom(recordingLink, roomName, undefined);
+    setTimeout(updateRecTimestamp, 5 * 60 * 1000);
+  };
 
   JitsiMeetJS.on("subjectChange", (params: any) => {
     reportAction("subjectChange", params);
@@ -540,20 +548,19 @@ const renderConferencePage = (roomName: string, jwt: string) => {
     .on("recordingLinkAvailable", (params: any) => {
       reportAction("recordingLinkAvailable", params);
       recordingLink = params.link;
-      upsertRecordingForRoom(params.link, roomName, undefined);
+      updateRecTimestamp();
     })
     .on("recordingStatusChanged", (params: any) => {
       reportAction("recordingStatusChanged", params);
-      if (recordingLink) {
-        upsertRecordingForRoom(recordingLink, roomName, undefined);
-        if (!params.on) {
-          recordingLink = undefined;
-        }
+      updateRecTimestamp();
+      if (!params.on) {
+        recordingLink = undefined;
       }
     })
     .on("readyToClose", (params: any) => {
       reportAction("readyToClose", params);
       window.removeEventListener("beforeunload", askOnUnload);
+      updateRecTimestamp();
       JitsiMeetJS.dispose();
       JitsiMeetJS = null;
       window.open(
