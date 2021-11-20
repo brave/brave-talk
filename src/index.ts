@@ -32,7 +32,7 @@ if (document.readyState === "complete") {
 const main = async () => {
   // these envvars are set by the EnvironmentPlugin in webpack.config.js
   console.log(
-    `!!! version 0.11.70 (${process.env.GIT_VERSION} ${process.env.ENVIRONMENT})`
+    `!!! version 0.11.71 (${process.env.GIT_VERSION} ${process.env.ENVIRONMENT})`
   );
 
   if (useBraveRequestAdsEnabledApi) {
@@ -563,7 +563,7 @@ const renderConferencePage = (roomName: string, jwt: string) => {
           const record = records[i];
 
           if (record.roomName == roomName) {
-            console.log("resuming recording", record);
+            console.log("!!! resuming recording", record);
             recordingLink = record.url;
             break;
           }
