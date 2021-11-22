@@ -119,19 +119,66 @@ const populateRecordings = () => {
     const table = document.createElement("table");
     const tbody = table.createTBody();
 
+    const tr = document.createElement("tr");
+
+    const th1 = document.createElement("td");
+    th1.innerText = "Call";
+    tr.appendChild(th1);
+
+    const th2 = document.createElement("td");
+    th2.innerText = "Download";
+    tr.appendChild(th2);
+
+    const th3 = document.createElement("td");
+    th3.innerText = "Created";
+    tr.appendChild(th3);
+
+    const th4 = document.createElement("td");
+    th4.innerText = "Duration";
+    tr.appendChild(th4);
+
+    const th5 = document.createElement("td");
+    th5.innerText = "Expires";
+    tr.appendChild(th5);
+
+    tbody.appendChild(tr);
+
+    const duration = (s: number) => {
+      const pos = s >= 3600 ? 11 : 14;
+      const len = s >= 3600 ? 8 : 5;
+
+      return new Date(s * 1000).toISOString().substr(pos, len);
+    };
+
+    let roomName = "";
     records.forEach((r) => {
       const tr = document.createElement("tr");
 
       const td1 = document.createElement("td");
-      td1.innerText = new Date(r.createdAt * 1000).toDateString();
+      if (r.roomName !== roomName) {
+        roomName = r.roomName;
+        td1.innerText = roomName;
+      }
       tr.appendChild(td1);
 
       const td2 = document.createElement("td");
       const link = document.createElement("a");
-      link.innerText = "link";
+      link.innerText = "Link";
       link.href = r.url;
       td2.appendChild(link);
       tr.appendChild(td2);
+
+      const td3 = document.createElement("td");
+      td3.innerText = new Date(r.createdAt * 1000).toLocaleString();
+      tr.appendChild(td3);
+
+      const td4 = document.createElement("td");
+      td4.innerText = duration(r.expiresAt - r.ttl - r.createdAt);
+      tr.appendChild(td4);
+
+      const td5 = document.createElement("td");
+      td5.innerText = new Date(r.expiresAt * 1000).toLocaleString();
+      tr.appendChild(td5);
 
       tbody.appendChild(tr);
     });
