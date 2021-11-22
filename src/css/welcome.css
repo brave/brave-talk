@@ -270,6 +270,7 @@ button {
 }
 
 .recordings {
+  margin-top: 16px;
 }
 
 .subscribe {
@@ -525,6 +526,7 @@ button {
 #desktop_needed,
 #enter_1on1_button,
 #enter_room_button,
+#recordings,
 #meet {
   display: none;
 }
