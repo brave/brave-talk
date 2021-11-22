@@ -106,6 +106,33 @@ const populateRecordings = () => {
   const records = sortRecordings();
 
   console.log("!!! records", records);
+
+  const recordingsEl = findElement("recordings");
+  if (records.length > 0) {
+    recordingsEl.style.display = "block";
+
+    const table = document.createElement("table");
+    const tbody = table.createTBody();
+
+    records.forEach((r) => {
+      const tr = document.createElement("tr");
+
+      const td1 = document.createElement("td");
+      td1.innerText = new Date(r.createdAt * 1000).toDateString();
+      tr.appendChild(td1);
+
+      const td2 = document.createElement("td");
+      const link = document.createElement("a");
+      link.innerText = "link";
+      link.href = r.url;
+      td2.appendChild(link);
+      tr.appendChild(td2);
+
+      tbody.appendChild(tr);
+    });
+
+    recordingsEl.replaceChildren(table);
+  }
 };
 
 const sortRecordings = () => {
