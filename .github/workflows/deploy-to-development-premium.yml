@@ -1,12 +1,15 @@
 name: Deploy to Development
 on:
   push:
-    branches: [development]
+    branches: [dev]
   workflow_dispatch:
 
 jobs:
-  build:
+  deploy:
     runs-on: ubuntu-latest
+
+    environment:
+      name: development
 
     steps:
       - uses: actions/checkout@v2

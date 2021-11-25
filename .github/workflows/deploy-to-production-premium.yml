@@ -1,12 +1,15 @@
 name: Deploy to Production
 on:
   push:
-    branches: [main]
-  workflow_dispatch:
+    branches: [prod]
 
 jobs:
-  build:
+  deploy:
     runs-on: ubuntu-latest
+
+    environment:
+      name: production
+      url: https://talk.brave.com
 
     steps:
       - uses: actions/checkout@v2
