@@ -251,8 +251,8 @@ const hideLoadingIndicators = () => {
 };
 
 const copyRoomLink = async (button: HTMLButtonElement) => {
-  button.disabled = true;
   const originalButton = button.cloneNode(true);
+  button.disabled = true;
   const updateButtonText = (msg: string) => (button.innerText = msg);
 
   try {
@@ -272,8 +272,8 @@ const copyRoomLink = async (button: HTMLButtonElement) => {
     console.error(error);
     notice(error.message);
   } finally {
+    button.replaceChildren(...originalButton.childNodes);
     button.disabled = false;
-    button.replaceWith(originalButton);
   }
 };
 
