@@ -1,12 +1,14 @@
 name: Deploy to Staging
 on:
   push:
-    branches: [staging]
-  workflow_dispatch:
+    branches: [main]
 
 jobs:
-  build:
+  deploy:
     runs-on: ubuntu-latest
+
+    environment:
+      name: staging
 
     steps:
       - uses: actions/checkout@v2
