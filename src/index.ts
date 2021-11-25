@@ -252,7 +252,7 @@ const hideLoadingIndicators = () => {
 
 const copyRoomLink = async (button: HTMLButtonElement) => {
   button.disabled = true;
-  const originalButtonContent = button.innerHTML;
+  const originalButton = button.cloneNode(true);
   const updateButtonText = (msg: string) => (button.innerText = msg);
 
   try {
@@ -273,10 +273,7 @@ const copyRoomLink = async (button: HTMLButtonElement) => {
     notice(error.message);
   } finally {
     button.disabled = false;
-
-    // although we're setting innerHTML here, the content is only that extracted
-    // at the top of this function - there is no user entered text involved
-    button.innerHTML = originalButtonContent;
+    button.replaceWith(originalButton);
   }
 };
 
