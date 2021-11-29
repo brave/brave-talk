@@ -190,6 +190,7 @@ const calcBrowserCapabilities = async (): Promise<BrowserProperties> => {
   return {
     isBrave: await isBrave(),
     isMobile: iosP || androidP,
+    isIOS: iosP,
     supportsWebRTC: webrtcP,
   };
 };
@@ -351,7 +352,7 @@ const renderHomePage = (options: WelcomeScreenOptions) => {
 
     findElement("talk_title").innerText = "Brave Talk Premium";
 
-    if (!isProduction) {
+    if (options.showCopyLinkForLater) {
       copyLinkEl.style.display = "flex";
       copyLinkEl.onclick = async () => {
         await copyRoomLink(copyLinkEl);

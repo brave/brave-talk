@@ -228,7 +228,7 @@ button {
 }
 
 .welcome-page-gutter-top {
-  margin-top: 16px;
+  margin-top: 16px !important;
 }
 
 @media only screen and (max-width: 600px) {
