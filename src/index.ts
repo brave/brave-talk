@@ -120,9 +120,11 @@ const populateRecordings = () => {
     th1.innerText = "Call";
     tr.appendChild(th1);
 
+    /*
     const th2 = document.createElement("td");
     th2.innerText = "Download";
     tr.appendChild(th2);
+ */
 
     const th3 = document.createElement("td");
     th3.innerText = "Created";
@@ -196,18 +198,25 @@ const populateRecordings = () => {
       const tr = document.createElement("tr");
 
       const td1 = document.createElement("td");
+      const link = document.createElement("a");
       if (r.roomName !== roomName) {
         roomName = r.roomName;
-        td1.innerText = roomName;
+        link.innerText = roomName;
+      } else {
+        link.innerText = ".. continued ..";
       }
+      link.href = r.url;
+      link.target = "_blank";
+      td1.appendChild(link);
       tr.appendChild(td1);
 
+      /*
       const td2 = document.createElement("td");
-      const link = document.createElement("a");
       link.innerText = "Link";
       link.href = r.url;
       td2.appendChild(link);
       tr.appendChild(td2);
+ */
 
       const td3 = document.createElement("td");
       td3.innerText = getCreateTime(r.createdAt);
