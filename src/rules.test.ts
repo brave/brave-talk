@@ -4,12 +4,21 @@ import * as rules from "./rules";
 const DESKTOP_BRAVE: rules.BrowserProperties = {
   isBrave: true,
   isMobile: false,
+  isIOS: false,
   supportsWebRTC: true,
 };
 
 const MOBILE_BRAVE: rules.BrowserProperties = {
   isBrave: true,
   isMobile: true,
+  isIOS: false,
+  supportsWebRTC: true,
+};
+
+const MOBILE_BRAVE_IOS: rules.BrowserProperties = {
+  isBrave: true,
+  isMobile: true,
+  isIOS: true,
   supportsWebRTC: true,
 };
 
@@ -29,6 +38,7 @@ test("if a valid room name is supplied, opens room on all webrtc supporting brow
     rules.checkJoinRoom("some room", {
       isBrave: false,
       isMobile: true,
+      isIOS: true,
       supportsWebRTC: true,
     })
   ).toEqual("some room");
@@ -37,6 +47,7 @@ test("if a valid room name is supplied, opens room on all webrtc supporting brow
     rules.checkJoinRoom("some room", {
       isBrave: false,
       isMobile: true,
+      isIOS: true,
       supportsWebRTC: false,
     })
   ).toBeUndefined();
@@ -46,7 +57,12 @@ it("on mobile non brave should prompt to download brave if no room name is suppl
   expect(
     rules.determineWelcomeScreenUI({
       ...BASE_CONTEXT,
-      browser: { isBrave: false, isMobile: true, supportsWebRTC: true },
+      browser: {
+        isBrave: false,
+        isMobile: true,
+        supportsWebRTC: true,
+        isIOS: true,
+      },
     })
   ).toEqual({ showDownload: true });
 });
@@ -163,4 +179,33 @@ it("should show premium UI only to subscribers", () => {
       useBraveRequestAdsEnabledApi: false,
     }).showPremiumUI
   ).toBeTruthy();
+});
+
+it("should show copy link for later to subscribers on non-IOS", () => {
+  expect(
+    rules.determineWelcomeScreenUI({
+      browser: DESKTOP_BRAVE,
+      userHasOptedInToAds: true,
+      userIsSubscribed: true,
+      useBraveRequestAdsEnabledApi: false,
+    }).showCopyLinkForLater
+  ).toBeTruthy();
+
+  expect(
+    rules.determineWelcomeScreenUI({
+      browser: MOBILE_BRAVE,
+      userHasOptedInToAds: true,
+      userIsSubscribed: true,
+      useBraveRequestAdsEnabledApi: false,
+    }).showCopyLinkForLater
+  ).toBeTruthy();
+
+  expect(
+    rules.determineWelcomeScreenUI({
+      browser: MOBILE_BRAVE_IOS,
+      userHasOptedInToAds: true,
+      userIsSubscribed: true,
+      useBraveRequestAdsEnabledApi: false,
+    }).showCopyLinkForLater
+  ).toBeFalsy();
 });
