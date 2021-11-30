@@ -11,7 +11,7 @@
 
 // PUBLIC INTERFACE
 
-export interface JwtStore {
+export interface LocalStore {
   findJwtForRoom: (roomName: string) => string | undefined;
 
   findRefreshTokenForRoom: (roomName: string) => string | undefined;
@@ -42,7 +42,7 @@ export interface Recording {
   expiresAt: number;
 }
 
-export function loadLocalJwtStore(): JwtStore {
+export function loadLocalStore(): LocalStore {
   const confabs: ConfabStructure = loadFromStorage();
 
   garbageCollect(confabs);

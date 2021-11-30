@@ -1,4 +1,4 @@
-import { loadLocalJwtStore } from "./store";
+import { loadLocalStore } from "./store";
 
 afterAll(() => {
   // set the system time back to normal
@@ -8,7 +8,7 @@ afterAll(() => {
 test("mau calculation behaves as we expect", () => {
   jest.useFakeTimers();
 
-  const s = loadLocalJwtStore();
+  const s = loadLocalStore();
 
   jest.setSystemTime(new Date("2010-12-02T13:24:00Z"));
   expect(s.isNewMonthlyActiveUser()).toBe(true);
