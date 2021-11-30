@@ -169,6 +169,10 @@ button {
   &:active {
     background: rgba(255, 255, 255, 0.32);
   }
+
+  &:disabled {
+    background: rgba(255, 255, 255, 0.32);
+  }
 }
 
 .welcome-page-button-loading {
@@ -216,10 +220,15 @@ button {
   justify-content: center;
   align-items: center;
   text-decoration: none;
+  min-height: 58px;
 }
 
 .welcome-page-button-download-text {
   color: #ffffff;
+}
+
+.welcome-page-gutter-top {
+  margin-top: 16px !important;
 }
 
 @media only screen and (max-width: 600px) {
@@ -237,6 +246,15 @@ button {
   height: 22px;
   display: inline-block;
   margin-right: 12px;
+}
+
+.copy-icon {
+  background: url("../images/link_icon.svg") no-repeat;
+  background-size: 22px 22px;
+  width: 26px;
+  height: 22px;
+  display: inline-block;
+  margin-right: 6px;
 }
 
 .download-brave {
@@ -499,6 +517,7 @@ button {
 #download_brave,
 #subscribe,
 #my_account_link,
+#copy_link,
 #opt_in,
 #desktop_needed,
 #enter_1on1_button,

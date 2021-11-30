@@ -1,6 +1,7 @@
 export interface BrowserProperties {
   isBrave: boolean;
   isMobile: boolean;
+  isIOS: boolean;
   supportsWebRTC: boolean;
 }
 
@@ -24,6 +25,7 @@ export interface WelcomeScreenOptions {
   showStartCall?: boolean;
   showSubscribeCTA?: boolean;
   showPremiumUI?: boolean;
+  showCopyLinkForLater?: boolean;
   showUseDesktopMessage?: boolean;
   showFailureMessage?: string;
 
@@ -69,6 +71,7 @@ export function determineWelcomeScreenUI(c: Context): WelcomeScreenOptions {
       return {
         showStartCall: true,
         showPremiumUI: true,
+        showCopyLinkForLater: !c.browser.isIOS,
       };
     } else if (c.useBraveRequestAdsEnabledApi) {
       return {
@@ -90,6 +93,7 @@ export function determineWelcomeScreenUI(c: Context): WelcomeScreenOptions {
     showStartCall: true,
     showSubscribeCTA: !c.userIsSubscribed,
     showPremiumUI: c.userIsSubscribed,
+    showCopyLinkForLater: c.userIsSubscribed,
     startCallButtonPromptsOptIn: !c.userIsSubscribed && !c.userHasOptedInToAds,
   };
 }
