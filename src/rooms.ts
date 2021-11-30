@@ -1,4 +1,4 @@
-import { loadLocalJwtStore } from "./store";
+import { loadLocalStore } from "./store";
 
 // the subscriptions service is forwarded by CloudFront onto talk.brave* so we're not
 // making a cross domain call - see https://github.com/brave/devops/issues/5445.
@@ -162,7 +162,7 @@ export const fetchJWT = async (
   createP: boolean,
   reportProgress: (message: string) => void
 ): Promise<FetchJWTResult> => {
-  const store = loadLocalJwtStore();
+  const store = loadLocalStore();
 
   const jwt = store.findJwtForRoom(roomName);
   if (jwt) {

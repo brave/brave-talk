@@ -1,10 +1,10 @@
-import { JwtStore, Recording, loadLocalJwtStore } from "./store";
+import { LocalStore, Recording, loadLocalStore } from "./store";
 
-let _singleton: JwtStore | undefined;
+let _singleton: LocalStore | undefined;
 
 const singleton = () => {
   if (!_singleton) {
-    _singleton = loadLocalJwtStore();
+    _singleton = loadLocalStore();
   }
   return _singleton;
 };
