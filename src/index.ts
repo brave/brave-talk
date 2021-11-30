@@ -77,14 +77,6 @@ const main = async () => {
   const browser = await calcBrowserCapabilities();
   const joinRoom = checkJoinRoom(extractRoomNameFromUrl(), browser);
 
-  /** WHAT'S THE LOGIC I WANT HERE?
-   *
-   * if create=y is set, then try to join the room but also display the UI
-   * So maybe just display the UI immediately?
-   *
-   * Nah, would be better to show once we've failed to join for the first time.
-   *
-   */
   if (!joinRoom || joinRoom === "widget") {
     const context: Context = {
       browser,
