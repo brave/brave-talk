@@ -267,7 +267,7 @@ const copyRoomLink = async (button: HTMLButtonElement) => {
     const absoluteUrl = new URL(url, window.location.href);
     await window.navigator.clipboard.writeText(absoluteUrl.href);
 
-    updateButtonText("Room link copied to clipboard");
+    updateButtonText("Link copied to clipboard");
     await wait(5_000);
   } catch (error: any) {
     console.error(error);
