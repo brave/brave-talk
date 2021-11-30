@@ -77,6 +77,14 @@ const main = async () => {
   const browser = await calcBrowserCapabilities();
   const joinRoom = checkJoinRoom(extractRoomNameFromUrl(), browser);
 
+  /** WHAT'S THE LOGIC I WANT HERE?
+   *
+   * if create=y is set, then try to join the room but also display the UI
+   * So maybe just display the UI immediately?
+   *
+   * Nah, would be better to show once we've failed to join for the first time.
+   *
+   */
   if (!joinRoom || joinRoom === "widget") {
     const context: Context = {
       browser,
@@ -282,7 +290,10 @@ const renderHomePage = (options: WelcomeScreenOptions) => {
           reportAction("braveRequestAdsEnabled", { result });
           if (result) {
             // good to start the call now
-            joinConferenceRoom(generateRoomName(), true);
+            joinConferenceRoom(
+              options.roomNameOverride ?? generateRoomName(),
+              true
+            );
             return;
           }
 
@@ -298,7 +309,10 @@ const renderHomePage = (options: WelcomeScreenOptions) => {
           window.location.reload();
         };
       } else {
-        joinConferenceRoom(generateRoomName(), true);
+        joinConferenceRoom(
+          options.roomNameOverride ?? generateRoomName(),
+          true
+        );
       }
     };
   }
@@ -547,6 +561,11 @@ const joinConferenceRoom = async (
         const isSubscribed = await userIsSubscribed();
         if (!isSubscribed) {
           notice("Waiting for a subscriber to create the room...");
+          renderHomePage({
+            showSubscribeCTA: true,
+            showStartCall: true,
+            roomNameOverride: roomName,
+          });
           setTimeout(() => joinConferenceRoom(roomName, false), 5_000);
           return;
         }

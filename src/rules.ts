@@ -31,6 +31,11 @@ export interface WelcomeScreenOptions {
   // it asks for the user to opt in - either by manual instruction UI
   // or by calling braveRequestAdsEnabled if available
   startCallButtonPromptsOptIn?: boolean;
+
+  // in some cases, we know the name room we'd want to join/create,
+  // (e.g. when `create=y` is present), so allow override
+  // of the auto-generated room name
+  roomNameOverride?: string;
 }
 
 export function checkJoinRoom(
