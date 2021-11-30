@@ -150,6 +150,52 @@ const populateRecordings = () => {
       return new Date(s * 1000).toISOString().substr(pos, len);
     };
 
+    const getDate = (s: number) => {
+      let datetime = new Date(s).toLocaleString();
+      let x = datetime.indexOf(", ");
+
+      return datetime.substr(0, x + 2);
+    };
+
+    const now = new Date().getTime();
+    const offsets = {
+      Today: getDate(now),
+      Yesterday: getDate(now - 24 * 60 * 60 * 1000),
+      Tomorrow: getDate(now + 24 * 60 * 60 * 1000),
+    };
+
+    const getCreateTime = (seconds: number) => {
+      const s = new Date(seconds * 1000).toLocaleString();
+
+      let result = s;
+
+      Object.entries(offsets).forEach(([prefix, epoch]) => {
+        if (s.indexOf(epoch) === 0) {
+          result = prefix + " " + s.substr(epoch.length);
+        }
+      });
+
+      return result;
+    };
+
+    const getExpireTime = (seconds: number) => {
+      let result = "";
+      let diff = seconds - Math.ceil(now / 1000);
+
+      if (diff >= 60 * 60) {
+        result += Math.floor(diff / (60 * 60)) + "h" + " ";
+        diff %= 60 * 60;
+      }
+      if (diff > 60) {
+        result += Math.floor(diff / 60) + "m";
+      }
+      if (result === " ") {
+        new Date(seconds * 1000).toLocaleString();
+      }
+
+      return result;
+    };
+
     let roomName = "";
     records.forEach((r) => {
       const tr = document.createElement("tr");
@@ -169,7 +215,8 @@ const populateRecordings = () => {
       tr.appendChild(td2);
 
       const td3 = document.createElement("td");
-      td3.innerText = new Date(r.createdAt * 1000).toLocaleString();
+      td3.innerText = getCreateTime(r.createdAt);
+
       tr.appendChild(td3);
 
       const td4 = document.createElement("td");
@@ -177,7 +224,7 @@ const populateRecordings = () => {
       tr.appendChild(td4);
 
       const td5 = document.createElement("td");
-      td5.innerText = new Date(r.expiresAt * 1000).toLocaleString();
+      td5.innerText = getExpireTime(r.expiresAt);
       tr.appendChild(td5);
 
       tbody.appendChild(tr);
@@ -188,7 +235,32 @@ const populateRecordings = () => {
 };
 
 const sortRecordings = () => {
+  /*
   const recordings = availableRecordings();
+*/
+  const recordings = {
+    "https://api-vo.jitsi.net/jaas-recordings/us-east-1/vpaas-magic-cookie-a4818bd762a044998d717b70ac734cfe/sadhmoyugkkruwbc":
+      {
+        roomName: "6aIv-_iMz2gCaDVQzjVyMOYZrSNO3iK-WppDIxN3w90",
+        createdAt: 1638283948,
+        ttl: 86400,
+        expiresAt: 1638370380,
+      },
+    "https://api-vo.jitsi.net/jaas-recordings/us-east-1/vpaas-magic-cookie-a4818bd762a044998d717b70ac734cfe/sadhmoyugkkruwbd":
+      {
+        roomName: "6aIv-_iMz2gCaDVQzjVyMOYZrSNO3iK-WppDIxN3w90",
+        createdAt: 1638283948 - 86400,
+        ttl: 86400,
+        expiresAt: 1638370380,
+      },
+    "https://api-vo.jitsi.net/jaas-recordings/us-east-1/vpaas-magic-cookie-a4818bd762a044998d717b70ac734cfe/sadhmoyugkkruwbe":
+      {
+        roomName: "6aIv-_iMz2gCaDVQzjVyMOYZrSNO3iK-WppDIxN3w90",
+        createdAt: 1638283948 + 86400,
+        ttl: 86400,
+        expiresAt: 1638370380,
+      },
+  };
 
   /* sort by descending creation timestamp and then group by roomName
    */
