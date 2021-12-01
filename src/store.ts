@@ -72,14 +72,8 @@ export function loadLocalStore(): LocalStore {
       ttl: number | undefined
     ) => {
       console.log(
-        "!!! upsertRecording " +
-          url +
-          " for room " +
-          roomName +
-          " ttl=" +
-          ttl +
-          "  createP=" +
-          !confabs.recordings[url]
+        `!!! upsertRecording ${url} for room ${roomName} ttl=${ttl}  createP=${!confabs
+          .recordings[url]}`
       );
 
       const now = Math.ceil(new Date().getTime() / 1000);
