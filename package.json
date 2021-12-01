@@ -16,7 +16,7 @@
   },
   "homepage": "https://github.com/brave/brave-talk#readme",
   "devDependencies": {
-    "@types/jest": "27.0.2",
+    "@types/jest": "27.0.3",
     "autoprefixer": "10.4.0",
     "brave-rewards-js-sdk": "git+ssh://git@github.com/brave-intl/br-rs.git#skus",
     "copy-webpack-plugin": "9.0.1",
