@@ -121,9 +121,11 @@ const populateRecordings = () => {
 
     const tr = document.createElement("tr");
 
+    /*
     const th1 = document.createElement("td");
     th1.innerText = "Call";
     tr.appendChild(th1);
+ */
 
     const th3 = document.createElement("td");
     th3.innerText = "Created";
@@ -188,8 +190,9 @@ const populateRecordings = () => {
         result += Math.floor(diff / 60) + "m";
       }
       if (result === " ") {
-        new Date(seconds * 1000).toLocaleString();
+        result = new Date(seconds * 1000).toLocaleString();
       }
+      console.log("!!! result=" + result);
 
       return result;
     };
@@ -198,18 +201,21 @@ const populateRecordings = () => {
     records.forEach((r) => {
       const tr = document.createElement("tr");
 
+      /*
       const td1 = document.createElement("td");
       if (r.roomName !== roomName) {
         roomName = r.roomName;
         td1.innerText = roomName;
       }
       tr.appendChild(td1);
+ */
 
       const td3 = document.createElement("td");
       const link = document.createElement("a");
       link.innerText = getCreateTime(r.createdAt);
       link.href = r.url;
       link.target = "_blank";
+      link.title = r.roomName;
       td3.appendChild(link);
       tr.appendChild(td3);
 
