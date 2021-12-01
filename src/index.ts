@@ -313,7 +313,10 @@ const renderHomePage = (options: WelcomeScreenOptions) => {
           reportAction("braveRequestAdsEnabled", { result });
           if (result) {
             // good to start the call now
-            joinConferenceRoom(generateRoomName(), true);
+            joinConferenceRoom(
+              options.roomNameOverride ?? generateRoomName(),
+              true
+            );
             return;
           }
 
@@ -329,7 +332,10 @@ const renderHomePage = (options: WelcomeScreenOptions) => {
           window.location.reload();
         };
       } else {
-        joinConferenceRoom(generateRoomName(), true);
+        joinConferenceRoom(
+          options.roomNameOverride ?? generateRoomName(),
+          true
+        );
       }
     };
   }
@@ -585,6 +591,11 @@ const joinConferenceRoom = async (
         const isSubscribed = await userIsSubscribed();
         if (!isSubscribed) {
           notice("Waiting for a subscriber to create the room...");
+          renderHomePage({
+            showSubscribeCTA: true,
+            showStartCall: true,
+            roomNameOverride: roomName,
+          });
           setTimeout(() => joinConferenceRoom(roomName, false), 5_000);
           return;
         }
