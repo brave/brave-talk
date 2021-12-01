@@ -124,11 +124,6 @@ const populateRecordings = () => {
     const th1 = document.createElement("td");
     th1.innerText = "Call";
     tr.appendChild(th1);
-    /*
-    const th2 = document.createElement("td");
-    th2.innerText = "Download";
-    tr.appendChild(th2);
- */
 
     const th3 = document.createElement("td");
     th3.innerText = "Created";
@@ -145,13 +140,6 @@ const populateRecordings = () => {
     thead.appendChild(tr);
 
     const tbody = table.createTBody();
-
-    const duration = (s: number) => {
-      const pos = s >= 3600 ? 11 : 14;
-      const len = s >= 3600 ? 8 : 5;
-
-      return new Date(s * 1000).toISOString().substr(pos, len);
-    };
 
     const getDate = (s: number) => {
       let datetime = new Date(s).toLocaleString();
@@ -179,6 +167,13 @@ const populateRecordings = () => {
       });
 
       return result;
+    };
+
+    const getDuration = (s: number) => {
+      const pos = s >= 3600 ? 11 : 14;
+      const len = s >= 3600 ? 8 : 5;
+
+      return new Date(s * 1000).toISOString().substr(pos, len);
     };
 
     const getExpireTime = (seconds: number) => {
@@ -216,21 +211,13 @@ const populateRecordings = () => {
       td1.appendChild(link);
       tr.appendChild(td1);
 
-      /*
-      const td2 = document.createElement("td");
-      link.innerText = "Link";
-      link.href = r.url;
-      td2.appendChild(link);
-      tr.appendChild(td2);
- */
-
       const td3 = document.createElement("td");
       td3.innerText = getCreateTime(r.createdAt);
 
       tr.appendChild(td3);
 
       const td4 = document.createElement("td");
-      td4.innerText = duration(r.expiresAt - r.ttl - r.createdAt);
+      td4.innerText = getDuration(r.expiresAt - r.ttl - r.createdAt);
       tr.appendChild(td4);
 
       const td5 = document.createElement("td");
