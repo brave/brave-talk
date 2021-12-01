@@ -199,21 +199,18 @@ const populateRecordings = () => {
       const tr = document.createElement("tr");
 
       const td1 = document.createElement("td");
-      const link = document.createElement("a");
       if (r.roomName !== roomName) {
         roomName = r.roomName;
-        link.innerText = roomName;
-      } else {
-        link.innerText = ".. continued ..";
+        td1.innerText = roomName;
       }
-      link.href = r.url;
-      link.target = "_blank";
-      td1.appendChild(link);
       tr.appendChild(td1);
 
       const td3 = document.createElement("td");
-      td3.innerText = getCreateTime(r.createdAt);
-
+      const link = document.createElement("a");
+      link.innerText = getCreateTime(r.createdAt);
+      link.href = r.url;
+      link.target = "_blank";
+      td3.appendChild(link);
       tr.appendChild(td3);
 
       const td4 = document.createElement("td");
