@@ -112,14 +112,13 @@ const populateRecordings = () => {
     recordingsEl.style.display = "block";
 
     const table = document.createElement("table");
-    const tbody = table.createTBody();
+    const thead = table.createTHead();
 
     const tr = document.createElement("tr");
 
     const th1 = document.createElement("td");
     th1.innerText = "Call";
     tr.appendChild(th1);
-
     /*
     const th2 = document.createElement("td");
     th2.innerText = "Download";
@@ -138,7 +137,9 @@ const populateRecordings = () => {
     th5.innerText = "Expires";
     tr.appendChild(th5);
 
-    tbody.appendChild(tr);
+    thead.appendChild(tr);
+
+    const tbody = table.createTBody();
 
     const duration = (s: number) => {
       const pos = s >= 3600 ? 11 : 14;
@@ -234,7 +235,7 @@ const populateRecordings = () => {
       tbody.appendChild(tr);
     });
 
-    recordingsEl.replaceChildren(table);
+    recordingsEl.appendChild(table);
   }
 };
 
