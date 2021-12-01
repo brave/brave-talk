@@ -116,23 +116,17 @@ const populateRecordings = () => {
 
     const tr = document.createElement("tr");
 
-    /*
     const th1 = document.createElement("td");
-    th1.innerText = "Call";
+    th1.innerText = "Created";
     tr.appendChild(th1);
- */
+
+    const th2 = document.createElement("td");
+    th2.innerText = "Duration";
+    tr.appendChild(th2);
 
     const th3 = document.createElement("td");
-    th3.innerText = "Created";
+    th3.innerText = "Expires";
     tr.appendChild(th3);
-
-    const th4 = document.createElement("td");
-    th4.innerText = "Duration";
-    tr.appendChild(th4);
-
-    const th5 = document.createElement("td");
-    th5.innerText = "Expires";
-    tr.appendChild(th5);
 
     thead.appendChild(tr);
 
@@ -196,31 +190,22 @@ const populateRecordings = () => {
     records.forEach((r) => {
       const tr = document.createElement("tr");
 
-      /*
       const td1 = document.createElement("td");
-      if (r.roomName !== roomName) {
-        roomName = r.roomName;
-        td1.innerText = roomName;
-      }
-      tr.appendChild(td1);
- */
-
-      const td3 = document.createElement("td");
       const link = document.createElement("a");
       link.innerText = getCreateTime(r.createdAt);
       link.href = r.url;
       link.target = "_blank";
       link.title = r.roomName;
-      td3.appendChild(link);
+      td1.appendChild(link);
+      tr.appendChild(td1);
+
+      const td2 = document.createElement("td");
+      td2.innerText = getDuration(r.expiresAt - r.ttl - r.createdAt);
+      tr.appendChild(td2);
+
+      const td3 = document.createElement("td");
+      td3.innerText = getExpireTime(r.expiresAt);
       tr.appendChild(td3);
-
-      const td4 = document.createElement("td");
-      td4.innerText = getDuration(r.expiresAt - r.ttl - r.createdAt);
-      tr.appendChild(td4);
-
-      const td5 = document.createElement("td");
-      td5.innerText = getExpireTime(r.expiresAt);
-      tr.appendChild(td5);
 
       tbody.appendChild(tr);
     });
