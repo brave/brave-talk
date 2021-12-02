@@ -10,6 +10,7 @@ jobs:
 
     environment:
       name: development
+      url: https://talk.brave.software
 
     steps:
       - uses: actions/checkout@v2
@@ -21,9 +22,9 @@ jobs:
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_DEVELOPMENT_SECRET_ACCESS_KEY }}
           AWS_REGION: us-west-2
           CLOUDFRONT_DISTRIBUTION_ID: ${{ secrets.CLOUDFRONT_DEVELOPMENT_DISTRIBUTION_ID }}
+          S3_BUCKET: brave-development-talk-origin
           ENVIRONMENT: development
         run: |
-          git config --global url."https://${{ secrets.PAT }}@github.com/".insteadOf ssh://git@github.com/
           npm ci
           npm test
           npm audit
@@ -31,7 +32,7 @@ jobs:
           cd ./html
           # fail the build if any generated javascript contains 'eval' to help mitigate the need for script-src unsafe-eval CSP
           grep -l eval static/*.js && exit 99
-          aws s3 sync ./static/ s3://brave-development-talk-origin/static/ --cache-control "max-age=31536000, public"
-          aws s3 sync . s3://brave-development-talk-origin/ --exclude "static/*" --cache-control "max-age=60, public"
+          aws s3 sync ./static/ s3://${S3_BUCKET}/static/ --cache-control "max-age=31536000, public"
+          aws s3 sync . s3://${S3_BUCKET}/ --exclude "static/*" --cache-control "max-age=60, public"
           INVALIDATION_ID=$(aws cloudfront create-invalidation --distribution-id $CLOUDFRONT_DISTRIBUTION_ID --paths "/*" | jq -r '.Invalidation.Id')
           aws cloudfront wait invalidation-completed --distribution-id $CLOUDFRONT_DISTRIBUTION_ID --id $INVALIDATION_ID

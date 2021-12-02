@@ -9,6 +9,7 @@ jobs:
 
     environment:
       name: staging
+      url: https://talk.bravesoftware.com
 
     steps:
       - uses: actions/checkout@v2
@@ -23,7 +24,6 @@ jobs:
           S3_BUCKET: brave-staging-talk-origin
           ENVIRONMENT: staging
         run: |
-          git config --global url."https://${{ secrets.PAT }}@github.com/".insteadOf ssh://git@github.com/
           npm ci
           npm test
           npm audit
