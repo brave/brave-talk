@@ -58,26 +58,27 @@ const main = async () => {
     } catch (e) {}
   }
 
-  if (!orderId) {
-    // backwards compatibility - remove once the order param is implemented everywhere
-    orderId = params.get("orderId");
-  }
+  let autoJoinRoom: string | undefined;
 
-  if (intent === "provision" && orderId) {
+  if (orderId) {
     try {
       const s = await import("./subscriptions");
-      await s.provisionOrder(orderId);
-    } catch (e) {}
-  } else if (intent === "recover" && orderId) {
-    try {
-      const s = await import("./subscriptions");
-      await s.recoverCredsIfRequired(orderId);
+      if (intent === "provision") {
+        await s.provisionOrder(orderId);
+      } else if (intent === "recover") {
+        await s.recoverCredsIfRequired(orderId);
+      }
+      autoJoinRoom = getAutoOpenRoom();
     } catch (e) {}
   }
 
   // fast track check for whether we should immediately try to join a room
   const browser = await calcBrowserCapabilities();
-  const joinRoom = checkJoinRoom(extractRoomNameFromUrl(), browser);
+
+  const joinRoom = checkJoinRoom(
+    extractRoomNameFromUrl() ?? autoJoinRoom,
+    browser
+  );
 
   if (!joinRoom || joinRoom === "widget") {
     const context: Context = {
@@ -596,7 +597,9 @@ const joinConferenceRoom = async (
             showStartCall: true,
             roomNameOverride: roomName,
           });
+          setAutoOpenRoom(roomName);
           setTimeout(() => joinConferenceRoom(roomName, false), 5_000);
+
           return;
         }
       }
@@ -623,6 +626,34 @@ const generateRoomName = () => {
 const isRoomValid = (room: string) => {
   // e.g., "abcdefghijklmnopqrstuvwxyz0123456789-_ABCDE"
   return typeof room === "string" && room.match(/^[A-Za-z0-9-_]{43}$/);
+};
+
+const AUTO_OPEN_ROOM_KEY = "talk_auto_open_room";
+
+const setAutoOpenRoom = (roomName: string) => {
+  try {
+    window.sessionStorage.setItem(
+      AUTO_OPEN_ROOM_KEY,
+      JSON.stringify({ roomName, exp: new Date().getTime() + 1000 * 60 * 5 })
+    );
+  } catch {
+    // ignore
+  }
+};
+
+const getAutoOpenRoom = (): string | undefined => {
+  try {
+    const s = window.sessionStorage.getItem(AUTO_OPEN_ROOM_KEY);
+    if (s) {
+      const obj = JSON.parse(s);
+      if (obj.exp && obj.exp >= new Date().getTime()) {
+        reportAction("autoOpenRoom", obj.roomName);
+        return obj.roomName;
+      }
+    }
+  } catch {
+    // ignore
+  }
 };
 
 const notice = (text: string) => {
