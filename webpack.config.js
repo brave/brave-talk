@@ -10,6 +10,8 @@ function git(command) {
   return child_process.execSync(`git ${command}`, { encoding: "utf8" }).trim();
 }
 
+const devMode = process.env.NODE_ENV !== "production";
+
 // on production builds only, use robots.txt.production as the robots.txt file.
 // This bit of config is used with the CopyWebpackPlugin below.
 const robotsTxtForProd =
@@ -38,7 +40,7 @@ module.exports = {
       {
         test: /\.css$/i,
         use: [
-          MiniCssExtractPlugin.loader,
+          devMode ? "style-loader" : MiniCssExtractPlugin.loader,
           {
             loader: "css-loader",
             options: {
@@ -65,9 +67,6 @@ module.exports = {
     ],
   },
   plugins: [
-    new MiniCssExtractPlugin({
-      filename: "static/[name].[contenthash].css",
-    }),
     new HtmlWebpackPlugin({
       template: "src/index.html",
     }),
@@ -88,7 +87,15 @@ module.exports = {
       GIT_VERSION: git("describe --always --dirty=-modified"),
       ENVIRONMENT: "local",
     }),
-  ],
+  ].concat(
+    devMode
+      ? []
+      : [
+          new MiniCssExtractPlugin({
+            filename: "static/[name].[contenthash].css",
+          }),
+        ]
+  ),
   devServer: {
     client: {
       // display compilation error messages on the screen
