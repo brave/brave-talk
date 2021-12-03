@@ -24,7 +24,6 @@ jobs:
           S3_BUCKET: brave-production-talk-origin
           ENVIRONMENT: production
         run: |
-          git config --global url."https://${{ secrets.PAT }}@github.com/".insteadOf ssh://git@github.com/
           npm ci
           npm test
           npm audit
