@@ -70,7 +70,7 @@ export async function checkSubscribedUsingSDK(): Promise<boolean> {
 
     const result = await sdk.credential_summary();
     log("credential_summary returns", result);
-    if (result) {
+    if (result && result.active) {
       return true;
     }
   } catch (e) {
