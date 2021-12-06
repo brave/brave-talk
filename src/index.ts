@@ -69,7 +69,9 @@ const main = async () => {
         await s.recoverCredsIfRequired(orderId);
       }
       autoJoinRoom = getAutoOpenRoom();
-    } catch (e) {}
+    } catch (e) {
+      console.error("Failed to update order", e);
+    }
   }
 
   // fast track check for whether we should immediately try to join a room

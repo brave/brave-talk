@@ -44,12 +44,12 @@ export async function recoverCredsIfRequired(orderId: string): Promise<void> {
     currentMethod = "refresh_order";
     log("calling refresh_order...");
     const order = await sdk.refresh_order(orderId);
+    log("order status is ", order.status);
 
-    currentMethod = "credential_summary";
-    log("calling credential_summary...");
-    const summary = await sdk.credential_summary(order.location);
     if (["paid", "canceled"].includes(order.status)) {
-      if (!summary) {
+      // user should have a subscription, re-fetch their credentials if not
+      const isSubscribed = await checkSubscribedUsingSDK();
+      if (!isSubscribed) {
         currentMethod = "fetch_order_credentials";
         log("calling fetch_order_credentials...");
         await sdk.fetch_order_credentials(orderId);
