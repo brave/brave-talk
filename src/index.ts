@@ -23,6 +23,14 @@ const isProduction: boolean = process.env.ENVIRONMENT === "production";
 
 const params = new URLSearchParams(window.location.search);
 
+window.addEventListener(
+  "message",
+  (event) => {
+    console.log("got message!", event);
+  },
+  false
+);
+
 // there's a chance that window.onload has already fired by the time this code runs
 if (document.readyState === "complete") {
   window.setTimeout(() => main());
@@ -82,6 +90,12 @@ const main = async () => {
     browser
   );
 
+  if (joinRoom && params.get("create_only") === "y") {
+    hideLoadingIndicators();
+    await immediatelyCreateRoom(joinRoom);
+    return;
+  }
+
   if (!joinRoom || joinRoom === "widget") {
     const context: Context = {
       browser,
@@ -102,6 +116,16 @@ const main = async () => {
     joinRoom !== "widget" ? joinRoom : generateRoomName(),
     false
   );
+};
+
+const immediatelyCreateRoom = async (roomName: string) => {
+  try {
+    await fetchJWT(roomName, true, notice);
+    window.close();
+  } catch (error: any) {
+    console.error(error);
+    notice(error.message);
+  }
 };
 
 const checkDevOverride = (code: string): boolean | null => {
