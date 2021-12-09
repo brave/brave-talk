@@ -23,14 +23,6 @@ const isProduction: boolean = process.env.ENVIRONMENT === "production";
 
 const params = new URLSearchParams(window.location.search);
 
-window.addEventListener(
-  "message",
-  (event) => {
-    console.log("got message!", event);
-  },
-  false
-);
-
 // there's a chance that window.onload has already fired by the time this code runs
 if (document.readyState === "complete") {
   window.setTimeout(() => main());
