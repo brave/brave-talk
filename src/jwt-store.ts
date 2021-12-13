@@ -22,23 +22,30 @@ export interface JwtStore {
   isNewMonthlyActiveUser: () => boolean;
 }
 
-export function loadLocalJwtStore(): JwtStore {
-  const confabs: ConfabStructure = loadFromStorage();
+let jwtStore: JwtStore | undefined;
 
-  garbageCollect(confabs);
+// forceReload expected only for tests, setting it otherwise may introduce race conditions
+export function loadLocalJwtStore(forceReload: boolean = false): JwtStore {
+  if (!jwtStore || forceReload) {
+    const confabs: ConfabStructure = loadFromStorage();
 
-  return {
-    findJwtForRoom: (roomName) => confabs.JWTs[roomName],
-    findRefreshTokenForRoom: (roomName) => confabs.refresh[roomName],
-    storeJwtForRoom: (roomName, encodedJwt, encodedRefreshToken) => {
-      confabs.JWTs[roomName] = encodedJwt;
-      if (encodedRefreshToken) {
-        confabs.refresh[roomName] = encodedRefreshToken;
-      }
-      saveToStorage(confabs);
-    },
-    isNewMonthlyActiveUser: () => performMauCheck(confabs),
-  };
+    garbageCollect(confabs);
+
+    jwtStore = {
+      findJwtForRoom: (roomName) => confabs.JWTs[roomName],
+      findRefreshTokenForRoom: (roomName) => confabs.refresh[roomName],
+      storeJwtForRoom: (roomName, encodedJwt, encodedRefreshToken) => {
+        confabs.JWTs[roomName] = encodedJwt;
+        if (encodedRefreshToken) {
+          confabs.refresh[roomName] = encodedRefreshToken;
+        }
+        saveToStorage(confabs);
+      },
+      isNewMonthlyActiveUser: () => performMauCheck(confabs),
+    };
+  }
+
+  return jwtStore;
 }
 
 // IMPLEMENTATION
@@ -98,12 +105,16 @@ const garbageCollect = (confabs: ConfabStructure) => {
     }
   });
 
-  Object.entries(confabs.refresh).forEach(([roomName, refreshJwt]) => {
-    if (expiredP(roomName, refreshJwt)) {
-      delete confabs.refresh[roomName];
-      didP = true;
-    }
-  });
+  /* 
+  See https://github.com/brave/brave-talk/issues/81: temporarily disabling the garbage collection of
+  refresh tokens to assist with diagnosis of missing refresh tokens.
+  */
+  // Object.entries(confabs.refresh).forEach(([roomName, refreshJwt]) => {
+  //   if (expiredP(roomName, refreshJwt)) {
+  //     delete confabs.refresh[roomName];
+  //     didP = true;
+  //   }
+  // });
 
   if (didP) {
     saveToStorage(confabs);
