@@ -4,7 +4,7 @@
   "description": "private and unlimited video calling by Brave",
   "main": "index.js",
   "scripts": {
-    "build": "webpack --config webpack.config.js --mode production",
+    "build": "NODE_ENV=production webpack --config webpack.config.js --mode production",
     "format": "prettier --write .",
     "start": "webpack serve --config webpack.config.js --mode development",
     "test": "jest",
@@ -31,6 +31,7 @@
     "postcss-nesting": "10.0.2",
     "prettier": "2.5.0",
     "pretty-quick": "3.1.2",
+    "style-loader": "^3.3.1",
     "svgo-loader": "3.0.0",
     "ts-jest": "27.0.7",
     "ts-loader": "9.2.6",
@@ -38,5 +39,6 @@
     "webpack": "5.64.4",
     "webpack-cli": "4.9.1",
     "webpack-dev-server": "4.6.0"
-  }
+  },
+  "dependencies": {}
 }
