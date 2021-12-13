@@ -172,6 +172,7 @@ export const fetchJWT = async (
 
   const refreshToken = store.findRefreshTokenForRoom(roomName);
   if (refreshToken) {
+    reportProgress("Checking moderator status...");
     console.log("attempting refresh: ", refreshToken);
     const response = await attemptTokenRefresh(roomName, refreshToken);
     if (response) {
