@@ -1,16 +1,30 @@
-import { LocalStore, Recording, loadLocalStore } from "./store";
+import { Recording, loadLocalStore } from "./store";
 
-let _singleton: LocalStore | undefined;
-
-const singleton = () => {
-  if (!_singleton) {
-    _singleton = loadLocalStore();
-  }
-  return _singleton;
-};
-
-export const availableRecordings = () => {
-  return singleton().availableRecordings();
+export const availableRecordings = (): Readonly<Record<string, Recording>> => {
+  return loadLocalStore().availableRecordings();
+  // return {
+  //   "https://api-vo.jitsi.net/jaas-recordings/us-east-1/vpaas-magic-cookie-a4818bd762a044998d717b70ac734cfe/sadhmoyugkkruwbc":
+  //     {
+  //       roomName: "6aIv-_iMz2gCaDVQzjVyMOYZrSNO3iK-WppDIxN3w999",
+  //       createdAt: 1638283948,
+  //       ttl: 86400,
+  //       expiresAt: 1638370380,
+  //     },
+  //   "https://api-vo.jitsi.net/jaas-recordings/us-east-1/vpaas-magic-cookie-a4818bd762a044998d717b70ac734cfe/sadhmoyugkkruwbd":
+  //     {
+  //       roomName: "6aIv-_iMz2gCaDVQzjVyMOYZrSNO3iK-WppDIxN3999",
+  //       createdAt: 1638283948 - 86400,
+  //       ttl: 86400,
+  //       expiresAt: 1638370380,
+  //     },
+  //   "https://api-vo.jitsi.net/jaas-recordings/us-east-1/vpaas-magic-cookie-a4818bd762a044998d717b70ac734cfe/sadhmoyugkkruwbe":
+  //     {
+  //       roomName: "6aIv-_iMz2gCaDVQzjVyMOYZrSNO3iK-WppDIxN3999",
+  //       createdAt: 1638283948 + 86400,
+  //       ttl: 86400,
+  //       expiresAt: 1638370380,
+  //     },
+  // };
 };
 
 export const upsertRecordingForRoom = (
@@ -18,5 +32,5 @@ export const upsertRecordingForRoom = (
   roomName: string,
   ttl: number | undefined
 ) => {
-  return singleton().upsertRecordingForRoom(url, roomName, ttl);
+  return loadLocalStore().upsertRecordingForRoom(url, roomName, ttl);
 };

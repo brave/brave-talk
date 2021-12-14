@@ -269,37 +269,6 @@ button {
   max-width: 377px;
 }
 
-.recordings {
-  margin-top: 16px;
-  padding: 16px;
-
-  font-style: normal;
-  font-weight: normal;
-  font-size: 14px;
-  line-height: 20px;
-  letter-spacing: 0.01em;
-  text-align: left;
-
-  & .recordings-header {
-    text-align: center;
-    font-weight: 600;
-    font-size: 15px;
-    letter-spacing: 0.04em;
-  }
-
-  & table {
-    width: 100%;
-    & thead {
-      font-weight: 600;
-    }
-  }
-
-  & a {
-    text-decoration: underline;
-    color: inherit;
-  }
-}
-
 .subscribe {
   margin-top: 16px;
   min-height: calc(167px + 36px);
@@ -553,7 +522,6 @@ button {
 #desktop_needed,
 #enter_1on1_button,
 #enter_room_button,
-#recordings,
 #meet {
   display: none;
 }

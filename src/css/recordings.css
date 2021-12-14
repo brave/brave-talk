@@ -1,0 +1,35 @@
+.recordings {
+  margin-top: 16px;
+  padding: 16px;
+
+  font-style: normal;
+  font-weight: normal;
+  font-size: 14px;
+  line-height: 20px;
+  letter-spacing: 0.01em;
+  text-align: left;
+
+  & .recordings-header {
+    text-align: center;
+    font-weight: 600;
+    font-size: 22px;
+    line-height: 26px;
+  }
+
+  & table {
+    width: 100%;
+    & thead {
+      font-weight: 600;
+    }
+  }
+
+  & a {
+    text-decoration: underline;
+    color: inherit;
+  }
+}
+
+/* the recordings block is hidden by default, displayed in code when relevant */
+#recordings {
+  display: none;
+}
