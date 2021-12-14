@@ -85,6 +85,12 @@ const main = async () => {
     browser
   );
 
+  if (joinRoom && params.get("create_only") === "y") {
+    hideLoadingIndicators();
+    await immediatelyCreateRoom(joinRoom);
+    return;
+  }
+
   if (!joinRoom || joinRoom === "widget") {
     const context: Context = {
       browser,
@@ -248,6 +254,16 @@ const sortRecordings = () => {
   });
 
   return records;
+};
+
+const immediatelyCreateRoom = async (roomName: string) => {
+  try {
+    await fetchJWT(roomName, true, notice);
+    window.close();
+  } catch (error: any) {
+    console.error(error);
+    notice(error.message);
+  }
 };
 
 const checkDevOverride = (code: string): boolean | null => {

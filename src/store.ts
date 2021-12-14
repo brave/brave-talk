@@ -42,59 +42,64 @@ export interface Recording {
   expiresAt: number;
 }
 
-export function loadLocalStore(): LocalStore {
-  const confabs: ConfabStructure = loadFromStorage();
+let store: LocalStore | undefined;
 
-  garbageCollect(confabs);
+export function loadLocalStore(forceReload: boolean = false): LocalStore {
+  if (!store || forceReload) {
+    const confabs: ConfabStructure = loadFromStorage();
 
-  return {
-    findJwtForRoom: (roomName) => confabs.JWTs[roomName],
+    garbageCollect(confabs);
 
-    findRefreshTokenForRoom: (roomName) => confabs.refresh[roomName],
+    store = {
+      findJwtForRoom: (roomName) => confabs.JWTs[roomName],
 
-    storeJwtForRoom: (roomName, encodedJwt, encodedRefreshToken) => {
-      confabs.JWTs[roomName] = encodedJwt;
-      if (encodedRefreshToken) {
-        confabs.refresh[roomName] = encodedRefreshToken;
-      }
-      saveToStorage(confabs);
-    },
+      findRefreshTokenForRoom: (roomName) => confabs.refresh[roomName],
 
-    isNewMonthlyActiveUser: () => performMauCheck(confabs),
+      storeJwtForRoom: (roomName, encodedJwt, encodedRefreshToken) => {
+        confabs.JWTs[roomName] = encodedJwt;
+        if (encodedRefreshToken) {
+          confabs.refresh[roomName] = encodedRefreshToken;
+        }
+        saveToStorage(confabs);
+      },
 
-    availableRecordings: () => confabs.recordings,
+      isNewMonthlyActiveUser: () => performMauCheck(confabs),
 
-    findRecordingAtURL: (url: string) => confabs.recordings[url],
+      availableRecordings: () => confabs.recordings,
 
-    upsertRecordingForRoom: (
-      url: string,
-      roomName: string,
-      ttl: number | undefined
-    ) => {
-      console.log(
-        `!!! upsertRecording ${url} for room ${roomName} ttl=${ttl}  createP=${!confabs
-          .recordings[url]}`
-      );
+      findRecordingAtURL: (url: string) => confabs.recordings[url],
 
-      const now = Math.ceil(new Date().getTime() / 1000);
-      if (typeof ttl === "undefined") {
-        ttl = 24 * 60 * 60;
-      }
-      const expiresAt = now + ttl;
+      upsertRecordingForRoom: (
+        url: string,
+        roomName: string,
+        ttl: number | undefined
+      ) => {
+        console.log(
+          `!!! upsertRecording ${url} for room ${roomName} ttl=${ttl}  createP=${!confabs
+            .recordings[url]}`
+        );
 
-      if (!confabs.recordings[url]) {
-        confabs.recordings[url] = {
-          roomName: roomName,
-          createdAt: now,
-          ttl: ttl,
-          expiresAt: expiresAt,
-        };
-      } else {
-        confabs.recordings[url].expiresAt = now + ttl;
-      }
-      saveToStorage(confabs);
-    },
-  };
+        const now = Math.ceil(new Date().getTime() / 1000);
+        if (typeof ttl === "undefined") {
+          ttl = 24 * 60 * 60;
+        }
+        const expiresAt = now + ttl;
+
+        if (!confabs.recordings[url]) {
+          confabs.recordings[url] = {
+            roomName: roomName,
+            createdAt: now,
+            ttl: ttl,
+            expiresAt: expiresAt,
+          };
+        } else {
+          confabs.recordings[url].expiresAt = now + ttl;
+        }
+        saveToStorage(confabs);
+      },
+    };
+  }
+  return store;
 }
 
 // IMPLEMENTATION
@@ -157,12 +162,16 @@ const garbageCollect = (confabs: ConfabStructure) => {
     }
   });
 
-  Object.entries(confabs.refresh).forEach(([roomName, refreshJwt]) => {
-    if (expiredP(roomName, refreshJwt)) {
-      delete confabs.refresh[roomName];
-      didP = true;
-    }
-  });
+  /* 
+  See https://github.com/brave/brave-talk/issues/81: temporarily disabling the garbage collection of
+  refresh tokens to assist with diagnosis of missing refresh tokens.
+  */
+  // Object.entries(confabs.refresh).forEach(([roomName, refreshJwt]) => {
+  //   if (expiredP(roomName, refreshJwt)) {
+  //     delete confabs.refresh[roomName];
+  //     didP = true;
+  //   }
+  // });
 
   const now = Math.ceil(new Date().getTime() / 1000);
   Object.entries(confabs.recordings).forEach(([url, recording]) => {
