@@ -320,7 +320,7 @@ const renderHomePage = (options: WelcomeScreenOptions) => {
   if (options.showStartCall) {
     enterRoomEl.innerText = options.showPremiumUI
       ? "Start Premium call"
-      : "Start free 1:1 call";
+      : "Start free call (up to 4 people)";
 
     enterRoomEl.style.display = "block";
 
