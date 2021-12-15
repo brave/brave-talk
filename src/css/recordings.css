@@ -16,15 +16,18 @@
     line-height: 26px;
   }
 
-  & table {
-    width: 100%;
-    & thead {
-      font-weight: 600;
-    }
+  & .recording {
+    display: flex;
+    justify-content: space-between;
+    background: rgba(255, 255, 255, 0.08);
+    border-radius: 24px;
+    margin: 21px auto 0;
+    padding: 16px 27px;
+    max-width: 377px;
   }
 
   & a {
-    text-decoration: underline;
+    text-decoration: none;
     color: inherit;
   }
 }

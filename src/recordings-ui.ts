@@ -1,6 +1,7 @@
 import { availableRecordings } from "./recordings";
 import type { Recording } from "./store";
 import "./css/recordings.css";
+import DownloadImage from "./images/download.svg";
 
 export type RecordingWithUrl = Recording & { url: string };
 
@@ -9,13 +10,13 @@ export const sortedRecordings = (): RecordingWithUrl[] => {
 
   /* sort by descending creation timestamp and then group by roomName
    */
-  const records: RecordingWithUrl[] = [];
-  Object.entries(recordings).forEach(([url, recording]) => {
-    const entry = Object.assign({}, recording, { url: url });
+  const records: RecordingWithUrl[] = Object.entries(recordings).map(
+    ([url, recording]) => ({
+      ...recording,
+      url,
+    })
+  );
 
-    entry.url = url;
-    records.push(entry);
-  });
   records.sort((a, b) => {
     return b.createdAt - a.createdAt;
   });
@@ -35,12 +36,81 @@ export const sortedRecordings = (): RecordingWithUrl[] => {
   return records;
 };
 
+// exported for testing
+export function formatRelativeDay(d: Date): string {
+  const getDateString = (epochMs: number) =>
+    new Date(epochMs).toLocaleDateString();
+
+  const now = new Date().getTime();
+  const offsets = {
+    Today: getDateString(now),
+    Yesterday: getDateString(now - 24 * 60 * 60 * 1000),
+    Tomorrow: getDateString(now + 24 * 60 * 60 * 1000),
+  };
+
+  const s = d.toLocaleDateString();
+  let result = s;
+
+  Object.entries(offsets).forEach(([prefix, formattedString]) => {
+    if (s === formattedString) result = prefix;
+  });
+
+  return result;
+}
+
+export function formatDuration(s: number): string {
+  const pos = s >= 3600 ? 11 : 14;
+  const len = s >= 3600 ? 8 : 5;
+
+  return new Date(s * 1000).toISOString().substr(pos, len);
+}
+
+// ugh
+function span(content: string, className?: string): HTMLSpanElement {
+  const s = document.createElement("span");
+  s.innerText = content;
+  if (className) s.className = className;
+  return s;
+}
+
+function div(content?: string, className?: string): HTMLDivElement {
+  const s = document.createElement("div");
+  if (content) s.innerText = content;
+  if (className) s.className = className;
+  return s;
+}
+
+function renderRecording(r: RecordingWithUrl): HTMLElement {
+  const recordingDate = new Date(r.createdAt * 1000);
+
+  const elem = `
+    <a href="${r.url}">
+      <div class="recording">
+        <div className="date">
+          <strong>${formatRelativeDay(
+            recordingDate
+          )}</strong>, ${recordingDate.toLocaleTimeString()}, ${formatDuration(
+    r.expiresAt - r.ttl - r.createdAt
+  )}
+        </div>
+        <div className="download">
+              <img src="${DownloadImage}" height="16" width="18"/>
+        </div>
+      </div>
+    </a>
+`;
+  const d = div("yo");
+  d.innerHTML = elem;
+  return d;
+}
+
 export const populateRecordings = (recordingsEl: HTMLElement) => {
   const records = sortedRecordings();
 
   console.log("!!! records", records);
 
   if (records.length > 0) {
+    /*
     const table = document.createElement("table");
     const thead = table.createTHead();
 
@@ -139,7 +209,10 @@ export const populateRecordings = (recordingsEl: HTMLElement) => {
       tbody.appendChild(tr);
     });
 
-    recordingsEl.appendChild(table);
+    */
+
+    const children = records.map(renderRecording);
+    recordingsEl.append(...children);
     recordingsEl.style.display = "block";
   }
 };
