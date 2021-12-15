@@ -33,6 +33,8 @@ export interface LocalStore {
     roomName: string,
     ttl: number | undefined
   ) => void;
+
+  clearAllRecordings: () => void;
 }
 
 export interface Recording {
@@ -68,6 +70,11 @@ export function loadLocalStore(forceReload: boolean = false): LocalStore {
       availableRecordings: () => confabs.recordings,
 
       findRecordingAtURL: (url: string) => confabs.recordings[url],
+
+      clearAllRecordings: () => {
+        confabs.recordings = {};
+        saveToStorage(confabs);
+      },
 
       upsertRecordingForRoom: (
         url: string,

@@ -1,4 +1,4 @@
-import { formatRelativeDay } from "./recordings-ui";
+import { formatRelativeDay } from "./recordings-utils";
 
 beforeAll(() => {
   jest.useFakeTimers();

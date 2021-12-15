@@ -47,7 +47,7 @@ function createDummyJWTWithExpiry(name: string, exp: Date): string {
   return `header.${btoa(JSON.stringify(dummyJwtValue))}.(${name})`;
 }
 
-test.only("jwt expiry works as expected", () => {
+test("jwt expiry works as expected", () => {
   jest.useFakeTimers();
 
   jest.setSystemTime(new Date("2021-04-01T00:00:00Z"));

@@ -13,7 +13,8 @@ import "./css/welcome.css";
 import "./js/jwt-decode";
 import { fetchJWT } from "./rooms";
 import { upsertRecordingForRoom } from "./recordings";
-import { populateRecordings, sortedRecordings } from "./recordings-ui";
+import { populateRecordings } from "./recordings-ui";
+import { sortedRecordings } from "./recordings-utils";
 
 const useBraveRequestAdsEnabledApi: boolean =
   !!window.chrome && !!window.chrome.braveRequestAdsEnabled;
