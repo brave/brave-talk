@@ -67,7 +67,7 @@ it("on mobile non brave should prompt to download brave if no room name is suppl
   ).toEqual({ showDownload: true });
 });
 
-it("should show start call button but request opt in for non-opted in non-subscribed browsers on desktop", () => {
+it("should show start call button without opt in for non-subscribed browsers on desktop", () => {
   expect(
     rules.determineWelcomeScreenUI({
       browser: DESKTOP_BRAVE,
@@ -77,7 +77,7 @@ it("should show start call button but request opt in for non-opted in non-subscr
     })
   ).toMatchObject({
     showStartCall: true,
-    startCallButtonPromptsOptIn: true,
+    startCallButtonPromptsOptIn: false,
   });
 
   expect(
@@ -93,7 +93,7 @@ it("should show start call button but request opt in for non-opted in non-subscr
   });
 });
 
-it("on mobile should show start call button for non subscribed users only when braveRequestAdsEnabled api is in use", () => {
+it.skip("on mobile should show start call button for non subscribed users", () => {
   expect(
     rules.determineWelcomeScreenUI({
       browser: MOBILE_BRAVE,
@@ -102,7 +102,8 @@ it("on mobile should show start call button for non subscribed users only when b
       useBraveRequestAdsEnabledApi: false,
     })
   ).toMatchObject({
-    showStartCall: false,
+    showStartCall: true,
+    startCallButtonPromptsOptIn: false,
   });
 
   expect(
@@ -114,7 +115,7 @@ it("on mobile should show start call button for non subscribed users only when b
     })
   ).toMatchObject({
     showStartCall: true,
-    startCallButtonPromptsOptIn: true,
+    startCallButtonPromptsOptIn: false,
   });
 });
 
