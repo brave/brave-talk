@@ -78,17 +78,11 @@ export function determineWelcomeScreenUI(c: Context): WelcomeScreenOptions {
         showPremiumUI: true,
         showCopyLinkForLater: !c.browser.isIOS,
       };
-    } else if (c.useBraveRequestAdsEnabledApi) {
-      return {
-        showSubscribeCTA: true,
-        showStartCall: true,
-        startCallButtonPromptsOptIn: true,
-      };
     } else {
       return {
         showSubscribeCTA: true,
-        showUseDesktopMessage: true,
-        showStartCall: false,
+        showStartCall: true,
+        startCallButtonPromptsOptIn: false,
       };
     }
   }
@@ -99,6 +93,6 @@ export function determineWelcomeScreenUI(c: Context): WelcomeScreenOptions {
     showSubscribeCTA: !c.userIsSubscribed,
     showPremiumUI: c.userIsSubscribed,
     showCopyLinkForLater: c.userIsSubscribed,
-    startCallButtonPromptsOptIn: !c.userIsSubscribed && !c.userHasOptedInToAds,
+    startCallButtonPromptsOptIn: false,
   };
 }
