@@ -11,7 +11,7 @@ export interface Recording {
 export const availableRecordings = (): Readonly<Recording[]> => {
   const now = Math.ceil(new Date().getTime() / 1000);
 
-  const recordings = loadFromStorage().filter((r) => r.expiresAt <= now);
+  const recordings = loadFromStorage().filter((r) => r.expiresAt >= now);
 
   /* sort by descending creation timestamp */
   recordings.sort((a, b) => {
