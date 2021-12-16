@@ -39,6 +39,10 @@ export const Recordings: React.FC<{
         <img src={MediaPlayerImage} />
         <span>Your recorded calls</span>
       </p>
+      <p className="body-text recordings-subhead">
+        Recorded calls are automatically cleared 24 hours after their recording
+        time
+      </p>
       {recordings.map((r, idx) => (
         <RecordingDisplay key={idx} recording={r} />
       ))}

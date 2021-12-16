@@ -14,7 +14,6 @@
     font-weight: 600;
     font-size: 22px;
     line-height: 26px;
-    margin-bottom: 33px;
 
     display: flex;
     justify-content: center;
@@ -42,6 +41,11 @@
     margin: 21px auto 0;
     padding: 16px 27px;
     max-width: 377px;
+  }
+
+  & .recordings-subhead {
+    margin-top: 8px;
+    margin-bottom: 33px;
   }
 
   & a {
