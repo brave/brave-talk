@@ -33,7 +33,7 @@ if (document.readyState === "complete") {
 const main = async () => {
   // these envvars are set by the EnvironmentPlugin in webpack.config.js
   console.log(
-    `!!! version 0.11.58 (${process.env.GIT_VERSION} ${process.env.ENVIRONMENT})`
+    `!!! version ${process.env.GIT_VERSION} (${process.env.ENVIRONMENT})`
   );
 
   if (useBraveRequestAdsEnabledApi) {
