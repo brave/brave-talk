@@ -3,21 +3,20 @@ import DownloadImage from "./images/download.svg";
 import MediaPlayerImage from "./images/media_player.svg";
 import React, { Dispatch } from "react";
 import ReactDOM from "react-dom";
+import { formatDuration, formatRelativeDay } from "./recordings-utils";
 import {
-  formatDuration,
-  formatRelativeDay,
-  RecordingWithUrl,
-  sortedRecordings,
-} from "./recordings-utils";
-import { loadLocalStore } from "./jwt-store";
+  availableRecordings,
+  clearAllRecordings,
+  Recording,
+} from "./recordings-store";
 
 export const populateRecordings = (recordingsEl: HTMLElement) => {
-  const records = sortedRecordings();
+  const records = availableRecordings();
 
-  console.log("!!! records", records);
+  console.log("!!! recordings", records);
 
   const onClearAll = () => {
-    loadLocalStore().clearAllRecordings();
+    clearAllRecordings();
     recordingsEl.style.display = "none";
   };
 
@@ -31,7 +30,7 @@ export const populateRecordings = (recordingsEl: HTMLElement) => {
 };
 
 export const Recordings: React.FC<{
-  recordings: RecordingWithUrl[];
+  recordings: Readonly<Recording[]>;
   onClearAll: Dispatch<void>;
 }> = ({ recordings, onClearAll }) => {
   return (
@@ -50,7 +49,7 @@ export const Recordings: React.FC<{
   );
 };
 
-const RecordingDisplay: React.FC<{ recording: RecordingWithUrl }> = ({
+const RecordingDisplay: React.FC<{ recording: Recording }> = ({
   recording: r,
 }) => {
   const recordingDate = new Date(r.createdAt * 1000);

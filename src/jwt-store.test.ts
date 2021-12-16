@@ -1,4 +1,4 @@
-import { loadLocalStore } from "./jwt-store";
+import { loadLocalJwtStore } from "./jwt-store";
 import "./js/jwt-decode";
 
 afterAll(() => {
@@ -9,7 +9,7 @@ afterAll(() => {
 test("mau calculation behaves as we expect", () => {
   jest.useFakeTimers();
 
-  const s = loadLocalStore();
+  const s = loadLocalJwtStore();
 
   jest.setSystemTime(new Date("2010-12-02T13:24:00Z"));
   expect(s.isNewMonthlyActiveUser()).toBe(true);
@@ -47,11 +47,11 @@ function createDummyJWTWithExpiry(name: string, exp: Date): string {
   return `header.${btoa(JSON.stringify(dummyJwtValue))}.(${name})`;
 }
 
-test("jwt expiry works as expected", () => {
+test.only("jwt expiry works as expected", () => {
   jest.useFakeTimers();
 
   jest.setSystemTime(new Date("2021-04-01T00:00:00Z"));
-  const s = loadLocalStore(true);
+  const s = loadLocalJwtStore(true);
 
   const nonExpiredJwt = createDummyJWTWithExpiry(
     "nonExpiredJwt",
@@ -91,7 +91,7 @@ test("jwt expiry works as expected", () => {
 
   // now reload:
   //  this should remove the expired entries, both in memory and in local storage
-  const reloaded = loadLocalStore(true);
+  const reloaded = loadLocalJwtStore(true);
   expect(reloaded.findJwtForRoom("ok")).toBe(nonExpiredJwt);
   expect(reloaded.findJwtForRoom("expired")).toBeUndefined();
   expect(reloaded.findJwtForRoom("okNoRefresh")).toBe(nonExpiredJwt);

@@ -12,9 +12,11 @@ import "./css/welcome.css";
 
 import "./js/jwt-decode";
 import { fetchJWT } from "./rooms";
-import { upsertRecordingForRoom } from "./recordings";
+import {
+  upsertRecordingForRoom,
+  availableRecordings,
+} from "./recordings-store";
 import { populateRecordings } from "./recordings-ui";
-import { sortedRecordings } from "./recordings-utils";
 
 const useBraveRequestAdsEnabledApi: boolean =
   !!window.chrome && !!window.chrome.braveRequestAdsEnabled;
@@ -586,18 +588,13 @@ const renderConferencePage = (roomName: string, jwt: string) => {
     .on("recordingStatusChanged", (params: any) => {
       reportAction("recordingStatusChanged", params);
       if (params.on && !recordingLink) {
-        const records = sortedRecordings();
+        const recordings = availableRecordings();
+        const record = recordings.find((r) => r.roomName === roomName);
 
-        for (let i = 0; i < records.length; i++) {
-          const record = records[i];
-
-          if (record.roomName == roomName) {
-            console.log("!!! resuming recording", record);
-            recordingLink = record.url;
-            break;
-          }
-        }
-        if (!recordingLink) {
+        if (record) {
+          console.log("!!! resuming recording", record);
+          recordingLink = record.url;
+        } else {
           console.log("!!! unable to find recording for this room");
         }
       }

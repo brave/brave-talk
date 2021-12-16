@@ -11,102 +11,57 @@
 
 // PUBLIC INTERFACE
 
-export interface LocalStore {
+export interface JwtStore {
   findJwtForRoom: (roomName: string) => string | undefined;
-
   findRefreshTokenForRoom: (roomName: string) => string | undefined;
-
   storeJwtForRoom: (
     roomName: string,
     encodedJwt: string,
     encodedRefreshToken?: string | undefined
   ) => void;
-
   isNewMonthlyActiveUser: () => boolean;
-
-  availableRecordings: () => Readonly<Record<string, Recording>>;
-
-  findRecordingAtURL: (url: string) => Recording;
-
-  upsertRecordingForRoom: (
-    url: string,
-    roomName: string,
-    ttl: number | undefined
-  ) => void;
-
-  clearAllRecordings: () => void;
 }
 
-export interface Recording {
-  roomName: string;
-  createdAt: number;
-  ttl: number;
-  expiresAt: number;
-}
+let jwtStore: JwtStore | undefined;
 
-let store: LocalStore | undefined;
-
-export function loadLocalStore(forceReload: boolean = false): LocalStore {
-  if (!store || forceReload) {
-    const confabs: ConfabStructure = loadFromStorage();
+// forceReload expected only for tests, setting it otherwise may introduce race conditions
+export function loadLocalJwtStore(forceReload: boolean = false): JwtStore {
+  if (!jwtStore || forceReload) {
+    const confabs: ConfabStructure = loadConfabsFromStorage();
 
     garbageCollect(confabs);
 
-    store = {
+    jwtStore = {
       findJwtForRoom: (roomName) => confabs.JWTs[roomName],
-
       findRefreshTokenForRoom: (roomName) => confabs.refresh[roomName],
-
       storeJwtForRoom: (roomName, encodedJwt, encodedRefreshToken) => {
+        const logs = loadLogsFromStorage();
+        const now = Math.ceil(new Date().getTime() / 1000);
+
         confabs.JWTs[roomName] = encodedJwt;
+        logs.push({
+          tag: roomName,
+          iat: now,
+          evt: "add confab JWT",
+          exp: expires(encodedJwt),
+        });
         if (encodedRefreshToken) {
           confabs.refresh[roomName] = encodedRefreshToken;
+          logs.push({
+            tag: roomName,
+            iat: now,
+            evt: "add refresh JWT",
+            exp: expires(encodedRefreshToken),
+          });
         }
-        saveToStorage(confabs);
+        saveConfabsToStorage(confabs);
+        saveLogsToStorage(logs);
       },
-
       isNewMonthlyActiveUser: () => performMauCheck(confabs),
-
-      availableRecordings: () => confabs.recordings,
-
-      findRecordingAtURL: (url: string) => confabs.recordings[url],
-
-      clearAllRecordings: () => {
-        confabs.recordings = {};
-        saveToStorage(confabs);
-      },
-
-      upsertRecordingForRoom: (
-        url: string,
-        roomName: string,
-        ttl: number | undefined
-      ) => {
-        console.log(
-          `!!! upsertRecording ${url} for room ${roomName} ttl=${ttl}  createP=${!confabs
-            .recordings[url]}`
-        );
-
-        const now = Math.ceil(new Date().getTime() / 1000);
-        if (typeof ttl === "undefined") {
-          ttl = 24 * 60 * 60;
-        }
-        const expiresAt = now + ttl;
-
-        if (!confabs.recordings[url]) {
-          confabs.recordings[url] = {
-            roomName: roomName,
-            createdAt: now,
-            ttl: ttl,
-            expiresAt: expiresAt,
-          };
-        } else {
-          confabs.recordings[url].expiresAt = now + ttl;
-        }
-        saveToStorage(confabs);
-      },
     };
   }
-  return store;
+
+  return jwtStore;
 }
 
 // IMPLEMENTATION
@@ -120,22 +75,29 @@ interface ConfabStructure {
 
   // map from roomid -> encoded refresh token (which is itself a jwt, just not one valid for creating or joining a room)
   refresh: Record<string, string>;
-
-  recordings: Record<string, Recording>;
 }
 
-const LOCAL_STORAGE_KEY = "confabs";
+interface LogEntry {
+  tag: string;
+  iat: number;
+  evt: string;
+  exp: number;
+}
+
+type LogEntries = Array<LogEntry>;
+
+const CONFABS_STORAGE_KEY = "confabs";
+const LOGS_STORAGE_KEY = "logs";
 
 const defaults: ConfabStructure = {
   JWTs: {},
   refresh: {},
   mauStamp: 0,
-  recordings: {},
 };
 
-const loadFromStorage = (): ConfabStructure => {
+const loadConfabsFromStorage = (): ConfabStructure => {
   try {
-    const item = window.localStorage.getItem(LOCAL_STORAGE_KEY);
+    const item = window.localStorage.getItem(CONFABS_STORAGE_KEY);
     if (item) {
       const value = JSON.parse(item);
       return {
@@ -144,9 +106,12 @@ const loadFromStorage = (): ConfabStructure => {
       };
     }
   } catch (error) {
-    console.log("!!! localStorage.getItem: ", error);
+    console.log(
+      "!!! localStorage.getItem " + CONFABS_STORAGE_KEY + " failed",
+      error
+    );
     try {
-      window.localStorage.removeItem(LOCAL_STORAGE_KEY);
+      window.localStorage.removeItem(CONFABS_STORAGE_KEY);
     } catch (error) {}
   }
 
@@ -155,9 +120,32 @@ const loadFromStorage = (): ConfabStructure => {
   };
 };
 
+const loadLogsFromStorage = (): LogEntries => {
+  try {
+    const item = window.localStorage.getItem(LOGS_STORAGE_KEY);
+
+    if (item) {
+      return JSON.parse(item);
+    }
+  } catch (error) {
+    console.log(
+      "!!! localStorage.getItem " + LOGS_STORAGE_KEY + " failed",
+      error
+    );
+    try {
+      window.localStorage.removeItem(LOGS_STORAGE_KEY);
+    } catch (error) {}
+  }
+
+  return [];
+};
+
 // remove all expired tokens from confabs, saving back to local storage if needed
 const garbageCollect = (confabs: ConfabStructure) => {
   let didP = false;
+  let logP = false;
+  let logs: LogEntries = [];
+  const now = Math.ceil(new Date().getTime() / 1000);
 
   // Object.entries only includes own properties, so no need to explicitly check hasOwnProperty to avoid
   // the risk of prototype polltion
@@ -166,31 +154,55 @@ const garbageCollect = (confabs: ConfabStructure) => {
     if (expiredP(roomName, jwt)) {
       delete confabs.JWTs[roomName];
       didP = true;
+
+      if (!logP) {
+        logs = loadLogsFromStorage();
+        logP = true;
+      }
+      logs.push({
+        tag: roomName,
+        iat: now,
+        evt: "expire confab JWT",
+        exp: expires(jwt),
+      });
     }
   });
 
-  /* 
+  Object.entries(confabs.refresh).forEach(([roomName, refreshJwt]) => {
+    if (expiredP(roomName, refreshJwt)) {
+      /* 
   See https://github.com/brave/brave-talk/issues/81: temporarily disabling the garbage collection of
   refresh tokens to assist with diagnosis of missing refresh tokens.
-  */
-  // Object.entries(confabs.refresh).forEach(([roomName, refreshJwt]) => {
-  //   if (expiredP(roomName, refreshJwt)) {
-  //     delete confabs.refresh[roomName];
-  //     didP = true;
-  //   }
-  // });
 
-  const now = Math.ceil(new Date().getTime() / 1000);
-  Object.entries(confabs.recordings).forEach(([url, recording]) => {
-    if (recording.expiresAt < now) {
-      delete confabs.recordings[url];
+      delete confabs.refresh[roomName];
       didP = true;
+  */
+
+      if (!logP) {
+        logs = loadLogsFromStorage();
+        logP = true;
+      }
+      logs.push({
+        tag: roomName,
+        iat: now,
+        evt: "expire refresh JWT",
+        exp: expires(refreshJwt),
+      });
     }
   });
 
   if (didP) {
-    saveToStorage(confabs);
+    saveConfabsToStorage(confabs);
   }
+  if (logP) {
+    saveLogsToStorage(logs);
+  }
+};
+
+const expires = (jwt: string): number => {
+  const payload = jwt_decode(jwt);
+
+  return payload.exp;
 };
 
 const expiredP = (roomName: string, jwt: string): boolean => {
@@ -205,11 +217,26 @@ const expiredP = (roomName: string, jwt: string): boolean => {
   }
 };
 
-const saveToStorage = (confabs: ConfabStructure): void => {
+const saveConfabsToStorage = (confabs: ConfabStructure): void => {
   try {
-    window.localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(confabs));
+    window.localStorage.setItem(CONFABS_STORAGE_KEY, JSON.stringify(confabs));
   } catch (error) {
-    console.warn("!!! localStorage.setItem failed", error);
+    console.warn(
+      "!!! localStorage.setItem " + CONFABS_STORAGE_KEY + " failed",
+      error
+    );
+  }
+};
+
+const saveLogsToStorage = (logs: LogEntries): void => {
+  logs = logs.slice(-19);
+  try {
+    window.localStorage.setItem(LOGS_STORAGE_KEY, JSON.stringify(logs));
+  } catch (error) {
+    console.warn(
+      "!!! localStorage.setItem " + LOGS_STORAGE_KEY + " failed",
+      error
+    );
   }
 };
 
@@ -225,7 +252,16 @@ const performMauCheck = (confabs: ConfabStructure) => {
         : new Date(now.getFullYear(), now.getMonth() + 1, 1);
     confabs.mauStamp = next.getTime();
 
-    saveToStorage(confabs);
+    saveConfabsToStorage(confabs);
+
+    const logs = loadLogsFromStorage();
+    logs.push({
+      tag: "",
+      iat: Math.ceil(now.getTime() / 1000),
+      evt: "update mauStamp",
+      exp: confabs.mauStamp,
+    });
+    saveLogsToStorage(logs);
 
     return true;
   }
