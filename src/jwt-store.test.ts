@@ -1,4 +1,4 @@
-import { loadLocalStore } from "./store";
+import { loadLocalStore } from "./jwt-store";
 import "./js/jwt-decode";
 
 afterAll(() => {

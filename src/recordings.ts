@@ -1,4 +1,4 @@
-import { Recording, loadLocalStore } from "./store";
+import { Recording, loadLocalStore } from "./jwt-store";
 
 export const availableRecordings = (): Readonly<Record<string, Recording>> => {
   return loadLocalStore().availableRecordings();

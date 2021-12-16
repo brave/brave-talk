@@ -9,7 +9,7 @@ import {
   RecordingWithUrl,
   sortedRecordings,
 } from "./recordings-utils";
-import { loadLocalStore } from "./store";
+import { loadLocalStore } from "./jwt-store";
 
 export const populateRecordings = (recordingsEl: HTMLElement) => {
   const records = sortedRecordings();

@@ -1,5 +1,5 @@
 import { availableRecordings } from "./recordings";
-import { Recording } from "./store";
+import { Recording } from "./jwt-store";
 
 export type RecordingWithUrl = Recording & { url: string };
 
