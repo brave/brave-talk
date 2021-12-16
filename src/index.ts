@@ -20,6 +20,7 @@ const config = {
 };
 
 const isProduction: boolean = process.env.ENVIRONMENT === "production";
+const disableBeforeUnloadHandlers = true;
 
 const params = new URLSearchParams(window.location.search);
 
@@ -33,7 +34,7 @@ if (document.readyState === "complete") {
 const main = async () => {
   // these envvars are set by the EnvironmentPlugin in webpack.config.js
   console.log(
-    `!!! version 0.11.58 (${process.env.GIT_VERSION} ${process.env.ENVIRONMENT})`
+    `!!! version 0.11.77 (${process.env.GIT_VERSION} ${process.env.ENVIRONMENT})`
   );
 
   if (useBraveRequestAdsEnabledApi) {
@@ -420,6 +421,7 @@ const renderConferencePage = (roomName: string, jwt: string) => {
       disableGTM: true,
       doNotStoreRoom: true,
       disableInviteFunctions: false,
+      disableBeforeUnloadHandlers: disableBeforeUnloadHandlers,
       dropbox: {
         appKey: null,
       },
@@ -541,7 +543,7 @@ const renderConferencePage = (roomName: string, jwt: string) => {
   JitsiMeetJS.on("subjectChange", (params: any) => {
     reportAction("subjectChange", params);
 
-    if (!isProduction) {
+    if (disableBeforeUnloadHandlers) {
       // window.addEventListener("onpagehide", (e) => { ... }) appears to be a no-op on iOS
       // and listening for "onbeforeunload" works for both desktop and Android
 
