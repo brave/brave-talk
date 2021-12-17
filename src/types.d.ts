@@ -11,3 +11,8 @@ interface Window {
     braveRequestAdsEnabled?: () => Promise<boolean>;
   };
 }
+
+declare module "*.svg" {
+  const content: any;
+  export default content;
+}

@@ -1,0 +1,48 @@
+.recordings {
+  margin-top: 16px;
+  padding: 16px 16px 36px;
+
+  font-style: normal;
+  font-weight: normal;
+  font-size: 14px;
+  line-height: 20px;
+  letter-spacing: 0.01em;
+  text-align: left;
+
+  & .recordings-header {
+    text-align: center;
+    font-weight: 600;
+    font-size: 22px;
+    line-height: 26px;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 16px;
+  }
+
+  & .recording {
+    display: flex;
+    justify-content: space-between;
+    background: rgba(255, 255, 255, 0.08);
+    border-radius: 24px;
+    margin: 21px auto 0;
+    padding: 16px 27px;
+    max-width: 377px;
+  }
+
+  & .recordings-subhead {
+    margin: 8px auto 33px;
+    max-width: 300px;
+  }
+
+  & a {
+    text-decoration: none;
+    color: inherit;
+  }
+}
+
+/* the recordings block is hidden by default, displayed in code when relevant */
+#recordings {
+  display: none;
+}

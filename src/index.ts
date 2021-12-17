@@ -7,9 +7,16 @@ import {
 } from "./rules";
 import { resolveService } from "./services";
 
-import "./css/main.css";
+import "./css/poppins.css";
+import "./css/welcome.css";
+
 import "./js/jwt-decode";
 import { fetchJWT } from "./rooms";
+import {
+  upsertRecordingForRoom,
+  availableRecordings,
+} from "./recordings-store";
+import { populateRecordings } from "./recordings-ui";
 
 const useBraveRequestAdsEnabledApi: boolean =
   !!window.chrome && !!window.chrome.braveRequestAdsEnabled;
@@ -88,6 +95,7 @@ const main = async () => {
     await immediatelyCreateRoom(joinRoom);
     return;
   }
+  populateRecordings(findElement("recordings"));
 
   if (!joinRoom || joinRoom === "widget") {
     const context: Context = {
@@ -540,6 +548,17 @@ const renderConferencePage = (roomName: string, jwt: string) => {
     options.interfaceConfigOverwrite.APP_NAME
   );
 
+  let recordingLink: string | undefined;
+  let recordingTTL: number | undefined;
+  const updateRecTimestamp = () => {
+    if (!recordingLink) {
+      return;
+    }
+
+    upsertRecordingForRoom(recordingLink, roomName, recordingTTL);
+    setTimeout(updateRecTimestamp, 5 * 60 * 1000);
+  };
+
   JitsiMeetJS.on("subjectChange", (params: any) => {
     reportAction("subjectChange", params);
 
@@ -565,13 +584,31 @@ const renderConferencePage = (roomName: string, jwt: string) => {
     })
     .on("recordingLinkAvailable", (params: any) => {
       reportAction("recordingLinkAvailable", params);
+      recordingLink = params.link;
+      updateRecTimestamp();
     })
     .on("recordingStatusChanged", (params: any) => {
       reportAction("recordingStatusChanged", params);
+      if (params.on && !recordingLink) {
+        const recordings = availableRecordings();
+        const record = recordings.find((r) => r.roomName === roomName);
+
+        if (record) {
+          console.log("!!! resuming recording", record);
+          recordingLink = record.url;
+        } else {
+          console.log("!!! unable to find recording for this room");
+        }
+      }
+      updateRecTimestamp();
+      if (!params.on) {
+        recordingLink = undefined;
+      }
     })
     .on("readyToClose", (params: any) => {
       reportAction("readyToClose", params);
       window.removeEventListener("beforeunload", askOnUnload);
+      updateRecTimestamp();
       JitsiMeetJS.dispose();
       JitsiMeetJS = null;
       window.open(
