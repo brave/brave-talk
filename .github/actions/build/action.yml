@@ -1,0 +1,37 @@
+name: Build, Test, Audit
+description: |
+  Builds using webpack, and publishes an artifact named "build-output"
+inputs:
+  environment:
+    required: true
+    description: the name of the environment to build for
+
+runs:
+  using: composite
+  steps:
+    - name: Use Node.js
+      uses: actions/setup-node@v2
+      with:
+        node-version: 16
+        cache: npm
+    - run: npm ci
+      shell: bash
+    - run: npm audit
+      shell: bash
+    - run: npm test
+      shell: bash
+    - run: npm run build
+      env:
+        ENVIRONMENT: ${{ inputs.environment }}
+      shell: bash
+    - name: eval check
+      shell: bash
+      run: |
+        # fail the build if any generated javascript contains 'eval' to help mitigate the need for script-src unsafe-eval CSP
+        if find html -name "*.js" | xargs grep -l eval; then echo '"eval" found'; exit 99; else echo '"eval" not found'; fi
+    - name: Upload built outputs
+      uses: actions/upload-artifact@v2
+      with:
+        name: build-output
+        path: ./html
+        if-no-files-found: error

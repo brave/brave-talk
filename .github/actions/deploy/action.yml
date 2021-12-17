@@ -1,0 +1,31 @@
+name: Deploy
+description: Deploy by uploading to the S3 bucket
+inputs:
+  cloudfront-distribution-id:
+    required: true
+    description: cloudfront distribution id
+  s3-bucket:
+    required: true
+    description: target s3 bucket
+
+runs:
+  using: composite
+  steps:
+    - uses: actions/download-artifact@v2
+      with:
+        name: build-output
+        path: ./html
+    - name: Deploy static files
+      shell: bash
+      run: |
+        cd html
+        aws s3 sync ./static/ "s3://${{ inputs.s3-bucket }}/static/" --cache-control "max-age=31536000, public"
+        aws s3 sync . "s3://${{ inputs.s3-bucket }}/" --exclude "static/*" --cache-control "max-age=60, public"
+    - name: Invalidate CDN
+      shell: bash
+      # this step isn't really necessary: all the files in the static directory with a long-lifetime cache
+      # are immutable so don't need clearing; and the index.html has a short lifetime of 60 seconds.
+      # but this might speed things up a bit.
+      run: |
+        INVALIDATION_ID=$(aws cloudfront create-invalidation --distribution-id ${{ inputs.cloudfront-distribution-id }} --paths "/index.html" | jq -r '.Invalidation.Id')
+        aws cloudfront wait invalidation-completed --distribution-id ${{ inputs.cloudfront-distribution-id }} --id $INVALIDATION_ID
