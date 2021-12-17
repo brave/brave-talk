@@ -1,4 +1,4 @@
-name: Build
+name: Build, Test, Audit
 description: |
   Builds using webpack, and publishes an artifact named "build-output"
 inputs:
@@ -21,6 +21,8 @@ runs:
     - run: npm test
       shell: bash
     - run: npm run build
+      env:
+        ENVIRONMENT: ${{ inputs.environment }}
       shell: bash
     - name: eval check
       shell: bash
