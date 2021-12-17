@@ -1,0 +1,14 @@
+name: Check
+on: [push]
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          persist-credentials: false
+      - uses: ./.github/actions/build
+        with:
+          environment: development
