@@ -26,7 +26,7 @@ runs:
       shell: bash
       run: |
         # fail the build if any generated javascript contains 'eval' to help mitigate the need for script-src unsafe-eval CSP
-        grep -l eval html/static/*.js && exit 99
+        if find html -name "*.js" | xargs grep -l eval; then echo '"eval" found'; exit 99; else echo '"eval" not found'; fi
     - name: Upload built outputs
       uses: actions/upload-artifact@v2
       with:
