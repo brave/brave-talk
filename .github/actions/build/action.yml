@@ -16,9 +16,9 @@ runs:
         cache: npm
     - run: npm ci
       shell: bash
-    - run: npm test
-      shell: bash
     - run: npm audit
+      shell: bash
+    - run: npm test
       shell: bash
     - run: npm run build
       shell: bash
