@@ -4,37 +4,22 @@ import MediaPlayerImage from "./images/media_player.svg";
 import React, { Dispatch } from "react";
 import ReactDOM from "react-dom";
 import { formatDuration, formatRelativeDay } from "./recordings-utils";
-import {
-  availableRecordings,
-  clearAllRecordings,
-  Recording,
-} from "./recordings-store";
+import { availableRecordings, Recording } from "./recordings-store";
 
 export const populateRecordings = (recordingsEl: HTMLElement) => {
   const records = availableRecordings();
 
   console.log("!!! recordings", records);
 
-  const onClearAll = () => {
-    if (confirm("Clear all recordings? This action cannot be undone.")) {
-      clearAllRecordings();
-      recordingsEl.style.display = "none";
-    }
-  };
-
   if (records.length > 0) {
-    ReactDOM.render(
-      <Recordings recordings={records} onClearAll={onClearAll} />,
-      recordingsEl
-    );
+    ReactDOM.render(<Recordings recordings={records} />, recordingsEl);
     recordingsEl.style.display = "block";
   }
 };
 
 export const Recordings: React.FC<{
   recordings: Readonly<Recording[]>;
-  onClearAll: Dispatch<void>;
-}> = ({ recordings, onClearAll }) => {
+}> = ({ recordings }) => {
   return (
     <>
       <p className="recordings-header">
@@ -48,9 +33,6 @@ export const Recordings: React.FC<{
       {recordings.map((r, idx) => (
         <RecordingDisplay key={idx} recording={r} />
       ))}
-      <div className="recordings-footer" onClick={() => onClearAll()}>
-        Clear all
-      </div>
     </>
   );
 };

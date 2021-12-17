@@ -1,6 +1,6 @@
 .recordings {
   margin-top: 16px;
-  padding: 16px;
+  padding: 16px 16px 36px;
 
   font-style: normal;
   font-weight: normal;
@@ -19,18 +19,6 @@
     justify-content: center;
     align-items: center;
     gap: 16px;
-  }
-
-  & .recordings-footer {
-    text-align: center;
-    margin-top: 35px;
-    margin-bottom: 20px;
-    font-size: 14px;
-    letter-spacing: 0.01em;
-
-    &:hover {
-      text-decoration: underline;
-    }
   }
 
   & .recording {
