@@ -44,8 +44,8 @@
   }
 
   & .recordings-subhead {
-    margin-top: 8px;
-    margin-bottom: 33px;
+    margin: 8px auto 33px;
+    max-width: 300px;
   }
 
   & a {

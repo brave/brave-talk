@@ -16,8 +16,10 @@ export const populateRecordings = (recordingsEl: HTMLElement) => {
   console.log("!!! recordings", records);
 
   const onClearAll = () => {
-    clearAllRecordings();
-    recordingsEl.style.display = "none";
+    if (confirm("Clear all recordings? This action cannot be undone.")) {
+      clearAllRecordings();
+      recordingsEl.style.display = "none";
+    }
   };
 
   if (records.length > 0) {
