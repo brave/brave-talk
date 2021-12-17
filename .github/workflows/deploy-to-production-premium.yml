@@ -4,8 +4,18 @@ on:
     branches: [prod]
 
 jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Build
+        uses: ./.github/actions/build
+        with:
+          environment: production
+
   deploy:
     runs-on: ubuntu-latest
+    needs: build
 
     environment:
       name: production
@@ -13,25 +23,12 @@ jobs:
 
     steps:
       - uses: actions/checkout@v2
-        with:
-          persist-credentials: false
-      - name: Deploy static files
+      - name: Deploy
+        uses: ./.github/actions/deploy
         env:
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_PRODUCTION_ACCESS_KEY_ID }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_PRODUCTION_SECRET_ACCESS_KEY }}
           AWS_REGION: us-west-2
-          CLOUDFRONT_DISTRIBUTION_ID: ${{ secrets.CLOUDFRONT_PRODUCTION_DISTRIBUTION_ID }}
-          S3_BUCKET: brave-production-talk-origin
-          ENVIRONMENT: production
-        run: |
-          npm ci
-          npm test
-          npm audit
-          npm run build
-          cd ./html
-          # fail the build if any generated javascript contains 'eval' to help mitigate the need for script-src unsafe-eval CSP
-          grep -l eval static/*.js && exit 99
-          aws s3 sync ./static/ "s3://${S3_BUCKET}/static/" --cache-control "max-age=31536000, public"
-          aws s3 sync . "s3://${S3_BUCKET}/" --exclude "static/*" --cache-control "max-age=60, public"
-          INVALIDATION_ID=$(aws cloudfront create-invalidation --distribution-id $CLOUDFRONT_DISTRIBUTION_ID --paths "/*" | jq -r '.Invalidation.Id')
-          aws cloudfront wait invalidation-completed --distribution-id $CLOUDFRONT_DISTRIBUTION_ID --id $INVALIDATION_ID
+        with:
+          cloudfront-distribution-id: ${{ secrets.CLOUDFRONT_PRODUCTION_DISTRIBUTION_ID }}
+          s3-bucket: brave-production-talk-origin
