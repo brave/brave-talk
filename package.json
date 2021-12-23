@@ -30,7 +30,7 @@
     "mini-css-extract-plugin": "2.4.5",
     "postcss": "8.4.5",
     "postcss-loader": "6.2.1",
-    "postcss-nesting": "10.0.2",
+    "postcss-nesting": "10.1.0",
     "prettier": "2.5.1",
     "pretty-quick": "3.1.2",
     "style-loader": "^3.3.1",
