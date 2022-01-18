@@ -586,6 +586,10 @@ const renderConferencePage = (roomName: string, jwt: string) => {
     .on("recordingLinkAvailable", (params: any) => {
       reportAction("recordingLinkAvailable", params);
       recordingLink = params.link;
+
+      const ttl = Math.floor(params.ttl / 1000) || 0;
+
+      if (ttl > 0) recordingTTL = ttl;
       updateRecTimestamp();
     })
     .on("recordingStatusChanged", (params: any) => {
