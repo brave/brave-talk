@@ -577,12 +577,16 @@ const renderConferencePage = (roomName: string, jwt: string) => {
     if (params.subject === "") {
       console.log("!!! schedule subject change");
       setTimeout(() => {
-        console.log("!!! execute subject change");
-        JitsiMeetJS.executeCommand(
-          "subject",
-          options.interfaceConfigOverwrite.APP_NAME
-        );
-        console.log("!!! complete subject change");
+        try {
+          console.log("!!! execute subject change");
+          JitsiMeetJS.executeCommand(
+            "subject",
+            options.interfaceConfigOverwrite.APP_NAME
+          );
+          console.log("!!! complete subject change");
+        } catch (error: any) {
+          console.error("!!! failed subject change", error);
+        }
       }, 0);
     }
   })
