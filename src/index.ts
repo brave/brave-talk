@@ -545,24 +545,29 @@ const renderConferencePage = (roomName: string, jwt: string) => {
   JitsiMeetJS = new JitsiMeetExternalAPI(config.webrtc_domain, options);
   reportAction("JitsiMeetExternalAPI", { status: "activated!" });
 
-  try {
-    // works for the everyone...
-    JitsiMeetJS.executeCommand(
-      "localSubject",
-      options.interfaceConfigOverwrite.APP_NAME
-    );
-  } catch (error: any) {
-    console.error("!!! failed local subject change", error);
-  }
-  try {
-    // works for the moderator...
-    JitsiMeetJS.executeCommand(
-      "subject",
-      options.interfaceConfigOverwrite.APP_NAME
-    );
-  } catch (error: any) {
-    console.error("!!! failed subject change", error);
-  }
+  const updateSubject = () => {
+    try {
+      // works for everyone...
+      JitsiMeetJS.executeCommand(
+        "localSubject",
+        options.interfaceConfigOverwrite.APP_NAME
+      );
+    } catch (error: any) {
+      console.error("!!! failed local subject change", error);
+    }
+
+    try {
+      // works for moderator...
+      JitsiMeetJS.executeCommand(
+        "subject",
+        options.interfaceConfigOverwrite.APP_NAME
+      );
+    } catch (error: any) {
+      console.error("!!! failed subject change", error);
+    }
+  };
+
+  updateSubject();
 
   let recordingLink: string | undefined;
   let recordingTTL: number | undefined;
@@ -590,23 +595,7 @@ const renderConferencePage = (roomName: string, jwt: string) => {
 
     // (used) to reset when someone changes a media device?!?
     if (params.subject === "") {
-      console.log("!!! schedule subject change");
-      setTimeout(() => {
-        try {
-          console.log("!!! execute subject change");
-          JitsiMeetJS.executeCommand(
-            "localSubject",
-            options.interfaceConfigOverwrite.APP_NAME
-          );
-          JitsiMeetJS.executeCommand(
-            "subject",
-            options.interfaceConfigOverwrite.APP_NAME
-          );
-          console.log("!!! complete subject change");
-        } catch (error: any) {
-          console.error("!!! failed subject change", error);
-        }
-      }, 0);
+      updateSubject();
     }
   })
     .on("videoQualityChanged", (params: any) => {
