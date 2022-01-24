@@ -544,10 +544,25 @@ const renderConferencePage = (roomName: string, jwt: string) => {
   reportMethod("JitsiMeetExternalAPI", options);
   JitsiMeetJS = new JitsiMeetExternalAPI(config.webrtc_domain, options);
   reportAction("JitsiMeetExternalAPI", { status: "activated!" });
-  JitsiMeetJS.executeCommand(
-    "subject",
-    options.interfaceConfigOverwrite.APP_NAME
-  );
+
+  try {
+    // works for the everyone...
+    JitsiMeetJS.executeCommand(
+      "localSubject",
+      options.interfaceConfigOverwrite.APP_NAME
+    );
+  } catch (error: any) {
+    console.error("!!! failed local subject change", error);
+  }
+  try {
+    // works for the moderator...
+    JitsiMeetJS.executeCommand(
+      "subject",
+      options.interfaceConfigOverwrite.APP_NAME
+    );
+  } catch (error: any) {
+    console.error("!!! failed subject change", error);
+  }
 
   let recordingLink: string | undefined;
   let recordingTTL: number | undefined;
@@ -579,6 +594,10 @@ const renderConferencePage = (roomName: string, jwt: string) => {
       setTimeout(() => {
         try {
           console.log("!!! execute subject change");
+          JitsiMeetJS.executeCommand(
+            "localSubject",
+            options.interfaceConfigOverwrite.APP_NAME
+          );
           JitsiMeetJS.executeCommand(
             "subject",
             options.interfaceConfigOverwrite.APP_NAME
