@@ -574,11 +574,17 @@ const renderConferencePage = (roomName: string, jwt: string) => {
     }
 
     // (used) to reset when someone changes a media device?!?
-    if (params.subject === "")
-      JitsiMeetJS.executeCommand(
-        "subject",
-        options.interfaceConfigOverwrite.APP_NAME
-      );
+    if (params.subject === "") {
+      console.log("!!! schedule subject change");
+      setTimeout(() => {
+        console.log("!!! execute subject change");
+        JitsiMeetJS.executeCommand(
+          "subject",
+          options.interfaceConfigOverwrite.APP_NAME
+        );
+        console.log("!!! complete subject change");
+      }, 0);
+    }
   })
     .on("videoQualityChanged", (params: any) => {
       reportAction("videoQualityChanged", params);
