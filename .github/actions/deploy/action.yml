@@ -23,9 +23,6 @@ runs:
         aws s3 sync . "s3://${{ inputs.s3-bucket }}/" --exclude "static/*" --cache-control "max-age=60, public"
     - name: Invalidate CDN
       shell: bash
-      # this step isn't really necessary: all the files in the static directory with a long-lifetime cache
-      # are immutable so don't need clearing; and the index.html has a short lifetime of 60 seconds.
-      # but this might speed things up a bit.
       run: |
-        INVALIDATION_ID=$(aws cloudfront create-invalidation --distribution-id ${{ inputs.cloudfront-distribution-id }} --paths "/index.html" | jq -r '.Invalidation.Id')
+        INVALIDATION_ID=$(aws cloudfront create-invalidation --distribution-id ${{ inputs.cloudfront-distribution-id }} --paths "/*" | jq -r '.Invalidation.Id')
         aws cloudfront wait invalidation-completed --distribution-id ${{ inputs.cloudfront-distribution-id }} --id $INVALIDATION_ID
