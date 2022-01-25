@@ -544,10 +544,30 @@ const renderConferencePage = (roomName: string, jwt: string) => {
   reportMethod("JitsiMeetExternalAPI", options);
   JitsiMeetJS = new JitsiMeetExternalAPI(config.webrtc_domain, options);
   reportAction("JitsiMeetExternalAPI", { status: "activated!" });
-  JitsiMeetJS.executeCommand(
-    "subject",
-    options.interfaceConfigOverwrite.APP_NAME
-  );
+
+  const updateSubject = () => {
+    try {
+      // works for everyone...
+      JitsiMeetJS.executeCommand(
+        "localSubject",
+        options.interfaceConfigOverwrite.APP_NAME
+      );
+    } catch (error: any) {
+      console.error("!!! failed local subject change", error);
+    }
+
+    try {
+      // works for moderator...
+      JitsiMeetJS.executeCommand(
+        "subject",
+        options.interfaceConfigOverwrite.APP_NAME
+      );
+    } catch (error: any) {
+      console.error("!!! failed subject change", error);
+    }
+  };
+
+  updateSubject();
 
   let recordingLink: string | undefined;
   let recordingTTL: number | undefined;
@@ -574,11 +594,9 @@ const renderConferencePage = (roomName: string, jwt: string) => {
     }
 
     // (used) to reset when someone changes a media device?!?
-    if (params.subject === "")
-      JitsiMeetJS.executeCommand(
-        "subject",
-        options.interfaceConfigOverwrite.APP_NAME
-      );
+    if (params.subject === "") {
+      updateSubject();
+    }
   })
     .on("videoQualityChanged", (params: any) => {
       reportAction("videoQualityChanged", params);
@@ -586,6 +604,10 @@ const renderConferencePage = (roomName: string, jwt: string) => {
     .on("recordingLinkAvailable", (params: any) => {
       reportAction("recordingLinkAvailable", params);
       recordingLink = params.link;
+
+      const ttl = Math.floor(params.ttl / 1000) || 0;
+
+      if (ttl > 0) recordingTTL = ttl;
       updateRecTimestamp();
     })
     .on("recordingStatusChanged", (params: any) => {
