@@ -108,7 +108,13 @@ const main = async () => {
     console.log("Context:", context);
 
     if (!joinRoom || !context.userIsSubscribed) {
-      return renderHomePage(determineWelcomeScreenUI(context));
+      renderHomePage(determineWelcomeScreenUI(context));
+
+      if (browser.isBrave && !browser.isMobile) {
+        setTimeout(showPromo, 2_000);
+      }
+
+      return;
     }
   }
 
@@ -117,6 +123,13 @@ const main = async () => {
     joinRoom !== "widget" ? joinRoom : generateRoomName(),
     false
   );
+};
+
+const showPromo = () => {
+  const el = findElement("extension_promo");
+  const close = findElement("extension_promo_close");
+  el.style.display = "block";
+  close.onclick = () => (el.style.display = "none");
 };
 
 const immediatelyCreateRoom = async (roomName: string) => {
