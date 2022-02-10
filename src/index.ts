@@ -17,6 +17,10 @@ import {
   availableRecordings,
 } from "./recordings-store";
 import { populateRecordings } from "./recordings-ui";
+import {
+  recordExtensionPromoDismissed,
+  shouldShowExtensionPromo,
+} from "./general-store";
 
 const useBraveRequestAdsEnabledApi: boolean =
   !!window.chrome && !!window.chrome.braveRequestAdsEnabled;
@@ -126,10 +130,15 @@ const main = async () => {
 };
 
 const showPromo = () => {
-  const el = findElement("extension_promo");
-  const close = findElement("extension_promo_close");
-  el.style.display = "block";
-  close.onclick = () => (el.style.display = "none");
+  if (shouldShowExtensionPromo()) {
+    const el = findElement("extension_promo");
+    const close = findElement("extension_promo_close");
+    el.style.display = "block";
+    close.onclick = () => {
+      el.style.display = "none";
+      recordExtensionPromoDismissed();
+    };
+  }
 };
 
 const immediatelyCreateRoom = async (roomName: string) => {
