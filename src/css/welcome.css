@@ -524,8 +524,6 @@ button {
 }
 
 .extension-promo {
-  background: pink;
-
   position: fixed;
   bottom: 16px;
   right: 16px;
@@ -571,7 +569,6 @@ button {
     background-size: 20px 20px;
     background-position: center;
     border-radius: 20px;
-    /* align-self: flex-end; */
     top: 4px;
     right: 4px;
     width: 40px;
@@ -581,6 +578,20 @@ button {
     &:hover {
       background-color: rgba(160, 165, 235, 0.16);
     }
+  }
+}
+
+@media (prefers-color-scheme: dark) {
+  .extension-promo {
+    background: #17171f;
+
+    & .body-text {
+      color: #f0f2ff;
+    }
+  }
+
+  .extension-close {
+    filter: brightness(2);
   }
 }
 
