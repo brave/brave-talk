@@ -134,7 +134,7 @@ const showPromo = () => {
     const el = findElement("extension_promo");
     const close = findElement("extension_promo_close");
     el.style.display = "block";
-    close.onclick = () => {
+    el.onclick = () => {
       el.style.display = "none";
       recordExtensionPromoDismissed();
     };
