@@ -548,6 +548,16 @@ button {
     color: black;
   }
 
+  & .title-text {
+    font-style: normal;
+    font-weight: 600;
+    font-size: 15px;
+    line-height: 20px;
+    text-align: center;
+    letter-spacing: 0.04em;
+    margin: 0 0 8px;
+  }
+
   & button {
     width: fit-content;
     font-size: 14px;
@@ -585,7 +595,8 @@ button {
   .extension-promo {
     background: #17171f;
 
-    & .body-text {
+    & .body-text,
+    & .title-text {
       color: #f0f2ff;
     }
   }
