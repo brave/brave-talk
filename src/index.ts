@@ -17,6 +17,10 @@ import {
   availableRecordings,
 } from "./recordings-store";
 import { populateRecordings } from "./recordings-ui";
+import {
+  recordExtensionPromoDismissed,
+  shouldShowExtensionPromo,
+} from "./general-store";
 
 const useBraveRequestAdsEnabledApi: boolean =
   !!window.chrome && !!window.chrome.braveRequestAdsEnabled;
@@ -108,7 +112,13 @@ const main = async () => {
     console.log("Context:", context);
 
     if (!joinRoom || !context.userIsSubscribed) {
-      return renderHomePage(determineWelcomeScreenUI(context));
+      renderHomePage(determineWelcomeScreenUI(context));
+
+      if (browser.isBrave && !browser.isMobile) {
+        setTimeout(showPromo, 2_000);
+      }
+
+      return;
     }
   }
 
@@ -117,6 +127,18 @@ const main = async () => {
     joinRoom !== "widget" ? joinRoom : generateRoomName(),
     false
   );
+};
+
+const showPromo = () => {
+  if (shouldShowExtensionPromo()) {
+    const el = findElement("extension_promo");
+    const close = findElement("extension_promo_close");
+    el.style.display = "block";
+    el.onclick = () => {
+      el.style.display = "none";
+      recordExtensionPromoDismissed();
+    };
+  }
 };
 
 const immediatelyCreateRoom = async (roomName: string) => {
