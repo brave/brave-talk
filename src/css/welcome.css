@@ -546,6 +546,7 @@ button {
 
   & .body-text {
     color: black;
+    margin-bottom: 20px;
   }
 
   & .title-text {
