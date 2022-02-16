@@ -170,13 +170,8 @@ const garbageCollect = (confabs: ConfabStructure) => {
 
   Object.entries(confabs.refresh).forEach(([roomName, refreshJwt]) => {
     if (expiredP(roomName, refreshJwt)) {
-      /* 
-  See https://github.com/brave/brave-talk/issues/81: temporarily disabling the garbage collection of
-  refresh tokens to assist with diagnosis of missing refresh tokens.
-
       delete confabs.refresh[roomName];
       didP = true;
-  */
 
       if (!logP) {
         logs = loadLogsFromStorage();
