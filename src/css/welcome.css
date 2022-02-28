@@ -523,7 +523,92 @@ button {
   }
 }
 
+.extension-promo {
+  position: fixed;
+  bottom: 16px;
+  right: 16px;
+
+  background: linear-gradient(
+      139.76deg,
+      rgba(255, 255, 255, 0.5) 71.26%,
+      rgba(76, 84, 210, 0.0001) 115.29%
+    ),
+    #ffffff;
+  box-shadow: 0px 0px 16px rgba(12, 13, 33, 0.35);
+  border-radius: 16px;
+  padding: 16px;
+  color: black;
+
+  & .body {
+    padding: 24px 16px 8px;
+    max-width: 325px;
+  }
+
+  & .body-text {
+    color: black;
+    margin-bottom: 20px;
+  }
+
+  & .title-text {
+    font-style: normal;
+    font-weight: 600;
+    font-size: 15px;
+    line-height: 20px;
+    text-align: center;
+    letter-spacing: 0.04em;
+    margin: 0 0 8px;
+  }
+
+  & button {
+    width: fit-content;
+    font-size: 14px;
+    font-weight: bold;
+    border-radius: 20px;
+    background: rgb(76, 84, 210);
+    border: 0px;
+    padding: 10px 30px;
+    cursor: pointer;
+    color: rgb(255, 255, 255);
+    margin: 10px 0px;
+    outline: none;
+  }
+
+  & .extension-close {
+    position: absolute;
+    background: url("../images/close.svg");
+    background-repeat: no-repeat;
+    background-size: 20px 20px;
+    background-position: center;
+    border-radius: 20px;
+    top: 4px;
+    right: 4px;
+    width: 40px;
+    height: 40px;
+    margin-left: auto;
+
+    &:hover {
+      background-color: rgba(160, 165, 235, 0.16);
+    }
+  }
+}
+
+@media (prefers-color-scheme: dark) {
+  .extension-promo {
+    background: #17171f;
+
+    & .body-text,
+    & .title-text {
+      color: #f0f2ff;
+    }
+  }
+
+  .extension-close {
+    filter: brightness(2);
+  }
+}
+
 /* default visibility states of elements we set in code */
+#extension_promo,
 #download_brave,
 #subscribe,
 #my_account_link,
