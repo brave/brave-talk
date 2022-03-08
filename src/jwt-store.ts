@@ -82,6 +82,7 @@ interface LogEntry {
   iat: number;
   evt: string;
   exp: number;
+  jwt?: string;
 }
 
 type LogEntries = Array<LogEntry>;
@@ -182,6 +183,7 @@ const garbageCollect = (confabs: ConfabStructure) => {
         iat: now,
         evt: "expire refresh JWT",
         exp: expires(refreshJwt),
+        jwt: refreshJwt,
       });
     }
   });
