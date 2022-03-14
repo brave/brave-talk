@@ -18,7 +18,7 @@
   "devDependencies": {
     "@brave-intl/skus-sdk": "^0.1.1",
     "@types/jest": "27.4.1",
-    "@types/react": "^17.0.39",
+    "@types/react": "^17.0.40",
     "@types/react-dom": "^17.0.13",
     "autoprefixer": "10.4.2",
     "copy-webpack-plugin": "10.2.4",
