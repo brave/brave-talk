@@ -143,7 +143,13 @@ const showPromo = () => {
 
 const immediatelyCreateRoom = async (roomName: string) => {
   try {
+    // This check has the side-effect of renewing credentials, so although we're not
+    // really interested in whether the user is subscribed or not, we still want the call
+    // here for that purpose.
+    notice("Checking subscription status...");
+    await userIsSubscribed();
     await fetchJWT(roomName, true, notice);
+    notice("Created meeting room");
     window.close();
   } catch (error: any) {
     console.error(error);
