@@ -450,7 +450,6 @@ const renderConferencePage = (roomName: string, jwt: string) => {
         disabled: true,
         rtcstatsEnabled: false,
       },
-      autoHideWhileChatIsOpen: true,
       brandingRoomAlias: roomName,
       callStatsID: false,
       callStatsSecret: false,
@@ -482,6 +481,9 @@ const renderConferencePage = (roomName: string, jwt: string) => {
        */
       startWithAudioMuted: true,
       startWithVideoMuted: true,
+      toolbarConfig: {
+        autoHideWhileChatIsOpen: true,
+      },
       transcribingEnabled: false,
       useHostPageLocalStorage: true,
       videoQuality: {
