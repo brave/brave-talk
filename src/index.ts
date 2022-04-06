@@ -458,7 +458,7 @@ const renderConferencePage = (roomName: string, jwt: string) => {
       doNotStoreRoom: true,
       disableBeforeUnloadHandlers: disableBeforeUnloadHandlers,
       disableInviteFunctions: false,
-      disableTileEnlargement: false,
+      disableTileEnlargement: true,
       dropbox: {
         appKey: null,
       },
