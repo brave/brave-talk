@@ -456,8 +456,9 @@ const renderConferencePage = (roomName: string, jwt: string) => {
       disabledSounds: ["E2EE_OFF_SOUND", "E2EE_ON_SOUND"],
       disableGTM: true,
       doNotStoreRoom: true,
-      disableInviteFunctions: false,
       disableBeforeUnloadHandlers: disableBeforeUnloadHandlers,
+      disableInviteFunctions: false,
+      disableTileEnlargement: false,
       dropbox: {
         appKey: null,
       },
@@ -480,6 +481,9 @@ const renderConferencePage = (roomName: string, jwt: string) => {
        */
       startWithAudioMuted: true,
       startWithVideoMuted: true,
+      toolbarConfig: {
+        autoHideWhileChatIsOpen: true,
+      },
       transcribingEnabled: false,
       useHostPageLocalStorage: true,
       videoQuality: {
