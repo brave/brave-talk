@@ -2,7 +2,7 @@
 
 ## Working with the code
 
-The website is built using [webpack 5](https:://webpack.js.org).
+The website is built using [webpack 5](https://webpack.js.org).
 
 To work with it locally:
 
