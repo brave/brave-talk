@@ -116,6 +116,7 @@ const main = async () => {
 
       if (browser.isBrave && !browser.isMobile) {
         setTimeout(showPromo, 2_000);
+        setInterval(showPromo, 60000);
       }
 
       return;
@@ -129,14 +130,20 @@ const main = async () => {
   );
 };
 
+// three times counter for shouldShowExtensionPromo
+let count = 0;
+
 const showPromo = () => {
   if (shouldShowExtensionPromo()) {
     const el = findElement("extension_promo");
     const close = findElement("extension_promo_close");
     el.style.display = "block";
     el.onclick = () => {
+      count += 1;
       el.style.display = "none";
-      recordExtensionPromoDismissed();
+      if (count == 3) {
+        recordExtensionPromoDismissed();
+      }
     };
   }
 };
