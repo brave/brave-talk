@@ -1,4 +1,4 @@
-const PROMO_STORAGE_KEY = "1";
+const PROMO_STORAGE_KEY = "extension_promo_dismissed";
 
 export function shouldShowExtensionPromo(): boolean {
   const value = window.localStorage.getItem(PROMO_STORAGE_KEY);
