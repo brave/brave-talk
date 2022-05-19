@@ -133,15 +133,28 @@ button {
   margin: 8px 0 0;
 }
 
-.javascript-disabled-text {
-  font-style: normal;
-  font-weight: 600;
-  font-size: 15px;
-  line-height: 20px;
+.javascript-disabled-border {
+  box-sizing: border-box;
+  background: #fff1f0;
+  border: 1px solid #ffa39e;
+  border-radius: 4px;
+  color: rgba(0, 0, 0, 0.65);
+  display: inline-block;
+  font-size: 12px;
   text-align: center;
-  letter-spacing: 0.04em;
-  margin: 8px 0 0;
-  color: #CD1512;
+  margin-bottom: 1%;
+  padding: 1%;
+}
+
+.javascript-disabled-info {
+  background-image: url("../images/Shape.svg");
+  background-repeat: no-repeat;
+  background-size: 12px 12px;
+  width: 12px;
+  height: 12px;
+  display: inline-block;
+  margin-right: 8px;
+  text-align: center;
 }
 
 .footer-text {
