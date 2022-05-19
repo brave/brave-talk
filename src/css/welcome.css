@@ -133,6 +133,17 @@ button {
   margin: 8px 0 0;
 }
 
+.javascript-disabled-text {
+  font-style: normal;
+  font-weight: 600;
+  font-size: 15px;
+  line-height: 20px;
+  text-align: center;
+  letter-spacing: 0.04em;
+  margin: 8px 0 0;
+  color: #CD1512;
+}
+
 .footer-text {
   font-weight: 400;
   font-size: 12px;
