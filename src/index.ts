@@ -435,7 +435,7 @@ const renderHomePage = (options: WelcomeScreenOptions) => {
   var minutes = 1440,
     interval = minutes * 60 * 1000;
   setInterval(function () {
-    if (findElement("meet").style.display == "none") {
+    if (JitsiMeetJS == null) {
       window.location.reload();
     }
   }, interval);
