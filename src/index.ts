@@ -430,6 +430,15 @@ const renderHomePage = (options: WelcomeScreenOptions) => {
   if (options.showFailureMessage) {
     notice(options.showFailureMessage);
   }
+
+  // reload home page every 24 hours
+  var minutes = 1440,
+    interval = minutes * 60 * 1000;
+  setInterval(function () {
+    if (findElement("meet").style.display == "none") {
+      window.location.reload();
+    }
+  }, interval);
 };
 
 let JitsiMeetJS: any;
@@ -719,7 +728,17 @@ const joinConferenceRoom = async (
 
       reportAction(`Creating room`, { roomName });
       return await joinConferenceRoom(roomName, true);
-    } else {
+    }
+
+    // else if (!createP && error.message === "Sorry, the room is already full") {
+
+    //   const isSubscribed = await userIsSubscribed();
+    //   if (!isSubscribed) {
+    //     console.log("!!! subscribe CTA");
+    //   }
+
+    // }
+    else {
       console.error(error);
       notice(error.message);
     }
