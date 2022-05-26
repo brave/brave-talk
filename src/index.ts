@@ -102,6 +102,14 @@ const main = async () => {
   }
   populateRecordings(findElement("recordings"));
 
+  // every 5 minutes, if user is not in meeting then repopulate and render recordings
+  const interval = 5 * 60 * 1000;
+  setInterval(function () {
+    if (JitsiMeetJS == null) {
+      populateRecordings(findElement("recordings"));
+    }
+  }, interval);
+
   if (!joinRoom || joinRoom === "widget") {
     const context: Context = {
       browser,
@@ -435,8 +443,7 @@ const renderHomePage = (options: WelcomeScreenOptions) => {
   }
 
   // reload home page every 24 hours
-  var minutes = 1440,
-    interval = minutes * 60 * 1000;
+  const interval = 24 * 60 * 60 * 1000;
   setInterval(function () {
     if (JitsiMeetJS == null) {
       window.location.reload();
@@ -731,17 +738,7 @@ const joinConferenceRoom = async (
 
       reportAction(`Creating room`, { roomName });
       return await joinConferenceRoom(roomName, true);
-    }
-
-    // else if (!createP && error.message === "Sorry, the room is already full") {
-
-    //   const isSubscribed = await userIsSubscribed();
-    //   if (!isSubscribed) {
-    //     console.log("!!! subscribe CTA");
-    //   }
-
-    // }
-    else {
+    } else {
       console.error(error);
       notice(error.message);
     }
