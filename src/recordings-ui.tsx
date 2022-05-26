@@ -7,7 +7,7 @@ import { formatDuration, formatRelativeDay } from "./recordings-utils";
 import { availableRecordings, Recording } from "./recordings-store";
 
 export const populateRecordings = (recordingsEl: HTMLElement) => {
-  var records = availableRecordings();
+  const records = availableRecordings();
 
   console.log("!!! recordings", records);
 
@@ -15,18 +15,6 @@ export const populateRecordings = (recordingsEl: HTMLElement) => {
     ReactDOM.render(<Recordings recordings={records} />, recordingsEl);
     recordingsEl.style.display = "block";
   }
-
-  // every 5 min, re-render recordings list
-  var minutes = 5,
-    interval = minutes * 60 * 1000;
-  setInterval(function () {
-    records = availableRecordings();
-    console.log("!!! recordings", records);
-    if (records.length > 0) {
-      ReactDOM.render(<Recordings recordings={records} />, recordingsEl);
-      recordingsEl.style.display = "block";
-    }
-  }, interval);
 };
 
 export const Recordings: React.FC<{
