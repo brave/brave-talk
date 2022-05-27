@@ -18,7 +18,6 @@ import {
 } from "./recordings-store";
 import { populateRecordings } from "./recordings-ui";
 import {
-  recordExtensionPromoDismissed,
   shouldShowExtensionPromo,
   incrementExtensionPromoCounter,
 } from "./general-store";
@@ -146,9 +145,6 @@ const showPromo = () => {
     el.onclick = () => {
       el.style.display = "none";
       incrementExtensionPromoCounter();
-      // if (incrementExtensionPromoCounter()) {
-      //   recordExtensionPromoDismissed();
-      // }
     };
   }
 };

@@ -16,9 +16,4 @@ export function incrementExtensionPromoCounter(): void {
   } else {
     window.localStorage.setItem(PROMO_STORAGE_KEY, "true");
   }
-  //return value == 3;
-}
-
-export function recordExtensionPromoDismissed(): void {
-  window.localStorage.setItem(PROMO_STORAGE_KEY, "true");
 }
