@@ -141,6 +141,12 @@ const showPromo = () => {
         recordExtensionPromoDismissed();
       }
     };
+    const sc = findElement("enter_room_button");
+    el.onclick = () => {
+      if (incrementExtensionPromoCounter()) {
+        recordExtensionPromoDismissed();
+      }
+    };
   }
 };
 
