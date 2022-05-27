@@ -101,6 +101,14 @@ const main = async () => {
   }
   populateRecordings(findElement("recordings"));
 
+  // every 5 minutes, if user is not in meeting then repopulate and render recordings
+  const interval = 5 * 60 * 1000;
+  setInterval(function () {
+    if (JitsiMeetJS == null) {
+      populateRecordings(findElement("recordings"));
+    }
+  }, interval);
+
   if (!joinRoom || joinRoom === "widget") {
     const context: Context = {
       browser,
@@ -430,6 +438,14 @@ const renderHomePage = (options: WelcomeScreenOptions) => {
   if (options.showFailureMessage) {
     notice(options.showFailureMessage);
   }
+
+  // reload home page every 24 hours
+  const interval = 24 * 60 * 60 * 1000;
+  setInterval(function () {
+    if (JitsiMeetJS == null) {
+      window.location.reload();
+    }
+  }, interval);
 };
 
 let JitsiMeetJS: any;
