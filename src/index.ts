@@ -137,15 +137,10 @@ const showPromo = () => {
     el.style.display = "block";
     el.onclick = () => {
       el.style.display = "none";
-      if (incrementExtensionPromoCounter()) {
-        recordExtensionPromoDismissed();
-      }
-    };
-    const sc = findElement("enter_room_button");
-    sc.onclick = () => {
-      if (incrementExtensionPromoCounter()) {
-        recordExtensionPromoDismissed();
-      }
+      incrementExtensionPromoCounter();
+      // if (incrementExtensionPromoCounter()) {
+      //   recordExtensionPromoDismissed();
+      // }
     };
   }
 };
@@ -402,6 +397,7 @@ const renderHomePage = (options: WelcomeScreenOptions) => {
           true
         );
       }
+      incrementExtensionPromoCounter();
     };
   }
 

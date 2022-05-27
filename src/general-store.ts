@@ -5,15 +5,17 @@ export function shouldShowExtensionPromo(): boolean {
   return value !== "true";
 }
 
-export function incrementExtensionPromoCounter(): boolean {
+export function incrementExtensionPromoCounter(): void {
   var value = Number(window.localStorage.getItem(PROMO_STORAGE_KEY));
   if (value !== 3) {
     value += 1;
     window.localStorage.setItem(PROMO_STORAGE_KEY, value.toString());
+  } else {
+    window.localStorage.setItem(PROMO_STORAGE_KEY, "true");
   }
-  return value == 3;
+  //return value == 3;
 }
 
-export function recordExtensionPromoDismissed(): void {
-  window.localStorage.setItem(PROMO_STORAGE_KEY, "true");
-}
+// export function recordExtensionPromoDismissed(): void {
+//   window.localStorage.setItem(PROMO_STORAGE_KEY, "true");
+// }
