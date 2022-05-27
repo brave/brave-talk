@@ -142,7 +142,7 @@ const showPromo = () => {
       }
     };
     const sc = findElement("enter_room_button");
-    el.onclick = () => {
+    sc.onclick = () => {
       if (incrementExtensionPromoCounter()) {
         recordExtensionPromoDismissed();
       }
