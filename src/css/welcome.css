@@ -133,6 +133,30 @@ button {
   margin: 8px 0 0;
 }
 
+.javascript-disabled-border {
+  box-sizing: border-box;
+  background: #fff1f0;
+  border: 1px solid #ffa39e;
+  border-radius: 4px;
+  color: rgba(0, 0, 0, 0.65);
+  display: inline-block;
+  font-size: 12px;
+  text-align: center;
+  margin-bottom: 1%;
+  padding: 1%;
+}
+
+.javascript-disabled-info {
+  background-image: url("../images/shape.svg");
+  background-repeat: no-repeat;
+  background-size: 12px 12px;
+  width: 12px;
+  height: 12px;
+  display: inline-block;
+  margin-right: 8px;
+  text-align: center;
+}
+
 .footer-text {
   font-weight: 400;
   font-size: 12px;
