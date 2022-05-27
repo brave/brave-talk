@@ -6,6 +6,9 @@ export function shouldShowExtensionPromo(): boolean {
 }
 
 export function incrementExtensionPromoCounter(): void {
+  if (window.localStorage.getItem(PROMO_STORAGE_KEY) == "true") {
+    return;
+  }
   var value = Number(window.localStorage.getItem(PROMO_STORAGE_KEY));
   if (value !== 3) {
     value += 1;
