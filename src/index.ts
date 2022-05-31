@@ -754,6 +754,9 @@ const joinConferenceRoom = async (
         ).href = `${subsUrl}/account/?intent=recover&product=talk`;
         subscribeCtaEl.style.display = "block";
       }
+
+      console.error(error);
+      notice(error.message);
     } else {
       console.error(error);
       notice(error.message);
