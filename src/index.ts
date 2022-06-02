@@ -756,7 +756,7 @@ const joinConferenceRoom = async (
       }
 
       console.error(error);
-      notice(error.message);
+      notice("Sorry, this call is full. Please contact the call creator.");
     } else {
       console.error(error);
       notice(error.message);
