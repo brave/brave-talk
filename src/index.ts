@@ -22,6 +22,25 @@ import {
   incrementExtensionPromoCounter,
 } from "./general-store";
 
+import { getLangPref } from "./get-language-detector";
+import i18next from "i18next";
+import transEN from "./locales/en/translation.json";
+import transJP from "./locales/jp/translation.json";
+
+i18next.init({
+  lng: getLangPref(),
+  debug: true,
+  fallbackLng: "en",
+  resources: {
+    en: {
+      translation: transEN,
+    },
+    jp: {
+      translation: transJP,
+    },
+  },
+});
+
 const useBraveRequestAdsEnabledApi: boolean =
   !!window.chrome && !!window.chrome.braveRequestAdsEnabled;
 
@@ -47,6 +66,9 @@ const main = async () => {
   console.log(
     `!!! version ${process.env.GIT_VERSION} (${process.env.ENVIRONMENT})`
   );
+
+  console.log(getLangPref());
+  updateLang();
 
   if (useBraveRequestAdsEnabledApi) {
     console.log("--> will use braveRequestAdsEnabled");
@@ -135,6 +157,13 @@ const main = async () => {
     joinRoom !== "widget" ? joinRoom : generateRoomName(),
     false
   );
+};
+
+const updateLang = () => {
+  const i18nElements = document.getElementsByClassName("i18n-element");
+  Array.from(i18nElements).forEach((element) => {
+    (<HTMLElement>element).innerText = i18next.t(element.id);
+  });
 };
 
 const showPromo = () => {
