@@ -5,6 +5,15 @@ export function shouldShowExtensionPromo(): boolean {
   return value !== "true";
 }
 
-export function recordExtensionPromoDismissed(): void {
-  window.localStorage.setItem(PROMO_STORAGE_KEY, "true");
+export function incrementExtensionPromoCounter(): void {
+  if (window.localStorage.getItem(PROMO_STORAGE_KEY) === "true") {
+    return;
+  }
+  let value = Number(window.localStorage.getItem(PROMO_STORAGE_KEY));
+  if (value < 3) {
+    value += 1;
+    window.localStorage.setItem(PROMO_STORAGE_KEY, value.toString());
+  } else {
+    window.localStorage.setItem(PROMO_STORAGE_KEY, "true");
+  }
 }

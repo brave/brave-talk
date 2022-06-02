@@ -18,8 +18,8 @@ import {
 } from "./recordings-store";
 import { populateRecordings } from "./recordings-ui";
 import {
-  recordExtensionPromoDismissed,
   shouldShowExtensionPromo,
+  incrementExtensionPromoCounter,
 } from "./general-store";
 
 const useBraveRequestAdsEnabledApi: boolean =
@@ -144,7 +144,7 @@ const showPromo = () => {
     el.style.display = "block";
     el.onclick = () => {
       el.style.display = "none";
-      recordExtensionPromoDismissed();
+      incrementExtensionPromoCounter();
     };
   }
 };
@@ -401,6 +401,7 @@ const renderHomePage = (options: WelcomeScreenOptions) => {
           true
         );
       }
+      incrementExtensionPromoCounter();
     };
   }
 
