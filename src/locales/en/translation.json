@@ -22,5 +22,21 @@
   "opt_in_step_header_num_2": "Click 'Start using Brave Rewards.'",
   "extension_promo_title_text": "Now you can schedule ahead!",
   "extension_promo_body_text": "Add Brave Talk links directly to an invite, with the Google Calendar extension.",
-  "extension_promo_install": "Install Calendar extension"
+  "extension_promo_install": "Install Calendar extension",
+
+  "Checking subscription status...": "Checking subscription status...",
+  "Created meeting room": "Created meeting room",
+  "Unlimited private video calls, right in your browser. No app required.": "Unlimited private video calls, right in your browser. No app required.",
+  "Waiting for a subscriber to create the room...": "Waiting for a subscriber to create the room...",
+  "Sorry, this call is full. Please contact the call creator.": "Sorry, this call is full. Please contact the call creator.",
+
+  "Link copied to clipboard": "Link copied to clipboard",
+  "Checking moderator status...": "Checking moderator status...",
+  "Creating meeting room...": "Creating meeting room...",
+  "Locating meeting room...": "Locating meeting room...",
+
+  "Brave Talk requires that your device is running the latest version of iOS. Please upgrade. Yes, this is an inconvenience and we do apologize!": "Brave Talk requires that your device is running the latest version of iOS. Please upgrade. Yes, this is an inconvenience and we do apologize!",
+
+  "Start Premium call": "Start Premium call",
+  "Start free call (up to 4 people)": "Start free call (up to 4 people)"
 }

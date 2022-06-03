@@ -28,14 +28,14 @@ import transEN from "./locales/en/translation.json";
 import transJP from "./locales/jp/translation.json";
 
 i18next.init({
-  lng: getLangPref(),
+  lng: "ja",
   debug: true,
   fallbackLng: "en",
   resources: {
     en: {
       translation: transEN,
     },
-    jp: {
+    ja: {
       translation: transJP,
     },
   },
@@ -66,9 +66,6 @@ const main = async () => {
   console.log(
     `!!! version ${process.env.GIT_VERSION} (${process.env.ENVIRONMENT})`
   );
-
-  console.log(getLangPref());
-  updateLang();
 
   if (useBraveRequestAdsEnabledApi) {
     console.log("--> will use braveRequestAdsEnabled");
@@ -119,6 +116,7 @@ const main = async () => {
   if (joinRoom && params.get("create_only") === "y") {
     hideLoadingIndicators();
     await immediatelyCreateRoom(joinRoom);
+    updateLang();
     return;
   }
   populateRecordings(findElement("recordings"));
@@ -147,7 +145,7 @@ const main = async () => {
       if (browser.isBrave && !browser.isMobile) {
         setTimeout(showPromo, 2_000);
       }
-
+      updateLang();
       return;
     }
   }
@@ -157,10 +155,12 @@ const main = async () => {
     joinRoom !== "widget" ? joinRoom : generateRoomName(),
     false
   );
+
+  updateLang();
 };
 
 const updateLang = () => {
-  const i18nElements = document.getElementsByClassName("i18n-element");
+  const i18nElements = document.getElementsByClassName("i18n-element-text");
   Array.from(i18nElements).forEach((element) => {
     (<HTMLElement>element).innerText = i18next.t(element.id);
   });
@@ -347,7 +347,7 @@ const hideLoadingIndicators = () => {
 const copyRoomLink = async (button: HTMLButtonElement) => {
   const originalButton = button.cloneNode(true);
   button.disabled = true;
-  const updateButtonText = (msg: string) => (button.innerText = msg);
+  const updateButtonText = (msg: string) => (button.innerText = i18next.t(msg));
 
   try {
     const roomName = generateRoomName();
@@ -393,8 +393,8 @@ const renderHomePage = (options: WelcomeScreenOptions) => {
 
   if (options.showStartCall) {
     enterRoomEl.innerText = options.showPremiumUI
-      ? "Start Premium call"
-      : "Start free call (up to 4 people)";
+      ? i18next.t("Start Premium call")
+      : i18next.t("Start free call (up to 4 people)");
 
     enterRoomEl.style.display = "block";
 
@@ -840,7 +840,7 @@ const getAutoOpenRoom = (): string | undefined => {
 const notice = (text: string) => {
   const element = document.getElementById("notice_text")!;
 
-  element.innerText = text;
+  element.innerText = i18next.t(text);
   element.style.display = text ? "inline-block" : "none";
 };
 
