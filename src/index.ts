@@ -28,7 +28,7 @@ import transEN from "./locales/en/translation.json";
 import transJP from "./locales/jp/translation.json";
 
 i18next.init({
-  lng: "ja",
+  lng: getLangPref(),
   debug: true,
   fallbackLng: "en",
   resources: {
@@ -75,6 +75,8 @@ const main = async () => {
   const order = params.get("order");
   let orderId: string | null | undefined;
 
+  updateLang();
+
   if (order) {
     try {
       const o = JSON.parse(atob(order));
@@ -116,7 +118,6 @@ const main = async () => {
   if (joinRoom && params.get("create_only") === "y") {
     hideLoadingIndicators();
     await immediatelyCreateRoom(joinRoom);
-    updateLang();
     return;
   }
   populateRecordings(findElement("recordings"));
@@ -145,7 +146,6 @@ const main = async () => {
       if (browser.isBrave && !browser.isMobile) {
         setTimeout(showPromo, 2_000);
       }
-      updateLang();
       return;
     }
   }

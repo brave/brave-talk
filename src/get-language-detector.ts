@@ -7,5 +7,5 @@ export function getLangPref(): any {
       return val.language;
     }
   }
-  return "ja";
+  return "en";
 }
