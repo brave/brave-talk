@@ -1,11 +1,7 @@
 export function getLangPref(): any {
-  const lang = window.localStorage.getItem("jitsiLocalStorage");
-  if (lang) {
-    let val = JSON.parse(lang);
-    console.log(val.language);
-    if (val.language == "ja") {
-      return val.language;
-    }
-  }
+  var language =
+    (navigator.languages && navigator.languages[0]) || navigator.language;
+
+  if (language == "ja") return "ja";
   return "en";
 }

@@ -410,6 +410,7 @@ const renderHomePage = (options: WelcomeScreenOptions) => {
               options.roomNameOverride ?? generateRoomName(),
               true
             );
+
             return;
           }
 
@@ -490,6 +491,7 @@ const renderConferencePage = (roomName: string, jwt: string) => {
     roomName: config.vpaas + "/" + roomName,
     jwt: jwt,
     parentNode: document.querySelector("#meet"),
+    lang: getLangPref(),
 
     configOverwrite: {
       analytics: {
