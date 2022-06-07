@@ -155,8 +155,6 @@ const main = async () => {
     joinRoom !== "widget" ? joinRoom : generateRoomName(),
     false
   );
-
-  updateLang();
 };
 
 const updateLang = () => {
