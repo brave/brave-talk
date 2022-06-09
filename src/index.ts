@@ -18,8 +18,8 @@ import {
 } from "./recordings-store";
 import { populateRecordings } from "./recordings-ui";
 import {
-  recordExtensionPromoDismissed,
   shouldShowExtensionPromo,
+  incrementExtensionPromoCounter,
 } from "./general-store";
 
 const useBraveRequestAdsEnabledApi: boolean =
@@ -101,6 +101,14 @@ const main = async () => {
   }
   populateRecordings(findElement("recordings"));
 
+  // every 5 minutes, if user is not in meeting then repopulate and render recordings
+  const interval = 5 * 60 * 1000;
+  setInterval(function () {
+    if (JitsiMeetJS == null) {
+      populateRecordings(findElement("recordings"));
+    }
+  }, interval);
+
   if (!joinRoom || joinRoom === "widget") {
     const context: Context = {
       browser,
@@ -136,7 +144,7 @@ const showPromo = () => {
     el.style.display = "block";
     el.onclick = () => {
       el.style.display = "none";
-      recordExtensionPromoDismissed();
+      incrementExtensionPromoCounter();
     };
   }
 };
@@ -393,6 +401,7 @@ const renderHomePage = (options: WelcomeScreenOptions) => {
           true
         );
       }
+      incrementExtensionPromoCounter();
     };
   }
 
@@ -430,6 +439,14 @@ const renderHomePage = (options: WelcomeScreenOptions) => {
   if (options.showFailureMessage) {
     notice(options.showFailureMessage);
   }
+
+  // reload home page every 24 hours
+  const interval = 24 * 60 * 60 * 1000;
+  setInterval(function () {
+    if (JitsiMeetJS == null) {
+      window.location.reload();
+    }
+  }, interval);
 };
 
 let JitsiMeetJS: any;
@@ -719,6 +736,28 @@ const joinConferenceRoom = async (
 
       reportAction(`Creating room`, { roomName });
       return await joinConferenceRoom(roomName, true);
+    } else if (
+      !createP &&
+      error.message === "Sorry, the room is already full"
+    ) {
+      const isSubscribed = await userIsSubscribed();
+      //if user is joining a full room, display the subscribeCTA element from the home page
+      if (!isSubscribed) {
+        const subscribeCtaEl = findElement("subscribe");
+        const subsUrl = resolveService("account");
+
+        findElement("subscribe_button").onclick = () =>
+          window.location.assign(
+            `${subsUrl}/plans/?intent=checkout&product=talk`
+          );
+        findElement<HTMLAnchorElement>(
+          "subscribe_login_link"
+        ).href = `${subsUrl}/account/?intent=recover&product=talk`;
+        subscribeCtaEl.style.display = "block";
+      }
+
+      console.error(error);
+      notice("Sorry, this call is full. Please contact the call creator.");
     } else {
       console.error(error);
       notice(error.message);
