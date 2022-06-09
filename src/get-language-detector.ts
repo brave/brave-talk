@@ -1,7 +1,7 @@
 export function getLangPref(): any {
-  var language =
+  const language =
     (navigator.languages && navigator.languages[0]) || navigator.language;
 
-  if (language == "ja") return "ja";
+  if (language === "ja") return "ja";
   return "en";
 }
