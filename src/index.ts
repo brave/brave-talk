@@ -27,6 +27,7 @@ import i18next from "i18next";
 import transEN from "./locales/en/translation.json";
 import transJP from "./locales/jp/translation.json";
 
+// localizing brave-talk for English and Japanese
 i18next.init({
   lng: getLangPref(),
   debug: true,
