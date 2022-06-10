@@ -212,8 +212,18 @@ export const fetchJWT = async (
       400: createP
         ? "Sorry, you are not a subscriber"
         : "Sorry, the room is already full",
+      403: "Forbidden",
       404: "The room does not exist",
+      405: "Method Not Allowed",
+      408: "Request Timeout",
       409: "Sorry, room already exists! (this should not happen)",
+      417: "Expectation Failed",
+      420: "Method Failure",
+      429: "Too Many Requests",
+      500: "Internal Server Error",
+      502: "Bad Gateway",
+      503: "Service Unavailable",
+      504: "Gateway Timeout",
     },
   });
 
