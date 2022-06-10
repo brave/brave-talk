@@ -73,7 +73,7 @@
             href="https://brave.com/download/bravetalk"
           ></a>
           <a
-            class="welcome-my-account"
+            class="welcome-my-account i18n-element-text"
             id="my_account_link"
             href="https://account.brave.com"
             >My Account</a
@@ -83,7 +83,10 @@
               <div class="talk-logo"></div>
               <div class="join-call-text">
                 <h1 class="join-call-text-title" id="talk_title">Brave Talk</h1>
-                <p class="join-call-text-description" id="notice_text">
+                <p
+                  class="join-call-text-description i18n-element-text"
+                  id="notice_text"
+                >
                   Unlimited private video calls with your friends and colleagues
                 </p>
               </div>
@@ -95,15 +98,20 @@
                   verify it's not blocked by a third-party extension.
                 </div>
               </noscript>
-              <button class="welcome-page-button" id="enter_room_button">
+              <button
+                class="welcome-page-button i18n-element-text"
+                id="enter_room_button"
+              >
                 Start call
               </button>
               <button
-                class="welcome-page-button welcome-page-button-with-icon welcome-page-gutter-top"
+                class="welcome-page-button welcome-page-button-with-icon welcome-page-gutter-top i18n-element-end"
                 id="copy_link"
               >
                 <div class="copy-icon"></div>
-                Create link
+                <span class="i18n-element-text" id="create_link"
+                  >Create link</span
+                >
               </button>
 
               <div
@@ -111,10 +119,13 @@
                 id="enter_room_loading"
               >
                 <div class="spinner"></div>
-                <div>Loading...</div>
+                <div class="i18n-element-text" id="loading">Loading...</div>
               </div>
               <div class="download-brave" id="download_brave">
-                <div class="download-brave-text">
+                <div
+                  class="download-brave-text i18n-element-text"
+                  id="download_brave_text"
+                >
                   Want better privacy than Zoom? Download the Brave browser to
                   start a call with Brave Talk.
                 </div>
@@ -124,18 +135,27 @@
                     href="https://brave.com/download/bravetalk"
                   >
                     <div class="brave-icon"></div>
-                    <div class="welcome-page-button-download-text">
+                    <div
+                      class="welcome-page-button-download-text i18n-element-text"
+                      id="welcome_page_button_download_text"
+                    >
                       Download Brave
                     </div>
                   </a>
                 </div>
               </div>
               <div class="desktop-needed" id="desktop_needed">
-                <div class="desktop-needed-info">
+                <div
+                  class="desktop-needed-info i18n-element-text"
+                  id="desktop_needed_info"
+                >
                   You can only join Brave Talk calls from your mobile device on
                   the free plan.
                 </div>
-                <div class="desktop-needed-cta">
+                <div
+                  class="desktop-needed-cta i18n-element-text"
+                  id="desktop_needed_cta"
+                >
                   Use Brave Browser on your desktop to start a free call, or
                   upgrade to Premium.
                 </div>
@@ -143,20 +163,30 @@
             </div>
             <div class="section recordings" id="recordings"></div>
             <div class="section subscribe" id="subscribe">
-              <p class="subscribe-text">
+              <p class="subscribe-text i18n-element-text" id="subscribe_text">
                 Upgrade to host video calls with hundreds of participants.
               </p>
               <button class="welcome-page-button-hollow" id="subscribe_button">
-                <div>Start free trial</div>
+                <div class="i18n-element-text" id="welcome_page_button_hollow">
+                  Start free trial
+                </div>
               </button>
-              <div class="subscribe-login">
+              <div
+                class="subscribe-login i18n-element-text"
+                id="subscribe_login_text"
+              >
                 Get 30 days of access to Brave Talk Premium, free of charge.
                 After 30 days, the credit card you enter will be charged $7.00
                 US monthly. You can cancel any time.
               </div>
               <div class="subscribe-login">
-                Already have Premium?
-                <a href="https://account.brave.com" id="subscribe_login_link"
+                <span class="i18n-element-text" id="subscribe_login_premium"
+                  >Already have Premium?</span
+                >
+                <a
+                  href="https://account.brave.com"
+                  class="i18n-element-text"
+                  id="subscribe_login_link"
                   >Log in</a
                 >.
               </div>
@@ -167,7 +197,9 @@
               id="subscribe_loading"
             >
               <div class="spinner"></div>
-              <div>Checking subscription status...</div>
+              <div class="i18n-element-text" id="check_subscription">
+                Checking subscription status...
+              </div>
             </div>
 
             <div id="enter_1on1_button"></div>
@@ -175,26 +207,43 @@
 
           <div class="footer">
             <div class="footer-text" id="footer_text">
-              Your personal information always stays private, per our
-              <a href="https://brave.com/privacy/browser/#brave-talk-learn"
+              <span class="i18n-element-text" id="footer_pre_text"
+                >Your personal information always stays private, per our</span
+              >
+              <a
+                href="https://brave.com/privacy/browser/#brave-talk-learn"
+                class="i18n-element-text"
+                id="footer_pst_text"
                 >privacy policy</a
-              >. <a href="https://status.brave.com/">Service status</a>.
+              >.
+              <a
+                href="https://status.brave.com/"
+                class="i18n-element-text"
+                id="footer_status_text"
+                >Service status</a
+              >.
             </div>
           </div>
 
           <div class="opt-in" id="opt_in">
             <div class="opt-in-panel">
               <div class="opt-in-close" id="opt_in_close"></div>
-              <h2 class="opt-in-title">
+              <h2 class="opt-in-title i18n-element-text" id="opt_in_title">
                 To start a free call, turn on Brave Rewards
               </h2>
-              <div class="opt-in-description">
+              <div
+                class="opt-in-description i18n-element-text"
+                id="opt_in_description"
+              >
                 With Brave Rewards, you can view a new kind of private ad, and
                 earn tokens for doing so. (Think of them like frequent flyer
                 points.) Turn those tokens into cash, gift cards...or even tip
                 the websites you love.
               </div>
-              <div class="opt-in-description-sub">
+              <div
+                class="opt-in-description-sub i18n-element-text"
+                id="opt_in_description_sub"
+              >
                 Note: not available on private windows, or private windows with
                 Tor.
               </div>
@@ -202,7 +251,10 @@
                 <div class="opt-in-step">
                   <div class="opt-in-step-header">
                     <div class="opt-in-step-header-num">1.</div>
-                    <div>
+                    <div
+                      class="i18n-element-text"
+                      id="opt_in_step_header_num_1"
+                    >
                       Click the triangle icon in the browser address bar.
                     </div>
                   </div>
@@ -211,7 +263,12 @@
                 <div class="opt-in-step">
                   <div class="opt-in-step-header">
                     <div class="opt-in-step-header-num">2.</div>
-                    <div>Click “Start using Brave Rewards.”</div>
+                    <div
+                      class="i18n-element-text"
+                      id="opt_in_step_header_num_2"
+                    >
+                      Click “Start using Brave Rewards.”
+                    </div>
                   </div>
                   <div class="opt-in-step-2-screenshot"></div>
                 </div>
@@ -221,9 +278,17 @@
 
           <div class="extension-promo" id="extension_promo">
             <div class="body">
-              <div class="title-text">Now you can schedule ahead!</div>
+              <div
+                class="title-text i18n-element-text"
+                id="extension_promo_title_text"
+              >
+                Now you can schedule ahead!
+              </div>
 
-              <div class="body-text">
+              <div
+                class="body-text i18n-element-text"
+                id="extension_promo_body_text"
+              >
                 Add Brave Talk links directly to an invite, with the Google
                 Calendar extension.
               </div>
@@ -234,7 +299,9 @@
                 target="_blank"
               >
                 <button>
-                  <div>Install Calendar extension</div>
+                  <div class="i18n-element-text" id="extension_promo_install">
+                    Install Calendar extension
+                  </div>
                 </button>
               </a>
             </div>
