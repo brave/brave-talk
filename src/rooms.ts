@@ -211,19 +211,19 @@ export const fetchJWT = async (
     failureMessages: {
       400: createP
         ? "Sorry, you are not a subscriber"
-        : "Sorry, the room is already full",
+        : "Sorry, the call is already full",
       403: "Forbidden",
       404: "The room does not exist",
-      405: "Method Not Allowed",
-      408: "Request Timeout",
-      409: "Sorry, room already exists! (this should not happen)",
-      417: "Expectation Failed",
-      420: "Method Failure",
-      429: "Too Many Requests",
-      500: "Internal Server Error",
-      502: "Bad Gateway",
-      503: "Service Unavailable",
-      504: "Gateway Timeout",
+      405: "Method not allowed",
+      408: "Request timeout",
+      409: "Sorry, call already exists! (this should not happen)",
+      417: "Expectation failed",
+      420: "Method failure",
+      429: "Too many requests",
+      500: "Internal server error",
+      502: "Bad gateway",
+      503: "Service unavailable",
+      504: "Gateway timeout",
     },
   });
 
