@@ -22,6 +22,26 @@ import {
   incrementExtensionPromoCounter,
 } from "./general-store";
 
+import { getLangPref } from "./get-language-detector";
+import i18next from "i18next";
+import transEN from "./locales/en/translation.json";
+import transJP from "./locales/jp/translation.json";
+
+// localizing brave-talk for English and Japanese
+i18next.init({
+  lng: getLangPref(),
+  debug: true,
+  fallbackLng: "en",
+  resources: {
+    en: {
+      translation: transEN,
+    },
+    ja: {
+      translation: transJP,
+    },
+  },
+});
+
 const useBraveRequestAdsEnabledApi: boolean =
   !!window.chrome && !!window.chrome.braveRequestAdsEnabled;
 
@@ -55,6 +75,8 @@ const main = async () => {
   const intent = params.get("intent");
   const order = params.get("order");
   let orderId: string | null | undefined;
+
+  updateLang();
 
   if (order) {
     try {
@@ -125,7 +147,6 @@ const main = async () => {
       if (browser.isBrave && !browser.isMobile) {
         setTimeout(showPromo, 2_000);
       }
-
       return;
     }
   }
@@ -135,6 +156,13 @@ const main = async () => {
     joinRoom !== "widget" ? joinRoom : generateRoomName(),
     false
   );
+};
+
+const updateLang = () => {
+  const i18nElements = document.getElementsByClassName("i18n-element-text");
+  Array.from(i18nElements).forEach((element) => {
+    (<HTMLElement>element).innerText = i18next.t(element.id);
+  });
 };
 
 const showPromo = () => {
@@ -318,7 +346,7 @@ const hideLoadingIndicators = () => {
 const copyRoomLink = async (button: HTMLButtonElement) => {
   const originalButton = button.cloneNode(true);
   button.disabled = true;
-  const updateButtonText = (msg: string) => (button.innerText = msg);
+  const updateButtonText = (msg: string) => (button.innerText = i18next.t(msg));
 
   try {
     const roomName = generateRoomName();
@@ -364,8 +392,8 @@ const renderHomePage = (options: WelcomeScreenOptions) => {
 
   if (options.showStartCall) {
     enterRoomEl.innerText = options.showPremiumUI
-      ? "Start Premium call"
-      : "Start free call (up to 4 people)";
+      ? i18next.t("Start Premium call")
+      : i18next.t("Start free call (up to 4 people)");
 
     enterRoomEl.style.display = "block";
 
@@ -381,6 +409,7 @@ const renderHomePage = (options: WelcomeScreenOptions) => {
               options.roomNameOverride ?? generateRoomName(),
               true
             );
+
             return;
           }
 
@@ -461,6 +490,7 @@ const renderConferencePage = (roomName: string, jwt: string) => {
     roomName: config.vpaas + "/" + roomName,
     jwt: jwt,
     parentNode: document.querySelector("#meet"),
+    lang: getLangPref(),
 
     configOverwrite: {
       analytics: {
@@ -811,7 +841,7 @@ const getAutoOpenRoom = (): string | undefined => {
 const notice = (text: string) => {
   const element = document.getElementById("notice_text")!;
 
-  element.innerText = text;
+  element.innerText = i18next.t(text);
   element.style.display = text ? "inline-block" : "none";
 };
 
