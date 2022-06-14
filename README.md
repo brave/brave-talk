@@ -48,8 +48,6 @@ We have Japanese langugage suupport available for brave-talk. So whenever we are
 2. add appropriate `id` to the new tag which is used as a key for translation
 3. add the appropriate content translation in the `src > locales`. The format is {key: `tag id`, value: `transated version`}
 
-# Prettier
+# Standard
 
-This codebase uses [prettier](https://prettier.io/) to keep the code formatted nicely and avoid needless changes in diff. It's recommended
-that you [configure your editor](https://prettier.io/docs/en/editors.html) to reformat as you go. There's also a pre-commit hook configured that should
-reformat on commit, or you can run `npm run format`.
+This codebase uses [ts-standard](https://standardjs.com/#typescript) to keep code consistent in formatting and quality. The linter has been configured in package.json to ignore all .js files in the workspace. To automatically fix issues and identify code quality issues that need resolving, run the command `npm run lint`.
