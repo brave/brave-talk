@@ -8,7 +8,8 @@
     "format": "prettier --write .",
     "start": "webpack serve --config webpack.config.js --mode development",
     "test": "jest",
-    "prepare": "husky install"
+    "prepare": "husky install",
+    "lint": "ts-standard --fix"
   },
   "repository": {
     "type": "git",
