@@ -98,10 +98,10 @@ export async function setTemporaryCredentialCookie (): Promise<boolean> {
   return false
 }
 
-function log (message: string, ...args: any[]) {
+function log (message: string, ...args: any[]): void {
   console.log(`skus-sdk: ${message}`, ...args)
 }
 
-function error (message: string, ...args: any[]) {
+function error (message: string, ...args: any[]): void {
   console.error(`skus-sdk: ${message}`, ...args)
 }

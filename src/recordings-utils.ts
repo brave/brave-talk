@@ -1,6 +1,6 @@
 // exported for testing
 export function formatRelativeDay (d: Date): string {
-  const getDateString = (epochMs: number) =>
+  const getDateString = (epochMs: number): String =>
     new Date(epochMs).toLocaleDateString()
 
   const now = new Date().getTime()

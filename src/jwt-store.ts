@@ -142,7 +142,7 @@ const loadLogsFromStorage = (): LogEntries => {
 }
 
 // remove all expired tokens from confabs, saving back to local storage if needed
-const garbageCollect = (confabs: ConfabStructure) => {
+const garbageCollect = (confabs: ConfabStructure): void => {
   let didP = false
   let logP = false
   let logs: LogEntries = []
@@ -237,7 +237,7 @@ const saveLogsToStorage = (logs: LogEntries): void => {
   }
 }
 
-const performMauCheck = (confabs: ConfabStructure) => {
+const performMauCheck = (confabs: ConfabStructure): boolean => {
   // track whether we are a new monthly active user or not
   const mauStamp = confabs.mauStamp || 0
   const now = new Date()

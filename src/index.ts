@@ -62,7 +62,7 @@ if (document.readyState === 'complete') {
   window.onload = async () => await main()
 }
 
-const main = async () => {
+const main = async (): Promise<void> => {
   // these envvars are set by the EnvironmentPlugin in webpack.config.js
   console.log(
     `!!! version ${process.env.GIT_VERSION} (${process.env.ENVIRONMENT})`
@@ -158,14 +158,14 @@ const main = async () => {
   )
 }
 
-const updateLang = () => {
+const updateLang = (): void => {
   const i18nElements = document.getElementsByClassName('i18n-element-text')
   Array.from(i18nElements).forEach((element) => {
     (<HTMLElement>element).innerText = i18next.t(element.id)
   })
 }
 
-const showPromo = () => {
+const showPromo = (): void => {
   if (shouldShowExtensionPromo()) {
     const el = findElement('extension_promo')
     const close = findElement('extension_promo_close')
@@ -177,7 +177,7 @@ const showPromo = () => {
   }
 }
 
-const immediatelyCreateRoom = async (roomName: string) => {
+const immediatelyCreateRoom = async (roomName: string): Promise<void> => {
   try {
     // This check has the side-effect of renewing credentials, so although we're not
     // really interested in whether the user is subscribed or not, we still want the call
@@ -270,7 +270,7 @@ const calcBrowserCapabilities = async (): Promise<BrowserProperties> => {
     androidP ||
     (!!navigator.mediaDevices && !!navigator.mediaDevices.getUserMedia)
 
-  const isBrave = async () => {
+  const isBrave = async (): Promise<boolean> => {
     try {
       return await (navigator as any).brave.isBrave()
     } catch (error) {
@@ -337,15 +337,15 @@ const findElement = <T extends HTMLElement>(id: string): T => {
   return el! as T
 }
 
-const hideLoadingIndicators = () => {
+const hideLoadingIndicators = (): void => {
   findElement('subscribe_loading').style.display = 'none'
   findElement('enter_room_loading').style.display = 'none'
 }
 
-const copyRoomLink = async (button: HTMLButtonElement) => {
+const copyRoomLink = async (button: HTMLButtonElement): Promise<void> => {
   const originalButton = button.cloneNode(true)
   button.disabled = true
-  const updateButtonText = (msg: string) => (button.innerText = i18next.t(msg))
+  const updateButtonText = (msg: string): string => (button.innerText = i18next.t(msg))
 
   try {
     const roomName = generateRoomName()
@@ -369,7 +369,7 @@ const copyRoomLink = async (button: HTMLButtonElement) => {
   }
 }
 
-const renderHomePage = (options: WelcomeScreenOptions) => {
+const renderHomePage = (options: WelcomeScreenOptions): void => {
   reportMethod('renderHomePage', options)
 
   hideLoadingIndicators()
@@ -479,7 +479,7 @@ const renderHomePage = (options: WelcomeScreenOptions) => {
 
 let JitsiMeetJS: any
 
-const renderConferencePage = (roomName: string, jwt: string) => {
+const renderConferencePage = (roomName: string, jwt: string): void => {
   reportMethod('renderConferencePage', { roomName, jwt })
 
   findElement('welcome_page').style.display = 'none'
@@ -609,7 +609,7 @@ const renderConferencePage = (roomName: string, jwt: string) => {
   document.getElementById('talk')!.style.backgroundColor =
     options.interfaceConfigOverwrite.DEFAULT_BACKGROUND
 
-  const askOnUnload = (e: any) => {
+  const askOnUnload = (e: any): void => {
     e.returnValue = ''
 
     window.removeEventListener('beforeunload', askOnUnload)
@@ -624,7 +624,7 @@ const renderConferencePage = (roomName: string, jwt: string) => {
   JitsiMeetJS = new JitsiMeetExternalAPI(config.webrtc_domain, options)
   reportAction('JitsiMeetExternalAPI', { status: 'activated!' })
 
-  const updateSubject = () => {
+  const updateSubject = (): void => {
     try {
       // works for everyone...
       JitsiMeetJS.executeCommand(
@@ -650,7 +650,7 @@ const renderConferencePage = (roomName: string, jwt: string) => {
 
   let recordingLink: string | undefined
   let recordingTTL: number | undefined
-  const updateRecTimestamp = () => {
+  const updateRecTimestamp = (): void => {
     if (!recordingLink) {
       return
     }
@@ -794,7 +794,7 @@ const joinConferenceRoom = async (
   }
 }
 
-const generateRoomName = () => {
+const generateRoomName = (): string => {
   const { crypto } = window
   const buf = new Uint8Array(32)
   crypto.getRandomValues(buf)
@@ -804,14 +804,14 @@ const generateRoomName = () => {
     .replace(/=/g, '')
 }
 
-const isRoomValid = (room: string) => {
+const isRoomValid = (room: string): RegExpMatchArray | null | boolean => {
   // e.g., "abcdefghijklmnopqrstuvwxyz0123456789-_ABCDE"
   return typeof room === 'string' && room.match(/^[A-Za-z0-9-_]{43}$/)
 }
 
 const AUTO_OPEN_ROOM_KEY = 'talk_auto_open_room'
 
-const setAutoOpenRoom = (roomName: string) => {
+const setAutoOpenRoom = (roomName: string): void => {
   try {
     window.sessionStorage.setItem(
       AUTO_OPEN_ROOM_KEY,
@@ -837,18 +837,18 @@ const getAutoOpenRoom = (): string | undefined => {
   }
 }
 
-const notice = (text: string) => {
+const notice = (text: string): void => {
   const element = document.getElementById('notice_text')!
 
   element.innerText = i18next.t(text)
   element.style.display = text ? 'inline-block' : 'none'
 }
 
-const reportAction = (action: string, params: object) => {
+const reportAction = (action: string, params: object): void => {
   console.log('!!! < ' + action + ': ', params)
 }
 
-const reportMethod = (method: string, params: object) => {
+const reportMethod = (method: string, params: object): void => {
   console.log('!!! > ' + method + ': ', params)
 }
 
