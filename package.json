@@ -11,6 +11,13 @@
     "prepare": "husky install",
     "lint": "ts-standard --fix"
   },
+  "ts-standard": {
+    "ignore": [
+      "src/*.js",
+      "src/*/*.js",
+      "*.js"
+    ]
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/brave/brave-talk.git"
