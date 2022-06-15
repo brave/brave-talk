@@ -50,4 +50,4 @@ We have Japanese langugage suupport available for brave-talk. So whenever we are
 
 # Standard
 
-This codebase uses [ts-standard](https://standardjs.com/#typescript) to keep code consistent in formatting and quality. The linter has been configured in package.json to ignore all .js files in the workspace. To automatically fix issues and identify code quality issues that need resolving, run the command `npm run lint`.
+This codebase uses [ts-standard](https://standardjs.com/#typescript) to keep code consistent in formatting and quality. The linter has been configured in `package.json` to ignore all `.js` files in the workspace. To automatically fix issues and identify code quality issues that need resolving, run the command `npm run lint`.
