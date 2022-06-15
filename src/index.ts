@@ -26,7 +26,12 @@ const useBraveRequestAdsEnabledApi: boolean =
   !!window.chrome && !!window.chrome.braveRequestAdsEnabled;
 
 const config = {
-  vpaas: "vpaas-magic-cookie-cd4131ef77674a71b73411408226e232",
+  vpaas:
+    process.env.ENVIRONMENT === "development"
+      ? "vpaas-magic-cookie-cd4131ef77674a71b73411408226e232"
+      : process.env.ENVIRONMENT === "staging"
+      ? "vpaas-magic-cookie-520aa9362071418c8a8661950bc0a470"
+      : "vpaas-magic-cookie-a4818bd762a044998d717b70ac734cfe",
   webrtc_domain: "8x8.vc",
 };
 
