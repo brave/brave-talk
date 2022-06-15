@@ -28,7 +28,7 @@ import transEN from './locales/en/translation.json'
 import transJP from './locales/jp/translation.json'
 
 // localizing brave-talk for English and Japanese
-i18next.init({
+void i18next.init({
   lng: getLangPref(),
   debug: true,
   fallbackLng: 'en',
@@ -57,7 +57,10 @@ const params = new URLSearchParams(window.location.search)
 
 // there's a chance that window.onload has already fired by the time this code runs
 if (document.readyState === 'complete') {
+  // unsure how to resolve issue and maintain functionality, turning off linting for this line
+  /* eslint-disable @typescript-eslint/no-misused-promises */
   window.setTimeout(async () => await main())
+  /* eslint-enable @typescript-eslint/no-misused-promises */
 } else {
   window.onload = async () => await main()
 }
@@ -152,7 +155,7 @@ const main = async (): Promise<void> => {
   }
 
   hideLoadingIndicators()
-  joinConferenceRoom(
+  void joinConferenceRoom(
     joinRoom !== 'widget' ? joinRoom : generateRoomName(),
     false
   )
@@ -272,7 +275,8 @@ const calcBrowserCapabilities = async (): Promise<BrowserProperties> => {
 
   const isBrave = async (): Promise<boolean> => {
     try {
-      return await (navigator as any).brave.isBrave()
+      const promise = await (navigator as any).brave.isBrave()
+      return promise
     } catch (error) {
       return false
     }
@@ -404,7 +408,7 @@ const renderHomePage = (options: WelcomeScreenOptions): void => {
           reportAction('braveRequestAdsEnabled', { result })
           if (result) {
             // good to start the call now
-            joinConferenceRoom(
+            void joinConferenceRoom(
               options.roomNameOverride ?? generateRoomName(),
               true
             )
@@ -424,7 +428,7 @@ const renderHomePage = (options: WelcomeScreenOptions): void => {
           window.location.reload()
         }
       } else {
-        joinConferenceRoom(
+        void joinConferenceRoom(
           options.roomNameOverride ?? generateRoomName(),
           true
         )
@@ -757,8 +761,8 @@ const joinConferenceRoom = async (
             roomNameOverride: roomName
           })
           setAutoOpenRoom(roomName)
-          setTimeout(async () => await joinConferenceRoom(roomName, false), 5_000)
-
+          await wait(5_000)
+          await joinConferenceRoom(roomName, false)
           return
         }
       }
