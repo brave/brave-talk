@@ -54,7 +54,7 @@ const config = {
       : "vpaas-magic-cookie-a4818bd762a044998d717b70ac734cfe",
   webrtc_domain: "8x8.vc",
 };
-
+// vpaas-magic-cookie-a4818bd762a044998d717b70ac734cfe
 const isProduction: boolean = process.env.ENVIRONMENT === "production";
 const disableBeforeUnloadHandlers = true;
 

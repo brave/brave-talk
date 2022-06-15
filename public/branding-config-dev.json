@@ -4,7 +4,7 @@
   "didPageUrl": "",
   "inviteDomain": "https://talk.brave.com",
   "logoClickUrl": "",
-  "logoImageUrl": "https://talk.brave.com/images/brave_logo_dev.svg",
+  "logoImageUrl": "https://talk.brave.software/images/brave_logo_dev.svg",
   "premeetingBackground": "url(https://talk.brave.com/images/background.svg) no-repeat center fixed",
   "avatarBackgrounds": [
     "#12A378",
