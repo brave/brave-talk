@@ -1,65 +1,65 @@
 export interface BrowserProperties {
-  isBrave: boolean;
-  isMobile: boolean;
-  isIOS: boolean;
-  supportsWebRTC: boolean;
+  isBrave: boolean
+  isMobile: boolean
+  isIOS: boolean
+  supportsWebRTC: boolean
 }
 
 export interface Context {
   // we know the user has a valid subscription
-  userIsSubscribed: boolean;
+  userIsSubscribed: boolean
 
   // via greaselion, we know the user has opted into ads
-  userHasOptedInToAds: boolean;
+  userHasOptedInToAds: boolean
 
   // the user is on a platform that supports braveRequestAdsEnabled,
   // and we choose to use that api instead of the greaselion detection
-  useBraveRequestAdsEnabledApi: boolean;
+  useBraveRequestAdsEnabledApi: boolean
 
-  browser: BrowserProperties;
+  browser: BrowserProperties
 }
 
 export interface WelcomeScreenOptions {
   // UI eleements to show on welcome page
-  showDownload?: boolean;
-  showStartCall?: boolean;
-  showSubscribeCTA?: boolean;
-  showPremiumUI?: boolean;
-  showCopyLinkForLater?: boolean;
-  showUseDesktopMessage?: boolean;
-  showFailureMessage?: string;
+  showDownload?: boolean
+  showStartCall?: boolean
+  showSubscribeCTA?: boolean
+  showPremiumUI?: boolean
+  showCopyLinkForLater?: boolean
+  showUseDesktopMessage?: boolean
+  showFailureMessage?: string
 
   // clicking the start call button doesn't actually start a call
   // it asks for the user to opt in - either by manual instruction UI
   // or by calling braveRequestAdsEnabled if available
-  startCallButtonPromptsOptIn?: boolean;
+  startCallButtonPromptsOptIn?: boolean
 
   // in some cases, we know the name room we'd want to join/create,
   // (e.g. when `create=y` is present), so allow override
   // of the auto-generated room name
-  roomNameOverride?: string;
+  roomNameOverride?: string
 }
 
-export function checkJoinRoom(
+export function checkJoinRoom (
   roomName: string | undefined,
   browser: BrowserProperties
 ): string | undefined {
-  if (roomName && browser.supportsWebRTC) {
+  if (roomName !== undefined && roomName !== '' && browser.supportsWebRTC) {
     // direct room links open whenever supported
-    return roomName;
+    return roomName
   }
 
-  return undefined;
+  return undefined
 }
 
 // This is a pure function (its outputs should be a function of just its inputs,
 // with no side effects or other calls) that, given a whole set of context,
 // determines what the behaviour of the brave talk landing page should be.
-export function determineWelcomeScreenUI(c: Context): WelcomeScreenOptions {
+export function determineWelcomeScreenUI (c: Context): WelcomeScreenOptions {
   if (!c.browser.isBrave) {
     return {
-      showDownload: true,
-    };
+      showDownload: true
+    }
   }
 
   // on mobile only subscribed users can start a call
@@ -68,22 +68,22 @@ export function determineWelcomeScreenUI(c: Context): WelcomeScreenOptions {
     if (!c.browser.supportsWebRTC) {
       return {
         showFailureMessage:
-          "Brave Talk requires that your device is running the latest version of iOS. Please upgrade. Yes, this is an inconvenience and we do apologize!",
-      };
+          'Brave Talk requires that your device is running the latest version of iOS. Please upgrade. Yes, this is an inconvenience and we do apologize!'
+      }
     }
 
     if (c.userIsSubscribed) {
       return {
         showStartCall: true,
         showPremiumUI: true,
-        showCopyLinkForLater: !c.browser.isIOS,
-      };
+        showCopyLinkForLater: !c.browser.isIOS
+      }
     } else {
       return {
         showSubscribeCTA: true,
         showStartCall: true,
-        startCallButtonPromptsOptIn: false,
-      };
+        startCallButtonPromptsOptIn: false
+      }
     }
   }
 
@@ -93,6 +93,6 @@ export function determineWelcomeScreenUI(c: Context): WelcomeScreenOptions {
     showSubscribeCTA: !c.userIsSubscribed,
     showPremiumUI: c.userIsSubscribed,
     showCopyLinkForLater: c.userIsSubscribed,
-    startCallButtonPromptsOptIn: false,
-  };
+    startCallButtonPromptsOptIn: false
+  }
 }
