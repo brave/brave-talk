@@ -31,7 +31,11 @@ export async function provisionOrder (orderId: string): Promise<void> {
       await sdk.fetch_order_credentials(orderId)
     }
   } catch (e) {
-    error(`${currentMethod} fails`, e)
+    if (currentMethod !== undefined) {
+      error(`${currentMethod} fails`, e)
+    } else {
+      error('currentMethod undefined', e)
+    }
     throw e
   }
 }
@@ -58,7 +62,11 @@ export async function recoverCredsIfRequired (orderId: string): Promise<void> {
       throw new Error('Order not paid.')
     }
   } catch (e) {
-    error(`${currentMethod} fails`, e)
+    if (currentMethod !== undefined) {
+      error(`${currentMethod} fails`, e)
+    } else {
+      error('currentMethod undefined', e)
+    }
     throw e
   }
 }

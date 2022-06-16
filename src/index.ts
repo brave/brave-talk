@@ -68,7 +68,7 @@ if (document.readyState === 'complete') {
 const main = async (): Promise<void> => {
   // these envvars are set by the EnvironmentPlugin in webpack.config.js
   console.log(
-    `!!! version ${process.env.GIT_VERSION} (${process.env.ENVIRONMENT})`
+    `!!! version ${process.env.GIT_VERSION as string} (${process.env.ENVIRONMENT as string})`
   )
 
   if (useBraveRequestAdsEnabledApi) {
@@ -171,7 +171,10 @@ const updateLang = (): void => {
 const showPromo = (): void => {
   if (shouldShowExtensionPromo()) {
     const el = findElement('extension_promo')
-    const close = findElement('extension_promo_close')
+
+    // Assigned but never used
+    // const close = findElement('extension_promo_close')
+
     el.style.display = 'block'
     el.onclick = () => {
       el.style.display = 'none'
@@ -215,7 +218,7 @@ const userIsSubscribed = async (): Promise<boolean> => {
   const override = checkDevOverride('subscribed')
 
   if (override !== null) {
-    console.log(`OVERRIDE subscribed to ${override}`)
+    console.log(`OVERRIDE subscribed to ${override.toString()}`)
     await new Promise<boolean>((resolve) => {
       setTimeout(resolve, 1500)
     })
@@ -243,7 +246,7 @@ const isOptedInToAds = (): boolean => {
   const override = checkDevOverride('adsoptin')
 
   if (override !== null) {
-    console.log(`OVERRIDE adsoptin to ${override}`)
+    console.log(`OVERRIDE adsoptin to ${override.toString()}`)
     return override
   }
 

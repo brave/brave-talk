@@ -31,8 +31,15 @@ export const upsertRecordingForRoom = (
 
   const existingEntryForUrl = recordings.find((r) => r.url === url)
 
+  let ttlString
+  if (ttl !== undefined) {
+    ttlString = ttl.toString()
+  } else {
+    ttlString = 'undefined'
+  }
+
   console.log(
-    `!!! upsertRecording ${url} for room ${roomName} ttl=${ttl}  createP=${existingEntryForUrl == null}`
+    `!!! upsertRecording ${url} for room ${roomName} ttl=${ttlString}  createP=${(existingEntryForUrl == null).toString()}`
   )
 
   const now = Math.ceil(new Date().getTime() / 1000)
