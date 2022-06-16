@@ -47,18 +47,18 @@ const useBraveRequestAdsEnabledApi: boolean =
 
 const config = {
   vpaas:
-    process.env.ENVIRONMENT === "development"
-      ? "vpaas-magic-cookie-cd4131ef77674a71b73411408226e232"
-      : process.env.ENVIRONMENT === "staging"
-      ? "vpaas-magic-cookie-520aa9362071418c8a8661950bc0a470"
-      : "vpaas-magic-cookie-a4818bd762a044998d717b70ac734cfe",
-  webrtc_domain: "8x8.vc",
-};
+    process.env.ENVIRONMENT === 'development'
+      ? 'vpaas-magic-cookie-cd4131ef77674a71b73411408226e232'
+      : process.env.ENVIRONMENT === 'staging'
+        ? 'vpaas-magic-cookie-520aa9362071418c8a8661950bc0a470'
+        : 'vpaas-magic-cookie-a4818bd762a044998d717b70ac734cfe',
+  webrtc_domain: '8x8.vc'
+}
 // vpaas-magic-cookie-a4818bd762a044998d717b70ac734cfe
-const isProduction: boolean = process.env.ENVIRONMENT === "production";
-const disableBeforeUnloadHandlers = true;
+const isProduction: boolean = process.env.ENVIRONMENT === 'production'
+const disableBeforeUnloadHandlers = true
 
-const params = new URLSearchParams(window.location.search);
+const params = new URLSearchParams(window.location.search)
 
 // there's a chance that window.onload has already fired by the time this code runs
 if (document.readyState === 'complete') {
