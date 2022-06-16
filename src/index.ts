@@ -25,17 +25,20 @@ import {
 const useBraveRequestAdsEnabledApi: boolean =
   !!window.chrome && !!window.chrome.braveRequestAdsEnabled;
 
+const env = process.env.ENVIRONMENT ?? "local";
 const config = {
   vpaas:
-    process.env.ENVIRONMENT === "development"
+    env === "development"
       ? "vpaas-magic-cookie-cd4131ef77674a71b73411408226e232"
-      : process.env.ENVIRONMENT === "staging"
+      : env === "staging"
       ? "vpaas-magic-cookie-520aa9362071418c8a8661950bc0a470"
+      : env === "local"
+      ? "vpaas-magic-cookie-cd4131ef77674a71b73411408226e232"
       : "vpaas-magic-cookie-a4818bd762a044998d717b70ac734cfe",
   webrtc_domain: "8x8.vc",
 };
 
-const isProduction: boolean = process.env.ENVIRONMENT === "production";
+const isProduction: boolean = env === "production";
 const disableBeforeUnloadHandlers = true;
 
 const params = new URLSearchParams(window.location.search);
@@ -49,9 +52,7 @@ if (document.readyState === "complete") {
 
 const main = async () => {
   // these envvars are set by the EnvironmentPlugin in webpack.config.js
-  console.log(
-    `!!! version ${process.env.GIT_VERSION} (${process.env.ENVIRONMENT})`
-  );
+  console.log(`!!! version ${process.env.GIT_VERSION} (${env})`);
 
   if (useBraveRequestAdsEnabledApi) {
     console.log("--> will use braveRequestAdsEnabled");
