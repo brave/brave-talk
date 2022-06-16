@@ -72,7 +72,7 @@ function loadFromStorage (): Recording[] {
   try {
     const item = window.localStorage.getItem(STORAGE_KEY)
 
-    if (item) {
+    if (item !== null && item !== '') {
       return JSON.parse(item)
     }
   } catch (error) {

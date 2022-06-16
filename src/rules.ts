@@ -44,7 +44,7 @@ export function checkJoinRoom (
   roomName: string | undefined,
   browser: BrowserProperties
 ): string | undefined {
-  if (roomName && browser.supportsWebRTC) {
+  if (roomName !== undefined && roomName !== '' && browser.supportsWebRTC) {
     // direct room links open whenever supported
     return roomName
   }

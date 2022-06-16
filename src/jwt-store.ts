@@ -45,7 +45,7 @@ export function loadLocalJwtStore (forceReload: boolean = false): JwtStore {
           evt: 'add confab JWT',
           exp: expires(encodedJwt)
         })
-        if (encodedRefreshToken) {
+        if (encodedRefreshToken !== undefined && encodedRefreshToken !== '') {
           confabs.refresh[roomName] = encodedRefreshToken
           logs.push({
             tag: roomName,
@@ -99,7 +99,7 @@ const defaults: ConfabStructure = {
 const loadConfabsFromStorage = (): ConfabStructure => {
   try {
     const item = window.localStorage.getItem(CONFABS_STORAGE_KEY)
-    if (item) {
+    if (item !== null && item !== '') {
       const value = JSON.parse(item)
       return {
         ...defaults,
@@ -125,7 +125,7 @@ const loadLogsFromStorage = (): LogEntries => {
   try {
     const item = window.localStorage.getItem(LOGS_STORAGE_KEY)
 
-    if (item) {
+    if (item !== null && item !== '') {
       return JSON.parse(item)
     }
   } catch (error) {
@@ -239,7 +239,7 @@ const saveLogsToStorage = (logs: LogEntries): void => {
 
 const performMauCheck = (confabs: ConfabStructure): boolean => {
   // track whether we are a new monthly active user or not
-  const mauStamp = confabs.mauStamp || 0
+  const mauStamp = confabs.mauStamp
   const now = new Date()
 
   if (mauStamp <= now.getTime()) {

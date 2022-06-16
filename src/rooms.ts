@@ -54,7 +54,7 @@ const roomsRequest = async ({
     console.log(`<<< OPTIONS ${optionsUrl} ${optionsResponse.status}`)
 
     const csrfToken = optionsResponse.headers.get('x-csrf-token')
-    if (!csrfToken) {
+    if (csrfToken === null || csrfToken === '') {
       console.warn(
         'OPTIONS request failed to return x-csrf-token, which is likely due to incorrectly configured CORS policy'
       )
@@ -77,9 +77,12 @@ const roomsRequest = async ({
     console.log(`<<< ${method} ${url} ${status}`)
 
     if (!successCodes.includes(status)) {
-      const message =
-        failureMessages[status] ||
-        `Request failed: ${status} ${response.statusText}`
+      let message
+      if (failureMessages[status] === null || failureMessages[status] === '') {
+        message = `Request failed: ${status} ${response.statusText}`
+      } else {
+        message = failureMessages[status]
+      }
 
       console.warn(`^^^ body: ${await response.text()}`)
       throw new Error(message)
@@ -87,7 +90,9 @@ const roomsRequest = async ({
 
     const resBody = await response.json()
 
+    /* eslint-disable @typescript-eslint/strict-boolean-expressions */
     if (!resBody.jwt) {
+    /* eslint-enable @typescript-eslint/strict-boolean-expressions */
       console.warn('response does not include jwt eleement!')
       throw new Error('Request failed: internal error(1)')
     }
@@ -165,13 +170,13 @@ export const fetchJWT = async (
   const store = loadLocalJwtStore()
 
   const jwt = store.findJwtForRoom(roomName)
-  if (jwt) {
+  if (jwt !== undefined && jwt !== '') {
     console.log('found local jwt: ', jwt)
     return { jwt }
   }
 
   const refreshToken = store.findRefreshTokenForRoom(roomName)
-  if (refreshToken) {
+  if (refreshToken !== undefined && refreshToken !== '') {
     reportProgress('Checking moderator status...')
     console.log('attempting refresh: ', refreshToken)
     const response = await attemptTokenRefresh(roomName, refreshToken)

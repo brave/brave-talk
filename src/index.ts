@@ -81,7 +81,7 @@ const main = async (): Promise<void> => {
 
   updateLang()
 
-  if (order) {
+  if (order !== null && order !== '') {
     try {
       const o = JSON.parse(atob(order))
       const exp = o?.recovery_expiration
@@ -97,7 +97,7 @@ const main = async (): Promise<void> => {
 
   let autoJoinRoom: string | undefined
 
-  if (orderId) {
+  if (orderId !== null && orderId !== undefined && orderId !== '') {
     try {
       const s = await import('./subscriptions')
       if (intent === 'provision') {
@@ -119,7 +119,7 @@ const main = async (): Promise<void> => {
     browser
   )
 
-  if (joinRoom && params.get('create_only') === 'y') {
+  if (joinRoom !== undefined && joinRoom !== '' && params.get('create_only') === 'y') {
     hideLoadingIndicators()
     await immediatelyCreateRoom(joinRoom)
     return
@@ -134,7 +134,7 @@ const main = async (): Promise<void> => {
     }
   }, interval)
 
-  if (!joinRoom || joinRoom === 'widget') {
+  if (joinRoom === undefined || joinRoom === '' || joinRoom === 'widget') {
     const context: Context = {
       browser,
       userHasOptedInToAds: isOptedInToAds(),
@@ -144,7 +144,7 @@ const main = async (): Promise<void> => {
 
     console.log('Context:', context)
 
-    if (!joinRoom || !context.userIsSubscribed) {
+    if (joinRoom === undefined || joinRoom === '' || !context.userIsSubscribed) {
       renderHomePage(determineWelcomeScreenUI(context))
 
       if (browser.isBrave && !browser.isMobile) {
@@ -272,9 +272,11 @@ const calcBrowserCapabilities = async (): Promise<BrowserProperties> => {
     !(userAgent.match(/iP(ad|hone|od)/i) == null) ||
     (userAgent.includes('Mac') && 'ontouchend' in document)
 
-  const webrtcP =
-    androidP ||
-    (!!navigator.mediaDevices && !!navigator.mediaDevices.getUserMedia)
+  const webrtcP = true
+  /*
+    old webrtcP value, condition always evaluated to true ---
+    androidP || (!!navigator.mediaDevices && !!navigator.mediaDevices.getUserMedia)
+  */
 
   const isBrave = async (): Promise<boolean> => {
     try {
@@ -310,7 +312,7 @@ const extractRoomNameFromUrl = (): string | undefined => {
     return roomName
   }
 
-  if (!isRoomValid(roomName)) {
+  if (isRoomValid(roomName) === null || isRoomValid(roomName) === false) {
     console.warn('!!! invalid roomName: ' + roomName)
     return undefined
   }
@@ -358,7 +360,7 @@ const copyRoomLink = async (button: HTMLButtonElement): Promise<void> => {
     const roomName = generateRoomName()
     const { url } = await fetchJWT(roomName, true, updateButtonText)
 
-    if (!url) {
+    if (url === undefined || url === '') {
       throw new Error('Failed to create meeting room')
     }
 
@@ -388,7 +390,7 @@ const renderHomePage = (options: WelcomeScreenOptions): void => {
   const adsOptInManualSteps = findElement('opt_in_manual_steps')
   const copyLinkEl = findElement<HTMLButtonElement>('copy_link')
 
-  if (options.showDownload) {
+  if (options.showDownload !== undefined && options.showDownload) {
     downloadCta.style.display = 'flex'
     enterRoomEl.style.display = 'none'
     notice(
@@ -396,15 +398,19 @@ const renderHomePage = (options: WelcomeScreenOptions): void => {
     )
   }
 
-  if (options.showStartCall) {
-    enterRoomEl.innerText = options.showPremiumUI
-      ? i18next.t('Start Premium call')
-      : i18next.t('Start free call (up to 4 people)')
+  if (options.showStartCall !== undefined && options.showStartCall) {
+    if (options.showPremiumUI === undefined) {
+      enterRoomEl.innerText = i18next.t('Start free call (up to 4 people)')
+    } else {
+      enterRoomEl.innerText = options.showPremiumUI
+        ? i18next.t('Start Premium call')
+        : i18next.t('Start free call (up to 4 people)')
+    }
 
     enterRoomEl.style.display = 'block'
 
     enterRoomEl.onclick = async () => {
-      if (options.startCallButtonPromptsOptIn) {
+      if (options.startCallButtonPromptsOptIn !== undefined && options.startCallButtonPromptsOptIn) {
         if (useBraveRequestAdsEnabledApi) {
           reportAction('checking braveRequestAdsEnabled...', {})
           const result = await window.chrome!.braveRequestAdsEnabled!()
@@ -442,7 +448,7 @@ const renderHomePage = (options: WelcomeScreenOptions): void => {
 
   const subsUrl = resolveService('account')
 
-  if (options.showSubscribeCTA) {
+  if (options.showSubscribeCTA !== undefined && options.showSubscribeCTA) {
     findElement('subscribe_button').onclick = () =>
       window.location.assign(`${subsUrl}/plans/?intent=checkout&product=talk`)
     findElement<HTMLAnchorElement>(
@@ -451,14 +457,14 @@ const renderHomePage = (options: WelcomeScreenOptions): void => {
     subscribeCtaEl.style.display = 'block'
   }
 
-  if (options.showPremiumUI) {
+  if (options.showPremiumUI !== undefined && options.showPremiumUI) {
     const myAccountElement = findElement<HTMLAnchorElement>('my_account_link')
     myAccountElement.href = subsUrl
     myAccountElement.style.display = 'block'
 
     findElement('talk_title').innerText = 'Brave Talk Premium'
 
-    if (options.showCopyLinkForLater) {
+    if (options.showCopyLinkForLater !== undefined && options.showCopyLinkForLater) {
       copyLinkEl.style.display = 'flex'
       copyLinkEl.onclick = async () => {
         await copyRoomLink(copyLinkEl)
@@ -466,12 +472,12 @@ const renderHomePage = (options: WelcomeScreenOptions): void => {
     }
   }
 
-  if (options.showUseDesktopMessage) {
+  if (options.showUseDesktopMessage !== undefined && options.showUseDesktopMessage) {
     enterRoomEl.style.display = 'none'
     findElement('desktop_needed').style.display = 'block'
   }
 
-  if (options.showFailureMessage) {
+  if (options.showFailureMessage !== undefined && options.showFailureMessage !== '') {
     notice(options.showFailureMessage)
   }
 
@@ -658,7 +664,7 @@ const renderConferencePage = (roomName: string, jwt: string): void => {
   let recordingLink: string | undefined
   let recordingTTL: number | undefined
   const updateRecTimestamp = (): void => {
-    if (!recordingLink) {
+    if (recordingLink === undefined || recordingLink === '') {
       return
     }
 
@@ -691,14 +697,17 @@ const renderConferencePage = (roomName: string, jwt: string): void => {
       reportAction('recordingLinkAvailable', params)
       recordingLink = params.link
 
-      const ttl = Math.floor(params.ttl / 1000) || 0
+      const ttl = Math.floor(params.ttl / 1000)
 
       if (ttl > 0) recordingTTL = ttl
       updateRecTimestamp()
     })
     .on('recordingStatusChanged', (params: any) => {
       reportAction('recordingStatusChanged', params)
+      // don't know how to handle eslint for variables of type: any
+      /* eslint-disable @typescript-eslint/strict-boolean-expressions */
       if (params.on && !recordingLink) {
+      /* eslint-enable @typescript-eslint/strict-boolean-expressions */
         const recordings = availableRecordings()
         const record = recordings.find((r) => r.roomName === roomName)
 
@@ -710,7 +719,10 @@ const renderConferencePage = (roomName: string, jwt: string): void => {
         }
       }
       updateRecTimestamp()
+      // don't know how to handle eslint for variables of type: any
+      /* eslint-disable @typescript-eslint/strict-boolean-expressions */
       if (!params.on) {
+      /* eslint-enable @typescript-eslint/strict-boolean-expressions */
         recordingLink = undefined
       }
     })
@@ -727,7 +739,7 @@ const renderConferencePage = (roomName: string, jwt: string): void => {
     })
 
   const passcode = extractValueFromFragment('passcode')
-  if (passcode) {
+  if (passcode !== undefined && passcode !== '') {
     JitsiMeetJS.on('passwordRequired', () => {
       JitsiMeetJS.executeCommand('password', passcode)
     })
@@ -742,15 +754,21 @@ const joinConferenceRoom = async (
 
   try {
     const result = await fetchJWT(roomName, createP, notice)
-    if (!result.url) {
+    if (result.url === undefined || result.url === '') {
       renderConferencePage(roomName, result.jwt)
     } else {
       const passcode = extractValueFromFragment('passcode')
 
-      window.open(
-        result.url + (passcode ? '#passcode=' + passcode : ''),
-        '_self'
-      )
+      if (passcode === undefined || passcode === '') {
+        window.open(
+          (result.url + ''), '_self'
+        )
+      } else {
+        window.open(
+          (result.url + '#passcode=' + passcode),
+          '_self'
+        )
+      }
     }
   } catch (error: any) {
     if (!createP && error.message === 'The room does not exist') {
@@ -832,9 +850,12 @@ const setAutoOpenRoom = (roomName: string): void => {
 const getAutoOpenRoom = (): string | undefined => {
   try {
     const s = window.sessionStorage.getItem(AUTO_OPEN_ROOM_KEY)
-    if (s) {
+    if (s !== null && s !== '') {
       const obj = JSON.parse(s)
+      // not sure how to handle linting of variable type: any
+      /* eslint-disable @typescript-eslint/strict-boolean-expressions */
       if (obj.exp && obj.exp >= new Date().getTime()) {
+      /* eslint-enable @typescript-eslint/strict-boolean-expressions */
         reportAction('autoOpenRoom', obj.roomName)
         return obj.roomName
       }
@@ -848,7 +869,11 @@ const notice = (text: string): void => {
   const element = document.getElementById('notice_text')!
 
   element.innerText = i18next.t(text)
-  element.style.display = text ? 'inline-block' : 'none'
+  if (text !== '') {
+    element.style.display = 'inline-block'
+  } else {
+    element.style.display = 'none'
+  }
 }
 
 const reportAction = (action: string, params: object): void => {

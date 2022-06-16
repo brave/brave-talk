@@ -25,7 +25,9 @@ export async function provisionOrder (orderId: string): Promise<void> {
     log('calling refresh_order...')
     const order = await sdk.refresh_order(orderId)
 
+    /* eslint-disable @typescript-eslint/strict-boolean-expressions */
     if (order && order.status === 'paid') {
+    /* eslint-enable @typescript-eslint/strict-boolean-expressions */
       currentMethod = 'fetch_order_credentials'
       log('calling fetch_order_credentials...')
       await sdk.fetch_order_credentials(orderId)
@@ -78,7 +80,9 @@ export async function checkSubscribedUsingSDK (): Promise<boolean> {
 
     const result = await sdk.credential_summary()
     log('credential_summary returns', result)
+    /* eslint-disable @typescript-eslint/strict-boolean-expressions */
     if (result && result.active) {
+    /* eslint-enable @typescript-eslint/strict-boolean-expressions */
       return true
     }
   } catch (e) {
@@ -96,7 +100,9 @@ export async function setTemporaryCredentialCookie (): Promise<boolean> {
 
     const result = await sdk.present_credentials()
     log('present_credentials returns', result)
+    /* eslint-disable @typescript-eslint/strict-boolean-expressions */
     if (result) {
+    /* eslint-enable @typescript-eslint/strict-boolean-expressions */
       return true
     }
   } catch (e) {
