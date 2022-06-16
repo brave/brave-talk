@@ -52,4 +52,6 @@ Japanese language support is available for brave-talk. So whenever we are adding
 
 This codebase uses [ts-standard](https://standardjs.com/#typescript) to keep code consistent in formatting and quality. The linter has been configured in `package.json` to ignore all `.js` files in the workspace. 
 
-A pre-commit hook has been setup to automatically format and fix issues in your code; if code quality issues exist that need resolving, your commit will be aborted. 
+A pre-commit hook has been setup to automatically format and fix issues in your code when you commit; if additional code quality issues exist that need resolving, your commit will be aborted. 
+
+In cases where the eslint quality rules seem to stop intended functionality / cannot easily be resolved, you can always ignore lines by using `/* eslint-disable @typescript-ERROR-NAME */` and `/* eslint-enable @typescript-ERROR-NAME */` before and after the lines of code you want the linter to ignore.
