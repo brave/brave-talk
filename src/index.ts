@@ -773,7 +773,7 @@ const joinConferenceRoom = async (
       return await joinConferenceRoom(roomName, true);
     } else if (
       !createP &&
-      error.message === "Sorry, the room is already full"
+      error.message === "Sorry, the call is already full"
     ) {
       const isSubscribed = await userIsSubscribed();
       //if user is joining a full room, display the subscribeCTA element from the home page
@@ -792,7 +792,7 @@ const joinConferenceRoom = async (
       }
 
       console.error(error);
-      notice("Sorry, this call is full. Please contact the call creator.");
+      notice(error.message);
     } else {
       console.error(error);
       notice(error.message);

@@ -40,5 +40,20 @@
   "Brave Talk requires that your device is running the latest version of iOS. Please upgrade. Yes, this is an inconvenience and we do apologize!": "Brave Talkを利用するためには、デバイスのiOSが最新の状態になっていることが必要です。ご不便をおかけしてすみません！",
 
   "Start Premium call": "プレミアム通話を開始する",
-  "Start free call (up to 4 people)": "無料通話を開始する（4名まで参加可能）"
+  "Start free call (up to 4 people)": "無料通話を開始する（4名まで参加可能）",
+
+  "Sorry, you are not a subscriber": "申し訳ありません、サブスクリプション登録がされていません。",
+  "Sorry, the call is already full": "申し訳ありません、通話が満員です。",
+  "Forbidden": "禁止",
+  "The room does not exist": "ルームが存在しません",
+  "Method not allowed": "許可されていないメソッド",
+  "Request timeout": "リクエストのタイムアウト",
+  "Sorry, call already exists! (this should not happen)": "申し訳ありません。すでに通話が存在しています（通常このような事態は生じません",
+  "Expectation failed": "予期しない動作",
+  "Method failure": "メソッド失敗",
+  "Too many requests": "リクエストが多すぎます",
+  "Internal server error": "内部サーバーエラー",
+  "Bad gateway": "バッド・ゲートウェイ",
+  "Service unavailable": "サービスが利用不可",
+  "Gateway timeout": "ゲートウェイタイムアウト"
 }
