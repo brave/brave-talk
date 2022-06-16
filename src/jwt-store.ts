@@ -153,7 +153,9 @@ const garbageCollect = (confabs: ConfabStructure): void => {
   // see https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/entries
   Object.entries(confabs.JWTs).forEach(([roomName, jwt]) => {
     if (expiredP(roomName, jwt)) {
+      /* eslint-disable @typescript-eslint/no-dynamic-delete */
       delete confabs.JWTs[roomName]
+      /* eslint-disable @typescript-eslint/no-dynamic-delete */
       didP = true
 
       if (!logP) {
@@ -171,7 +173,9 @@ const garbageCollect = (confabs: ConfabStructure): void => {
 
   Object.entries(confabs.refresh).forEach(([roomName, refreshJwt]) => {
     if (expiredP(roomName, refreshJwt)) {
+      /* eslint-disable @typescript-eslint/no-dynamic-delete */
       delete confabs.refresh[roomName]
+      /* eslint-enable @typescript-eslint/no-dynamic-delete */
       didP = true
 
       if (!logP) {

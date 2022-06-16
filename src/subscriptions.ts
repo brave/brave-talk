@@ -81,7 +81,7 @@ export async function checkSubscribedUsingSDK (): Promise<boolean> {
     const result = await sdk.credential_summary()
     log('credential_summary returns', result)
     /* eslint-disable @typescript-eslint/strict-boolean-expressions */
-    if (result && result.active) {
+    if (result?.active) {
     /* eslint-enable @typescript-eslint/strict-boolean-expressions */
       return true
     }

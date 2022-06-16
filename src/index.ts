@@ -164,7 +164,7 @@ const main = async (): Promise<void> => {
 const updateLang = (): void => {
   const i18nElements = document.getElementsByClassName('i18n-element-text')
   Array.from(i18nElements).forEach((element) => {
-    (<HTMLElement>element).innerText = i18next.t(element.id)
+    (element as HTMLElement).innerText = i18next.t(element.id)
   })
 }
 
@@ -343,7 +343,9 @@ const findElement = <T extends HTMLElement>(id: string): T => {
   if (el == null) {
     console.error(`Expected element ${id} not found in html`)
   }
+  /* eslint-disable @typescript-eslint/no-non-null-assertion */
   return el! as T
+  /* eslint-enable @typescript-eslint/no-non-null-assertion */
 }
 
 const hideLoadingIndicators = (): void => {
@@ -413,7 +415,9 @@ const renderHomePage = (options: WelcomeScreenOptions): void => {
       if (options.startCallButtonPromptsOptIn !== undefined && options.startCallButtonPromptsOptIn) {
         if (useBraveRequestAdsEnabledApi) {
           reportAction('checking braveRequestAdsEnabled...', {})
+          /* eslint-disable @typescript-eslint/no-non-null-assertion */
           const result = await window.chrome!.braveRequestAdsEnabled!()
+          /* eslint-enable @typescript-eslint/no-non-null-assertion */
           reportAction('braveRequestAdsEnabled', { result })
           if (result) {
             // good to start the call now
@@ -619,8 +623,10 @@ const renderConferencePage = (roomName: string, jwt: string): void => {
     }
   })
 
+  /* eslint-disable @typescript-eslint/no-non-null-assertion */
   document.getElementById('talk')!.style.backgroundColor =
     options.interfaceConfigOverwrite.DEFAULT_BACKGROUND
+  /* eslint-enable @typescript-eslint/no-non-null-assertion */
 
   const askOnUnload = (e: any): void => {
     e.returnValue = ''
@@ -866,7 +872,9 @@ const getAutoOpenRoom = (): string | undefined => {
 }
 
 const notice = (text: string): void => {
+  /* eslint-disable @typescript-eslint/no-non-null-assertion */
   const element = document.getElementById('notice_text')!
+  /* eslint-enable @typescript-eslint/no-non-null-assertion */
 
   element.innerText = i18next.t(text)
   if (text !== '') {

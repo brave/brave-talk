@@ -78,7 +78,10 @@ test.only('jwt expiry works as expected', () => {
   s.storeJwtForRoom('okNoRefresh', nonExpiredJwt)
 
   // check that local storage has now been updated - no expiry checking is done on write
+
+  /* eslint-disable @typescript-eslint/no-non-null-assertion */
   const confabs = JSON.parse(window.localStorage.getItem('confabs')!)
+  /* eslint-enable @typescript-eslint/no-non-null-assertion */
   expect(confabs.JWTs).toEqual({
     ok: nonExpiredJwt,
     expired: expiredJwt,
@@ -99,7 +102,10 @@ test.only('jwt expiry works as expected', () => {
   expect(reloaded.findRefreshTokenForRoom('ok')).toBe(nonExpiredRefresh)
   expect(reloaded.findRefreshTokenForRoom('expired')).toBeUndefined()
   expect(reloaded.findRefreshTokenForRoom('okNoRefresh')).toBeUndefined()
+
+  /* eslint-disable @typescript-eslint/no-non-null-assertion */
   const confabs2 = JSON.parse(window.localStorage.getItem('confabs')!)
+  /* eslint-enable @typescript-eslint/no-non-null-assertion */
 
   // expired entries should be removed from jwts
   expect(confabs2.JWTs).toEqual({
