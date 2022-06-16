@@ -100,7 +100,6 @@ const loadConfabsFromStorage = (): ConfabStructure => {
   try {
     const item = window.localStorage.getItem(CONFABS_STORAGE_KEY);
     if (item) {
-      console.log("here");
       const value = JSON.parse(item);
       return {
         ...defaults,
