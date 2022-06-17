@@ -1,0 +1,32 @@
+{
+  "backgroundColor": "#1E2029",
+  "backgroundImageUrl": "https://talk.brave.com/images/background.svg",
+  "didPageUrl": "",
+  "inviteDomain": "https://talk.brave.com",
+  "logoClickUrl": "",
+  "logoImageUrl": "https://talk.brave.software/images/brave_logo_dev.svg",
+  "premeetingBackground": "url(https://talk.brave.com/images/background.svg) no-repeat center fixed",
+  "avatarBackgrounds": [
+    "#12A378",
+    "#339AF0",
+    "#353DAB",
+    "linear-gradient(125.83deg, #392DD1 0%, #A91B78 99.09%)",
+    "linear-gradient(125.83deg, #392DD1 0%, #22B8CF 99.09%)",
+    "#3B3E4F",
+    "#4C54D2",
+    "linear-gradient(90deg, #4F30AB 0.64%, #845EF7 99.36%)",
+    "#51CF66",
+    "#5E6175",
+    "linear-gradient(304.74deg, #6F4CD2 15.81%, #BF14A2 63.17%, #F73A1C 100%)",
+    "#737ADE",
+    "#84889C",
+    "linear-gradient(126.47deg, #A43CE4 16.99%, #A72B6D 86.15%)",
+    "linear-gradient(305.95deg, #BF14A2 0%, #F73A1C 98.59%)",
+    "linear-gradient(327.08deg, #DD7131 5.72%, #FBD460 83.36%)",
+    "#EA3A0D",
+    "#FB542B",
+    "#FF4B6A",
+    "#FF7654",
+    "#FFD43B"
+  ]
+}
