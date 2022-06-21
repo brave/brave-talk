@@ -40,6 +40,14 @@ which creates a `./html` directory containing compiled assets.
 7. then, after checking on the staging environment (including QA regression testing if needed) PR a production release as per step 1.
 8. now and again we will reset `dev` to match `main` just to keep the history tidy.
 
+# `index.html` Updating Strategy
+
+Japanese language support is available for brave-talk. So whenever we are adding new content in `index.html`, we have to make the following changes:
+
+1. add `i18n-element-text` class to the new tag
+2. add appropriate `id` to the new tag which is used as a key for translation
+3. add the appropriate content translation in the `src > locales`. The format is {key: `tag id`, value: `transated version`}
+
 # Prettier
 
 This codebase uses [prettier](https://prettier.io/) to keep the code formatted nicely and avoid needless changes in diff. It's recommended
