@@ -8,7 +8,14 @@
     "start": "webpack serve --config webpack.config.js --mode development",
     "test": "jest",
     "prepare": "husky install",
-    "lint": "eslint ."
+    "lint": "ts-standard --fix"
+  },
+  "ts-standard": {
+    "ignore": [
+      "src/*.js",
+      "src/*/*.js",
+      "*.js"
+    ]
   },
   "repository": {
     "type": "git",
@@ -20,13 +27,10 @@
     "@types/jest": "27.5.0",
     "@types/react": "18.0.12",
     "@types/react-dom": "18.0.5",
-    "@typescript-eslint/eslint-plugin": "^5.29.0",
-    "@typescript-eslint/parser": "^5.29.0",
     "autoprefixer": "10.4.7",
     "copy-webpack-plugin": "11.0.0",
     "css-loader": "6.7.1",
     "css-minimizer-webpack-plugin": "4.0.0",
-    "eslint": "^8.18.0",
     "html-webpack-plugin": "5.5.0",
     "husky": "8.0.1",
     "jest": "27.5.1",
@@ -39,7 +43,8 @@
     "svgo-loader": "3.0.0",
     "ts-jest": "27.1.4",
     "ts-loader": "9.3.0",
-    "typescript": "^4.7.3",
+    "ts-standard": "11.0.0",
+    "typescript": "4.7.3",
     "webpack": "5.73.0",
     "webpack-cli": "4.10.0",
     "webpack-dev-server": "4.9.2"
