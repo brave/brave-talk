@@ -97,7 +97,9 @@ const main = async () => {
       }
 
       console.log("order details", { parsed: o, exp, isExpired, orderId });
-    } catch (e) {}
+    } catch (e) {
+      // continue regardless of error
+    }
   }
 
   let autoJoinRoom: string | undefined;
@@ -176,7 +178,7 @@ const updateLang = () => {
 const showPromo = () => {
   if (shouldShowExtensionPromo()) {
     const el = findElement("extension_promo");
-    const close = findElement("extension_promo_close");
+    // const close = findElement("extension_promo_close");
     el.style.display = "block";
     el.onclick = () => {
       el.style.display = "none";
@@ -343,7 +345,7 @@ const findElement = <T extends HTMLElement>(id: string): T => {
   if (!el) {
     console.error(`Expected element ${id} not found in html`);
   }
-  return el! as T;
+  return el as T;
 };
 
 const hideLoadingIndicators = () => {
@@ -409,7 +411,7 @@ const renderHomePage = (options: WelcomeScreenOptions) => {
       if (options.startCallButtonPromptsOptIn) {
         if (useBraveRequestAdsEnabledApi) {
           reportAction("checking braveRequestAdsEnabled...", {});
-          const result = await window.chrome!.braveRequestAdsEnabled!();
+          const result = await window.chrome?.braveRequestAdsEnabled?.();
           reportAction("braveRequestAdsEnabled", { result });
           if (result) {
             // good to start the call now
@@ -615,8 +617,10 @@ const renderConferencePage = (roomName: string, jwt: string) => {
     }
   });
 
-  document.getElementById("talk")!.style.backgroundColor =
-    options.interfaceConfigOverwrite.DEFAULT_BACKGROUND;
+  let talkEleBgColor = document.getElementById("talk")?.style.backgroundColor;
+  if (talkEleBgColor != null) {
+    talkEleBgColor = options.interfaceConfigOverwrite.DEFAULT_BACKGROUND;
+  }
 
   const askOnUnload = (e: any) => {
     e.returnValue = "";
@@ -847,10 +851,12 @@ const getAutoOpenRoom = (): string | undefined => {
 };
 
 const notice = (text: string) => {
-  const element = document.getElementById("notice_text")!;
+  const element = document.getElementById("notice_text");
 
-  element.innerText = i18next.t(text);
-  element.style.display = text ? "inline-block" : "none";
+  if (element != null) {
+    element.innerText = i18next.t(text);
+    element.style.display = text ? "inline-block" : "none";
+  }
 };
 
 const reportAction = (action: string, params: object) => {

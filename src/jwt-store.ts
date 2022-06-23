@@ -25,7 +25,7 @@ export interface JwtStore {
 let jwtStore: JwtStore | undefined;
 
 // forceReload expected only for tests, setting it otherwise may introduce race conditions
-export function loadLocalJwtStore(forceReload: boolean = false): JwtStore {
+export function loadLocalJwtStore(forceReload = false): JwtStore {
   if (!jwtStore || forceReload) {
     const confabs: ConfabStructure = loadConfabsFromStorage();
 
@@ -113,7 +113,9 @@ const loadConfabsFromStorage = (): ConfabStructure => {
     );
     try {
       window.localStorage.removeItem(CONFABS_STORAGE_KEY);
-    } catch (error) {}
+    } catch (error) {
+      // continue regardless of error
+    }
   }
 
   return {
@@ -135,7 +137,9 @@ const loadLogsFromStorage = (): LogEntries => {
     );
     try {
       window.localStorage.removeItem(LOGS_STORAGE_KEY);
-    } catch (error) {}
+    } catch (error) {
+      // continue regardless of error
+    }
   }
 
   return [];

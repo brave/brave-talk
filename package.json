@@ -6,6 +6,7 @@
   "scripts": {
     "build": "NODE_ENV=production webpack --config webpack.config.js --mode production",
     "format": "prettier --write .",
+    "lint": "eslint .",
     "start": "webpack serve --config webpack.config.js --mode development",
     "test": "jest",
     "prepare": "husky install"
@@ -20,10 +21,14 @@
     "@types/jest": "27.5.0",
     "@types/react": "18.0.14",
     "@types/react-dom": "18.0.5",
+    "@typescript-eslint/eslint-plugin": "5.29.0",
+    "@typescript-eslint/parser": "5.29.0",
     "autoprefixer": "10.4.7",
     "copy-webpack-plugin": "11.0.0",
     "css-loader": "6.7.1",
     "css-minimizer-webpack-plugin": "4.0.0",
+    "eslint": "8.18.0",
+    "eslint-config-prettier": "8.5.0",
     "html-webpack-plugin": "5.5.0",
     "husky": "8.0.1",
     "jest": "27.5.1",
