@@ -1,4 +1,4 @@
-export function getLangPref(): any {
+export function getLangPref(): string {
   const language =
     (navigator.languages && navigator.languages[0]) || navigator.language;
 
