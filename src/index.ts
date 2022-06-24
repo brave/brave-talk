@@ -178,7 +178,6 @@ const updateLang = () => {
 const showPromo = () => {
   if (shouldShowExtensionPromo()) {
     const el = findElement("extension_promo");
-    // const close = findElement("extension_promo_close");
     el.style.display = "block";
     el.onclick = () => {
       el.style.display = "none";

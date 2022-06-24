@@ -1,7 +1,7 @@
 import "./css/recordings.css";
 import DownloadImage from "./images/download.svg";
 import MediaPlayerImage from "./images/media_player.svg";
-import React /* , { Dispatch } */ from "react";
+import React from "react";
 import ReactDOM from "react-dom";
 import { formatDuration, formatRelativeDay } from "./recordings-utils";
 import { availableRecordings, Recording } from "./recordings-store";
