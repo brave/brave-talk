@@ -10,4 +10,8 @@ module.exports = {
   rules: {
     "@typescript-eslint/no-explicit-any": "off",
   },
+  env: {
+    browser: "true",
+    node: "true",
+  },
 };

@@ -1,1 +1,2 @@
-*.js
+src/js/jwt-decode.js
+webpack.config.js

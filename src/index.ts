@@ -178,7 +178,6 @@ const updateLang = () => {
 const showPromo = () => {
   if (shouldShowExtensionPromo()) {
     const el = findElement("extension_promo");
-    // const close = findElement("extension_promo_close");
     el.style.display = "block";
     el.onclick = () => {
       el.style.display = "none";
@@ -616,11 +615,6 @@ const renderConferencePage = (roomName: string, jwt: string) => {
       options.interfaceConfigOverwrite.TOOLBAR_BUTTONS.push(feature);
     }
   });
-
-  let talkEleBgColor = document.getElementById("talk")?.style.backgroundColor;
-  if (talkEleBgColor != null) {
-    talkEleBgColor = options.interfaceConfigOverwrite.DEFAULT_BACKGROUND;
-  }
 
   const askOnUnload = (e: any) => {
     e.returnValue = "";
