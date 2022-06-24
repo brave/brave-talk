@@ -616,11 +616,6 @@ const renderConferencePage = (roomName: string, jwt: string) => {
     }
   });
 
-  let talkEleBgColor = document.getElementById("talk")?.style.backgroundColor;
-  if (talkEleBgColor != null) {
-    talkEleBgColor = options.interfaceConfigOverwrite.DEFAULT_BACKGROUND;
-  }
-
   const askOnUnload = (e: any) => {
     e.returnValue = "";
 
