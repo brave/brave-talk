@@ -6,7 +6,7 @@
   "scripts": {
     "build": "NODE_ENV=production webpack --config webpack.config.js --mode production",
     "format": "prettier --write .",
-    "lint": "eslint .",
+    "lint": "eslint src/",
     "start": "webpack serve --config webpack.config.js --mode development",
     "test": "jest",
     "prepare": "husky install"
