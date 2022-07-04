@@ -49,7 +49,7 @@
     "webpack-dev-server": "4.9.2"
   },
   "dependencies": {
-    "i18next": "21.8.10",
+    "i18next": "21.8.11",
     "react": "18.2.0",
     "react-dom": "18.1.0"
   }
