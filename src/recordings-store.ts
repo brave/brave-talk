@@ -1,5 +1,3 @@
-import { loadLocalJwtStore } from "./jwt-store";
-
 export interface Recording {
   url: string;
   roomName: string;
@@ -71,9 +69,10 @@ function loadFromStorage(): Recording[] {
     console.log(`!!! localStorage.getItem ${STORAGE_KEY} failed`, error);
     try {
       window.localStorage.removeItem(STORAGE_KEY);
-    } catch (error) {}
+    } catch (error) {
+      // continue regardless of error
+    }
   }
-
   return [];
 }
 
