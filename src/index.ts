@@ -20,6 +20,7 @@ import { populateRecordings } from "./recordings-ui";
 import {
   shouldShowExtensionPromo,
   incrementExtensionPromoCounter,
+  dismissExtensionPromoCounter,
 } from "./general-store";
 
 import { getLangPref } from "./get-language-detector";
@@ -181,7 +182,7 @@ const showPromo = () => {
     el.style.display = "block";
     el.onclick = () => {
       el.style.display = "none";
-      incrementExtensionPromoCounter();
+      dismissExtensionPromoCounter();
     };
   }
 };
