@@ -532,6 +532,7 @@ const renderConferencePage = (roomName: string, jwt: string) => {
       enableTalkWhileMuted: false,
       hideEmailInSettings: true,
       inviteAppName: "Brave Talk",
+      localSubject: "Brave Talk",
       prejoinPageEnabled: true,
       /* !!! temporary for testing
       startLastN: 2,
