@@ -530,6 +530,10 @@ const renderConferencePage = (roomName: string, jwt: string) => {
           "WARNING: Not all participants in this meeting seem to have support for Video Bridge Encryption. If you enable it they won't be able to see nor hear you.",
       },
       enableTalkWhileMuted: false,
+      faceLandmarks: {
+        enableFaceExpressionsDetection: false,
+        enableDisplayFaceExpressions: false,
+      },
       hideEmailInSettings: true,
       inviteAppName: "Brave Talk",
       localSubject: "Brave Talk",
