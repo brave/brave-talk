@@ -19,7 +19,7 @@
   "devDependencies": {
     "@brave-intl/skus-sdk": "0.1.1",
     "@types/jest": "27.5.0",
-    "@types/react": "18.0.15",
+    "@types/react": "18.0.17",
     "@types/react-dom": "18.0.6",
     "@typescript-eslint/eslint-plugin": "5.32.0",
     "@typescript-eslint/parser": "5.32.0",
