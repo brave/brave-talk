@@ -55,5 +55,6 @@
   "Internal server error": "内部サーバーエラー",
   "Bad gateway": "バッド・ゲートウェイ",
   "Service unavailable": "サービスが利用不可",
-  "Gateway timeout": "ゲートウェイタイムアウト"
+  "Gateway timeout": "ゲートウェイタイムアウト",
+  "Oops! We were unable to connect to your meeting room. Please try again.": "おっと！あなたのミーティングルームに接続することができませんでした。もう一度お試しください。"
 }
