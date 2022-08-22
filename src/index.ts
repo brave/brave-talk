@@ -570,6 +570,8 @@ const renderConferencePage = (roomName: string, jwt: string) => {
       NATIVE_APP_NAME: "Brave Talk",
       PROVIDER_NAME: "Brave",
       //          SET_FILMSTRIP_ENABLED: false,
+      // remove 'dial-in'
+      SHARING_FEATURES: ["email", "url", "embed"],
       SHOW_CHROME_EXTENSION_BANNER: false,
       SUPPORT_URL: "https://community.brave.com/",
       TOOLBAR_BUTTONS: [
