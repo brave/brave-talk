@@ -1,11 +1,11 @@
 {
   "backgroundColor": "#1E2029",
-  "backgroundImageUrl": "https://talk.brave.com/images/background.svg",
+  "backgroundImageUrl": "https://talk.bravesoftware.com/images/background.svg",
   "didPageUrl": "",
-  "inviteDomain": "https://talk.brave.com",
+  "inviteDomain": "https://talk.bravesoftware.com",
   "logoClickUrl": "",
   "logoImageUrl": "https://talk.bravesoftware.com/images/brave_logo_staging.svg",
-  "premeetingBackground": "url(https://talk.brave.com/images/background.svg) no-repeat center fixed",
+  "premeetingBackground": "url(https://talk.bravesoftware.com/images/background.svg) no-repeat center fixed",
   "avatarBackgrounds": [
     "#12A378",
     "#339AF0",
