@@ -64,11 +64,11 @@ export function determineWelcomeScreenUI(c: Context): WelcomeScreenOptions {
 
   // on mobile only subscribed users can start a call
   if (c.browser.isMobile) {
-    // old iOS versions just won't work
+    // lockdown mode and old iOS versions just won't work
     if (!c.browser.supportsWebRTC) {
       return {
         showFailureMessage:
-          "Brave Talk requires that your device is running the latest version of iOS. Please upgrade. Yes, this is an inconvenience and we do apologize!",
+          "Your iOS device appears to have Lockdown Mode enabled, which prevents Brave Talk from working.",
       };
     }
 

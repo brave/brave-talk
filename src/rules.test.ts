@@ -158,7 +158,7 @@ it("should show message to users of brave browsers that don't support webRTC", (
     })
   ).toEqual<rules.WelcomeScreenOptions>({
     showFailureMessage:
-      "Brave Talk requires that your device is running the latest version of iOS. Please upgrade. Yes, this is an inconvenience and we do apologize!",
+      "Your iOS device appears to have Lockdown Mode enabled, which prevents Brave Talk from working.",
   });
 });
 
