@@ -37,7 +37,7 @@
   "Creating meeting room...": "ミーティングルームを作成しています...",
   "Locating meeting room...": "ミーティングルームを設定しています...",
 
-  "Your iOS device appears to have Lockdown Mode enabled, which prevents Brave Talk from working.": "Brave Talkを利用するためには、デバイスのiOSが最新の状態になっていることが必要です。ご不便をおかけしてすみません！",
+  "Your iOS device appears to have Lockdown Mode enabled, which prevents Brave Talk from working.": "あなたのiOSデバイスでロックダウンモードが有効になっているようです。これにより、Brave Talkの動作が制限されています。",
 
   "Start Premium call": "プレミアム通話を開始する",
   "Start free call (up to 4 people)": "無料通話を開始する（4名まで参加可能）",
