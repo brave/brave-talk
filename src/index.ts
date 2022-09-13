@@ -544,7 +544,7 @@ const renderConferencePage = (roomName: string, jwt: string) => {
       startWithAudioMuted: true,
       startWithVideoMuted: true,
       toolbarConfig: {
-        alwaysVisible: true,
+        autoHideWhileChatIsOpen: true,
       },
       transcribingEnabled: false,
       useHostPageLocalStorage: true,
