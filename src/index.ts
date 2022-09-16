@@ -534,6 +534,9 @@ const renderConferencePage = (roomName: string, jwt: string) => {
         enableFaceExpressionsDetection: false,
         enableDisplayFaceExpressions: false,
       },
+      giphy: {
+        enabled: false,
+      },
       hideEmailInSettings: true,
       inviteAppName: "Brave Talk",
       localSubject: "Brave Talk",
