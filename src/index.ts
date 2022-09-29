@@ -71,6 +71,8 @@ if (document.readyState === "complete") {
   window.onload = () => main();
 }
 
+let browser: BrowserProperties | undefined;
+
 const main = async () => {
   // these envvars are set by the EnvironmentPlugin in webpack.config.js
   console.log(
@@ -120,7 +122,7 @@ const main = async () => {
   }
 
   // fast track check for whether we should immediately try to join a room
-  const browser = await calcBrowserCapabilities();
+  browser = await calcBrowserCapabilities();
 
   const joinRoom = checkJoinRoom(
     extractRoomNameFromUrl() ?? autoJoinRoom,
@@ -541,6 +543,7 @@ const renderConferencePage = (roomName: string, jwt: string) => {
       inviteAppName: "Brave Talk",
       localSubject: "Brave Talk",
       prejoinPageEnabled: true,
+      resolution: 720,
       /* !!! temporary for testing
       startLastN: 2,
        */
@@ -617,6 +620,10 @@ const renderConferencePage = (roomName: string, jwt: string) => {
       document.title = options.interfaceConfigOverwrite.APP_NAME;
     },
   };
+
+  if (browser?.isMobile) {
+    options.configOverwrite.resolution = 360;
+  }
 
   const features = jwt_decode(jwt)?.context?.features;
   reportAction("features", { features });
