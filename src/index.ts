@@ -77,6 +77,10 @@ const main = async () => {
     `!!! version ${process.env.GIT_VERSION} (${process.env.ENVIRONMENT})`
   );
 
+  if (env !== "production") {
+    document.title = env.toUpperCase() + " " + document.title;
+  }
+
   if (useBraveRequestAdsEnabledApi) {
     console.log("--> will use braveRequestAdsEnabled");
   }
