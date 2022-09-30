@@ -623,6 +623,9 @@ const renderConferencePage = (roomName: string, jwt: string) => {
 
   if (browser?.isMobile) {
     options.configOverwrite.resolution = 360;
+    alert("debug mobile");
+  } else {
+    console.log("!!! not mobile");
   }
 
   const features = jwt_decode(jwt)?.context?.features;
