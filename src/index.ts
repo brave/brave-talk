@@ -123,6 +123,7 @@ const main = async () => {
 
   // fast track check for whether we should immediately try to join a room
   browser = await calcBrowserCapabilities();
+  console.log("!!! browser", browser);
 
   const joinRoom = checkJoinRoom(
     extractRoomNameFromUrl() ?? autoJoinRoom,
@@ -498,7 +499,7 @@ const renderConferencePage = (roomName: string, jwt: string) => {
   findElement("welcome_page").style.display = "none";
   findElement("meet").style.display = "block";
 
-  const options = {
+  const options: any = {
     roomName: config.vpaas + "/" + roomName,
     jwt: jwt,
     parentNode: document.querySelector("#meet"),
@@ -543,7 +544,6 @@ const renderConferencePage = (roomName: string, jwt: string) => {
       inviteAppName: "Brave Talk",
       localSubject: "Brave Talk",
       prejoinPageEnabled: true,
-      resolution: 720,
       /* !!! temporary for testing
       startLastN: 2,
        */
