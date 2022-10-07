@@ -152,7 +152,8 @@ const main = async () => {
   if (!joinRoom || joinRoom === "widget") {
     const context: Context = {
       browser,
-      userHasOptedInToAds: isOptedInToAds(),
+      /* also remove from rules.test.ts / rules.ts */
+      //    userHasOptedInToAds: isOptedInToAds(),
       userIsSubscribed: browser.isBrave && (await userIsSubscribed()),
       useBraveRequestAdsEnabledApi,
     };
@@ -253,6 +254,8 @@ const userIsSubscribed = async (): Promise<boolean> => {
   return Promise.race([timeout, subscriptionCheck]);
 };
 
+/* no longer used, to be removed RSN...
+
 const isOptedInToAds = (): boolean => {
   const override = checkDevOverride("adsoptin");
 
@@ -275,6 +278,8 @@ const isOptedInToAds = (): boolean => {
 
   return false;
 };
+
+ */
 
 const calcBrowserCapabilities = async (): Promise<BrowserProperties> => {
   const userAgent = navigator.userAgent;

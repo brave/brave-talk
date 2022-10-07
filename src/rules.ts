@@ -10,7 +10,7 @@ export interface Context {
   userIsSubscribed: boolean;
 
   // via greaselion, we know the user has opted into ads
-  userHasOptedInToAds: boolean;
+  //  userHasOptedInToAds: boolean;
 
   // the user is on a platform that supports braveRequestAdsEnabled,
   // and we choose to use that api instead of the greaselion detection

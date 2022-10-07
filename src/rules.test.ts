@@ -24,7 +24,7 @@ const MOBILE_BRAVE_IOS: rules.BrowserProperties = {
 
 const BASE_CONTEXT: rules.Context = {
   browser: DESKTOP_BRAVE,
-  userHasOptedInToAds: false,
+  //  userHasOptedInToAds: false,
   userIsSubscribed: false,
   useBraveRequestAdsEnabledApi: false,
 };
@@ -71,7 +71,7 @@ it("should show start call button without opt in for non-subscribed browsers on 
   expect(
     rules.determineWelcomeScreenUI({
       browser: DESKTOP_BRAVE,
-      userHasOptedInToAds: false,
+      //      userHasOptedInToAds: false,
       userIsSubscribed: false,
       useBraveRequestAdsEnabledApi: false,
     })
@@ -83,7 +83,7 @@ it("should show start call button without opt in for non-subscribed browsers on 
   expect(
     rules.determineWelcomeScreenUI({
       browser: DESKTOP_BRAVE,
-      userHasOptedInToAds: true,
+      //      userHasOptedInToAds: true,
       userIsSubscribed: false,
       useBraveRequestAdsEnabledApi: false,
     })
@@ -97,7 +97,7 @@ it.skip("on mobile should show start call button for non subscribed users", () =
   expect(
     rules.determineWelcomeScreenUI({
       browser: MOBILE_BRAVE,
-      userHasOptedInToAds: false,
+      //      userHasOptedInToAds: false,
       userIsSubscribed: false,
       useBraveRequestAdsEnabledApi: false,
     })
@@ -109,7 +109,7 @@ it.skip("on mobile should show start call button for non subscribed users", () =
   expect(
     rules.determineWelcomeScreenUI({
       browser: MOBILE_BRAVE,
-      userHasOptedInToAds: false,
+      //      userHasOptedInToAds: false,
       userIsSubscribed: false,
       useBraveRequestAdsEnabledApi: true,
     })
@@ -123,7 +123,7 @@ it("should never show opt in to subscribed users", () => {
   expect(
     rules.determineWelcomeScreenUI({
       browser: DESKTOP_BRAVE,
-      userHasOptedInToAds: false,
+      //      userHasOptedInToAds: false,
       userIsSubscribed: true,
       useBraveRequestAdsEnabledApi: false,
     })
@@ -135,7 +135,7 @@ it("should never show opt in to subscribed users", () => {
   expect(
     rules.determineWelcomeScreenUI({
       browser: DESKTOP_BRAVE,
-      userHasOptedInToAds: true,
+      //      userHasOptedInToAds: true,
       userIsSubscribed: true,
       useBraveRequestAdsEnabledApi: false,
     })
@@ -152,7 +152,7 @@ it("should show message to users of brave browsers that don't support webRTC", (
         ...MOBILE_BRAVE,
         supportsWebRTC: false,
       },
-      userHasOptedInToAds: true,
+      //      userHasOptedInToAds: true,
       userIsSubscribed: true,
       useBraveRequestAdsEnabledApi: false,
     })
@@ -166,7 +166,7 @@ it("should show premium UI only to subscribers", () => {
   expect(
     rules.determineWelcomeScreenUI({
       browser: DESKTOP_BRAVE,
-      userHasOptedInToAds: true,
+      //      userHasOptedInToAds: true,
       userIsSubscribed: false,
       useBraveRequestAdsEnabledApi: false,
     }).showPremiumUI
@@ -175,7 +175,7 @@ it("should show premium UI only to subscribers", () => {
   expect(
     rules.determineWelcomeScreenUI({
       browser: DESKTOP_BRAVE,
-      userHasOptedInToAds: true,
+      //      userHasOptedInToAds: true,
       userIsSubscribed: true,
       useBraveRequestAdsEnabledApi: false,
     }).showPremiumUI
@@ -186,7 +186,7 @@ it("should show copy link for later to subscribers on non-IOS", () => {
   expect(
     rules.determineWelcomeScreenUI({
       browser: DESKTOP_BRAVE,
-      userHasOptedInToAds: true,
+      //      userHasOptedInToAds: true,
       userIsSubscribed: true,
       useBraveRequestAdsEnabledApi: false,
     }).showCopyLinkForLater
@@ -195,7 +195,7 @@ it("should show copy link for later to subscribers on non-IOS", () => {
   expect(
     rules.determineWelcomeScreenUI({
       browser: MOBILE_BRAVE,
-      userHasOptedInToAds: true,
+      //      userHasOptedInToAds: true,
       userIsSubscribed: true,
       useBraveRequestAdsEnabledApi: false,
     }).showCopyLinkForLater
@@ -204,7 +204,7 @@ it("should show copy link for later to subscribers on non-IOS", () => {
   expect(
     rules.determineWelcomeScreenUI({
       browser: MOBILE_BRAVE_IOS,
-      userHasOptedInToAds: true,
+      //      userHasOptedInToAds: true,
       userIsSubscribed: true,
       useBraveRequestAdsEnabledApi: false,
     }).showCopyLinkForLater
