@@ -381,6 +381,8 @@ const renderHomePage = (options: WelcomeScreenOptions) => {
     enterRoomEl.style.display = "block";
 
     enterRoomEl.onclick = async () => {
+      joinConferenceRoom(options.roomNameOverride ?? generateRoomName(), true);
+
       incrementExtensionPromoCounter();
     };
   }
