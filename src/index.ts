@@ -363,7 +363,6 @@ const renderHomePage = (options: WelcomeScreenOptions) => {
   const enterRoomEl = findElement("enter_room_button");
   const subscribeCtaEl = findElement("subscribe");
   const downloadCta = findElement("download_brave");
-  const adsOptIn = findElement("opt_in");
   const copyLinkEl = findElement<HTMLButtonElement>("copy_link");
 
   if (options.showDownload) {
@@ -382,19 +381,6 @@ const renderHomePage = (options: WelcomeScreenOptions) => {
     enterRoomEl.style.display = "block";
 
     enterRoomEl.onclick = async () => {
-      if (options.startCallButtonPromptsOptIn) {
-        adsOptIn.style.display = "flex";
-
-        findElement("opt_in_close").onclick = () => {
-          // force a reload to recalculate whether ads are enabled or not
-          window.location.reload();
-        };
-      } else {
-        joinConferenceRoom(
-          options.roomNameOverride ?? generateRoomName(),
-          true
-        );
-      }
       incrementExtensionPromoCounter();
     };
   }

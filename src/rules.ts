@@ -22,11 +22,6 @@ export interface WelcomeScreenOptions {
   showUseDesktopMessage?: boolean;
   showFailureMessage?: string;
 
-  // clicking the start call button doesn't actually start a call
-  // it asks for the user to opt in - either by manual instruction UI
-  // or by calling braveRequestAdsEnabled if available
-  startCallButtonPromptsOptIn?: boolean;
-
   // in some cases, we know the name room we'd want to join/create,
   // (e.g. when `create=y` is present), so allow override
   // of the auto-generated room name
@@ -75,7 +70,6 @@ export function determineWelcomeScreenUI(c: Context): WelcomeScreenOptions {
       return {
         showSubscribeCTA: true,
         showStartCall: true,
-        startCallButtonPromptsOptIn: false,
       };
     }
   }
@@ -86,6 +80,5 @@ export function determineWelcomeScreenUI(c: Context): WelcomeScreenOptions {
     showSubscribeCTA: !c.userIsSubscribed,
     showPremiumUI: c.userIsSubscribed,
     showCopyLinkForLater: c.userIsSubscribed,
-    startCallButtonPromptsOptIn: false,
   };
 }
