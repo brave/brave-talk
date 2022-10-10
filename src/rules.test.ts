@@ -73,7 +73,6 @@ it("should show start call button without opt in for non-subscribed browsers on 
     })
   ).toMatchObject({
     showStartCall: true,
-    startCallButtonPromptsOptIn: false,
   });
 
   expect(
@@ -83,7 +82,6 @@ it("should show start call button without opt in for non-subscribed browsers on 
     })
   ).toMatchObject({
     showStartCall: true,
-    startCallButtonPromptsOptIn: false,
   });
 });
 
@@ -95,7 +93,6 @@ it.skip("on mobile should show start call button for non subscribed users", () =
     })
   ).toMatchObject({
     showStartCall: true,
-    startCallButtonPromptsOptIn: false,
   });
 
   expect(
@@ -105,7 +102,6 @@ it.skip("on mobile should show start call button for non subscribed users", () =
     })
   ).toMatchObject({
     showStartCall: true,
-    startCallButtonPromptsOptIn: false,
   });
 });
 
@@ -117,7 +113,6 @@ it("should never show opt in to subscribed users", () => {
     })
   ).toMatchObject({
     showStartCall: true,
-    startCallButtonPromptsOptIn: false,
   });
 
   expect(
@@ -127,7 +122,6 @@ it("should never show opt in to subscribed users", () => {
     })
   ).toMatchObject({
     showStartCall: true,
-    startCallButtonPromptsOptIn: false,
   });
 });
 
