@@ -9,13 +9,6 @@ export interface Context {
   // we know the user has a valid subscription
   userIsSubscribed: boolean;
 
-  // via greaselion, we know the user has opted into ads
-  userHasOptedInToAds: boolean;
-
-  // the user is on a platform that supports braveRequestAdsEnabled,
-  // and we choose to use that api instead of the greaselion detection
-  useBraveRequestAdsEnabledApi: boolean;
-
   browser: BrowserProperties;
 }
 
@@ -28,11 +21,6 @@ export interface WelcomeScreenOptions {
   showCopyLinkForLater?: boolean;
   showUseDesktopMessage?: boolean;
   showFailureMessage?: string;
-
-  // clicking the start call button doesn't actually start a call
-  // it asks for the user to opt in - either by manual instruction UI
-  // or by calling braveRequestAdsEnabled if available
-  startCallButtonPromptsOptIn?: boolean;
 
   // in some cases, we know the name room we'd want to join/create,
   // (e.g. when `create=y` is present), so allow override
@@ -82,7 +70,6 @@ export function determineWelcomeScreenUI(c: Context): WelcomeScreenOptions {
       return {
         showSubscribeCTA: true,
         showStartCall: true,
-        startCallButtonPromptsOptIn: false,
       };
     }
   }
@@ -93,6 +80,5 @@ export function determineWelcomeScreenUI(c: Context): WelcomeScreenOptions {
     showSubscribeCTA: !c.userIsSubscribed,
     showPremiumUI: c.userIsSubscribed,
     showCopyLinkForLater: c.userIsSubscribed,
-    startCallButtonPromptsOptIn: false,
   };
 }

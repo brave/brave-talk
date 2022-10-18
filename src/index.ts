@@ -43,9 +43,6 @@ i18next.init({
   },
 });
 
-const useBraveRequestAdsEnabledApi: boolean =
-  !!window.chrome && !!window.chrome.braveRequestAdsEnabled;
-
 const env = process.env.ENVIRONMENT ?? "local";
 const config = {
   vpaas:
@@ -81,10 +78,6 @@ const main = async () => {
 
   if (!isProduction) {
     document.title = env.toUpperCase() + " " + document.title;
-  }
-
-  if (useBraveRequestAdsEnabledApi) {
-    console.log("--> will use braveRequestAdsEnabled");
   }
 
   const intent = params.get("intent");
@@ -152,9 +145,7 @@ const main = async () => {
   if (!joinRoom || joinRoom === "widget") {
     const context: Context = {
       browser,
-      userHasOptedInToAds: isOptedInToAds(),
       userIsSubscribed: browser.isBrave && (await userIsSubscribed()),
-      useBraveRequestAdsEnabledApi,
     };
 
     console.log("Context:", context);
@@ -251,29 +242,6 @@ const userIsSubscribed = async (): Promise<boolean> => {
     .finally(() => clearTimeout(timer));
 
   return Promise.race([timeout, subscriptionCheck]);
-};
-
-const isOptedInToAds = (): boolean => {
-  const override = checkDevOverride("adsoptin");
-
-  if (override !== null) {
-    console.log(`OVERRIDE adsoptin to ${override}`);
-    return override;
-  }
-
-  if (useBraveRequestAdsEnabledApi) {
-    // we'll check on clicking the button to join call
-    return false;
-  }
-
-  // a greaselion script sets the visibility of this div based on whether the user
-  // has opted into ads or not
-  const button = document.getElementById("enter_1on1_button");
-
-  if (button && button.style.display !== "none" && button.style.display !== "")
-    return true;
-
-  return false;
 };
 
 const calcBrowserCapabilities = async (): Promise<BrowserProperties> => {
@@ -395,8 +363,6 @@ const renderHomePage = (options: WelcomeScreenOptions) => {
   const enterRoomEl = findElement("enter_room_button");
   const subscribeCtaEl = findElement("subscribe");
   const downloadCta = findElement("download_brave");
-  const adsOptIn = findElement("opt_in");
-  const adsOptInManualSteps = findElement("opt_in_manual_steps");
   const copyLinkEl = findElement<HTMLButtonElement>("copy_link");
 
   if (options.showDownload) {
@@ -415,38 +381,8 @@ const renderHomePage = (options: WelcomeScreenOptions) => {
     enterRoomEl.style.display = "block";
 
     enterRoomEl.onclick = async () => {
-      if (options.startCallButtonPromptsOptIn) {
-        if (useBraveRequestAdsEnabledApi) {
-          reportAction("checking braveRequestAdsEnabled...", {});
-          const result = await window.chrome?.braveRequestAdsEnabled?.();
-          reportAction("braveRequestAdsEnabled", { result });
-          if (result) {
-            // good to start the call now
-            joinConferenceRoom(
-              options.roomNameOverride ?? generateRoomName(),
-              true
-            );
+      joinConferenceRoom(options.roomNameOverride ?? generateRoomName(), true);
 
-            return;
-          }
-
-          // otherwise fall through to showing the original message prompting manual opt-in,
-          // but without the manual step images
-          adsOptInManualSteps.style.display = "none";
-        }
-
-        adsOptIn.style.display = "flex";
-
-        findElement("opt_in_close").onclick = () => {
-          // force a reload to recalculate whether ads are enabled or not
-          window.location.reload();
-        };
-      } else {
-        joinConferenceRoom(
-          options.roomNameOverride ?? generateRoomName(),
-          true
-        );
-      }
       incrementExtensionPromoCounter();
     };
   }
