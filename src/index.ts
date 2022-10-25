@@ -624,6 +624,46 @@ const renderConferencePage = (roomName: string, jwt: string) => {
     setTimeout(updateRecTimestamp, 5 * 60 * 1000);
   };
 
+  const inactiveInterval = 10_000;
+
+  let inactive = false;
+  let inactiveTimer: any;
+
+  const inactiveTimeout = () => {
+    const previous = inactive;
+
+    console.log("!!! testing inactivity");
+    inactive = true;
+    JitsiMeetJS.getRoomsInfo().then((rooms: any) => {
+      try {
+        reportAction("getRoomsInfo", rooms);
+        rooms.rooms.forEach((room: any) => {
+          if (room.participants.length > 0) {
+            inactive = false;
+          }
+        });
+        console.log("!!! previously ", previous, ", presently ", inactive);
+        if (previous && inactive) {
+          JitsiMeetJS.executeCommand("hangout");
+        } else {
+          setTimeout(inactiveTimeout, inactiveInterval);
+        }
+      } catch (error: any) {
+        console.log("!!! error ", error);
+      }
+    });
+  };
+  const nowActive = (event: string, params: any) => {
+    reportAction(event, params);
+    inactive = false;
+    clearTimeout(inactiveTimer);
+    inactiveTimer = setTimeout(inactiveTimeout, inactiveInterval);
+  };
+
+  if (inactiveInterval) {
+    inactiveTimer = setTimeout(inactiveTimeout, inactiveInterval);
+  }
+
   JitsiMeetJS.on("subjectChange", (params: any) => {
     reportAction("subjectChange", params);
 
@@ -676,12 +716,22 @@ const renderConferencePage = (roomName: string, jwt: string) => {
       reportAction("readyToClose", params);
       window.removeEventListener("beforeunload", askOnUnload);
       updateRecTimestamp();
+      clearTimeout(inactiveTimer);
       JitsiMeetJS.dispose();
       JitsiMeetJS = null;
       window.open(
         window.location.protocol + "//" + window.location.host,
         "_self"
       );
+    })
+    .on("participantJoined", (params: any) => {
+      nowActive("participantJoined", params);
+    })
+    .on("participantKickedOut", (params: any) => {
+      nowActive("participantKickedOut", params);
+    })
+    .on("participantLeft", (params: any) => {
+      nowActive("participantLeft", params);
     });
 
   const passcode = extractValueFromFragment("passcode");
