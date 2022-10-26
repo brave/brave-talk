@@ -624,7 +624,7 @@ const renderConferencePage = (roomName: string, jwt: string) => {
     setTimeout(updateRecTimestamp, 5 * 60 * 1000);
   };
 
-  const inactiveInterval = 10_000;
+  const inactiveInterval = 300 * 10_000;
 
   let inactive = false;
   let inactiveTimer: any;
@@ -644,7 +644,7 @@ const renderConferencePage = (roomName: string, jwt: string) => {
         });
         console.log("!!! previously ", previous, ", presently ", inactive);
         if (previous && inactive) {
-          JitsiMeetJS.executeCommand("hangout");
+          JitsiMeetJS.executeCommand("hangup");
         } else {
           setTimeout(inactiveTimeout, inactiveInterval);
         }
