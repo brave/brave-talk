@@ -20,7 +20,7 @@
     "@brave-intl/skus-sdk": "0.1.2",
     "@types/jest": "27.5.0",
     "@types/react": "18.0.21",
-    "@types/react-dom": "18.0.6",
+    "@types/react-dom": "18.0.8",
     "@typescript-eslint/eslint-plugin": "5.40.1",
     "@typescript-eslint/parser": "5.40.1",
     "autoprefixer": "10.4.12",
