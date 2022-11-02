@@ -624,7 +624,7 @@ const renderConferencePage = (roomName: string, jwt: string) => {
     setTimeout(updateRecTimestamp, 5 * 60 * 1000);
   };
 
-  const inactiveInterval = 30 * 10_000;
+  const inactiveInterval = 60 * 60 * 1000;
 
   let inactive = false;
   let inactiveTimer: any;
