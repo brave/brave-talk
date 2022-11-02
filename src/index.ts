@@ -624,29 +624,30 @@ const renderConferencePage = (roomName: string, jwt: string) => {
     setTimeout(updateRecTimestamp, 5 * 60 * 1000);
   };
 
-  const inactiveInterval = 60 * 60 * 1000;
+  // check every 30 seconds (disable by setting to 0)
+  const inactiveInterval = 30 * 1000;
+  // total 1 hour of inactivity
+  const inactiveTotal = 120;
 
-  let inactive = false;
+  let inactiveCount = 0;
   let inactiveTimer: any;
 
   const inactiveTimeout = () => {
-    const previous = inactive;
-
     console.log("!!! testing inactivity");
-    inactive = true;
+    inactiveCount++;
     JitsiMeetJS.getRoomsInfo().then((rooms: any) => {
       try {
         reportAction("getRoomsInfo", rooms);
         rooms.rooms.forEach((room: any) => {
           if (room.participants.length > 0) {
-            inactive = false;
+            inactiveCount = 0;
           }
         });
-        console.log("!!! previously ", previous, ", presently ", inactive);
-        if (previous && inactive) {
+        console.log("!!! inactive count ", inactiveCount);
+        if (inactiveCount >= inactiveTotal) {
           JitsiMeetJS.executeCommand("hangup");
         } else {
-          setTimeout(inactiveTimeout, inactiveInterval);
+          inactiveTimer = setTimeout(inactiveTimeout, inactiveInterval);
         }
       } catch (error: any) {
         console.log("!!! error ", error);
@@ -654,8 +655,11 @@ const renderConferencePage = (roomName: string, jwt: string) => {
     });
   };
   const nowActive = (event: string, params: any) => {
+    if (!inactiveInterval) {
+      return;
+    }
     reportAction(event, params);
-    inactive = false;
+    inactiveCount = 0;
     clearTimeout(inactiveTimer);
     inactiveTimer = setTimeout(inactiveTimeout, inactiveInterval);
   };
@@ -716,7 +720,9 @@ const renderConferencePage = (roomName: string, jwt: string) => {
       reportAction("readyToClose", params);
       window.removeEventListener("beforeunload", askOnUnload);
       updateRecTimestamp();
-      clearTimeout(inactiveTimer);
+      if (inactiveTimer) {
+        clearTimeout(inactiveTimer);
+      }
       JitsiMeetJS.dispose();
       JitsiMeetJS = null;
       window.open(
