@@ -624,6 +624,50 @@ const renderConferencePage = (roomName: string, jwt: string) => {
     setTimeout(updateRecTimestamp, 5 * 60 * 1000);
   };
 
+  // check every 30 seconds (disable by setting to 0)
+  const inactiveInterval = 30 * 1000;
+  // total 1 hour of inactivity
+  const inactiveTotal = 120;
+
+  let inactiveCount = 0;
+  let inactiveTimer: any;
+
+  const inactiveTimeout = () => {
+    console.log("!!! testing inactivity");
+    inactiveCount++;
+    JitsiMeetJS.getRoomsInfo().then((rooms: any) => {
+      try {
+        reportAction("getRoomsInfo", rooms);
+        rooms.rooms.forEach((room: any) => {
+          if (room.participants.length > 0) {
+            inactiveCount = 0;
+          }
+        });
+        console.log("!!! inactive count ", inactiveCount);
+        if (inactiveCount >= inactiveTotal) {
+          JitsiMeetJS.executeCommand("hangup");
+        } else {
+          inactiveTimer = setTimeout(inactiveTimeout, inactiveInterval);
+        }
+      } catch (error: any) {
+        console.log("!!! error ", error);
+      }
+    });
+  };
+  const nowActive = (event: string, params: any) => {
+    if (!inactiveInterval) {
+      return;
+    }
+    reportAction(event, params);
+    inactiveCount = 0;
+    clearTimeout(inactiveTimer);
+    inactiveTimer = setTimeout(inactiveTimeout, inactiveInterval);
+  };
+
+  if (inactiveInterval) {
+    inactiveTimer = setTimeout(inactiveTimeout, inactiveInterval);
+  }
+
   JitsiMeetJS.on("subjectChange", (params: any) => {
     reportAction("subjectChange", params);
 
@@ -676,12 +720,24 @@ const renderConferencePage = (roomName: string, jwt: string) => {
       reportAction("readyToClose", params);
       window.removeEventListener("beforeunload", askOnUnload);
       updateRecTimestamp();
+      if (inactiveTimer) {
+        clearTimeout(inactiveTimer);
+      }
       JitsiMeetJS.dispose();
       JitsiMeetJS = null;
       window.open(
         window.location.protocol + "//" + window.location.host,
         "_self"
       );
+    })
+    .on("participantJoined", (params: any) => {
+      nowActive("participantJoined", params);
+    })
+    .on("participantKickedOut", (params: any) => {
+      nowActive("participantKickedOut", params);
+    })
+    .on("participantLeft", (params: any) => {
+      nowActive("participantLeft", params);
     });
 
   const passcode = extractValueFromFragment("passcode");
