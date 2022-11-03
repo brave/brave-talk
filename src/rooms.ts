@@ -22,6 +22,7 @@ interface RoomResponse {
 interface RoomsRequestParams {
   roomName: string;
   urlSuffix?: string;
+  createP: boolean;
   method: RequestMethod;
   body: RoomRequestBody;
   successCodes: number[];
@@ -35,6 +36,7 @@ const FETCH_TIMEOUT_MS = 5_000;
 const roomsRequest = async ({
   roomName,
   urlSuffix = "",
+  createP,
   method,
   body,
   successCodes,
@@ -77,6 +79,19 @@ const roomsRequest = async ({
     console.log(`<<< ${method} ${url} ${status}`);
 
     if (!successCodes.includes(status)) {
+      if (createP && status === 409) {
+        console.log(`!!! retry ${method} ${url} ${status}`);
+        return await roomsRequest({
+          roomName,
+          urlSuffix: urlSuffix,
+          createP: false,
+          method: method,
+          body: body,
+          successCodes: successCodes,
+          failureMessages: failureMessages,
+        });
+      }
+
       const message =
         failureMessages[status] ||
         `Request failed: ${status} ${response.statusText}`;
@@ -138,6 +153,7 @@ const attemptTokenRefresh = async (
     const response = await roomsRequest({
       roomName,
       urlSuffix: "/moderator",
+      createP: false,
       method: "PUT",
       body: { jwt: refreshToken },
       successCodes: [201],
@@ -205,6 +221,7 @@ export const fetchJWT = async (
 
   const response = await roomsRequest({
     roomName,
+    createP,
     method,
     body,
     successCodes: [success],
