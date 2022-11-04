@@ -633,26 +633,25 @@ const renderConferencePage = (roomName: string, jwt: string) => {
   let inactiveTimer: any;
 
   const inactiveTimeout = () => {
-    console.log("!!! testing inactivity");
-    inactiveCount++;
-    JitsiMeetJS.getRoomsInfo().then((rooms: any) => {
-      try {
-        reportAction("getRoomsInfo", rooms);
-        rooms.rooms.forEach((room: any) => {
-          if (room.participants.length > 0) {
-            inactiveCount = 0;
-          }
-        });
-        console.log("!!! inactive count ", inactiveCount);
-        if (inactiveCount >= inactiveTotal) {
-          JitsiMeetJS.executeCommand("hangup");
-        } else {
-          inactiveTimer = setTimeout(inactiveTimeout, inactiveInterval);
-        }
-      } catch (error: any) {
-        console.log("!!! error ", error);
-      }
-    });
+    const participantCount = JitsiMeetJS.getNumberOfParticipants();
+
+    if (participantCount > 1) {
+      inactiveCount = 0;
+    } else {
+      inactiveCount++;
+    }
+    console.log(
+      "!!! testing inactivity: participants",
+      participantCount,
+      "and inactive count",
+      inactiveCount
+    );
+
+    if (inactiveCount >= inactiveTotal) {
+      JitsiMeetJS.executeCommand("hangup");
+    } else {
+      inactiveTimer = setTimeout(inactiveTimeout, inactiveInterval);
+    }
   };
   const nowActive = (event: string, params: any) => {
     if (!inactiveInterval) {
