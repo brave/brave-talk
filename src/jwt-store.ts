@@ -108,7 +108,7 @@ const loadConfabsFromStorage = (): ConfabStructure => {
     }
   } catch (error) {
     console.log(
-      "!!! localStorage.getItem " + CONFABS_STORAGE_KEY + " failed",
+      `!!! localStorage.getItem ${CONFABS_STORAGE_KEY} failed`,
       error
     );
     try {
@@ -131,10 +131,7 @@ const loadLogsFromStorage = (): LogEntries => {
       return JSON.parse(item);
     }
   } catch (error) {
-    console.log(
-      "!!! localStorage.getItem " + LOGS_STORAGE_KEY + " failed",
-      error
-    );
+    console.log(`!!! localStorage.getItem ${LOGS_STORAGE_KEY} failed`, error);
     try {
       window.localStorage.removeItem(LOGS_STORAGE_KEY);
     } catch (error) {
@@ -223,7 +220,7 @@ const saveConfabsToStorage = (confabs: ConfabStructure): void => {
     window.localStorage.setItem(CONFABS_STORAGE_KEY, JSON.stringify(confabs));
   } catch (error) {
     console.warn(
-      "!!! localStorage.setItem " + CONFABS_STORAGE_KEY + " failed",
+      `!!! localStorage.setItem ${CONFABS_STORAGE_KEY} failed`,
       error
     );
   }
@@ -234,10 +231,7 @@ const saveLogsToStorage = (logs: LogEntries): void => {
   try {
     window.localStorage.setItem(LOGS_STORAGE_KEY, JSON.stringify(logs));
   } catch (error) {
-    console.warn(
-      "!!! localStorage.setItem " + LOGS_STORAGE_KEY + " failed",
-      error
-    );
+    console.warn(`!!! localStorage.setItem ${LOGS_STORAGE_KEY} failed`, error);
   }
 };
 
