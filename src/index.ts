@@ -114,7 +114,7 @@ const main = async () => {
       }
       autoJoinRoom = getAutoOpenRoom();
     } catch (e) {
-      console.error("Failed to update order", e);
+      console.error("!!! failed to update order", e);
     }
   }
 
@@ -318,7 +318,7 @@ const extractValueFromFragment = (key: string): string | undefined => {
 const findElement = <T extends HTMLElement>(id: string): T => {
   const el = document.getElementById(id);
   if (!el) {
-    console.error(`Expected element ${id} not found in html`);
+    console.error(`!!! expected element ${id} not found in html`);
   }
   return el as T;
 };
