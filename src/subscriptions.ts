@@ -103,5 +103,5 @@ function log(message: string, ...args: any[]) {
 }
 
 function error(message: string, ...args: any[]) {
-  console.error(`skus-sdk: ${message}`, ...args);
+  console.error(`!!! skus-sdk: ${message}`, ...args);
 }
