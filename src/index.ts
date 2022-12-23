@@ -114,7 +114,7 @@ const main = async () => {
       }
       autoJoinRoom = getAutoOpenRoom();
     } catch (e) {
-      console.error("Failed to update order", e);
+      console.error("!!! failed to update order", e);
     }
   }
 
@@ -290,7 +290,7 @@ const extractRoomNameFromUrl = (): string | undefined => {
   }
 
   if (!isRoomValid(roomName)) {
-    console.warn("!!! invalid roomName: " + roomName);
+    console.warn(`!!! invalid roomName: ${roomName}`);
     return undefined;
   }
 
@@ -318,7 +318,7 @@ const extractValueFromFragment = (key: string): string | undefined => {
 const findElement = <T extends HTMLElement>(id: string): T => {
   const el = document.getElementById(id);
   if (!el) {
-    console.error(`Expected element ${id} not found in html`);
+    console.error(`!!! expected element ${id} not found in html`);
   }
   return el as T;
 };
@@ -886,11 +886,11 @@ const notice = (text: string) => {
 };
 
 const reportAction = (action: string, params: object) => {
-  console.log("!!! < " + action + ": ", params);
+  console.log(`!!! < ${action}: `, params);
 };
 
 const reportMethod = (method: string, params: object) => {
-  console.log("!!! > " + method + ": ", params);
+  console.log(`!!! > ${method}: `, params);
 };
 
 const wait = (ms: number): Promise<void> =>
