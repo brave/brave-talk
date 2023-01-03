@@ -29,7 +29,7 @@ export const upsertRecordingForRoom = (
   const existingEntryForUrl = recordings.find((r) => r.url === url);
 
   console.log(
-    `!!! upsertRecording ${url} for room ${roomName} ttl=${ttl}  createP=${!existingEntryForUrl}`
+    `!!! upsertRecording ${url} for room ${roomName} ttl=${ttl} createP=${!existingEntryForUrl}`
   );
 
   const now = Math.ceil(new Date().getTime() / 1000);
