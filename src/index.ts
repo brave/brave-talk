@@ -303,7 +303,7 @@ const extractValueFromFragment = (key: string): string | undefined => {
   if (window.location.hash !== "") {
     const hashes = window.location.hash.substr(1).split("&");
 
-    hashes.forEach((hash) => {
+    hashes.forEach((hash: string) => {
       const equals = hash.indexOf("=");
 
       if (equals !== -1 && key === hash.substr(0, equals)) {
