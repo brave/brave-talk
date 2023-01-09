@@ -303,7 +303,7 @@ const extractValueFromFragment = (key: string): string | undefined => {
   if (window.location.hash !== "") {
     const hashes = window.location.hash.substr(1).split("&");
 
-    hashes.forEach((hash) => {
+    hashes.forEach((hash: string) => {
       const equals = hash.indexOf("=");
 
       if (equals !== -1 && key === hash.substr(0, equals)) {
@@ -624,6 +624,8 @@ const renderConferencePage = (roomName: string, jwt: string) => {
     setTimeout(updateRecTimestamp, 5 * 60 * 1000);
   };
 
+  let firstTime = true;
+
   // check every 30 seconds (disable by setting to 0)
   const inactiveInterval = 30 * 1000;
   // total 1 hour of inactivity
@@ -728,6 +730,23 @@ const renderConferencePage = (roomName: string, jwt: string) => {
         window.location.protocol + "//" + window.location.host,
         "_self"
       );
+    })
+    .on("breakoutRoomsUpdated", (params: any) => {
+      reportAction("breakoutRoomsUpdated", params);
+      if (!firstTime) {
+        return;
+      }
+      firstTime = false;
+
+      let roomCount = 0;
+      Object.entries(params.rooms).forEach((room) => {
+        reportAction("room", room);
+        roomCount++;
+      });
+      console.log("!!! room count=" + roomCount);
+      if (roomCount > 1) {
+        JitsiMeetJS.executeCommand("toggleParticipantsPane", { enabled: true });
+      }
     })
     .on("participantJoined", (params: any) => {
       nowActive("participantJoined", params);
