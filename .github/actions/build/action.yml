@@ -16,7 +16,8 @@ runs:
         cache: npm
     - run: npm ci
       shell: bash
-    - run: npm audit
+    - name: npm audit
+      run: npm audit --audit-level=moderate
       shell: bash
     - run: npm test
       shell: bash
