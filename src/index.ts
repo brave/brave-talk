@@ -876,7 +876,7 @@ const getAutoOpenRoom = (): string | undefined => {
   }
 };
 
-const notifyUID = "notifyUID";
+const notifyUID = "brave-talk-notice";
 
 const notice = (text: string) => {
   if (JitsiMeetJS) {
