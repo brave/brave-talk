@@ -876,7 +876,22 @@ const getAutoOpenRoom = (): string | undefined => {
   }
 };
 
+const notifyUID = "brave-talk-notice";
+
 const notice = (text: string) => {
+  if (JitsiMeetJS) {
+    JitsiMeetJS.executeCommand("hideNotification", notifyUID);
+
+    JitsiMeetJS.executeCommand("showNotification", {
+      title: "notice",
+      description: text,
+      uid: notifyUID,
+      timeout: "long",
+    });
+
+    return;
+  }
+
   const element = document.getElementById("notice_text");
 
   if (element != null) {
