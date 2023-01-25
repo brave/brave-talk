@@ -581,14 +581,12 @@ const renderConferencePage = (roomName: string, jwt: string) => {
   reportAction("features", { features });
 
   Object.entries(features).forEach(([feature, state]) => {
-    console.log(`!!! ${feature}=/${state}/`);
     if (state === "true") {
       options.interfaceConfigOverwrite.TOOLBAR_BUTTONS.push(feature);
       if (feature === "recording") {
         options.configOverwrite.conferenceInfo.autoHide.push(
           "highlight-moment"
         );
-        console.log("!!!", options.configOverwrite.conferenceInfo);
       }
     }
   });
