@@ -588,7 +588,6 @@ const renderConferencePage = (roomName: string, jwt: string) => {
         options.configOverwrite.conferenceInfo.autoHide.push(
           "highlight-moment"
         );
-        console.log("!!!", options.configOverwrite.conferenceInfo);
       }
     }
   });
