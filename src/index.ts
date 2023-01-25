@@ -453,19 +453,6 @@ const renderConferencePage = (roomName: string, jwt: string) => {
       brandingRoomAlias: roomName,
       callStatsID: false,
       callStatsSecret: false,
-      conferenceInfo: {
-        autoHide: [
-          "subject",
-          "conference-timer",
-          "participants-count",
-          "e2ee",
-          "transcribing",
-          "video-quality",
-          "insecure-room",
-          // "highlight-moment"
-          "top-panel-toggle",
-        ],
-      },
       disabledSounds: ["E2EE_OFF_SOUND", "E2EE_ON_SOUND"],
       disableGTM: true,
       doNotStoreRoom: true,
@@ -543,9 +530,10 @@ const renderConferencePage = (roomName: string, jwt: string) => {
         "hangup",
         "profile",
         "chat",
-        // must be enabled in JWT context.features object
-        // "recording",
-        // "livestreaming",
+        /* must be enabled in JWT context.features object
+        "recording",
+        "livestreaming",
+ */
         "etherpad",
         "sharedvideo",
         "shareaudio",
@@ -581,15 +569,8 @@ const renderConferencePage = (roomName: string, jwt: string) => {
   reportAction("features", { features });
 
   Object.entries(features).forEach(([feature, state]) => {
-    console.log(`!!! ${feature}=/${state}/`);
     if (state === "true") {
       options.interfaceConfigOverwrite.TOOLBAR_BUTTONS.push(feature);
-      if (feature === "recording") {
-        options.configOverwrite.conferenceInfo.autoHide.push(
-          "highlight-moment"
-        );
-        console.log("!!!", options.configOverwrite.conferenceInfo);
-      }
     }
   });
 
