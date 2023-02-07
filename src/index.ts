@@ -505,7 +505,7 @@ const renderConferencePage = (roomName: string, jwt: string) => {
         // Limit results by rating: g, pg, pg-13, r. Default value: g.
         rating: "pg",
         // The proxy server url for giphy requests in the web app.
-        proxyUrl: "https://giphy-proxy.brave.software",
+        proxyUrl: "https://giphy-proxy.brave.software/",
       },
       hideEmailInSettings: true,
       inviteAppName: "Brave Talk",
