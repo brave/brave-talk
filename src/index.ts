@@ -491,7 +491,21 @@ const renderConferencePage = (roomName: string, jwt: string) => {
         enableDisplayFaceExpressions: false,
       },
       giphy: {
-        enabled: false,
+        // Whether the feature is enabled or not.
+        enabled: true,
+        // SDK API Key from Giphy. (temporary place-holder)
+        sdkKey: "RututfPzasdxvZtDyCckia0woLP51X4V",
+        // Display mode can be one of:
+        // - tile: show the GIF on the tile of the participant that sent it.
+        // - chat: show the GIF as a message in chat
+        // - all: all of the above. This is the default option
+        displayMode: "all",
+        // How long the GIF should be displayed on the tile (in milliseconds).
+        tileTime: 5000,
+        // Limit results by rating: g, pg, pg-13, r. Default value: g.
+        rating: "pg",
+        // The proxy server url for giphy requests in the web app.
+        proxyUrl: "https://giphy-proxy.brave.software",
       },
       hideEmailInSettings: true,
       inviteAppName: "Brave Talk",
