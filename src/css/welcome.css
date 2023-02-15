@@ -1,4 +1,4 @@
-* {
+/* * {
   -webkit-user-select: none;
   user-select: none;
 }
@@ -30,7 +30,7 @@ body {
   font-family: "Poppins", "Open Sans Pro", Arial, sans-serif;
   color: #f1f1f1;
   overflow: hidden;
-}
+} */
 
 #container {
   position: fixed;
@@ -63,11 +63,11 @@ button {
   position: relative;
 }
 
-.header {
+/* .header {
   padding: 0 12px 0;
-}
+} */
 
-.talk-logo {
+/* .talk-logo {
   --talk-logo-size: 122px;
   background-image: url("../images/talkLogo.svg");
   background-size: var(--talk-logo-size) var(--talk-logo-size);
@@ -77,9 +77,9 @@ button {
   position: absolute;
   left: 50%;
   transform: translateX(-50%);
-}
+} */
 
-.section {
+/* .section {
   width: 812px;
   padding-bottom: 36px;
   padding-left: 24px;
@@ -94,13 +94,13 @@ button {
   .section {
     width: 100%;
   }
-}
+} */
 
-.join-call {
+/* .join-call {
   margin: 122px auto 0;
-}
+} */
 
-.join-call-text {
+/* .join-call-text {
   margin: 0 auto 36px;
   display: flex;
   flex-direction: column;
@@ -113,7 +113,7 @@ button {
   .join-call-text {
     margin-bottom: 22px;
   }
-}
+} */
 
 .join-call-text-title {
   margin: 95px 0 0;
@@ -347,7 +347,7 @@ button {
   color: rgba(255, 255, 255, 0.5);
 }
 
-.welcome-watermark {
+/* .welcome-watermark {
   display: block;
   position: absolute;
   background: url("../images/brave_logo_dark.svg");
@@ -374,7 +374,7 @@ button {
   line-height: 20px;
   color: #ffffff;
   text-decoration: none;
-}
+} */
 
 .desktop-needed-info {
   font-weight: 400;

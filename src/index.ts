@@ -170,7 +170,7 @@ const main = async () => {
 const updateLang = () => {
   const i18nElements = document.getElementsByClassName("i18n-element-text");
   Array.from(i18nElements).forEach((element) => {
-    (<HTMLElement>element).innerText = i18next.t(element.id);
+    (element as HTMLElement).innerText = i18next.t(element.id);
   });
 };
 

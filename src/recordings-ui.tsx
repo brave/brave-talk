@@ -23,7 +23,7 @@ export const Recordings: React.FC<{
   return (
     <>
       <p className="recordings-header">
-        <img src={MediaPlayerImage} />
+        <img src={MediaPlayerImage} alt="" />
         <span>Your recorded calls</span>
       </p>
       <p className="body-text recordings-subhead">
@@ -53,7 +53,7 @@ const RecordingDisplay: React.FC<{ recording: Recording }> = ({
           {formatDuration(r.expiresAt - r.ttl - r.createdAt)}
         </div>
         <div>
-          <img src={DownloadImage} height="16" width="18" />
+          <img src={DownloadImage} height="16" width="18" alt="download" />
         </div>
       </div>
     </a>

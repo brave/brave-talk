@@ -25,7 +25,7 @@ const robotsTxtForProd =
     : [];
 
 module.exports = {
-  entry: ["./src/index.ts"],
+  entry: ["./src/react-index.tsx"],
   output: {
     path: path.resolve(__dirname, "./html"),
     filename: "static/[name].[contenthash].js",
