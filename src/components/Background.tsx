@@ -1,6 +1,4 @@
 import React, { ReactNode } from "react";
-import { Footer } from "./Footer";
-import { Header } from "./Header";
 
 interface Props {
   children: ReactNode;
@@ -19,9 +17,7 @@ export const Background: React.FC<Props> = ({ children }) => {
         minHeight: "100%",
       }}
     >
-      <Header />
-      <div css={{ flexGrow: 1 }}>{children}</div>
-      <Footer />
+      {children}
     </div>
   );
 };

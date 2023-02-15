@@ -14,7 +14,7 @@ some startup logic that happens at this point:
     - otherwise try to get the token then open the room
     - if "create=y" then do some fancy retry logic if the join fails
 
-3. otherwise show the home page, with subscription status or 
+3. otherwise show the home page
 
 */
 export const App: React.FC = () => {

@@ -101,7 +101,7 @@ module.exports = {
       // display compilation error messages on the screen
       overlay: true,
     },
-    open: ["/#adsoptin=yes"],
+    open: ["/"],
     historyApiFallback: true,
     proxy: {
       "/api": {

@@ -1,44 +1,62 @@
-export const SubscriptionCTA: React.FC = () => {
-  const _loading = (
-    <div className="section subscribe subscribe-loading" id="subscribe_loading">
-      <div className="spinner"></div>
-      <div className="i18n-element-text" id="check_subscription">
-        Checking subscription status...
-      </div>
-    </div>
-  );
+import { SubscriptionStatus } from "../hooks";
+import { resolveService } from "../services";
+import { Button } from "./Button";
+import { Section } from "./Section";
+import { Text } from "./Text";
+
+interface Props {
+  subscribed: SubscriptionStatus;
+}
+
+export const SubscriptionCTA: React.FC<Props> = ({ subscribed }) => {
+  if (subscribed === "yes") {
+    return null;
+  }
+
+  if (subscribed === "unknown") {
+    return (
+      <Section
+        additionalCss={{
+          minHeight: "calc(167px + 36px)",
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          padding: "16px",
+          color: "rgba(255, 255, 255, 0.5)",
+        }}
+      >
+        <img
+          src={require("../images/spinner.svg")}
+          alt="spinner"
+          width={22}
+          height={22}
+          css={{ marginRight: 12 }}
+        />
+        <Text variant="subhead">Checking subscription status...</Text>
+      </Section>
+    );
+  }
 
   return (
-    <div className="section subscribe" id="subscribe">
-      <p className="subscribe-text i18n-element-text" id="subscribe_text">
-        Upgrade to host video calls with hundreds of participants.
-      </p>
-      <button className="welcome-page-button-hollow" id="subscribe_button">
-        <div className="i18n-element-text" id="welcome_page_button_hollow">
-          Start free trial
+    <Text variant="body">
+      <Section>
+        <p css={{ marginBottom: 18, paddingTop: 34 }}>
+          Upgrade to host video calls with hundreds of participants.
+        </p>
+        <Button hollow>Start free trial</Button>
+        <div css={{ marginTop: 16 }}>
+          Get 30 days of access to Brave Talk Premium, free of charge. After 30
+          days, the credit card you enter will be charged $7.00 US monthly. You
+          can cancel any time.
         </div>
-      </button>
-      <div
-        className="subscribe-login i18n-element-text"
-        id="subscribe_login_text"
-      >
-        Get 30 days of access to Brave Talk Premium, free of charge. After 30
-        days, the credit card you enter will be charged $7.00 US monthly. You
-        can cancel any time.
-      </div>
-      <div className="subscribe-login">
-        <span className="i18n-element-text" id="subscribe_login_premium">
-          Already have Premium?
-        </span>
-        <a
-          href="https://account.brave.com"
-          className="i18n-element-text"
-          id="subscribe_login_link"
-        >
-          Log in
-        </a>
-        .
-      </div>
-    </div>
+        <div css={{ marginTop: 16 }}>
+          Already have Premium?{" "}
+          <a href={resolveService("account")} css={{ color: "inherit" }}>
+            Log in
+          </a>
+          .
+        </div>
+      </Section>
+    </Text>
   );
 };

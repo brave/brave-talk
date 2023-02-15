@@ -1,9 +1,4 @@
-import {
-  CSSObject,
-  Interpolation,
-  SerializedStyles,
-  Theme,
-} from "@emotion/react";
+import { CSSObject } from "@emotion/react";
 import { ReactNode } from "react";
 
 interface Props {
@@ -18,7 +13,7 @@ export const Section: React.FC<Props> = ({ children, additionalCss }) => (
         paddingBottom: "36px",
         paddingLeft: "24px",
         paddingRight: "24px",
-        margin: "0 auto 0",
+        margin: "0 auto 16px",
         background: "rgba(255, 255, 255, 0.08)",
         backdropFilter: "blur(32px)",
         borderRadius: "24px",

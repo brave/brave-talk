@@ -1,23 +1,17 @@
+import { SubscriptionStatus } from "../hooks";
+import { BrowserProperties } from "../rules";
 import { Button } from "./Button";
 import { Section } from "./Section";
+import { Text } from "./Text";
 
-const converted = {
-  ".join-call-text": {
-    margin: "0 auto 36px",
-    display: "flex",
-    flexDirection: "column",
-    maxWidth: "calc(100% - 40px)",
-    width: "570px",
-    zIndex: 2,
-  },
-  "@media only screen and (max-height: 600px) and (max-width: 600px)": {
-    ".join-call-text": { marginBottom: "22px" },
-  },
-};
+interface Props {
+  subscribed: SubscriptionStatus;
+  browser: BrowserProperties | undefined;
+}
 
-export const JoinCallSection: React.FC = () => {
+export const JoinCallSection: React.FC<Props> = ({ subscribed, browser }) => {
   return (
-    <Section additionalCss={{ margin: "122px auto 0" }}>
+    <Section additionalCss={{ marginTop: 122 }}>
       <div
         css={{
           "--talk-logo-size": "122px",
@@ -44,33 +38,22 @@ export const JoinCallSection: React.FC = () => {
           },
         }}
       >
-        <h1
-          css={{
-            margin: "95px 0 0",
-            fontSize: "36px",
-            fontWeight: 600,
-            lineHeight: "60px",
-            color: "#f0f2ff",
-          }}
-        >
-          Brave Talk
+        <h1 css={{ margin: "95px 0 0" }}>
+          <Text variant="header">
+            {subscribed === "yes" ? "Brave Talk Premium" : "Brave Talk"}
+          </Text>
         </h1>
-        <p
-          css={{
-            fontStyle: "normal",
-            fontWeight: 600,
-            fontSize: "15px",
-            lineHeight: "20px",
-            textAlign: "center",
-            letterSpacing: "0.04em",
-            margin: "8px 0 0",
-          }}
-          id="notice_text"
-        >
-          Unlimited private video calls with your friends and colleagues
+        <p css={{ margin: "8px 0 0" }}>
+          <Text variant="subhead">
+            Unlimited private video calls with your friends and colleagues
+          </Text>
         </p>
       </div>
-      <Button label="Start Call" />
+      <Button>
+        {subscribed === "yes"
+          ? "Start Premium call"
+          : "Start free call (up to 4 people)"}
+      </Button>
       {/* <button
         className="welcome-page-button welcome-page-button-with-icon welcome-page-gutter-top i18n-element-end"
         id="copy_link"

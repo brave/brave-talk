@@ -23,6 +23,10 @@ export const GlobalStyles = () => (
         color: "#f1f1f1",
         overflow: "hidden",
       },
+      button: {
+        border: "none",
+        font: "inherit",
+      },
     })}
   />
 );
