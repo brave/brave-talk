@@ -48,3 +48,21 @@ export const reportMethod = (method: string, params: object) => {
 
 export const wait = (ms: number): Promise<void> =>
   new Promise((resolve) => window.setTimeout(resolve, ms));
+
+export const extractValueFromFragment = (key: string): string | undefined => {
+  let value: string | undefined;
+
+  if (window.location.hash !== "") {
+    const hashes = window.location.hash.substr(1).split("&");
+
+    hashes.forEach((hash: string) => {
+      const equals = hash.indexOf("=");
+
+      if (equals !== -1 && key === hash.substr(0, equals)) {
+        value = hash.substr(equals + 1);
+      }
+    });
+  }
+
+  return value;
+};

@@ -19,7 +19,7 @@ export const WelcomeScreen: React.FC<Props> = ({ onStartCall, notice }) => {
   return (
     <Background>
       <Header subscribed={subscribed} />
-      <div css={{ flexGrow: 1 }}>
+      <div css={{ flexGrow: 1, padding: "0 12px" }}>
         <JoinCallSection
           subscribed={subscribed}
           browser={browserProps}
