@@ -75,6 +75,7 @@ interface CallSetup {
   roomName?: string;
   jwt?: string;
   notice?: string;
+  isEstablishingCall: boolean;
   onStartCall: () => void;
 }
 
@@ -87,26 +88,32 @@ export function useCallSetupStatus(): CallSetup {
 
   const [notice, setNotice] = useState<string>();
 
+  const [isEstablishingCall, setIsEstablishingCall] = useState(false);
+
   useEffect(() => {
     if (roomName) {
       // keep the url in sync with the any room name configured
       window.history.replaceState(null, "", `/${roomName}`);
 
       // and if we don't have a jwt fetch one
+      setIsEstablishingCall(true);
       fetchOrCreateJWT(roomName, false, false, setNotice)
         .then((result) => setJwt(result.jwt))
-        .catch(console.error);
+        .catch(console.error)
+        .finally(() => setIsEstablishingCall(false));
     }
   }, [roomName]);
 
   const doStartCall = () => {
     setRoomName(generateRoomName());
+    // ...which will then trigger the effect above to fetch the jwt
   };
 
   return {
     roomName,
     notice,
     jwt,
+    isEstablishingCall,
     onStartCall: doStartCall,
   };
 }

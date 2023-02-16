@@ -19,7 +19,8 @@ const styles = {
 };
 
 export const App: React.FC = () => {
-  const { roomName, jwt, onStartCall, notice } = useCallSetupStatus();
+  const { roomName, jwt, onStartCall, notice, isEstablishingCall } =
+    useCallSetupStatus();
 
   const isCallReady = roomName && jwt;
 
@@ -31,7 +32,11 @@ export const App: React.FC = () => {
         {isCallReady ? (
           <InCall roomName={roomName} jwt={jwt} isMobile={false} />
         ) : (
-          <WelcomeScreen onStartCall={onStartCall} notice={notice} />
+          <WelcomeScreen
+            onStartCall={onStartCall}
+            notice={notice}
+            disabled={isEstablishingCall}
+          />
         )}
       </div>
     </React.Fragment>

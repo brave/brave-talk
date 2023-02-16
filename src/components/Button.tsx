@@ -6,6 +6,7 @@ interface Props {
   onClick?: DispatchWithoutAction;
   children: ReactNode;
   disabled?: boolean;
+  className?: string;
 }
 
 const styles = {
@@ -21,7 +22,6 @@ const styles = {
     color: "#ffffff",
     "@media only screen and (max-width: 600px)": {
       width: "100%",
-      margin: "0 auto",
     },
   }),
   solid: css({
@@ -53,12 +53,14 @@ export const Button: React.FC<Props> = ({
   children,
   onClick,
   disabled,
+  className,
 }) => {
   return (
     <button
       css={[styles.base, hollow ? styles.hollow : styles.solid]}
       onClick={onClick}
       disabled={disabled}
+      className={className}
     >
       {children}
     </button>

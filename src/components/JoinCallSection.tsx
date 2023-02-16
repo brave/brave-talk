@@ -2,6 +2,7 @@ import { DispatchWithoutAction } from "react";
 import { SubscriptionStatus } from "../hooks/subscription";
 import { BrowserProperties } from "../rules";
 import { Button } from "./Button";
+import { CopyLinkButton } from "./CopyLinkButton";
 import { Section } from "./Section";
 import { Text } from "./Text";
 
@@ -9,6 +10,7 @@ interface Props {
   subscribed: SubscriptionStatus;
   browser: BrowserProperties | undefined;
   notice?: string;
+  disabled: boolean;
   onStartCall: DispatchWithoutAction;
 }
 
@@ -17,6 +19,7 @@ export const JoinCallSection: React.FC<Props> = ({
   browser,
   notice,
   onStartCall,
+  disabled,
 }) => {
   return (
     <Section additionalCss={{ marginTop: 122 }}>
@@ -58,30 +61,17 @@ export const JoinCallSection: React.FC<Props> = ({
           </Text>
         </p>
       </div>
-      <Button onClick={onStartCall} disabled={!!notice}>
-        {subscribed === "yes"
-          ? "Start Premium call"
-          : "Start free call (up to 4 people)"}
-      </Button>
-      {/* <button
-        className="welcome-page-button welcome-page-button-with-icon welcome-page-gutter-top i18n-element-end"
-        id="copy_link"
-      >
-        <div className="copy-icon"></div>
-        <span className="i18n-element-text" id="create_link">
-          Create link
-        </span>
-      </button>
+      <div css={{ display: "flex", flexDirection: "column" }}>
+        <Button onClick={onStartCall} disabled={disabled}>
+          {subscribed === "yes"
+            ? "Start Premium call"
+            : "Start free call (up to 4 people)"}
+        </Button>
 
-      <div
-        className="welcome-page-button welcome-page-button-with-icon welcome-page-button-loading"
-        id="enter_room_loading"
-      >
-        <div className="spinner"></div>
-        <div className="i18n-element-text" id="loading">
-          Loading...
-        </div>
+        {subscribed === "yes" && !browser?.isIOS && <CopyLinkButton />}
       </div>
+
+      {/*
       <div className="download-brave" id="download_brave">
         <div
           className="download-brave-text i18n-element-text"
@@ -104,23 +94,7 @@ export const JoinCallSection: React.FC<Props> = ({
             </div>
           </a>
         </div>
-      </div>
-      <div className="desktop-needed" id="desktop_needed">
-        <div
-          className="desktop-needed-info i18n-element-text"
-          id="desktop_needed_info"
-        >
-          You can only join Brave Talk calls from your mobile device on the free
-          plan.
-        </div>
-        <div
-          className="desktop-needed-cta i18n-element-text"
-          id="desktop_needed_cta"
-        >
-          Use Brave Browser on your desktop to start a free call, or upgrade to
-          Premium.
-        </div> 
-        </div> */}
+      </div> */}
     </Section>
   );
 };

@@ -10,9 +10,14 @@ import { SubscriptionCTA } from "./SubscriptionCTA";
 interface Props {
   onStartCall: DispatchWithoutAction;
   notice?: string;
+  disabled: boolean;
 }
 
-export const WelcomeScreen: React.FC<Props> = ({ onStartCall, notice }) => {
+export const WelcomeScreen: React.FC<Props> = ({
+  onStartCall,
+  notice,
+  disabled,
+}) => {
   const browserProps = useBrowserProperties();
   const subscribed = useSubscribedStatus();
 
@@ -25,6 +30,7 @@ export const WelcomeScreen: React.FC<Props> = ({ onStartCall, notice }) => {
           browser={browserProps}
           onStartCall={onStartCall}
           notice={notice}
+          disabled={disabled}
         />
 
         {/* TODO */}
