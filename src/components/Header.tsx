@@ -1,4 +1,4 @@
-import { SubscriptionStatus } from "../hooks";
+import { SubscriptionStatus } from "../hooks/subscription";
 import { resolveService } from "../services";
 
 interface Props {

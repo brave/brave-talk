@@ -5,6 +5,7 @@ interface Props {
   hollow?: boolean;
   onClick?: DispatchWithoutAction;
   children: ReactNode;
+  disabled?: boolean;
 }
 
 const styles = {
@@ -50,9 +51,18 @@ const styles = {
   }),
 };
 
-export const Button: React.FC<Props> = ({ hollow, children, onClick }) => {
+export const Button: React.FC<Props> = ({
+  hollow,
+  children,
+  onClick,
+  disabled,
+}) => {
   return (
-    <button css={hollow ? styles.hollow : styles.button} onClick={onClick}>
+    <button
+      css={hollow ? styles.hollow : styles.button}
+      onClick={onClick}
+      disabled={disabled}
+    >
       {children}
     </button>
   );

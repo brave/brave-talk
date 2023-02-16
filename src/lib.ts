@@ -1,7 +1,5 @@
-import { BrowserProperties } from "./rules";
-
-export const extractRoomNameFromUrl = (): string | undefined => {
-  const parts = window.location.pathname.split("/");
+export const extractRoomNameFromPath = (path: string): string | undefined => {
+  const parts = path.split("/");
 
   if (parts.length !== 2) {
     return undefined;
@@ -40,30 +38,13 @@ export const isRoomValid = (room: string) => {
   return typeof room === "string" && room.match(/^[A-Za-z0-9-_]{43}$/);
 };
 
-export const calcBrowserCapabilities = async (): Promise<BrowserProperties> => {
-  const userAgent = navigator.userAgent;
-  const androidP = !!userAgent.match(/Android/i);
-  // cf., https://stackoverflow.com/questions/9038625/detect-if-device-is-ios/9039885#9039885
-  const iosP =
-    !!userAgent.match(/iP(ad|hone|od)/i) ||
-    (userAgent.includes("Mac") && "ontouchend" in document);
-
-  const webrtcP =
-    androidP ||
-    (!!navigator.mediaDevices && !!navigator.mediaDevices.getUserMedia);
-
-  const isBrave = async () => {
-    try {
-      return await (navigator as any).brave.isBrave();
-    } catch (error) {
-      return false;
-    }
-  };
-
-  return {
-    isBrave: await isBrave(),
-    isMobile: iosP || androidP,
-    isIOS: iosP,
-    supportsWebRTC: webrtcP,
-  };
+export const reportAction = (action: string, params: object) => {
+  console.log(`!!! < ${action}: `, params);
 };
+
+export const reportMethod = (method: string, params: object) => {
+  console.log(`!!! > ${method}: `, params);
+};
+
+export const wait = (ms: number): Promise<void> =>
+  new Promise((resolve) => window.setTimeout(resolve, ms));

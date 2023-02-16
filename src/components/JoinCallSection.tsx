@@ -1,4 +1,5 @@
-import { SubscriptionStatus } from "../hooks";
+import { DispatchWithoutAction } from "react";
+import { SubscriptionStatus } from "../hooks/subscription";
 import { BrowserProperties } from "../rules";
 import { Button } from "./Button";
 import { Section } from "./Section";
@@ -7,9 +8,16 @@ import { Text } from "./Text";
 interface Props {
   subscribed: SubscriptionStatus;
   browser: BrowserProperties | undefined;
+  notice?: string;
+  onStartCall: DispatchWithoutAction;
 }
 
-export const JoinCallSection: React.FC<Props> = ({ subscribed, browser }) => {
+export const JoinCallSection: React.FC<Props> = ({
+  subscribed,
+  browser,
+  notice,
+  onStartCall,
+}) => {
   return (
     <Section additionalCss={{ marginTop: 122 }}>
       <div
@@ -45,11 +53,12 @@ export const JoinCallSection: React.FC<Props> = ({ subscribed, browser }) => {
         </h1>
         <p css={{ margin: "8px 0 0" }}>
           <Text variant="subhead">
-            Unlimited private video calls with your friends and colleagues
+            {notice ??
+              "Unlimited private video calls with your friends and colleagues"}
           </Text>
         </p>
       </div>
-      <Button>
+      <Button onClick={onStartCall} disabled={!!notice}>
         {subscribed === "yes"
           ? "Start Premium call"
           : "Start free call (up to 4 people)"}

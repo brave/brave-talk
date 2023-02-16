@@ -1,4 +1,4 @@
-import { SubscriptionStatus } from "../hooks";
+import { SubscriptionStatus } from "../hooks/subscription";
 import { resolveService } from "../services";
 import { Button } from "./Button";
 import { Section } from "./Section";
