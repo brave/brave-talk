@@ -76,6 +76,7 @@ interface CallSetup {
   jwt?: string;
   notice?: string;
   isEstablishingCall: boolean;
+  hasInitialRoom: boolean;
   onStartCall: () => void;
 }
 
@@ -84,10 +85,13 @@ export function useCallSetupStatus(): CallSetup {
     calculateInitialRoomNameFromUrl(window.location.pathname)
   );
 
+  // why is this important? Because we don't want to show any
+  // buttons to start a call if the initial url has a valid room name
+  // on it
+  const [hasInitialRoom, setHasInitialRoom] = useState(() => !!roomName);
+
   const [jwt, setJwt] = useState<string>();
-
   const [notice, setNotice] = useState<string>();
-
   const [isEstablishingCall, setIsEstablishingCall] = useState(false);
 
   useEffect(() => {
@@ -98,7 +102,15 @@ export function useCallSetupStatus(): CallSetup {
       // and if we don't have a jwt fetch one
       setIsEstablishingCall(true);
       fetchOrCreateJWT(roomName, false, false, setNotice)
-        .then((result) => setJwt(result.jwt))
+        .then((result) => {
+          if (result.jwt) {
+            setJwt(result.jwt);
+          } else {
+            // the error message has already been displayed by fetchOrCreateJWT,
+            // but we need to allow the user to recover by enabling all functionality
+            setHasInitialRoom(false);
+          }
+        })
         .catch(console.error)
         .finally(() => setIsEstablishingCall(false));
     }
@@ -114,6 +126,7 @@ export function useCallSetupStatus(): CallSetup {
     notice,
     jwt,
     isEstablishingCall,
+    hasInitialRoom,
     onStartCall: doStartCall,
   };
 }

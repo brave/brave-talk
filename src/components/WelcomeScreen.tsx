@@ -11,12 +11,14 @@ interface Props {
   onStartCall: DispatchWithoutAction;
   notice?: string;
   disabled: boolean;
+  hideButtons: boolean;
 }
 
 export const WelcomeScreen: React.FC<Props> = ({
   onStartCall,
   notice,
   disabled,
+  hideButtons,
 }) => {
   const browserProps = useBrowserProperties();
   const subscribed = useSubscribedStatus();
@@ -31,12 +33,13 @@ export const WelcomeScreen: React.FC<Props> = ({
           onStartCall={onStartCall}
           notice={notice}
           disabled={disabled}
+          hideButtons={hideButtons}
         />
 
         {/* TODO */}
         <div className="section recordings" id="recordings"></div>
 
-        <SubscriptionCTA subscribed={subscribed} />
+        {!hideButtons && <SubscriptionCTA subscribed={subscribed} />}
       </div>
       <Footer />
     </Background>

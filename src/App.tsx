@@ -19,8 +19,14 @@ const styles = {
 };
 
 export const App: React.FC = () => {
-  const { roomName, jwt, onStartCall, notice, isEstablishingCall } =
-    useCallSetupStatus();
+  const {
+    roomName,
+    jwt,
+    onStartCall,
+    notice,
+    isEstablishingCall,
+    hasInitialRoom,
+  } = useCallSetupStatus();
 
   const isCallReady = roomName && jwt;
 
@@ -36,6 +42,7 @@ export const App: React.FC = () => {
             onStartCall={onStartCall}
             notice={notice}
             disabled={isEstablishingCall}
+            hideButtons={hasInitialRoom}
           />
         )}
       </div>

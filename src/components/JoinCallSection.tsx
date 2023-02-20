@@ -11,6 +11,7 @@ interface Props {
   browser: BrowserProperties | undefined;
   notice?: string;
   disabled: boolean;
+  hideButtons: boolean;
   onStartCall: DispatchWithoutAction;
 }
 
@@ -20,6 +21,7 @@ export const JoinCallSection: React.FC<Props> = ({
   notice,
   onStartCall,
   disabled,
+  hideButtons,
 }) => {
   return (
     <Section additionalCss={{ marginTop: 122 }}>
@@ -61,15 +63,17 @@ export const JoinCallSection: React.FC<Props> = ({
           </Text>
         </p>
       </div>
-      <div css={{ display: "flex", flexDirection: "column" }}>
-        <Button onClick={onStartCall} disabled={disabled}>
-          {subscribed === "yes"
-            ? "Start Premium call"
-            : "Start free call (up to 4 people)"}
-        </Button>
+      {!hideButtons && (
+        <div css={{ display: "flex", flexDirection: "column" }}>
+          <Button onClick={onStartCall} disabled={disabled}>
+            {subscribed === "yes"
+              ? "Start Premium call"
+              : "Start free call (up to 4 people)"}
+          </Button>
 
-        {subscribed === "yes" && !browser?.isIOS && <CopyLinkButton />}
-      </div>
+          {subscribed === "yes" && !browser?.isIOS && <CopyLinkButton />}
+        </div>
+      )}
 
       {/*
       <div className="download-brave" id="download_brave">
