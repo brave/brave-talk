@@ -8,6 +8,7 @@ import { JoinCallSection } from "./JoinCallSection";
 import { SubscriptionCTA } from "./SubscriptionCTA";
 import { DownloadBrave } from "./DownloadBrave";
 import React from "react";
+import { Recordings } from "./Recordings";
 
 interface Props {
   onStartCall: DispatchWithoutAction;
@@ -44,8 +45,8 @@ export const WelcomeScreen: React.FC<Props> = ({
               disabled={disabled}
               hideButtons={hasInitialRoomName}
             />
-            {/* TODO */}
-            <div className="section recordings" id="recordings"></div>
+
+            <Recordings />
 
             {!hasInitialRoomName && <SubscriptionCTA subscribed={subscribed} />}
           </React.Fragment>

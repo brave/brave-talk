@@ -15,6 +15,13 @@ const styles = {
     textAlign: "center",
     letterSpacing: "0.04em",
   }),
+  "secondary-section-head": css({
+    fontWeight: 600,
+    fontSize: "22px",
+    lineHeight: "26px",
+    textAlign: "center",
+    letterSpacing: "0.01em",
+  }),
   body: css({
     fontWeight: "normal",
     fontSize: "14px",
@@ -27,12 +34,6 @@ const styles = {
     lineHeight: "18px",
     letterSpacing: "0.01em",
     color: "#ffffff",
-  }),
-  myaccount: css({
-    fontSize: "14px",
-    fontWeight: 600,
-    lineHeight: "20px",
-    fontStyle: "normal",
   }),
 };
 
