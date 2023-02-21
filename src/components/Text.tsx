@@ -39,8 +39,13 @@ const styles = {
 interface Props {
   variant: keyof typeof styles;
   children: ReactNode;
+  className?: string;
 }
 
-export const Text: React.FC<Props> = ({ variant, children }) => {
-  return <span css={styles[variant]}>{children}</span>;
+export const Text: React.FC<Props> = ({ variant, children, className }) => {
+  return (
+    <span className={className} css={styles[variant]}>
+      {children}
+    </span>
+  );
 };

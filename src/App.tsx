@@ -42,7 +42,7 @@ export const App: React.FC = () => {
             onStartCall={onStartCall}
             notice={notice}
             disabled={isEstablishingCall}
-            hideButtons={hasInitialRoom}
+            hasInitialRoomName={hasInitialRoom}
           />
         )}
       </div>
