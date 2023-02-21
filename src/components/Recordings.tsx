@@ -6,7 +6,6 @@ import DownloadImage from "../images/download.svg";
 import MediaPlayerImage from "../images/media_player.svg";
 import { Section } from "./Section";
 import { Text } from "./Text";
-import { css } from "@emotion/react";
 
 const RecordingDisplay: React.FC<{ recording: Recording }> = ({
   recording: r,
@@ -46,7 +45,6 @@ const RecordingDisplay: React.FC<{ recording: Recording }> = ({
 export const Recordings: React.FC = () => {
   const recordings = useRecordings();
 
-  console.log({ recordings });
   if (recordings.length === 0) {
     return null;
   }
