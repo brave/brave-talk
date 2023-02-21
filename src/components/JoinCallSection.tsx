@@ -1,5 +1,5 @@
 import { DispatchWithoutAction } from "react";
-import { SubscriptionStatus } from "../hooks/subscription";
+import { SubscriptionStatus } from "../hooks/use-subscribed-status";
 import { BrowserProperties } from "../rules";
 import { Button } from "./Button";
 import { CopyLinkButton } from "./CopyLinkButton";

@@ -4,7 +4,7 @@ import { GlobalStyles } from "./components/GlobalStyles";
 import { InCall } from "./components/InCall";
 import { WelcomeScreen } from "./components/WelcomeScreen";
 import "./css/poppins.css";
-import { useCallSetupStatus } from "./hooks/call-setup";
+import { useCallSetupStatus } from "./hooks/use-call-setup-status";
 
 const styles = {
   container: css({

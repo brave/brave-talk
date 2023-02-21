@@ -1,6 +1,11 @@
+import { BrowserProperties } from "../rules";
 import { Text } from "./Text";
 
-export const Footer: React.FC = () => {
+interface Props {
+  browser: BrowserProperties;
+}
+
+export const Footer: React.FC<Props> = ({ browser }) => {
   return (
     <div
       css={{
@@ -12,11 +17,26 @@ export const Footer: React.FC = () => {
       }}
     >
       <Text variant="caption">
-        <span>Your personal information always stays private, per our </span>
-        <a href="https://brave.com/privacy/browser/#brave-talk-learn">
-          privacy policy
-        </a>
-        . <a href="https://status.brave.com/">Service status</a>.
+        {browser.isBrave && !browser.isMobile && (
+          <div>
+            Download the{" "}
+            <a
+              href="https://chrome.google.com/webstore/detail/brave-talk-for-google-cal/nimfmkdcckklbkhjjkmbjfcpaiifgamg"
+              rel="nofollow noreferrer noopener"
+              target="_blank"
+            >
+              Google Calendar extension
+            </a>
+            .
+          </div>
+        )}
+        <div>
+          <span>Your personal information always stays private, per our </span>
+          <a href="https://brave.com/privacy/browser/#brave-talk-learn">
+            privacy policy
+          </a>
+          . <a href="https://status.brave.com/">Service status</a>.
+        </div>
       </Text>
     </div>
   );

@@ -1,4 +1,4 @@
-import { useRecordings } from "../hooks/recordings";
+import { useRecordings } from "../hooks/use-recordings";
 import { Recording } from "../recordings-store";
 import { formatDuration, formatRelativeDay } from "../recordings-utils";
 

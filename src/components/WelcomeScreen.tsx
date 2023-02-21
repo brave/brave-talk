@@ -1,6 +1,6 @@
 import { DispatchWithoutAction } from "react";
-import { useSubscribedStatus } from "../hooks/subscription";
-import { useBrowserProperties } from "../hooks/browser-properties";
+import { useSubscribedStatus } from "../hooks/use-subscribed-status";
+import { useBrowserProperties } from "../hooks/use-browser-properties";
 import { Background } from "./Background";
 import { Footer } from "./Footer";
 import { Header } from "./Header";
@@ -64,7 +64,7 @@ export const WelcomeScreen: React.FC<Props> = ({
       <div css={{ flexGrow: 1, padding: "0 12px" }}>
         <Body />
       </div>
-      <Footer />
+      {browserProps && <Footer browser={browserProps} />}
     </Background>
   );
 };
