@@ -1,13 +1,13 @@
 import { DispatchWithoutAction } from "react";
 import { SubscriptionStatus } from "../hooks/use-subscribed-status";
-import { BrowserProperties } from "../rules";
+import { BrowserProperties } from "../hooks/use-browser-properties";
 import { Button } from "./Button";
 import { CopyLinkButton } from "./CopyLinkButton";
 import { SectionWithLogo } from "./SectionWithLogo";
 
 interface Props {
   subscribed: SubscriptionStatus;
-  browser: BrowserProperties | undefined;
+  browser: BrowserProperties;
   notice?: string;
   disabled: boolean;
   hideButtons: boolean;
@@ -38,7 +38,7 @@ export const JoinCallSection: React.FC<Props> = ({
               : "Start free call (up to 4 people)"}
           </Button>
 
-          {subscribed === "yes" && !browser?.isIOS && <CopyLinkButton />}
+          {subscribed === "yes" && !browser.isIOS && <CopyLinkButton />}
         </div>
       )}
     </SectionWithLogo>

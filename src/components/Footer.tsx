@@ -1,4 +1,4 @@
-import { BrowserProperties } from "../rules";
+import { BrowserProperties } from "../hooks/use-browser-properties";
 import { Text } from "./Text";
 
 interface Props {

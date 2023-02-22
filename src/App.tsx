@@ -4,6 +4,7 @@ import { GlobalStyles } from "./components/GlobalStyles";
 import { InCall } from "./components/InCall";
 import { WelcomeScreen } from "./components/WelcomeScreen";
 import "./css/poppins.css";
+import { useBrowserProperties } from "./hooks/use-browser-properties";
 import { useCallSetupStatus } from "./hooks/use-call-setup-status";
 
 const styles = {
@@ -28,6 +29,8 @@ export const App: React.FC = () => {
     hasInitialRoom,
   } = useCallSetupStatus();
 
+  const browserProps = useBrowserProperties();
+
   const isCallReady = roomName && jwt;
 
   return (
@@ -36,13 +39,18 @@ export const App: React.FC = () => {
 
       <div css={styles.container}>
         {isCallReady ? (
-          <InCall roomName={roomName} jwt={jwt} isMobile={false} />
+          <InCall
+            roomName={roomName}
+            jwt={jwt}
+            isMobile={browserProps.isMobile}
+          />
         ) : (
           <WelcomeScreen
             onStartCall={onStartCall}
             notice={notice}
             disabled={isEstablishingCall}
             hasInitialRoomName={hasInitialRoom}
+            browser={browserProps}
           />
         )}
       </div>

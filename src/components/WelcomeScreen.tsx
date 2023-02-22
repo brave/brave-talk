@@ -1,6 +1,5 @@
 import { DispatchWithoutAction } from "react";
 import { useSubscribedStatus } from "../hooks/use-subscribed-status";
-import { useBrowserProperties } from "../hooks/use-browser-properties";
 import { Background } from "./Background";
 import { Footer } from "./Footer";
 import { Header } from "./Header";
@@ -10,12 +9,14 @@ import { DownloadBrave } from "./DownloadBrave";
 import React from "react";
 import { Recordings } from "./Recordings";
 import { SectionWithLogo } from "./SectionWithLogo";
+import { BrowserProperties } from "../hooks/use-browser-properties";
 
 interface Props {
   onStartCall: DispatchWithoutAction;
   notice?: string;
   disabled: boolean;
   hasInitialRoomName: boolean;
+  browser: BrowserProperties;
 }
 
 export const WelcomeScreen: React.FC<Props> = ({
@@ -23,16 +24,16 @@ export const WelcomeScreen: React.FC<Props> = ({
   notice,
   disabled,
   hasInitialRoomName,
+  browser,
 }) => {
-  const browserProps = useBrowserProperties();
   const subscribed = useSubscribedStatus();
 
   const Body: React.FC = () => {
-    if (!hasInitialRoomName && browserProps && !browserProps.isBrave) {
+    if (!hasInitialRoomName && browser.isBrave === false) {
       return <DownloadBrave />;
     }
 
-    if (browserProps && !browserProps.supportsWebRTC) {
+    if (!browser.supportsWebRTC) {
       return (
         <SectionWithLogo
           heading="Brave Talk"
@@ -44,7 +45,7 @@ export const WelcomeScreen: React.FC<Props> = ({
       <React.Fragment>
         <JoinCallSection
           subscribed={subscribed}
-          browser={browserProps}
+          browser={browser}
           onStartCall={onStartCall}
           notice={notice}
           disabled={disabled}
@@ -64,7 +65,7 @@ export const WelcomeScreen: React.FC<Props> = ({
       <div css={{ flexGrow: 1, padding: "0 12px" }}>
         <Body />
       </div>
-      {browserProps && <Footer browser={browserProps} />}
+      <Footer browser={browser} />
     </Background>
   );
 };

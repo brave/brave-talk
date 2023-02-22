@@ -2,9 +2,15 @@
    and in particular the rules they need to follow */
 
 import { useState, useEffect } from "react";
-import { BrowserProperties } from "../rules";
 
-const calcBrowserCapabilities = async (): Promise<BrowserProperties> => {
+export interface BrowserProperties {
+  isBrave: boolean | undefined; // "undefined" means not yet known
+  isMobile: boolean;
+  isIOS: boolean;
+  supportsWebRTC: boolean;
+}
+
+const calcBrowserCapabilities = (): BrowserProperties => {
   const userAgent = navigator.userAgent;
   const androidP = !!userAgent.match(/Android/i);
   // cf., https://stackoverflow.com/questions/9038625/detect-if-device-is-ios/9039885#9039885
@@ -16,27 +22,36 @@ const calcBrowserCapabilities = async (): Promise<BrowserProperties> => {
     androidP ||
     (!!navigator.mediaDevices && !!navigator.mediaDevices.getUserMedia);
 
-  const isBrave = async () => {
-    try {
-      return await (navigator as any).brave.isBrave();
-    } catch (error) {
-      return false;
-    }
-  };
-
   return {
-    isBrave: await isBrave(),
+    isBrave: undefined,
     isMobile: iosP || androidP,
     isIOS: iosP,
     supportsWebRTC: webrtcP,
   };
 };
 
-export function useBrowserProperties(): BrowserProperties | undefined {
-  const [browser, setBrowser] = useState<BrowserProperties>();
+const isBrave = async () => {
+  try {
+    return await (navigator as any).brave.isBrave();
+  } catch (error) {
+    return false;
+  }
+};
+
+export function useBrowserProperties(): BrowserProperties {
+  // Most of the properties of the browser we can identify synchronously,
+  // so provide these values immediately.  Detection of brave is async,
+  // so we calculate that separately and provide the value later on.
+  // This helps avoid delays / flashes of content on load.
+
+  const [browser, setBrowser] = useState<BrowserProperties>(
+    calcBrowserCapabilities()
+  );
 
   useEffect(() => {
-    calcBrowserCapabilities().then(setBrowser);
+    isBrave().then((isBrave: boolean) =>
+      setBrowser((bp) => ({ ...bp, isBrave: isBrave }))
+    );
   }, []);
 
   return browser;
