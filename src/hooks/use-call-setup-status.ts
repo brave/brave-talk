@@ -4,8 +4,10 @@ import {
   generateRoomName,
   reportAction,
   reportMethod,
+  wait,
 } from "../lib";
 import { fetchJWT } from "../rooms";
+import { subscriptionCheckWithTimeout } from "./use-subscribed-status";
 
 function calculateInitialRoomNameFromUrl(pathname: string): string | undefined {
   const requestedRoomName = extractRoomNameFromPath(pathname);
@@ -26,7 +28,7 @@ function calculateInitialRoomNameFromUrl(pathname: string): string | undefined {
 
 interface JoinConferenceRoomResult {
   jwt?: string;
-  errorMessage?: string;
+  retryLater?: boolean;
 }
 
 const fetchOrCreateJWT = async (
@@ -42,23 +44,16 @@ const fetchOrCreateJWT = async (
     return { jwt: result.jwt };
   } catch (error: any) {
     if (!createP && error.message === "The room does not exist") {
-      if (waitForSubscriptionBeforeCreating) {
-        /* TODO - how to implement this logic! */
-        notice(
-          "TODO: now want to wait for a subscriber to create the room if not subscribed!"
-        );
-        // const isSubscribed = await userIsSubscribed();
-        // if (!isSubscribed) {
-        //   notice("Waiting for a subscriber to create the room...");
-        //   renderHomePage({
-        //     showSubscribeCTA: true,
-        //     showStartCall: true,
-        //     roomNameOverride: roomName,
-        //   });
-        //   setAutoOpenRoom(roomName);
-        //   setTimeout(() => joinConferenceRoom(roomName, false), 5_000);
+      // we _could_ try and pass down the subscription status via react state, but
+      // we're deliberately choosing not to do that: we've deliberately
+      // scoped the subscription checks to the welcome screen so that the
+      // "normal" case case of joining an existing call doesn't force a load
+      // of the massive wasm that supports subscriptions.
+      const isSubscribed = await subscriptionCheckWithTimeout();
 
-        return { errorMessage: "Not yet implemented" };
+      if (waitForSubscriptionBeforeCreating && !isSubscribed) {
+        notice("Waiting for a subscriber to create the room...");
+        return { retryLater: true };
       }
 
       reportAction(`Creating room`, { roomName });
@@ -66,7 +61,7 @@ const fetchOrCreateJWT = async (
     } else {
       console.error(error);
       notice(error.message);
-      return { errorMessage: error.message };
+      return {};
     }
   }
 };
@@ -80,7 +75,9 @@ interface CallSetup {
   onStartCall: () => void;
 }
 
-export function useCallSetupStatus(): CallSetup {
+export function useCallSetupStatus(
+  waitForSubscriptionBeforeCreating: boolean
+): CallSetup {
   const [roomName, setRoomName] = useState(() =>
     calculateInitialRoomNameFromUrl(window.location.pathname)
   );
@@ -95,13 +92,15 @@ export function useCallSetupStatus(): CallSetup {
   const [isEstablishingCall, setIsEstablishingCall] = useState(false);
 
   useEffect(() => {
-    if (roomName) {
-      // keep the url in sync with the any room name configured
-      window.history.replaceState(null, "", `/${roomName}`);
-
-      // and if we don't have a jwt fetch one
+    const tryFetchJwt = (roomName: string) => {
+      // if we don't have a jwt fetch one
       setIsEstablishingCall(true);
-      fetchOrCreateJWT(roomName, false, false, setNotice)
+      fetchOrCreateJWT(
+        roomName,
+        false,
+        waitForSubscriptionBeforeCreating,
+        setNotice
+      )
         .then((result) => {
           if (result.jwt) {
             setJwt(result.jwt);
@@ -109,12 +108,23 @@ export function useCallSetupStatus(): CallSetup {
             // the error message has already been displayed by fetchOrCreateJWT,
             // but we need to allow the user to recover by enabling all functionality
             setHasInitialRoom(false);
+
+            if (result.retryLater) {
+              wait(5_000).then(() => tryFetchJwt(roomName));
+            }
           }
         })
         .catch(console.error)
         .finally(() => setIsEstablishingCall(false));
+    };
+
+    if (roomName) {
+      // keep the url in sync with the any room name configured
+      window.history.replaceState(null, "", `/${roomName}`);
+
+      tryFetchJwt(roomName);
     }
-  }, [roomName]);
+  }, [roomName, waitForSubscriptionBeforeCreating]);
 
   const doStartCall = () => {
     setRoomName(generateRoomName());

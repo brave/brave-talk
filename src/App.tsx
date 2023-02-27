@@ -6,6 +6,7 @@ import { WelcomeScreen } from "./components/WelcomeScreen";
 import "./css/poppins.css";
 import { useBrowserProperties } from "./hooks/use-browser-properties";
 import { useCallSetupStatus } from "./hooks/use-call-setup-status";
+import { useParams } from "./hooks/use-params";
 
 const styles = {
   container: css({
@@ -20,6 +21,8 @@ const styles = {
 };
 
 export const App: React.FC = () => {
+  const params = useParams();
+
   const {
     roomName,
     jwt,
@@ -27,7 +30,7 @@ export const App: React.FC = () => {
     notice,
     isEstablishingCall,
     hasInitialRoom,
-  } = useCallSetupStatus();
+  } = useCallSetupStatus(params.isCreate);
 
   const browserProps = useBrowserProperties();
 

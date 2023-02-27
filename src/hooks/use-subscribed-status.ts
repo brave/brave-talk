@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 
 export type SubscriptionStatus = "unknown" | "yes" | "no";
 
-function subscriptionCheckWithTimeout(): Promise<boolean> {
+export function subscriptionCheckWithTimeout(): Promise<boolean> {
   let timer: any;
   const timeout = new Promise<boolean>((resolve) => {
     timer = setTimeout(() => {
