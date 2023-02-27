@@ -16,7 +16,7 @@ export const SubscriptionCTA: React.FC<Props> = ({ subscribed }) => {
   if (subscribed === "unknown") {
     return (
       <Section
-        additionalCss={{
+        css={{
           minHeight: "calc(167px + 36px)",
           display: "flex",
           justifyContent: "center",

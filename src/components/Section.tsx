@@ -1,9 +1,7 @@
-import { CSSObject } from "@emotion/react";
 import { ReactNode } from "react";
 
 interface Props {
   children: ReactNode;
-  additionalCss?: CSSObject;
   className?: string;
 }
 export const Section: React.FC<Props> = ({ children, className }) => (
