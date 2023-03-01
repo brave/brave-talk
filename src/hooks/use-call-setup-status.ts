@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { TranslationKeys } from "../i18n/i18next";
 import {
   extractRoomNameFromPath,
   generateRoomName,
@@ -35,7 +36,7 @@ const fetchOrCreateJWT = async (
   roomName: string,
   createP: boolean,
   waitForSubscriptionBeforeCreating: boolean,
-  notice: (message: string) => void
+  notice: (message: TranslationKeys) => void
 ): Promise<JoinConferenceRoomResult> => {
   reportMethod("joinConferenceRoom", { roomName, createP });
 
@@ -69,7 +70,7 @@ const fetchOrCreateJWT = async (
 interface CallSetup {
   roomName?: string;
   jwt?: string;
-  notice?: string;
+  notice?: TranslationKeys;
   isEstablishingCall: boolean;
   hasInitialRoom: boolean;
   onStartCall: () => void;
@@ -88,7 +89,7 @@ export function useCallSetupStatus(
   const [hasInitialRoom, setHasInitialRoom] = useState(() => !!roomName);
 
   const [jwt, setJwt] = useState<string>();
-  const [notice, setNotice] = useState<string>();
+  const [notice, setNotice] = useState<TranslationKeys>();
   const [isEstablishingCall, setIsEstablishingCall] = useState(false);
 
   useEffect(() => {

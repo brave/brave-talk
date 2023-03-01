@@ -1,10 +1,13 @@
 import { useState } from "react";
+import { useTranslation } from "react-i18next";
+import { TranslationKeys } from "../i18n/i18next";
 import { generateRoomName, wait } from "../lib";
 import { fetchJWT } from "../rooms";
 import { Button } from "./Button";
 
 export const CopyLinkButton: React.FC = () => {
-  const [buttonText, setButtonText] = useState<string>();
+  const [buttonText, setButtonText] = useState<TranslationKeys>();
+  const { t } = useTranslation();
 
   const onCopyLink = async () => {
     const roomName = generateRoomName();
@@ -34,7 +37,9 @@ export const CopyLinkButton: React.FC = () => {
       }}
       disabled={!!buttonText}
     >
-      {buttonText ?? (
+      {buttonText ? (
+        t(buttonText)
+      ) : (
         <>
           <img
             src={require("../images/link_icon.svg")}
@@ -43,7 +48,7 @@ export const CopyLinkButton: React.FC = () => {
             height="22"
             css={{ marginRight: 6 }}
           />
-          <div>Create link</div>
+          <div>{t("create_link")}</div>
         </>
       )}
     </Button>

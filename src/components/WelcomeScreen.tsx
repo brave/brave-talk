@@ -10,10 +10,12 @@ import React from "react";
 import { Recordings } from "./Recordings";
 import { SectionWithLogo } from "./SectionWithLogo";
 import { BrowserProperties } from "../hooks/use-browser-properties";
+import { useTranslation } from "react-i18next";
+import { TranslationKeys } from "../i18n/i18next";
 
 interface Props {
   onStartCall: DispatchWithoutAction;
-  notice?: string;
+  notice?: TranslationKeys;
   disabled: boolean;
   hasInitialRoomName: boolean;
   browser: BrowserProperties;
@@ -27,6 +29,7 @@ export const WelcomeScreen: React.FC<Props> = ({
   browser,
 }) => {
   const subscribed = useSubscribedStatus();
+  const { t } = useTranslation();
 
   const Body: React.FC = () => {
     if (!hasInitialRoomName && browser.isBrave === false) {
@@ -36,8 +39,10 @@ export const WelcomeScreen: React.FC<Props> = ({
     if (!browser.supportsWebRTC) {
       return (
         <SectionWithLogo
-          heading="Brave Talk"
-          subhead="Your iOS device appears to have Lockdown Mode enabled, which prevents Brave Talk from working."
+          heading={t("talk_title")}
+          subhead={t(
+            "Your iOS device appears to have Lockdown Mode enabled, which prevents Brave Talk from working."
+          )}
         />
       );
     }

@@ -1,3 +1,4 @@
+import { TranslationKeys } from "./i18n/i18next";
 import { loadLocalJwtStore } from "./jwt-store";
 
 // the subscriptions service is forwarded by CloudFront onto talk.brave* so we're not
@@ -176,7 +177,7 @@ interface FetchJWTResult {
 export const fetchJWT = async (
   roomName: string,
   createP: boolean,
-  reportProgress: (message: string) => void
+  reportProgress: (message: TranslationKeys) => void
 ): Promise<FetchJWTResult> => {
   const store = loadLocalJwtStore();
 

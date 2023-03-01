@@ -25,8 +25,9 @@ import {
 
 import { getLangPref } from "./get-language-detector";
 import i18next from "i18next";
-import transEN from "./locales/en/translation.json";
-import transJP from "./locales/jp/translation.json";
+
+import transEN from "./i18n/locales/en/translation.json";
+import transJP from "./i18n/locales/jp/translation.json";
 
 // localizing brave-talk for English and Japanese
 i18next.init({
@@ -170,7 +171,7 @@ const main = async () => {
 const updateLang = () => {
   const i18nElements = document.getElementsByClassName("i18n-element-text");
   Array.from(i18nElements).forEach((element) => {
-    (element as HTMLElement).innerText = i18next.t(element.id);
+    //(element as HTMLElement).innerText = i18next.t(element.id);
   });
 };
 
@@ -331,7 +332,8 @@ const hideLoadingIndicators = () => {
 const copyRoomLink = async (button: HTMLButtonElement) => {
   const originalButton = button.cloneNode(true);
   button.disabled = true;
-  const updateButtonText = (msg: string) => (button.innerText = i18next.t(msg));
+  const updateButtonText = (msg: string) =>
+    (button.innerText = i18next.t(msg as any));
 
   try {
     const roomName = generateRoomName();
@@ -912,7 +914,7 @@ const notice = (text: string) => {
   const element = document.getElementById("notice_text");
 
   if (element != null) {
-    element.innerText = i18next.t(text);
+    //element.innerText = i18next.t(text);
     element.style.display = text ? "inline-block" : "none";
   }
 };

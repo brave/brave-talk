@@ -1,3 +1,4 @@
+import { useTranslation } from "react-i18next";
 import { SubscriptionStatus } from "../hooks/use-subscribed-status";
 import { resolveService } from "../services";
 import { Button } from "./Button";
@@ -9,6 +10,9 @@ interface Props {
 }
 
 export const SubscriptionCTA: React.FC<Props> = ({ subscribed }) => {
+  const { t } = useTranslation();
+  const subsUrl = resolveService("account");
+
   if (subscribed === "yes") {
     return null;
   }
@@ -17,7 +21,7 @@ export const SubscriptionCTA: React.FC<Props> = ({ subscribed }) => {
     return (
       <Section
         css={{
-          minHeight: "calc(167px + 36px)",
+          minHeight: "calc(222px + 36px)",
           display: "flex",
           justifyContent: "center",
           alignItems: "center",
@@ -32,7 +36,7 @@ export const SubscriptionCTA: React.FC<Props> = ({ subscribed }) => {
           height={22}
           css={{ marginRight: 12 }}
         />
-        <Text variant="subhead">Checking subscription status...</Text>
+        <Text variant="subhead">{t("Checking subscription status...")}</Text>
       </Section>
     );
   }
@@ -40,19 +44,20 @@ export const SubscriptionCTA: React.FC<Props> = ({ subscribed }) => {
   return (
     <Text variant="body">
       <Section>
-        <p css={{ marginBottom: 18, paddingTop: 34 }}>
-          Upgrade to host video calls with hundreds of participants.
-        </p>
-        <Button hollow>Start free trial</Button>
+        <p css={{ marginBottom: 18, paddingTop: 34 }}>{t("subscribe_text")}</p>
+        <Button hollow>
+          <a href={`${subsUrl}/plans/?intent=checkout&product=talk`}>
+            {t("welcome_page_button_hollow")}
+          </a>
+        </Button>
+        <div css={{ marginTop: 16 }}>{t("subscribe_login_text")}</div>
         <div css={{ marginTop: 16 }}>
-          Get 30 days of access to Brave Talk Premium, free of charge. After 30
-          days, the credit card you enter will be charged $7.00 US monthly. You
-          can cancel any time.
-        </div>
-        <div css={{ marginTop: 16 }}>
-          Already have Premium?{" "}
-          <a href={resolveService("account")} css={{ color: "inherit" }}>
-            Log in
+          {t("subscribe_login_premium")}{" "}
+          <a
+            href={`${subsUrl}/account/?intent=recover&product=talk`}
+            css={{ color: "inherit" }}
+          >
+            {t("subscribe_login_link")}
           </a>
           .
         </div>

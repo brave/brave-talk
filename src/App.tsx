@@ -9,6 +9,8 @@ import { useCallSetupStatus } from "./hooks/use-call-setup-status";
 import { useParams } from "./hooks/use-params";
 import { reportAction } from "./lib";
 
+import "./i18n/i18next";
+
 const styles = {
   container: css({
     position: "fixed",
