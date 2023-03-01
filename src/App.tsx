@@ -7,6 +7,7 @@ import "./css/poppins.css";
 import { useBrowserProperties } from "./hooks/use-browser-properties";
 import { useCallSetupStatus } from "./hooks/use-call-setup-status";
 import { useParams } from "./hooks/use-params";
+import { reportAction } from "./lib";
 
 const styles = {
   container: css({
@@ -35,6 +36,11 @@ export const App: React.FC = () => {
   const browserProps = useBrowserProperties();
 
   const isCallReady = roomName && jwt;
+
+  if (isCallReady && params.isCreateOnly) {
+    reportAction("closing window as requested", params);
+    window.close();
+  }
 
   return (
     <React.Fragment>
