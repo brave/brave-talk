@@ -25,7 +25,7 @@ const robotsTxtForProd =
     : [];
 
 module.exports = {
-  entry: ["./src/react-index.tsx"],
+  entry: ["./src/index.tsx"],
   output: {
     path: path.resolve(__dirname, "./html"),
     filename: "static/[name].[contenthash].js",
@@ -47,7 +47,6 @@ module.exports = {
               importLoaders: 1,
             },
           },
-          "postcss-loader",
         ],
       },
       {

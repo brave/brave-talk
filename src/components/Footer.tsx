@@ -34,7 +34,7 @@ export const Footer: React.FC<Props> = ({ browser }) => {
           </Trans>
         )}
         <div>
-          <span>{t("footer_pre_text")}</span>
+          <span>{t("footer_pre_text")} </span>
           <a href="https://brave.com/privacy/browser/#brave-talk-learn">
             {t("footer_pst_text")}
           </a>
