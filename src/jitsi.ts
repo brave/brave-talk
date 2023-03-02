@@ -324,7 +324,8 @@ export const renderConferencePage = (
       JitsiMeetJS = null;
       window.open(
         window.location.protocol + "//" + window.location.host,
-        "_self"
+        "_self",
+        "noopener"
       );
     })
     .on("breakoutRoomsUpdated", (params: any) => {

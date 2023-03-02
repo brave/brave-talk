@@ -39,11 +39,11 @@ export const isRoomValid = (room: string) => {
 };
 
 export const reportAction = (action: string, params: object) => {
-  console.log(`!!! < ${action}: `, params);
+  console.log("!!! < %s: ", action, params);
 };
 
 export const reportMethod = (method: string, params: object) => {
-  console.log(`!!! > ${method}: `, params);
+  console.log("!!! > %s: ", method, params);
 };
 
 export const wait = (ms: number): Promise<void> =>
