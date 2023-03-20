@@ -1,4 +1,4 @@
-import { DispatchWithoutAction } from "react";
+import { DispatchWithoutAction, useState } from "react";
 import { useSubscribedStatus } from "../hooks/use-subscribed-status";
 import { Background } from "./Background";
 import { Footer } from "./Footer";
@@ -12,6 +12,8 @@ import { SectionWithLogo } from "./SectionWithLogo";
 import { BrowserProperties } from "../hooks/use-browser-properties";
 import { useTranslation } from "react-i18next";
 import { TranslationKeys } from "../i18n/i18next";
+import { Web3CTA } from "./web3/Web3CTA";
+import { StartCall } from "./web3/StartCall";
 
 interface Props {
   onStartCall: DispatchWithoutAction;
@@ -29,6 +31,7 @@ export const WelcomeScreen: React.FC<Props> = ({
   browser,
 }) => {
   const subscribed = useSubscribedStatus();
+  const [web3startCallScreen, setWeb3StartCallScreen] = useState(false);
   const { t } = useTranslation();
 
   const Body: React.FC = () => {
@@ -46,6 +49,11 @@ export const WelcomeScreen: React.FC<Props> = ({
         />
       );
     }
+
+    if (web3startCallScreen) {
+      return <StartCall />;
+    }
+
     return (
       <React.Fragment>
         <JoinCallSection
@@ -56,6 +64,8 @@ export const WelcomeScreen: React.FC<Props> = ({
           disabled={disabled}
           hideButtons={hasInitialRoomName}
         />
+
+        <Web3CTA onClick={() => setWeb3StartCallScreen(true)} />
 
         <Recordings />
 

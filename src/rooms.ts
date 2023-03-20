@@ -1,5 +1,6 @@
 import { TranslationKeys } from "./i18n/i18next";
 import { loadLocalJwtStore } from "./jwt-store";
+import { fetchWithTimeout } from "./lib";
 
 // the subscriptions service is forwarded by CloudFront onto talk.brave* so we're not
 // making a cross domain call - see https://github.com/brave/devops/issues/5445.
@@ -32,7 +33,6 @@ interface RoomsRequestParams {
 
 const GENERIC_ERROR_MESSAGE =
   "Oops! We were unable to connect to your meeting room. Please try again.";
-const FETCH_TIMEOUT_MS = 5_000;
 
 const roomsRequest = async ({
   roomName,
@@ -124,27 +124,6 @@ const roomsRequest = async ({
     throw e;
   }
 };
-
-// HT: https://dmitripavlutin.com/timeout-fetch-request/
-async function fetchWithTimeout(
-  input: RequestInfo,
-  init: RequestInit
-): Promise<Response> {
-  const controller = new AbortController();
-
-  const id = window.setTimeout(() => {
-    controller.abort();
-  }, FETCH_TIMEOUT_MS);
-
-  const response = await fetch(input, {
-    ...init,
-    signal: controller.signal,
-  });
-
-  clearTimeout(id);
-
-  return response;
-}
 
 const attemptTokenRefresh = async (
   roomName: string,
