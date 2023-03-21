@@ -11,7 +11,7 @@ const loadRewardsSdk = async (): Promise<Rewards.JSSDK> => {
   const env = process.env.ENVIRONMENT ?? "local";
 
   log(`calling initialize(${env}, false)...`);
-  const sdk = await Rewards.initialize(env, false);
+  const sdk = await Rewards.initialize(env, false, "error");
   sdkref = sdk;
   return sdk;
 };
