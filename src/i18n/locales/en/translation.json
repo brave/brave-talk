@@ -1,4 +1,6 @@
 {
+  "talk_title": "Brave Talk",
+  "talk_title_premium": "Brave Talk Premium",
   "my_account_link": "My Account",
   "notice_text": "Unlimited private video calls with your friends and colleagues",
   "enter_room_button": "Start call",
@@ -16,14 +18,7 @@
   "check_subscription": "Checking subscription status...",
   "footer_pre_text": "Your personal information always stays private, per our",
   "footer_pst_text": "privacy policy",
-  "opt_in_title": "To start a free call, turn on Brave Rewards",
-  "opt_in_description": "With Brave Rewards, you can view a new kind of private ad, and earn tokens for doing so. (Think of them like frequent flyer points.) Turn those tokens into cash, gift cards...or even tip the websites you love.",
-  "opt_in_description_sub": "Note: not available on private windows, or private windows with Tor.",
-  "opt_in_step_header_num_1": "Click the triangle icon in the browser address bar.",
-  "opt_in_step_header_num_2": "Click 'Start using Brave Rewards.'",
-  "extension_promo_title_text": "Now you can schedule ahead!",
-  "extension_promo_body_text": "Add Brave Talk links directly to an invite, with the Google Calendar extension.",
-  "extension_promo_install": "Install Calendar extension",
+  "download_extension_footer": "Download the <2>Google Calendar extension</2>.",
   "footer_status_text": "Service status",
 
   "Checking subscription status...": "Checking subscription status...",
@@ -36,6 +31,7 @@
   "Checking moderator status...": "Checking moderator status...",
   "Creating meeting room...": "Creating meeting room...",
   "Locating meeting room...": "Locating meeting room...",
+  "Failed to create meeting room": "Failed to create meeting room",
 
   "Your iOS device appears to have Lockdown Mode enabled, which prevents Brave Talk from working.": "Your iOS device appears to have Lockdown Mode enabled, which prevents Brave Talk from working.",
 
