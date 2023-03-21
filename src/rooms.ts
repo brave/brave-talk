@@ -183,14 +183,14 @@ export const fetchJWT = async (
 
   const jwt = store.findJwtForRoom(roomName);
   if (jwt) {
-    console.log("found local jwt: ", jwt);
+    //  console.log("found local jwt: ", jwt);
     return { jwt };
   }
 
   const refreshToken = store.findRefreshTokenForRoom(roomName);
   if (refreshToken) {
     reportProgress("Checking moderator status...");
-    console.log("attempting refresh: ", refreshToken);
+    //  console.log("attempting refresh: ", refreshToken);
     const response = await attemptTokenRefresh(roomName, refreshToken);
     if (response) {
       store.storeJwtForRoom(roomName, response.jwt, response.refresh);
