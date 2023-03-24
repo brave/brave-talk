@@ -1,5 +1,6 @@
 import { TranslationKeys } from "./i18n/i18next";
 import { loadLocalJwtStore } from "./jwt-store";
+import { isProduction } from "./environment";
 
 // the subscriptions service is forwarded by CloudFront onto talk.brave* so we're not
 // making a cross domain call - see https://github.com/brave/devops/issues/5445.
@@ -183,14 +184,18 @@ export const fetchJWT = async (
 
   const jwt = store.findJwtForRoom(roomName);
   if (jwt) {
-    console.log("found local jwt: ", jwt);
+    if (!isProduction) {
+      console.log("found local jwt: ", jwt);
+    }
     return { jwt };
   }
 
   const refreshToken = store.findRefreshTokenForRoom(roomName);
   if (refreshToken) {
     reportProgress("Checking moderator status...");
-    console.log("attempting refresh: ", refreshToken);
+    if (!isProduction) {
+      console.log("attempting refresh: ", refreshToken);
+    }
     const response = await attemptTokenRefresh(roomName, refreshToken);
     if (response) {
       store.storeJwtForRoom(roomName, response.jwt, response.refresh);
