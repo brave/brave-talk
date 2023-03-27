@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { IJistiMeetApi, renderConferencePage } from "../jitsi";
+import "../css/in-call.css";
 
 interface Props {
   roomName: string;
@@ -24,5 +25,5 @@ export const InCall: React.FC<Props> = (props) => {
     }
   }, [divRef, jistiMeet, props]);
 
-  return <div ref={divRef} css={{ height: "100%" }} />;
+  return <div ref={divRef} css={{ height: "100%" }} className="in-call" />;
 };

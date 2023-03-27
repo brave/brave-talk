@@ -1,0 +1,12 @@
+/*
+This is a temporary workaround to the issue with incorrect CSPs being returned,
+as described here: https://bravesoftware.slack.com/archives/C01BC0K5QP7/p1679915227867859
+*/
+
+.in-call {
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  right: 0;
+  left: 0;
+}
