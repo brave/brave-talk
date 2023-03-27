@@ -25,7 +25,7 @@ const robotsTxtForProd =
     : [];
 
 module.exports = {
-  entry: ["./src/index.ts"],
+  entry: ["./src/index.tsx"],
   output: {
     path: path.resolve(__dirname, "./html"),
     filename: "static/[name].[contenthash].js",
@@ -47,7 +47,6 @@ module.exports = {
               importLoaders: 1,
             },
           },
-          "postcss-loader",
         ],
       },
       {
@@ -101,7 +100,7 @@ module.exports = {
       // display compilation error messages on the screen
       overlay: true,
     },
-    open: ["/#adsoptin=yes"],
+    open: ["/"],
     historyApiFallback: true,
     proxy: {
       "/api": {
