@@ -5,6 +5,10 @@ import { EIP4361Message, createEIP4361Message } from "./EIP4361";
 
 declare let window: any;
 
+// the subscriptions service is forwarded by CloudFront onto talk.brave* so we're not
+// making a cross domain call - see https://github.com/brave/devops/issues/5445.
+const SIMPLEHASH_PROXY_ROOT_URL = "/api/v1/simplehash";
+
 export interface Web3Auth {
   method: string;
   proof: {
@@ -24,86 +28,14 @@ export const web3Login = async (): Promise<string> => {
   return allAddresses[0];
 };
 
-const alchemyApiKey = process.env.ALCHEMY_API_KEY;
-
-const web3NFTs_ = async (address: string): Promise<string[]> => {
-  try {
-    const getNFTsURL = `https://eth-mainnet.g.alchemy.com/nft/v2/${alchemyApiKey}/getNFTs?owner=${address}&withMetadata=true`;
-    console.log(`>>> GET ${getNFTsURL}`);
-    const response = await fetchWithTimeout(getNFTsURL, { method: "GET" });
-    const { status } = response;
-    console.log(`<<< GET ${getNFTsURL} ${status}`);
-    if (status !== 200) {
-      throw new Error(`Request failed: ${status} ${response.statusText}`);
-    }
-
-    const nfts = await response.json();
-    const result: string[] = [];
-    nfts.ownedNfts.forEach((nft: any) => {
-      // TBD: capture and return nft.title to use for tooltip
-      nft.media.forEach((medium: any) => {
-        result.push(medium.thumbnail);
-      });
-    });
-
-    try {
-      const result2 = await web3NFTcollections(address);
-      console.log("!!! web3NFTcollections", result2);
-    } catch (error: any) {
-      console.error("!!! web3NFTcollections", error);
-      throw error;
-    }
-
-    return result;
-  } catch (error: any) {
-    console.error("!!! web3NFTs", error);
-    throw error;
-  }
-};
-
-const poapApiKey = process.env.POAP_API_KEY as string;
-
-const web3POAPs_ = async (address: string): Promise<POAP[]> => {
-  try {
-    const getPOAPsURL = `https://api.poap.tech/actions/scan/${address}`;
-    console.log(`>>> GET ${getPOAPsURL}`);
-    const response = await fetchWithTimeout(getPOAPsURL, {
-      method: "GET",
-      headers: {
-        accept: "application/json",
-        "x-api-key": poapApiKey,
-      },
-    });
-    const { status } = response;
-    console.log(`<<< GET ${getPOAPsURL} ${status}`);
-    if (status !== 200) {
-      throw new Error(`Request failed: ${status} ${response.statusText}`);
-    }
-
-    const poaps = await response.json();
-    const result: any[] = [];
-    poaps.forEach((poap: any) => {
-      result.push(poap);
-    });
-
-    return result;
-  } catch (error: any) {
-    console.error("!!! web3POAPs", error);
-    throw error;
-  }
-};
-
-const simplehashApiKey = process.env.SIMPLEHASH_API_KEY as string;
-
 export const web3NFTs = async (address: string): Promise<any[]> => {
   try {
-    const getNFTsURL = `https://api.simplehash.com/api/v0/nfts/owners?chains=ethereum&wallet_addresses=${address}`;
+    const getNFTsURL = `${SIMPLEHASH_PROXY_ROOT_URL}/api/v0/nfts/owners?chains=ethereum&wallet_addresses=${address}`;
     console.log(`>>> GET ${getNFTsURL}`);
     const response = await fetchWithTimeout(getNFTsURL, {
       method: "GET",
       headers: {
         accept: "application/json",
-        "x-api-key": simplehashApiKey,
       },
     });
     const { status } = response;
@@ -136,13 +68,12 @@ export const web3NFTcollections = async (
   address: string
 ): Promise<NFTcollection[]> => {
   try {
-    const getNFTcollectionsURL = `https://api.simplehash.com/api/v0/nfts/collections_by_wallets?chains=ethereum&wallet_addresses=${address}`;
+    const getNFTcollectionsURL = `${SIMPLEHASH_PROXY_ROOT_URL}/api/v0/nfts/collections_by_wallets?chains=ethereum&wallet_addresses=${address}`;
     console.log(`>>> GET ${getNFTcollectionsURL}`);
     const response = await fetchWithTimeout(getNFTcollectionsURL, {
       method: "GET",
       headers: {
         accept: "application/json",
-        "x-api-key": simplehashApiKey,
       },
     });
     const { status } = response;
@@ -225,6 +156,7 @@ export const web3RestoreAuth = (): any => {
     return JSON.parse(auth);
   } catch (error) {
     // continue regardless of error
+    console.error(error);
   }
 };
 
@@ -233,13 +165,12 @@ const poapContractChain = "gnosis";
 
 export const web3POAPs = async (address: string): Promise<POAP[]> => {
   try {
-    const getPOAPsURL = `https://api.simplehash.com/api/v0/nfts/owners?chains=${poapContractChain}&wallet_addresses=${address}&contract_addresses=${poapContractAddress}`;
+    const getPOAPsURL = `${SIMPLEHASH_PROXY_ROOT_URL}/api/v0/nfts/owners?chains=${poapContractChain}&wallet_addresses=${address}&contract_addresses=${poapContractAddress}`;
     console.log(`>>> GET ${getPOAPsURL}`);
     const response = await fetchWithTimeout(getPOAPsURL, {
       method: "GET",
       headers: {
         accept: "application/json",
-        "x-api-key": simplehashApiKey,
       },
     });
     const { status } = response;
@@ -266,40 +197,14 @@ export const web3POAPs = async (address: string): Promise<POAP[]> => {
   }
 };
 
-// these three functions are used for mocking
-
-const web3POAPevent_ = async (eventID: number): Promise<boolean> => {
-  try {
-    const getPOAPsURL = `https://api.poap.tech/events/id/${eventID}`;
-    console.log(`>>> GET ${getPOAPsURL}`);
-    const response = await fetchWithTimeout(getPOAPsURL, {
-      method: "GET",
-      headers: {
-        accept: "application/json",
-        "x-api-key": poapApiKey,
-      },
-    });
-    const { status } = response;
-    console.log(`<<< GET ${getPOAPsURL} ${status}`);
-    if (status !== 200) {
-      throw new Error(`Request failed: ${status} ${response.statusText}`);
-    }
-    return true;
-  } catch (error: any) {
-    console.error(`!!! web3POAPevent: eventID=${eventID}`, error);
-    return false;
-  }
-};
-
 export const web3POAPevent = async (eventID: number): Promise<boolean> => {
   try {
-    const getPOAPsURL = `https://api.simplehash.com/api/v0/nfts/${poapContractChain}/${poapContractAddress}/${eventID}`;
+    const getPOAPsURL = `${SIMPLEHASH_PROXY_ROOT_URL}/api/v0/nfts/${poapContractChain}/${poapContractAddress}/${eventID}`;
     console.log(`>>> GET ${getPOAPsURL}`);
     const response = await fetchWithTimeout(getPOAPsURL, {
       method: "GET",
       headers: {
         accept: "application/json",
-        "x-api-key": simplehashApiKey,
       },
     });
     const { status } = response;
@@ -320,13 +225,12 @@ export const web3NFTcollection = async (
   collectionID: string
 ): Promise<boolean> => {
   try {
-    const getNFTcollectionsURL = `https://api.simplehash.com/api/v0/nfts/collections/ids?collection_ids=${collectionID}`;
+    const getNFTcollectionsURL = `${SIMPLEHASH_PROXY_ROOT_URL}/api/v0/nfts/collections/ids?collection_ids=${collectionID}`;
     console.log(`>>> GET ${getNFTcollectionsURL}`);
     const response = await fetchWithTimeout(getNFTcollectionsURL, {
       method: "GET",
       headers: {
         accept: "application/json",
-        "x-api-key": simplehashApiKey,
       },
     });
     const { status } = response;
