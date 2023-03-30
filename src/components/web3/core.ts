@@ -32,6 +32,7 @@ export interface NFTcollection {
 }
 
 /*
+import { ethers } from "ethers";
 import { reportAction } from "../../lib";
 import {
   Web3Auth,
@@ -112,10 +113,7 @@ export const web3endpointTextMessageReceived = async (params: any) => {
     }
 
     const proof = payload.proof;
-    const signer = await window.web3.eth.accounts.recover(
-      proof.payload,
-      proof.signature
-    );
+    const signer = ethers.verifyMessage(proof.payload, proof.signature);
     if (signer.toLowerCase() != proof.signer.toLowerCase()) {
       console.log("!!! payload", payload);
       throw new Error(`address mismatch in payload, got ${signer}`);
@@ -264,10 +262,7 @@ const fetchJWTMock = async (
   }
 
   const proof = web3.web3Authentication.proof;
-  const signer = await window.web3.eth.accounts.recover(
-    proof.payload,
-    proof.signature
-  );
+  const signer = ethers.verifyMessage(proof.payload, proof.signature);
   if (signer.toLowerCase() != proof.signer.toLowerCase()) {
     console.error("!!! web3Authentication", proof);
     throw new Error(`address mismatch in proof, got ${signer}`);
