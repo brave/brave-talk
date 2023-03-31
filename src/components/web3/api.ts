@@ -1,4 +1,4 @@
-import Web3 from "web3";
+import { ethers } from "ethers";
 import { fetchWithTimeout } from "../../lib";
 import { NFTcollection, POAP } from "./core";
 import { EIP4361Message, createEIP4361Message } from "./EIP4361";
@@ -126,9 +126,9 @@ export const web3Prove = async (
     throw new Error("not logged into Web3");
   }
 
-  window.web3 = new Web3(window.ethereum);
+  window.web3 = new ethers.BrowserProvider(window.ethereum);
   if (!window.web3) {
-    throw new Error("unable to create Web3 object");
+    throw new Error("unable to create ethers.BrowserProvider object");
   }
 
   const nonce = new Uint8Array(32);
@@ -147,9 +147,10 @@ export const web3Prove = async (
     nonce: [...nonce].map((x) => x.toString(16).padStart(2, "0")).join(""),
     issuedAt: new Date().toISOString(),
   };
-  const payload = window.web3.utils.utf8ToHex(createEIP4361Message(message));
+  const payload = createEIP4361Message(message);
 
-  const signature = await window.web3.eth.sign(payload, web3Address);
+  const signer = await window.web3.getSigner(web3Address);
+  const signature = await signer.signMessage(payload);
   console.log(`!!! web3 signature=${signature}`);
 
   const result = {
@@ -169,9 +170,9 @@ export const web3Prove = async (
 export const web3RestoreAuth = (): any => {
   try {
     if (!window.web3) {
-      window.web3 = new Web3(window.ethereum);
+      window.web3 = new ethers.BrowserProvider(window.ethereum);
       if (!window.web3) {
-        throw new Error("unable to create Web3 object");
+        throw new Error("unable to create ethers.BrowserProvider object");
       }
     }
 
