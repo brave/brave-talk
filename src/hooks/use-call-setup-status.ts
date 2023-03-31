@@ -1,5 +1,7 @@
 import { useEffect, useState } from "react";
 import { TranslationKeys } from "../i18n/i18next";
+import { POAP } from "../components/web3/core";
+import { Web3Authentication } from "../components/web3/api";
 import {
   extractRoomNameFromPath,
   generateRoomName,
@@ -30,13 +32,15 @@ function calculateInitialRoomNameFromUrl(pathname: string): string | undefined {
 interface JoinConferenceRoomResult {
   jwt?: string;
   retryLater?: boolean;
+  retryAsWeb3?: boolean;
 }
 
 const fetchOrCreateJWT = async (
   roomName: string,
   createP: boolean,
   waitForSubscriptionBeforeCreating: boolean,
-  notice: (message: TranslationKeys) => void
+  notice: (message: TranslationKeys) => void,
+  web3: Web3CallSetup
 ): Promise<JoinConferenceRoomResult> => {
   reportMethod("joinConferenceRoom", { roomName, createP });
 
@@ -59,6 +63,8 @@ const fetchOrCreateJWT = async (
 
       reportAction(`Creating room`, { roomName });
       return await fetchOrCreateJWT(roomName, true, false, notice);
+    } else if (err.message.includes("Retry as Web3 call")) {
+      return { retryAsWeb3: true };
     } else {
       console.error(error);
       notice(error.message);
@@ -67,6 +73,21 @@ const fetchOrCreateJWT = async (
   }
 };
 
+interface Web3CallSetup {
+  isWeb3Call: boolean;
+  web3Address?: string;
+  web3Auth?: Web3Authentication;
+  nft?: string;
+  participantPoaps?: POAP[];
+  moderatorPoaps?: POAP[];
+  setIsWeb3Call: (isWeb3Call: boolean) => void;
+  setWeb3Address: (web3Address: string) => void;
+  setWeb3Auth: (web3Auth: Web3Authentication) => void;
+  setNft: (nft: string) => void;
+  setParticipantPoaps: (participanPoaps: POAP[]) => void;
+  setModeratorPoaps: (moderatorPoaps: POAP[]) => void;
+}
+
 interface CallSetup {
   roomName?: string;
   jwt?: string;
@@ -74,6 +95,8 @@ interface CallSetup {
   isEstablishingCall: boolean;
   hasInitialRoom: boolean;
   onStartCall: () => void;
+  isCallReady: boolean;
+  web3: Web3CallSetup;
 }
 
 export function useCallSetupStatus(
@@ -87,10 +110,16 @@ export function useCallSetupStatus(
   // buttons to start a call if the initial url has a valid room name
   // on it
   const [hasInitialRoom, setHasInitialRoom] = useState(() => !!roomName);
-
+  const [isWeb3Call, setIsWeb3Call] = useState(false);
+  const [web3Address, setWeb3Address] = useState<string>();
+  const [web3Auth, setWeb3Auth] = useState<Web3Authentication>();
+  const [nft, setNft] = useState<string>();
+  const [participantPoaps, setParticipantPoaps] = useState<POAP[]>();
+  const [moderatorPoaps, setModeratorPoaps] = useState<POAP[]>();
   const [jwt, setJwt] = useState<string>();
   const [notice, setNotice] = useState<TranslationKeys>();
   const [isEstablishingCall, setIsEstablishingCall] = useState(false);
+  const isCallReady = !!(roomName && jwt);
 
   useEffect(() => {
     const tryFetchJwt = (roomName: string) => {
@@ -105,6 +134,10 @@ export function useCallSetupStatus(
         .then((result) => {
           if (result.jwt) {
             setJwt(result.jwt);
+          }
+          if (result.retryAsWeb3) {
+            // Convert this to a web3 call
+            setIsWeb3Call(true);
           } else {
             // the error message has already been displayed by fetchOrCreateJWT,
             // but we need to allow the user to recover by enabling all functionality
@@ -125,7 +158,7 @@ export function useCallSetupStatus(
 
       tryFetchJwt(roomName);
     }
-  }, [roomName, waitForSubscriptionBeforeCreating]);
+  }, [roomName, waitForSubscriptionBeforeCreating, isWeb3Call, web3Address]);
 
   const doStartCall = () => {
     setRoomName(generateRoomName());
@@ -139,5 +172,20 @@ export function useCallSetupStatus(
     isEstablishingCall,
     hasInitialRoom,
     onStartCall: doStartCall,
+    isCallReady,
+    web3: {
+      isWeb3Call,
+      web3CallReady,
+      web3Address,
+      nft,
+      participantPoaps,
+      moderatorPoaps,
+      setIsWeb3Call,
+      setWeb3Address,
+      setWeb3Auth,
+      setNft,
+      setParticipantPoaps,
+      setModeratorPoaps,
+    },
   };
 }

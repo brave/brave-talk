@@ -2,6 +2,7 @@ import { css } from "@emotion/react";
 import React from "react";
 import { GlobalStyles } from "./components/GlobalStyles";
 import { InCall } from "./components/InCall";
+import { JoinCall as JoinWeb3Call } from "./components/web3/JoinCall";
 import { WelcomeScreen } from "./components/WelcomeScreen";
 import "./css/poppins.css";
 import { useBrowserProperties } from "./hooks/use-browser-properties";
@@ -33,11 +34,11 @@ export const App: React.FC = () => {
     notice,
     isEstablishingCall,
     hasInitialRoom,
+    isCallReady,
+    web3,
   } = useCallSetupStatus(params.isCreate);
 
   const browserProps = useBrowserProperties();
-
-  const isCallReady = roomName && jwt;
 
   if (isCallReady && params.isCreateOnly) {
     reportAction("closing window as requested", params);
@@ -49,11 +50,17 @@ export const App: React.FC = () => {
       <GlobalStyles />
 
       <div css={styles.container}>
-        {isCallReady ? (
+        {!web3.isWeb3Call && isCallReady ? (
           <InCall
-            roomName={roomName}
-            jwt={jwt}
+            roomName={roomName as string}
+            jwt={jwt as string}
             isMobile={browserProps.isMobile}
+          />
+        ) : web3.isWeb3Call && hasInitialRoom ? (
+          <JoinWeb3Call
+            roomName={roomName}
+            web3Address={web3.web3Address}
+            setWeb3Address={web3.setWeb3Address}
           />
         ) : (
           <WelcomeScreen
@@ -62,6 +69,9 @@ export const App: React.FC = () => {
             disabled={isEstablishingCall}
             hasInitialRoomName={hasInitialRoom}
             browser={browserProps}
+            isWeb3Call={web3.isWeb3Call}
+            setIsWeb3Call={web3.setIsWeb3Call}
+            isCallReady={isCallReady}
           />
         )}
       </div>

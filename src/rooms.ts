@@ -1,6 +1,7 @@
 import { TranslationKeys } from "./i18n/i18next";
 import { loadLocalJwtStore } from "./jwt-store";
 import { fetchWithTimeout } from "./lib";
+import { Web3RequestBody } from "./components/web3/api";
 
 // the subscriptions service is forwarded by CloudFront onto talk.brave* so we're not
 // making a cross domain call - see https://github.com/brave/devops/issues/5445.
@@ -14,6 +15,9 @@ interface RoomRequestBody {
 
   // some requests expect a jwt
   jwt?: string;
+
+  // web3 request payload
+  web3?: Web3RequestBody;
 }
 
 interface RoomResponse {
@@ -156,7 +160,8 @@ interface FetchJWTResult {
 export const fetchJWT = async (
   roomName: string,
   createP: boolean,
-  reportProgress: (message: TranslationKeys) => void
+  reportProgress: (message: TranslationKeys) => void,
+  web3?: Web3RequestBody
 ): Promise<FetchJWTResult> => {
   const store = loadLocalJwtStore();
 
@@ -179,6 +184,7 @@ export const fetchJWT = async (
 
   const body: RoomRequestBody = {
     mauP: store.isNewMonthlyActiveUser() && true,
+    web3,
   };
 
   let method: RequestMethod, success: number;
@@ -213,7 +219,9 @@ export const fetchJWT = async (
       404: "The room does not exist",
       405: "Method not allowed",
       408: "Request timeout",
-      409: "Sorry, call already exists! (this should not happen)",
+      409: web3
+        ? "Sorry, call already exists! (this should not happen)"
+        : "Retry as Web3 call",
       417: "Expectation failed",
       420: "Method failure",
       429: "Too many requests",

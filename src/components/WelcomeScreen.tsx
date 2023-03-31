@@ -21,6 +21,9 @@ interface Props {
   disabled: boolean;
   hasInitialRoomName: boolean;
   browser: BrowserProperties;
+  web3Call: boolean;
+  setWeb3Call: (web3Call: boolean) => void;
+  isCallReady: boolean;
 }
 
 export const WelcomeScreen: React.FC<Props> = ({
@@ -29,9 +32,10 @@ export const WelcomeScreen: React.FC<Props> = ({
   disabled,
   hasInitialRoomName,
   browser,
+  isWeb3Call,
+  setIsWeb3Call,
 }) => {
   const subscribed = useSubscribedStatus();
-  const [web3startCallScreen, setWeb3StartCallScreen] = useState(false);
   const { t } = useTranslation();
 
   const Body: React.FC = () => {
@@ -50,7 +54,7 @@ export const WelcomeScreen: React.FC<Props> = ({
       );
     }
 
-    if (web3startCallScreen) {
+    if (isWeb3Call) {
       return <StartCall />;
     }
 
@@ -65,7 +69,7 @@ export const WelcomeScreen: React.FC<Props> = ({
           hideButtons={hasInitialRoomName}
         />
 
-        <Web3CTA onClick={() => setWeb3StartCallScreen(true)} />
+        <Web3CTA onClick={() => setIsWeb3Call(true)} />
 
         <Recordings />
 

@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { Button } from "../Button";
 import { web3Prove, web3NFTs, web3POAPs } from "./api";
-import { POAP } from "./core";
+import { POAP, rememberAvatarUrl } from "./core";
 import { Login } from "./Login";
 import { OptionalSettings } from "./OptionalSettings";
 import { bodyText, header } from "./styles";
@@ -42,12 +42,11 @@ export const StartCall: React.FC = () => {
     if (!web3Address) return;
 
     try {
+      rememberAvatarUrl(options.nft);
       setFeedbackMessage("Requesting Web3 proof...");
       const proof = await web3Prove(web3Address);
 
       /* TODO
-      rememberAvatarUrl(options.nft);
-
       await startCall({
         auth: proof,
         web3Address: web3Address,

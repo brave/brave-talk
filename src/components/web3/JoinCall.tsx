@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { web3NFTs, web3Prove } from "./api";
+import { rememberAvatarUrl } from "./core";
 import { Login } from "./Login";
 import { OptionalSettings } from "./OptionalSettings";
 import { OptionalSelections } from "./StartCall";
@@ -32,7 +33,7 @@ export const JoinCall: React.FC<Props> = ({ roomName }) => {
   const onJoinCallClicked = async () => {
     if (!web3Address) return;
 
-    // TODO rememberAvatarUrl(options.nft);
+    rememberAvatarUrl(options.nft);
     setFeedbackMessage("Requesting Web3 proof...");
     const auth = await web3Prove(web3Address);
 

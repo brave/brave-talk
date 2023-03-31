@@ -85,11 +85,6 @@ module.exports = {
     new webpack.EnvironmentPlugin({
       GIT_VERSION: git("describe --always --dirty=-modified"),
       ENVIRONMENT: "local",
-
-      // a value of "undefined" means no default, and generate an error if the env var is not set when building
-      ALCHEMY_API_KEY: undefined,
-      POAP_API_KEY: undefined,
-      SIMPLEHASH_API_KEY: undefined,
     }),
   ].concat(
     devMode
@@ -109,7 +104,7 @@ module.exports = {
     historyApiFallback: true,
     proxy: {
       "/api": {
-        target: "https://subscriptions.bsg.brave.software",
+        target: "http://localhost:3003", //"https://subscriptions.bsg.brave.software",
         pathRewrite: { "^/api": "" },
         changeOrigin: true,
       },

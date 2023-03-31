@@ -13,25 +13,8 @@ for production:
 - remove web3NFTs & Alchemy API key
 - get minimized web3 library
 - CSP: add api.poap.tech, api.simplehash.com, cdn.simplehash.com, lh3.googleusercontent.com, previews.simplehash.com
+*/
 
- */
-
-// there's more on these two objects than just this - this is just what we are interested in
-export interface POAP {
-  event: {
-    id: number;
-    name: string;
-    image_url: string;
-  };
-  tokenId: string;
-}
-export interface NFTcollection {
-  id: string;
-  name: string;
-  image_url: string;
-}
-
-/*
 import { reportAction } from "../../lib";
 import {
   Web3Auth,
@@ -41,15 +24,55 @@ import {
   web3RestoreAuth,
 } from "./api";
 import { parseEIP4361Message } from "./EIP4361";
-import { fetchJWT, generateRoomName } from "../rooms";
-import { renderConferencePage } from "..";
+import { fetchJWT } from "../../rooms";
+import { generateRoomName } from "../../lib";
+import { renderConferencePage } from "../../jitsi/conference-page";
 declare let window: any;
-
 
 let web3Address = "";
 let web3Authentication: Web3Auth;
 let web3Participants: any;
 
+export interface POAP {
+  event: {
+    id: number;
+    name: string;
+    image_url: string;
+  };
+  tokenId: string;
+}
+
+export interface NFTcollection {
+  id: string;
+  name: string;
+  image_url: string;
+}
+
+const AVATAR_URL_SESSION_KEY = "avatar_url";
+
+/**
+ * Sets or clears avatar url from session based on passed value. Null/Undefined clears any value
+ * currently set, string values are set as the new value.
+ * @param {string|undefined|null} url - The url to set, if present
+ * @returns {void}
+ */
+export function rememberAvatarUrl(url: string | undefined | null) {
+  if (url) {
+    window.sessionStorage.setItem(AVATAR_URL_SESSION_KEY, url);
+  } else {
+    window.sessionStorage.removeItem(AVATAR_URL_SESSION_KEY);
+  }
+}
+
+/**
+ * Gets the currently set avatar url, if any
+ * @returns {string|null} - The avatar url value or a null value
+ */
+export function getAvatarUrl(): string | null {
+  return window.sessionStorage.getItem(AVATAR_URL_SESSION_KEY);
+}
+
+/*
 export const web3join = () => {
   const auth = web3RestoreAuth();
 
@@ -168,6 +191,7 @@ export const web3participantLeft = (params: any) => {
   delete web3Participants[params.id];
   reportAction("web3 participants", web3Participants);
 };
+*/
 
 // invoked when the user clicks the "Web3 login" button
 interface StartCallParams {
@@ -178,6 +202,7 @@ interface StartCallParams {
   auth: Web3Auth;
   feedback: (msg: string) => void;
 }
+
 export const startCall = async (params: StartCallParams) => {
   console.log("!!! startCall", params);
   // now we're starting the call, move the parameters into the global variables
@@ -219,6 +244,7 @@ export const startCall = async (params: StartCallParams) => {
     notice("mock: " + error.message);
   }
 };
+/*
 
 interface JoinCallParams {
   roomName: string;

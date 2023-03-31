@@ -9,13 +9,35 @@ declare let window: any;
 // making a cross domain call - see https://github.com/brave/devops/issues/5445.
 const SIMPLEHASH_PROXY_ROOT_URL = "/api/v1/simplehash";
 
-export interface Web3Auth {
+export interface Web3Authentication {
   method: string;
   proof: {
     signer: string;
     signature: any;
     payload: any;
   };
+}
+
+export interface Web3Authorization {
+  method: string;
+  POAPs: Web3AuthList;
+  Collections: Web3AuthList;
+}
+
+export interface Web3AuthList {
+  participantADs: Web3ResourceIdentifierList;
+  moderatorADs: Web3ResourceIdentifierList;
+}
+
+export interface Web3ResourceIdentifierList {
+  allow: string[];
+  deny: string[];
+}
+
+export interface Web3RequestBody {
+  web3Authentication: Web3Authentication;
+  web3Authorization?: Web3Authorization;
+  avatarURL: string;
 }
 
 export const web3Login = async (): Promise<string> => {
@@ -47,7 +69,7 @@ export const web3NFTs = async (address: string): Promise<any[]> => {
     const nfts = await response.json();
     const result: any[] = [];
     nfts.nfts.forEach((nft: any) => {
-      const tooltip: string = nft.collection.name + ": " + nft.name;
+      //const tooltip: string = nft.collection.name + ": " + nft.name;
       const thumbnail: string = nft.previews?.image_small_url
         ? nft.previews.image_small_url
         : nft.image_url;
@@ -97,7 +119,9 @@ export const web3NFTcollections = async (
 
 const STORAGE_KEY = "mock.web3.authentication";
 
-export const web3Prove = async (web3Address: string): Promise<Web3Auth> => {
+export const web3Prove = async (
+  web3Address: string
+): Promise<Web3Authentication> => {
   if (!web3Address) {
     throw new Error("not logged into Web3");
   }
