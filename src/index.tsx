@@ -17,23 +17,20 @@ if (!isProduction) {
 // the goal is to load the bootstrap JS for the current JAAS release (we load JitsiMeetExternalAPI elsewhere)
 // so this function does exactly that and nothing else.
 
-const miniLoadExternalApi = async (
+const miniLoadExternalApi = (
   domain: string,
   release?: string,
   appId?: string
-): Promise<any> =>
-  new Promise((resolve, reject) => {
-    const script: HTMLScriptElement = document.createElement("script");
-    const releaseParam: string = release ? `?release=${release}` : "";
-    const appIdPath: string = appId ? `${appId}/` : "";
+) => {
+  const script: HTMLScriptElement = document.createElement("script");
+  const releaseParam: string = release ? `?release=${release}` : "";
+  const appIdPath: string = appId ? `${appId}/` : "";
 
-    script.async = true;
-    script.src = `https://${domain}/${appIdPath}external_api.js${releaseParam}`;
-    console.log(`!!! bootstrap ${script.src}`);
-    script.onerror = () =>
-      reject(new Error(`Script load error: ${script.src}`));
-    document.head.appendChild(script as Node);
-  });
+  script.async = false;
+  script.src = `https://${domain}/${appIdPath}external_api.js${releaseParam}`;
+  console.log(`!!! bootstrap ${script.src}`);
+  document.head.appendChild(script as Node);
+};
 
 miniLoadExternalApi("8x8.vc", "", config.vpaas);
 
