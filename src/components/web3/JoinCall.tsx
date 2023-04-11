@@ -1,23 +1,46 @@
 import { useEffect, useState } from "react";
-import { web3NFTs, web3Prove } from "./api";
+import { web3NFTs } from "./api";
 import { rememberAvatarUrl } from "./core";
+import { JitsiContext } from "../../jitsi/types";
 import { Login } from "./Login";
 import { OptionalSettings } from "./OptionalSettings";
-import { OptionalSelections } from "./StartCall";
 import { bodyText, header } from "./styles";
+import { useWeb3CallState } from "../../hooks/use-web3-call-state";
+import { Background } from "../Background";
+import { Button } from "../Button";
 
 interface Props {
   roomName: string;
+  setJwt: (jwt: string) => void;
+  jitsiContext: JitsiContext;
+  setJitsiContext: (context: JitsiContext) => void;
 }
 
-export const JoinCall: React.FC<Props> = ({ roomName }) => {
-  const [web3Address, setWeb3Address] = useState<string>();
+export const JoinCall: React.FC<Props> = ({
+  roomName,
+  setJwt,
+  jitsiContext,
+  setJitsiContext,
+}) => {
   const [nfts, setNfts] = useState<string[] | undefined>();
-  const [options, setOptions] = useState<OptionalSelections>({
-    participantPoaps: [],
-    moderatorPoaps: [],
-  });
   const [feedbackMessage, setFeedbackMessage] = useState("");
+  const {
+    web3Address,
+    permissionType,
+    nft,
+    participantPoaps,
+    moderatorPoaps,
+    participantNFTCollections,
+    moderatorNFTCollections,
+    setWeb3Address,
+    setPermissionType,
+    setNft,
+    setParticipantPoaps,
+    setModeratorPoaps,
+    setParticipantNFTCollections,
+    setModeratorNFTCollections,
+    joinCall,
+  } = useWeb3CallState(setFeedbackMessage);
 
   // this magic says "run this function when the web3address changes"
   useEffect(() => {
@@ -33,54 +56,67 @@ export const JoinCall: React.FC<Props> = ({ roomName }) => {
   const onJoinCallClicked = async () => {
     if (!web3Address) return;
 
-    rememberAvatarUrl(options.nft);
-    setFeedbackMessage("Requesting Web3 proof...");
-    const auth = await web3Prove(web3Address);
-
-    setFeedbackMessage("Joining...");
-    alert("join call now!");
-    // TODO:
-    // await joinCall({
-    //   roomName,
-    //   auth,
-    //   nft: options.nft,
-    //   web3Address,
-    //   feedback: setFeedbackMessage,
-    // });
+    try {
+      rememberAvatarUrl(nft);
+      setFeedbackMessage("Joining...");
+      const result = await joinCall(roomName);
+      if (result) {
+        const [jwt, web3Authentication] = result;
+        const web3Participants = { "": web3Address };
+        setJwt(jwt as string);
+        setJitsiContext({
+          ...jitsiContext,
+          web3Participants,
+          web3Authentication,
+        });
+      }
+    } catch (e: any) {
+      console.error("!!! failed to join the call", e);
+      setFeedbackMessage(e.message);
+    }
   };
 
   return (
-    <div
-      css={{
-        display: "flex",
-        justifyContent: "center",
-        marginTop: "62px",
-        flexDirection: "column",
-      }}
-    >
-      <div css={[header, { marginBottom: "22px" }]}>Join a Web3 Call</div>
+    <Background>
+      <div
+        css={{
+          display: "flex",
+          justifyContent: "center",
+          marginTop: "62px",
+          flexDirection: "column",
+        }}
+      >
+        <div css={[header, { marginBottom: "22px" }]}>Join a Web3 Call</div>
 
-      <Login web3address={web3Address} onAddressSelected={setWeb3Address} />
+        <Login web3address={web3Address} onAddressSelected={setWeb3Address} />
 
-      {web3Address && (
-        <div css={{ marginTop: "28px" }}>
-          <OptionalSettings
-            nfts={nfts}
-            selections={options}
-            onSelectionChange={setOptions}
-          />
+        {web3Address && (
+          <div css={{ marginTop: "28px" }}>
+            <OptionalSettings
+              startCall={false}
+              permissionType={permissionType}
+              setPermissionType={setPermissionType}
+              nfts={nfts}
+              nft={nft}
+              setNft={setNft}
+              participantPoaps={participantPoaps}
+              setParticipantPoaps={setParticipantPoaps}
+              moderatorPoaps={moderatorPoaps}
+              setModeratorPoaps={setModeratorPoaps}
+              participantNFTCollections={participantNFTCollections}
+              setParticipantNFTCollections={setParticipantNFTCollections}
+              moderatorNFTCollections={moderatorNFTCollections}
+              setModeratorNFTCollections={setModeratorNFTCollections}
+            />
 
-          <button
-            className="welcome-page-button"
-            onClick={onJoinCallClicked}
-            css={{ marginTop: "45px" }}
-          >
-            <div>Join Web3 call</div>
-          </button>
+            <Button onClick={onJoinCallClicked} css={{ marginTop: "45px" }}>
+              <div>Join Web3 call</div>
+            </Button>
 
-          <div css={[bodyText, { marginTop: "28px" }]}>{feedbackMessage}</div>
-        </div>
-      )}
-    </div>
+            <div css={[bodyText, { marginTop: "28px" }]}>{feedbackMessage}</div>
+          </div>
+        )}
+      </div>
+    </Background>
   );
 };

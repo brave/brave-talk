@@ -15,23 +15,7 @@ for production:
 - CSP: add api.poap.tech, api.simplehash.com, cdn.simplehash.com, lh3.googleusercontent.com, previews.simplehash.com
 */
 
-import { reportAction } from "../../lib";
-import {
-  Web3Auth,
-  web3POAPevent,
-  web3NFTcollection,
-  web3POAPs,
-  web3RestoreAuth,
-} from "./api";
-import { parseEIP4361Message } from "./EIP4361";
-import { fetchJWT } from "../../rooms";
-import { generateRoomName } from "../../lib";
-import { renderConferencePage } from "../../jitsi/conference-page";
 declare let window: any;
-
-let web3Address = "";
-let web3Authentication: Web3Auth;
-let web3Participants: any;
 
 export interface POAP {
   event: {
@@ -100,7 +84,7 @@ export const web3DataChannelOpened = () => {
   );
 };
 
-export const web3endpointTextMessageReceived = async (params: any) => {
+export const web3EndpointTextMessageReceived = async (params: any) => {
   if (!web3Participants) {
     return;
   }
@@ -188,7 +172,6 @@ export const web3participantLeft = (params: any) => {
   delete web3Participants[params.id];
   reportAction("web3 participants", web3Participants);
 };
-*/
 
 // invoked when the user clicks the "Web3 login" button
 interface StartCallParams {
@@ -241,7 +224,6 @@ export const startCall = async (params: StartCallParams) => {
     notice("mock: " + error.message);
   }
 };
-/*
 
 interface JoinCallParams {
   roomName: string;

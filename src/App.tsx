@@ -34,8 +34,13 @@ export const App: React.FC = () => {
     notice,
     isEstablishingCall,
     hasInitialRoom,
+    jitsiContext,
     isCallReady,
-    web3,
+    isWeb3Call,
+    setIsWeb3Call,
+    setJwt,
+    setRoomName,
+    setJitsiContext,
   } = useCallSetupStatus(params.isCreate);
 
   const browserProps = useBrowserProperties();
@@ -50,30 +55,37 @@ export const App: React.FC = () => {
       <GlobalStyles />
 
       <div css={styles.container}>
-        {!web3.isWeb3Call && isCallReady ? (
-          <InCall
-            roomName={roomName as string}
-            jwt={jwt as string}
-            isMobile={browserProps.isMobile}
-          />
-        ) : web3.isWeb3Call && hasInitialRoom ? (
-          <JoinWeb3Call
-            roomName={roomName}
-            web3Address={web3.web3Address}
-            setWeb3Address={web3.setWeb3Address}
-          />
-        ) : (
-          <WelcomeScreen
-            onStartCall={onStartCall}
-            notice={notice}
-            disabled={isEstablishingCall}
-            hasInitialRoomName={hasInitialRoom}
-            browser={browserProps}
-            isWeb3Call={web3.isWeb3Call}
-            setIsWeb3Call={web3.setIsWeb3Call}
-            isCallReady={isCallReady}
-          />
-        )}
+        <InCall
+          roomName={roomName as string}
+          jwt={jwt as string}
+          isMobile={browserProps.isMobile}
+          isCallReady={isCallReady}
+          isWeb3Call={isWeb3Call}
+          jitsiContext={jitsiContext}
+        />
+        {!isCallReady &&
+          (isWeb3Call && hasInitialRoom ? (
+            <JoinWeb3Call
+              roomName={roomName as string}
+              setJwt={setJwt}
+              jitsiContext={jitsiContext}
+              setJitsiContext={setJitsiContext}
+            />
+          ) : (
+            <WelcomeScreen
+              onStartCall={onStartCall}
+              notice={notice}
+              disabled={isEstablishingCall}
+              hasInitialRoomName={hasInitialRoom}
+              browser={browserProps}
+              isWeb3Call={isWeb3Call}
+              setIsWeb3Call={setIsWeb3Call}
+              setJwt={setJwt}
+              setRoomName={setRoomName}
+              jitsiContext={jitsiContext}
+              setJitsiContext={setJitsiContext}
+            />
+          ))}
       </div>
     </React.Fragment>
   );

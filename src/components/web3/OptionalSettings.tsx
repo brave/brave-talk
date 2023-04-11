@@ -1,27 +1,54 @@
-import React, { Dispatch, SetStateAction } from "react";
-import { POAP } from "./core";
+import React from "react";
+import { POAP, NFTcollection } from "./core";
 import { ExapandablePanel } from "./ExpandablePanel";
 import { SelectableImageList } from "./SelectableImageList";
 import { SelectablePoapList } from "./SelectablePoapList";
-import { OptionalSelections } from "./StartCall";
+import { SelectableNFTCollectionList } from "./SelectableNFTCollectionList";
+import { PermissionTypeSelector } from "./PermissionTypeSelector";
 
 interface Props {
+  startCall: boolean;
   nfts?: string[];
   poaps?: POAP[];
-  selections: OptionalSelections;
-  onSelectionChange: Dispatch<SetStateAction<OptionalSelections>>;
+  nftCollections?: NFTcollection[];
+  nft: string | null;
+  setNft: (nft: string) => void;
+  permissionType: string;
+  setPermissionType: (permissionType: string) => void;
+  participantPoaps: POAP[];
+  setParticipantPoaps: (participantPoaps: POAP[]) => void;
+  moderatorPoaps: POAP[];
+  setModeratorPoaps: (moderatorPoaps: POAP[]) => void;
+  participantNFTCollections: NFTcollection[];
+  setParticipantNFTCollections: (
+    participantNFTCollections: NFTcollection[]
+  ) => void;
+  moderatorNFTCollections: NFTcollection[];
+  setModeratorNFTCollections: (
+    moderatorNFTCollections: NFTcollection[]
+  ) => void;
 }
 
 export const OptionalSettings: React.FC<Props> = ({
+  startCall,
   nfts = [],
   poaps,
-  selections,
-  onSelectionChange,
+  nftCollections,
+  nft,
+  setNft,
+  permissionType,
+  setPermissionType,
+  participantPoaps,
+  setParticipantPoaps,
+  moderatorPoaps,
+  setModeratorPoaps,
+  participantNFTCollections,
+  setParticipantNFTCollections,
+  moderatorNFTCollections,
+  setModeratorNFTCollections,
 }) => {
   const nftItems = nfts.map((url) => ({ imageUrl: url }));
-  const selectedNftIdx = nftItems.findIndex(
-    (i) => i.imageUrl === selections.nft
-  );
+  const selectedNftIdx = nfts.findIndex((n) => n === nft);
 
   return (
     <div css={{ maxWidth: "563px", margin: "0 auto 0" }}>
@@ -33,15 +60,28 @@ export const OptionalSettings: React.FC<Props> = ({
         loading={!nfts}
       >
         <SelectableImageList
-          items={nfts.map((url) => ({ imageUrl: url }))}
-          selectedIdxs={[selectedNftIdx]}
-          onToggleSelection={(idx) =>
-            onSelectionChange((s) => ({ ...s, nft: nfts[idx] }))
+          items={nftItems}
+          selectedIdxs={
+            typeof selectedNftIdx === "number" ? [selectedNftIdx] : []
           }
+          onToggleSelection={(idx) => setNft(nfts[idx])}
         />
       </ExapandablePanel>
 
-      {poaps !== undefined && (
+      {startCall && (
+        <>
+          <div css={{ textAlign: "left", marginTop: "2rem" }}>
+            Call permission type:
+          </div>
+
+          <PermissionTypeSelector
+            permissionType={permissionType}
+            setPermissionType={setPermissionType}
+          />
+        </>
+      )}
+
+      {startCall && permissionType === "POAP" && poaps !== undefined && (
         <React.Fragment>
           <ExapandablePanel
             header="Require a POAP"
@@ -50,12 +90,9 @@ export const OptionalSettings: React.FC<Props> = ({
           >
             <SelectablePoapList
               poaps={poaps}
-              selected={selections.participantPoaps}
+              selected={participantPoaps}
               onSelectionChange={(participants) =>
-                onSelectionChange((s) => ({
-                  ...s,
-                  participantPoaps: participants,
-                }))
+                setParticipantPoaps(participants)
               }
             />
           </ExapandablePanel>
@@ -67,14 +104,46 @@ export const OptionalSettings: React.FC<Props> = ({
           >
             <SelectablePoapList
               poaps={poaps}
-              selected={selections.moderatorPoaps}
-              onSelectionChange={(moderators) =>
-                onSelectionChange((s) => ({ ...s, moderatorPoaps: moderators }))
-              }
+              selected={moderatorPoaps}
+              onSelectionChange={(moderators) => setModeratorPoaps(moderators)}
             />
           </ExapandablePanel>
         </React.Fragment>
       )}
+
+      {startCall &&
+        permissionType === "NFT-collection" &&
+        nftCollections !== undefined && (
+          <React.Fragment>
+            <ExapandablePanel
+              header="Require an NFT Collection"
+              subhead="Select an NFT Collection that participants must verify to join"
+              loading={!poaps}
+            >
+              <SelectableNFTCollectionList
+                nftCollections={nftCollections}
+                selected={participantNFTCollections}
+                onSelectionChange={(participants) =>
+                  setParticipantNFTCollections(participants)
+                }
+              />
+            </ExapandablePanel>
+
+            <ExapandablePanel
+              header="Moderator NFT Collection"
+              subhead="Select an NFT Collection that gives moderator privileges"
+              loading={!nftCollections}
+            >
+              <SelectableNFTCollectionList
+                nftCollections={nftCollections}
+                selected={moderatorNFTCollections}
+                onSelectionChange={(moderators) =>
+                  setModeratorNFTCollections(moderators)
+                }
+              />
+            </ExapandablePanel>
+          </React.Fragment>
+        )}
     </div>
   );
 };

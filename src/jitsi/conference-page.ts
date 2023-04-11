@@ -1,5 +1,4 @@
-import { extractValueFromFragment, reportAction, reportMethod } from "../lib";
-import { passwordRequiredHandler } from "./event-handlers";
+import { reportAction, reportMethod } from "../lib";
 import { config } from "../environment";
 import { inactiveTimeout, updateSubject } from "./lib";
 import {
@@ -18,28 +17,16 @@ import {
  */
 export const renderConferencePage = (
   jitsiEventHandlers: JitsiEventHandler[],
-  options: JitsiOptions
+  options: JitsiOptions,
+  context: JitsiContext
 ): IJitsiMeetApi => {
   const { roomName, jwt } = options;
   reportMethod("renderConferencePage", { roomName, jwt });
   reportMethod("JitsiMeetExternalAPI", options);
 
-  let JitsiMeetJS = new JitsiMeetExternalAPI(config.webrtc_domain, options);
+  const JitsiMeetJS = new JitsiMeetExternalAPI(config.webrtc_domain, options);
   reportAction("JitsiMeetExternalAPI", { status: "activated!" });
   updateSubject(JitsiMeetJS, options);
-
-  const context: JitsiContext = {
-    recordingLink: undefined,
-    recordingTTL: undefined,
-    firstTime: true,
-    // check every 30 seconds (disable by setting to 0)
-    inactiveInterval: 30 * 1000,
-    // total 1 hour of inactivity
-    inactiveTotal: 120,
-    inactiveCount: 0,
-    inactiveTimer: undefined,
-    passcode: extractValueFromFragment("passcode"),
-  };
 
   if (context.inactiveInterval) {
     context.inactiveTimer = setTimeout(

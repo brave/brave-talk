@@ -1,5 +1,5 @@
 import { css } from "@emotion/react";
-import { ReactNode, useState } from "react";
+import React, { ReactNode, useState } from "react";
 import { baseText } from "./styles";
 import PlusImage from "../../images/plus.svg";
 import MinusImage from "../../images/minus.svg";

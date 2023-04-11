@@ -1,4 +1,4 @@
-import { ethers } from "ethers";
+import { ethers, hexlify } from "ethers";
 import { fetchWithTimeout } from "../../lib";
 import { NFTcollection, POAP } from "./core";
 import { EIP4361Message, createEIP4361Message } from "./EIP4361";
@@ -37,7 +37,7 @@ export interface Web3ResourceIdentifierList {
 export interface Web3RequestBody {
   web3Authentication: Web3Authentication;
   web3Authorization?: Web3Authorization;
-  avatarURL: string;
+  avatarURL: string | null;
 }
 
 export const web3Login = async (): Promise<string> => {
@@ -117,7 +117,20 @@ export const web3NFTcollections = async (
   }
 };
 
-const STORAGE_KEY = "mock.web3.authentication";
+const getNonce = async (): Promise<string> => {
+  const getNonceURL = "/api/v1/nonce";
+  const response = await fetchWithTimeout(getNonceURL, {
+    method: "GET",
+    headers: {
+      accept: "application/json",
+    },
+  });
+
+  const { nonce } = await response.json();
+  return nonce;
+};
+
+const STORAGE_KEY = "web3.authentication";
 
 export const web3Prove = async (
   web3Address: string
@@ -131,9 +144,8 @@ export const web3Prove = async (
     throw new Error("unable to create ethers.BrowserProvider object");
   }
 
-  const nonce = new Uint8Array(32);
-  crypto.getRandomValues(nonce);
-
+  const nonce = await getNonce();
+  console.log("!!! nonce", nonce);
   const message: EIP4361Message = {
     domain: "talk.brave.com",
     address: web3Address,
@@ -144,11 +156,12 @@ export const web3Prove = async (
     chainId: 1,
     // HT:https://stackoverflow.com/questions/40031688/javascript-arraybuffer-to-hex/40031979
     // btoa has some characters not allowed by the EIP-4361 ABNF
-    nonce: [...nonce].map((x) => x.toString(16).padStart(2, "0")).join(""),
+    nonce: nonce, //[...nonce].map((x) => x.toString(16).padStart(2, "0")).join(""),
     issuedAt: new Date().toISOString(),
   };
   const payload = createEIP4361Message(message);
-
+  const payloadBytes = new TextEncoder().encode(payload);
+  const hexPayload = hexlify(payloadBytes);
   const signer = await window.web3.getSigner(web3Address);
   const signature = await signer.signMessage(payload);
   console.log(`!!! web3 signature=${signature}`);
@@ -158,7 +171,7 @@ export const web3Prove = async (
     proof: {
       signer: web3Address,
       signature: signature,
-      payload: payload,
+      payload: hexPayload,
     },
   };
 

@@ -1,26 +1,49 @@
 import { useEffect, useState } from "react";
 import { Button } from "../Button";
-import { web3Prove, web3NFTs, web3POAPs } from "./api";
-import { POAP, rememberAvatarUrl } from "./core";
+import { JitsiContext } from "../../jitsi/types";
+import { web3NFTs, web3POAPs, web3NFTcollections } from "./api";
+import { POAP, NFTcollection, rememberAvatarUrl } from "./core";
 import { Login } from "./Login";
 import { OptionalSettings } from "./OptionalSettings";
 import { bodyText, header } from "./styles";
+import { useWeb3CallState } from "../../hooks/use-web3-call-state";
 
-export interface OptionalSelections {
-  nft?: string;
-  participantPoaps: POAP[];
-  moderatorPoaps: POAP[];
-}
+type Props = {
+  setJwt: (jwt: string) => void;
+  setRoomName: (roomName: string) => void;
+  jitsiContext: JitsiContext;
+  setJitsiContext: (context: JitsiContext) => void;
+};
 
-export const StartCall: React.FC = () => {
-  const [web3Address, setWeb3Address] = useState<string>();
+export const StartCall: React.FC<Props> = ({
+  setJwt,
+  setRoomName,
+  jitsiContext,
+  setJitsiContext,
+}) => {
   const [nfts, setNfts] = useState<string[] | undefined>();
   const [poaps, setPoaps] = useState<POAP[] | undefined>();
-  const [options, setOptions] = useState<OptionalSelections>({
-    participantPoaps: [],
-    moderatorPoaps: [],
-  });
+  const [nftCollections, setNFTCollections] = useState<
+    NFTcollection[] | undefined
+  >();
   const [feedbackMessage, setFeedbackMessage] = useState("");
+  const {
+    web3Address,
+    permissionType,
+    nft,
+    participantPoaps,
+    moderatorPoaps,
+    participantNFTCollections,
+    moderatorNFTCollections,
+    setWeb3Address,
+    setPermissionType,
+    setNft,
+    setParticipantPoaps,
+    setModeratorPoaps,
+    setParticipantNFTCollections,
+    setModeratorNFTCollections,
+    startCall,
+  } = useWeb3CallState(setFeedbackMessage);
 
   // this magic says "run this function when the web3address changes"
   useEffect(() => {
@@ -35,6 +58,12 @@ export const StartCall: React.FC = () => {
       web3POAPs(web3Address)
         .then(setPoaps)
         .catch((err) => console.error("!!! failed to fetch POAPs ", err));
+
+      web3NFTcollections(web3Address)
+        .then(setNFTCollections)
+        .catch((err) =>
+          console.error("!!! failed to fetch NFT collections ", err)
+        );
     }
   }, [web3Address]);
 
@@ -42,24 +71,22 @@ export const StartCall: React.FC = () => {
     if (!web3Address) return;
 
     try {
-      rememberAvatarUrl(options.nft);
-      setFeedbackMessage("Requesting Web3 proof...");
-      const proof = await web3Prove(web3Address);
-
-      /* TODO
-      await startCall({
-        auth: proof,
-        web3Address: web3Address,
-        participantPoaps: options.participantPoaps.map((p) => p.event.id),
-        moderatorPoaps: options.moderatorPoaps.map((p) => p.event.id),
-        nft: options.nft,
-        feedback: setFeedbackMessage,
-      });
-      */
-      alert("start call now!");
-    } catch (err) {
+      rememberAvatarUrl(nft);
+      const result = await startCall();
+      if (result) {
+        const [roomName, jwt, web3Authentication] = result;
+        const web3Participants = { "": web3Address };
+        setJwt(jwt as string);
+        setRoomName(roomName as string);
+        setJitsiContext({
+          ...jitsiContext,
+          web3Participants,
+          web3Authentication,
+        });
+      }
+    } catch (err: any) {
       console.error("!!! failed to start call ", err);
-      alert(`Failed to start call: ${err}`);
+      setFeedbackMessage(err.message);
     }
   };
 
@@ -79,10 +106,22 @@ export const StartCall: React.FC = () => {
       {web3Address && (
         <div css={{ marginTop: "28px" }}>
           <OptionalSettings
+            startCall={true}
+            permissionType={permissionType}
             nfts={nfts}
             poaps={poaps}
-            selections={options}
-            onSelectionChange={setOptions}
+            nftCollections={nftCollections}
+            nft={nft}
+            setPermissionType={setPermissionType}
+            setNft={setNft}
+            participantPoaps={participantPoaps}
+            setParticipantPoaps={setParticipantPoaps}
+            moderatorPoaps={moderatorPoaps}
+            setModeratorPoaps={setModeratorPoaps}
+            participantNFTCollections={participantNFTCollections}
+            setParticipantNFTCollections={setParticipantNFTCollections}
+            moderatorNFTCollections={moderatorNFTCollections}
+            setModeratorNFTCollections={setModeratorNFTCollections}
           />
 
           <Button onClick={onStartCall} css={{ marginTop: "45px" }}>

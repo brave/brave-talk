@@ -1,9 +1,7 @@
 import { reportAction } from "../lib";
+import { ethers } from "ethers";
 import { IJitsiMeetApi, JitsiContext, JitsiOptions } from "./types";
-import {
-  availableRecordings,
-  upsertRecordingForRoom,
-} from "../recordings-store";
+import { availableRecordings } from "../recordings-store";
 import {
   nowActive,
   updateRecTimestamp,
@@ -42,7 +40,7 @@ export const videoQualityChangeHandler = {
   },
 };
 
-export const videoLinkAvailableHandler = {
+export const recordingLinkAvailableHandler = {
   name: "recordingLinkAvailable",
   fn:
     (_jitsi: IJitsiMeetApi, context: JitsiContext, options: JitsiOptions) =>
@@ -133,6 +131,11 @@ export const participantKickedOutHandler = {
   name: "participantKickedOut",
   fn: (jitsi: IJitsiMeetApi, context: JitsiContext) => (params: any) => {
     nowActive(jitsi, context, "participantKickedOut", params);
+
+    if (context.web3Participants) {
+      delete context.web3Participants[params.id];
+      reportAction("web3 participants", context.web3Participants);
+    }
   },
 };
 
@@ -140,6 +143,11 @@ export const participantLeftHandler = {
   name: "participantLeft",
   fn: (jitsi: IJitsiMeetApi, context: JitsiContext) => (params: any) => {
     nowActive(jitsi, context, "participantLeft", params);
+
+    if (context.web3Participants) {
+      delete context.web3Participants[params.id];
+      reportAction("web3 participants", context.web3Participants);
+    }
   },
 };
 
@@ -149,5 +157,95 @@ export const passwordRequiredHandler = {
     if (context.passcode) {
       jitsi.executeCommand("password", context.passcode);
     }
+  },
+};
+
+export const errorOccurredHandler = {
+  name: "errorOccurred",
+  fn: () => (params: any) => {
+    reportAction("errorOccurred", params);
+  },
+};
+
+export const endpointTextMessageReceivedHandler = {
+  name: "endpointTextMessageReceived",
+  fn: (jitsi: IJitsiMeetApi, context: JitsiContext) => async (params: any) => {
+    reportAction("endpointTextMessageReceived", params);
+
+    if (!context.web3Participants) {
+      return;
+    }
+
+    //let displayName = "";
+    try {
+      const sender = params.data.senderInfo.id;
+      /*
+      const info: any = await jitsi.getRoomsInfo();
+      info.rooms.forEach((room: any) => {
+        room.participants.forEach((participant: any) => {
+          if (participant.id === sender) {
+            displayName = participant.displayName;
+          }
+        });
+      });
+      */
+      const message = JSON.parse(params.data.eventData.text);
+      if (!message.web3) {
+        return;
+      }
+
+      const type = message.web3.type;
+      const payload = message.web3.payload;
+
+      if (type === "broadcast") {
+        jitsi.executeCommand(
+          "sendEndpointTextMessage",
+          sender,
+          JSON.stringify({
+            web3: { type: "unicast", payload: context.web3Authentication },
+          })
+        );
+      }
+
+      if (payload.method !== "EIP-4361-json") {
+        console.log("!!! payload", payload);
+        throw new Error(
+          `unsupported method in payload: ${context.web3Authentication?.method}`
+        );
+      }
+
+      const proof = payload.proof;
+      const signer = ethers.verifyMessage(proof.payload, proof.signature);
+      if (signer.toLowerCase() !== proof.signer.toLowerCase()) {
+        console.log("!!! payload", payload);
+        throw new Error(`address mismatch in payload, got ${signer}`);
+      }
+
+      context.web3Participants[sender] = proof.signer;
+      //notice(`${sender} participant ${displayName}: web3 ${proof.signer}`);
+      reportAction("web3 participants", context.web3Participants);
+    } catch (error: any) {
+      //notice("${sender} participant ${displayName}: web3 " + error.message);
+      console.error("!!! web3 " + error.message);
+    }
+  },
+};
+
+export const dataChannelOpenedHandler = {
+  name: "dataChannelOpened",
+  fn: (jitsi: IJitsiMeetApi, context: JitsiContext) => (params: any) => {
+    reportAction("dataChannelOpened", params);
+
+    if (!context.web3Authentication) {
+      return;
+    }
+
+    jitsi.executeCommand(
+      "sendEndpointTextMessage",
+      "",
+      JSON.stringify({
+        web3: { type: "broadcast", payload: context.web3Authentication },
+      })
+    );
   },
 };

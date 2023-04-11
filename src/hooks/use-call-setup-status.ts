@@ -1,9 +1,10 @@
 import { useEffect, useState } from "react";
 import { TranslationKeys } from "../i18n/i18next";
-import { POAP } from "../components/web3/core";
-import { Web3Authentication } from "../components/web3/api";
+import { JitsiContext } from "../jitsi/types";
+import { Web3RequestBody } from "../components/web3/api";
 import {
   extractRoomNameFromPath,
+  extractValueFromFragment,
   generateRoomName,
   reportAction,
   reportMethod,
@@ -40,13 +41,13 @@ const fetchOrCreateJWT = async (
   createP: boolean,
   waitForSubscriptionBeforeCreating: boolean,
   notice: (message: TranslationKeys) => void,
-  web3: Web3CallSetup
+  web3?: Web3RequestBody
 ): Promise<JoinConferenceRoomResult> => {
   reportMethod("joinConferenceRoom", { roomName, createP });
 
   try {
-    const result = await fetchJWT(roomName, createP, notice);
-    return { jwt: result.jwt };
+    const { jwt } = await fetchJWT(roomName, createP, notice, web3);
+    return { jwt };
   } catch (error: any) {
     if (!createP && error.message === "The room does not exist") {
       // we _could_ try and pass down the subscription status via react state, but
@@ -63,7 +64,7 @@ const fetchOrCreateJWT = async (
 
       reportAction(`Creating room`, { roomName });
       return await fetchOrCreateJWT(roomName, true, false, notice);
-    } else if (err.message.includes("Retry as Web3 call")) {
+    } else if (error.message.includes("Retry as Web3 call")) {
       return { retryAsWeb3: true };
     } else {
       console.error(error);
@@ -73,30 +74,20 @@ const fetchOrCreateJWT = async (
   }
 };
 
-interface Web3CallSetup {
-  isWeb3Call: boolean;
-  web3Address?: string;
-  web3Auth?: Web3Authentication;
-  nft?: string;
-  participantPoaps?: POAP[];
-  moderatorPoaps?: POAP[];
-  setIsWeb3Call: (isWeb3Call: boolean) => void;
-  setWeb3Address: (web3Address: string) => void;
-  setWeb3Auth: (web3Auth: Web3Authentication) => void;
-  setNft: (nft: string) => void;
-  setParticipantPoaps: (participanPoaps: POAP[]) => void;
-  setModeratorPoaps: (moderatorPoaps: POAP[]) => void;
-}
-
 interface CallSetup {
   roomName?: string;
   jwt?: string;
   notice?: TranslationKeys;
   isEstablishingCall: boolean;
   hasInitialRoom: boolean;
+  jitsiContext: JitsiContext;
   onStartCall: () => void;
   isCallReady: boolean;
-  web3: Web3CallSetup;
+  isWeb3Call: boolean;
+  setIsWeb3Call: (isWeb3Call: boolean) => void;
+  setJwt: (jwt: string) => void;
+  setRoomName: (roomName: string) => void;
+  setJitsiContext: (jitsiContext: JitsiContext) => void;
 }
 
 export function useCallSetupStatus(
@@ -111,30 +102,52 @@ export function useCallSetupStatus(
   // on it
   const [hasInitialRoom, setHasInitialRoom] = useState(() => !!roomName);
   const [isWeb3Call, setIsWeb3Call] = useState(false);
-  const [web3Address, setWeb3Address] = useState<string>();
-  const [web3Auth, setWeb3Auth] = useState<Web3Authentication>();
-  const [nft, setNft] = useState<string>();
-  const [participantPoaps, setParticipantPoaps] = useState<POAP[]>();
-  const [moderatorPoaps, setModeratorPoaps] = useState<POAP[]>();
   const [jwt, setJwt] = useState<string>();
   const [notice, setNotice] = useState<TranslationKeys>();
   const [isEstablishingCall, setIsEstablishingCall] = useState(false);
-  const isCallReady = !!(roomName && jwt);
+  const [jitsiContext, setJitsiContext] = useState<JitsiContext>({
+    recordingLink: undefined,
+    recordingTTL: undefined,
+    firstTime: true,
+    // check every 30 seconds (disable by setting to 0)
+    inactiveInterval: 30 * 1000,
+    // total 1 hour of inactivity
+    inactiveTotal: 120,
+    inactiveCount: 0,
+    inactiveTimer: undefined,
+    passcode: extractValueFromFragment("passcode"),
+  });
+
+  const isCallReady = isWeb3Call
+    ? !!(roomName && jwt && jitsiContext.web3Authentication)
+    : !!(roomName && jwt);
 
   useEffect(() => {
-    const tryFetchJwt = (roomName: string) => {
-      // if we don't have a jwt fetch one
-      setIsEstablishingCall(true);
-      fetchOrCreateJWT(
-        roomName,
-        false,
-        waitForSubscriptionBeforeCreating,
-        setNotice
-      )
-        .then((result) => {
+    (async function tryFetchJwt(
+      roomName,
+      hasInitialRoom,
+      waitForSubscriptionBeforeCreating,
+      isWeb3Call
+    ) {
+      if (roomName) {
+        try {
+          // keep the url in sync with the any room name configured
+          window.history.replaceState(null, "", `/${roomName}`);
+          setIsEstablishingCall(true);
+
+          // if we don't have a jwt fetch one
+          const result = await fetchOrCreateJWT(
+            roomName,
+            false,
+            waitForSubscriptionBeforeCreating,
+            setNotice,
+            undefined
+          );
+
           if (result.jwt) {
             setJwt(result.jwt);
           }
+
           if (result.retryAsWeb3) {
             // Convert this to a web3 call
             setIsWeb3Call(true);
@@ -144,21 +157,24 @@ export function useCallSetupStatus(
             setHasInitialRoom(false);
 
             if (result.retryLater) {
-              wait(5_000).then(() => tryFetchJwt(roomName));
+              wait(5_000).then(() =>
+                tryFetchJwt(
+                  roomName,
+                  false,
+                  waitForSubscriptionBeforeCreating,
+                  isWeb3Call
+                )
+              );
             }
           }
-        })
-        .catch(console.error)
-        .finally(() => setIsEstablishingCall(false));
-    };
-
-    if (roomName) {
-      // keep the url in sync with the any room name configured
-      window.history.replaceState(null, "", `/${roomName}`);
-
-      tryFetchJwt(roomName);
-    }
-  }, [roomName, waitForSubscriptionBeforeCreating, isWeb3Call, web3Address]);
+        } catch (e: any) {
+          console.error(e);
+        } finally {
+          setIsEstablishingCall(false);
+        }
+      }
+    })(roomName, hasInitialRoom, waitForSubscriptionBeforeCreating, isWeb3Call);
+  }, [roomName, hasInitialRoom, waitForSubscriptionBeforeCreating, isWeb3Call]);
 
   const doStartCall = () => {
     setRoomName(generateRoomName());
@@ -171,21 +187,13 @@ export function useCallSetupStatus(
     jwt,
     isEstablishingCall,
     hasInitialRoom,
+    jitsiContext,
     onStartCall: doStartCall,
     isCallReady,
-    web3: {
-      isWeb3Call,
-      web3CallReady,
-      web3Address,
-      nft,
-      participantPoaps,
-      moderatorPoaps,
-      setIsWeb3Call,
-      setWeb3Address,
-      setWeb3Auth,
-      setNft,
-      setParticipantPoaps,
-      setModeratorPoaps,
-    },
+    isWeb3Call,
+    setIsWeb3Call,
+    setJwt,
+    setRoomName,
+    setJitsiContext,
   };
 }
