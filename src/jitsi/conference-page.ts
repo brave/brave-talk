@@ -1,6 +1,7 @@
 import { reportAction, reportMethod } from "../lib";
 import { config } from "../environment";
 import { inactiveTimeout, updateSubject } from "./lib";
+import { getAvatarUrl } from "../components/web3/core";
 import {
   JitsiOptions,
   IJitsiMeetApi,
@@ -33,6 +34,11 @@ export const renderConferencePage = (
       inactiveTimeout(JitsiMeetJS, context),
       context.inactiveInterval
     );
+  }
+
+  const avatarUrl = getAvatarUrl();
+  if (avatarUrl) {
+    JitsiMeetJS.executeCommand("avatarUrl", avatarUrl);
   }
 
   jitsiEventHandlers.forEach(({ name, fn }: JitsiEventHandler) => {
