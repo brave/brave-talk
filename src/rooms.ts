@@ -2,6 +2,7 @@ import { TranslationKeys } from "./i18n/i18next";
 import { loadLocalJwtStore } from "./jwt-store";
 import { fetchWithTimeout } from "./lib";
 import { Web3RequestBody } from "./components/web3/api";
+import { isProduction } from "./environment";
 
 // the subscriptions service is forwarded by CloudFront onto talk.brave* so we're not
 // making a cross domain call - see https://github.com/brave/devops/issues/5445.
@@ -63,7 +64,7 @@ const roomsRequest = async ({
     const csrfToken = optionsResponse.headers.get("x-csrf-token");
     if (!csrfToken) {
       console.warn(
-        "OPTIONS request failed to return x-csrf-token, which is likely due to incorrectly configured CORS policy"
+        "!!! OPTIONS request failed to return x-csrf-token, which is likely due to incorrectly configured CORS policy"
       );
       throw new Error(GENERIC_ERROR_MESSAGE);
     }
@@ -101,14 +102,14 @@ const roomsRequest = async ({
         failureMessages[status] ||
         `Request failed: ${status} ${response.statusText}`;
 
-      console.warn(`^^^ body: ${await response.text()}`);
+      console.warn(`!!! body: ${await response.text()}`);
       throw new Error(message);
     }
 
     const resBody = await response.json();
 
     if (!resBody.jwt) {
-      console.warn("response does not include jwt eleement!");
+      console.warn("!!! response does not include jwt eleement!");
       throw new Error("Request failed: internal error(1)");
     }
 
@@ -116,7 +117,7 @@ const roomsRequest = async ({
   } catch (e: any) {
     if (e.message === "Failed to fetch") {
       console.warn(
-        "fetch threw an error, which is likely due to incorrectly configured CORS policy"
+        "!!! fetch threw an error, which is likely due to incorrectly configured CORS policy"
       );
       throw new Error(GENERIC_ERROR_MESSAGE);
     }
@@ -145,7 +146,7 @@ const attemptTokenRefresh = async (
     });
     return response;
   } catch (e) {
-    console.warn("failed to refresh jwt: ", e);
+    console.warn("!!! failed to refresh jwt: ", e);
     // but just ignore the error as we can get a new jwt as we always used to
   }
 
@@ -167,14 +168,18 @@ export const fetchJWT = async (
 
   const jwt = store.findJwtForRoom(roomName);
   if (jwt) {
-    console.log("found local jwt: ", jwt);
+    if (!isProduction) {
+      console.log("found local jwt: ", jwt);
+    }
     return { jwt };
   }
 
   const refreshToken = store.findRefreshTokenForRoom(roomName);
   if (refreshToken) {
     reportProgress("Checking moderator status...");
-    console.log("attempting refresh: ", refreshToken);
+    if (!isProduction) {
+      console.log("attempting refresh: ", refreshToken);
+    }
     const response = await attemptTokenRefresh(roomName, refreshToken);
     if (response) {
       store.storeJwtForRoom(roomName, response.jwt, response.refresh);
