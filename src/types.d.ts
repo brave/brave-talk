@@ -10,6 +10,7 @@ interface Window {
   chrome?: {
     braveRequestAdsEnabled?: () => Promise<boolean>;
   };
+  JitsiMeetExternalApi: any;
 }
 
 declare module "*.svg" {
