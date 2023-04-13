@@ -26,6 +26,7 @@ export const PermissionTypeSelector: React.FC<Props> = ({
         marginTop: "11px",
         padding: "10px 19px",
         textAlign: "left",
+        fontSize: "1.25rem",
       }}
     >
       <option

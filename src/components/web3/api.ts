@@ -1,6 +1,6 @@
 import { ethers, hexlify } from "ethers";
 import { fetchWithTimeout } from "../../lib";
-import { NFTcollection, POAP } from "./core";
+import { NFTcollection, POAP, NFT } from "./core";
 import { EIP4361Message, createEIP4361Message } from "./EIP4361";
 
 declare let window: any;
@@ -89,28 +89,51 @@ export const web3NFTs = async (address: string): Promise<any[]> => {
 export const web3NFTcollections = async (
   address: string
 ): Promise<NFTcollection[]> => {
-  try {
-    const getNFTcollectionsURL = `${SIMPLEHASH_PROXY_ROOT_URL}/api/v0/nfts/collections_by_wallets?chains=ethereum&wallet_addresses=${address}`;
-    console.log(`>>> GET ${getNFTcollectionsURL}`);
-    const response = await fetchWithTimeout(getNFTcollectionsURL, {
+  const getNFTs = async (url: string): Promise<NFTcollection[]> => {
+    const response = await fetchWithTimeout(url, {
       method: "GET",
       headers: {
         accept: "application/json",
       },
     });
+
     const { status } = response;
-    console.log(`<<< GET ${getNFTcollectionsURL} ${status}`);
     if (status !== 200) {
       throw new Error(`Request failed: ${status} ${response.statusText}`);
     }
 
-    const collections = await response.json();
-    const result: any[] = [];
-    collections.collections.forEach((collection: any) => {
-      result.push(collection);
-    });
+    const page = await response.json();
+    let { nfts } = page;
+    const { next } = page;
+    if (next) {
+      nfts = nfts.concat(await getNFTs(next));
+    }
 
-    return result;
+    const collections = nfts.reduce(
+      (collections: { [key: string]: NFTcollection }, nft: NFT) => {
+        if (
+          nft?.collection?.collection_id &&
+          !collections[nft.collection.collection_id]
+        ) {
+          collections[nft.collection.collection_id] = {
+            id: nft.collection.collection_id,
+            name: nft.collection.name,
+            image_url: nft.image_url,
+          };
+        }
+
+        return collections;
+      },
+      {}
+    );
+
+    return Object.values(collections);
+  };
+
+  try {
+    const getNFTsByWalletURL = `${SIMPLEHASH_PROXY_ROOT_URL}/api/v0/nfts/owners?chains=ethereum&wallet_addresses=${address}`;
+    console.log(`>>> GET ${getNFTsByWalletURL}`);
+    return getNFTs(getNFTsByWalletURL);
   } catch (error: any) {
     console.error("!!! web3NFTcollections", error);
     throw error;

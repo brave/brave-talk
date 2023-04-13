@@ -32,6 +32,14 @@ export interface NFTcollection {
   image_url: string;
 }
 
+export interface NFT {
+  image_url: string;
+  collection?: {
+    collection_id: string;
+    name: string;
+  };
+}
+
 const AVATAR_URL_SESSION_KEY = "avatar_url";
 
 /**

@@ -104,7 +104,7 @@ module.exports = {
     historyApiFallback: true,
     proxy: {
       "/api": {
-        target: "https://subscriptions.bsg.brave.software",
+        target: "http://localhost:3003", //"https://subscriptions.bsg.brave.software",
         pathRewrite: { "^/api": "" },
         changeOrigin: true,
       },
