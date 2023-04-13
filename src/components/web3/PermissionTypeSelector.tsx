@@ -28,19 +28,12 @@ export const PermissionTypeSelector: React.FC<Props> = ({
         textAlign: "left",
         fontSize: "1.25rem",
       }}
+      value={permissionType}
     >
-      <option
-        value="POAP"
-        css={{ color: "#000" }}
-        selected={permissionType === "POAP"}
-      >
+      <option value="POAP" css={{ color: "#000", fontSize: "1.25rem" }}>
         POAP
       </option>
-      <option
-        value="NFT-collection"
-        css={{ color: "#000" }}
-        selected={permissionType === "nft-collection"}
-      >
+      <option value="NFT-collection" css={{ color: "#000" }}>
         NFT Collection
       </option>
     </select>
