@@ -131,7 +131,7 @@ export const createEIP4361Message = (message: EIP4361Message): string => {
     result = result.concat(`Not Before: ${message.notBefore}\n`);
   }
   if (message.requestId) {
-    result = result.concat(`Expiration Time: ${message.requestId}\n`);
+    result = result.concat(`Request ID: ${message.requestId}\n`);
   }
   if (message.resources) {
     result = result.concat("Resources:");
