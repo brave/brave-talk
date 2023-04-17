@@ -52,7 +52,9 @@ export const web3Login = async (): Promise<string> => {
 
 export const web3NFTs = async (address: string): Promise<any[]> => {
   try {
-    const getNFTsURL = `${SIMPLEHASH_PROXY_ROOT_URL}/api/v0/nfts/owners?chains=ethereum&wallet_addresses=${address}`;
+    const getNFTsURL = `${SIMPLEHASH_PROXY_ROOT_URL}/api/v0/nfts/owners?chains=ethereum&wallet_addresses=${encodeURIComponent(
+      address
+    )}`;
     console.log(`>>> GET ${getNFTsURL}`);
     const response = await fetchWithTimeout(getNFTsURL, {
       method: "GET",
@@ -131,7 +133,9 @@ export const web3NFTcollections = async (
   };
 
   try {
-    const getNFTsByWalletURL = `${SIMPLEHASH_PROXY_ROOT_URL}/api/v0/nfts/owners?chains=ethereum&wallet_addresses=${address}`;
+    const getNFTsByWalletURL = `${SIMPLEHASH_PROXY_ROOT_URL}/api/v0/nfts/owners?chains=ethereum&wallet_addresses=${encodeURIComponent(
+      address
+    )}`;
     console.log(`>>> GET ${getNFTsByWalletURL}`);
     return getNFTs(getNFTsByWalletURL);
   } catch (error: any) {
@@ -177,7 +181,7 @@ export const web3Prove = async (
     chainId: 1,
     // HT:https://stackoverflow.com/questions/40031688/javascript-arraybuffer-to-hex/40031979
     // btoa has some characters not allowed by the EIP-4361 ABNF
-    nonce: nonce, //[...nonce].map((x) => x.toString(16).padStart(2, "0")).join(""),
+    nonce: nonce,
     issuedAt: new Date().toISOString(),
   };
   const payload = createEIP4361Message(message);
@@ -204,7 +208,9 @@ const poapContractChain = "gnosis";
 
 export const web3POAPs = async (address: string): Promise<POAP[]> => {
   try {
-    const getPOAPsURL = `${SIMPLEHASH_PROXY_ROOT_URL}/api/v0/nfts/owners?chains=${poapContractChain}&wallet_addresses=${address}&contract_addresses=${poapContractAddress}`;
+    const getPOAPsURL = `${SIMPLEHASH_PROXY_ROOT_URL}/api/v0/nfts/owners?chains=${poapContractChain}&wallet_addresses=${encodeURIComponent(
+      address
+    )}&contract_addresses=${poapContractAddress}`;
     console.log(`>>> GET ${getPOAPsURL}`);
     const response = await fetchWithTimeout(getPOAPsURL, {
       method: "GET",
@@ -238,7 +244,9 @@ export const web3POAPs = async (address: string): Promise<POAP[]> => {
 
 export const web3POAPevent = async (eventID: number): Promise<boolean> => {
   try {
-    const getPOAPsURL = `${SIMPLEHASH_PROXY_ROOT_URL}/api/v0/nfts/${poapContractChain}/${poapContractAddress}/${eventID}`;
+    const getPOAPsURL = `${SIMPLEHASH_PROXY_ROOT_URL}/api/v0/nfts/${poapContractChain}/${poapContractAddress}/${encodeURIComponent(
+      eventID
+    )}`;
     console.log(`>>> GET ${getPOAPsURL}`);
     const response = await fetchWithTimeout(getPOAPsURL, {
       method: "GET",
@@ -264,7 +272,9 @@ export const web3NFTcollection = async (
   collectionID: string
 ): Promise<boolean> => {
   try {
-    const getNFTcollectionsURL = `${SIMPLEHASH_PROXY_ROOT_URL}/api/v0/nfts/collections/ids?collection_ids=${collectionID}`;
+    const getNFTcollectionsURL = `${SIMPLEHASH_PROXY_ROOT_URL}/api/v0/nfts/collections/ids?collection_ids=${encodeURIComponent(
+      collectionID
+    )}`;
     console.log(`>>> GET ${getNFTcollectionsURL}`);
     const response = await fetchWithTimeout(getNFTcollectionsURL, {
       method: "GET",
