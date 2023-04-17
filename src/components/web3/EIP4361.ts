@@ -100,7 +100,7 @@ export const parseEIP4361Message = (message: string): any => {
     statement: elements.statement,
     uri: elements.uri,
     version: elements.version,
-    chainId: elements.chainId,
+    chainId: parseInt(elements.chainId),
     nonce: elements.nonce,
     issuedAt: elements.issuedAt,
     expirationTime: elements.expirationTime,
@@ -134,7 +134,7 @@ export const createEIP4361Message = (message: EIP4361Message): string => {
     result = result.concat(`Request ID: ${message.requestId}\n`);
   }
   if (message.resources) {
-    result = result.concat("Resources:");
+    result = result.concat("Resources:\n");
     message.resources.forEach((resource) => {
       result = result.concat(`- ${resource}\n`);
     });
