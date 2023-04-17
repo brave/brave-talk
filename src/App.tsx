@@ -56,8 +56,8 @@ export const App: React.FC = () => {
 
       <div css={styles.container}>
         <InCall
-          roomName={roomName as string}
-          jwt={jwt as string}
+          roomName={roomName ?? ""}
+          jwt={jwt ?? ""}
           isMobile={browserProps.isMobile}
           isCallReady={isCallReady}
           isWeb3Call={isWeb3Call}
