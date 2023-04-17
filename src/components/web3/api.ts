@@ -153,8 +153,6 @@ const getNonce = async (): Promise<string> => {
   return nonce;
 };
 
-const STORAGE_KEY = "web3.authentication";
-
 export const web3Prove = async (
   web3Address: string
 ): Promise<Web3Authentication> => {
@@ -198,27 +196,7 @@ export const web3Prove = async (
     },
   };
 
-  window.localStorage.setItem(STORAGE_KEY, JSON.stringify(result));
-
   return result;
-};
-
-export const web3RestoreAuth = (): any => {
-  try {
-    if (!window.web3) {
-      window.web3 = new ethers.BrowserProvider(window.ethereum);
-      if (!window.web3) {
-        throw new Error("unable to create ethers.BrowserProvider object");
-      }
-    }
-
-    const auth = window.localStorage.getItem(STORAGE_KEY);
-
-    return JSON.parse(auth);
-  } catch (error) {
-    // continue regardless of error
-    console.error(error);
-  }
 };
 
 const poapContractAddress = "0x22c1f6050e56d2876009903609a2cc3fef83b415";
