@@ -100,7 +100,7 @@ export const parseEIP4361Message = (message: string): any => {
     statement: elements.statement,
     uri: elements.uri,
     version: elements.version,
-    chainId: parseInt(elements.chainId),
+    chainId: parseInt(elements.chainId, 10),
     nonce: elements.nonce,
     issuedAt: elements.issuedAt,
     expirationTime: elements.expirationTime,
