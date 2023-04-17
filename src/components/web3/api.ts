@@ -2,12 +2,18 @@ import { ethers, hexlify } from "ethers";
 import { fetchWithTimeout } from "../../lib";
 import { NFTcollection, POAP, NFT } from "./core";
 import { EIP4361Message, createEIP4361Message } from "./EIP4361";
+import { env } from "../../environment";
 
 declare let window: any;
 
 // the subscriptions service is forwarded by CloudFront onto talk.brave* so we're not
 // making a cross domain call - see https://github.com/brave/devops/issues/5445.
-const SIMPLEHASH_PROXY_ROOT_URL = "/api/v1/simplehash";
+const SIMPLEHASH_PROXY_ROOT_URL =
+  env === "production"
+    ? "https://subscriptions.bsg.brave.com/v1/simplehash"
+    : env === "staging"
+    ? "https://subscriptions.bsg.bravesoftware.com/v1/simplehash"
+    : "https://subscriptions.bsg.brave.software/v1/simplehash";
 
 export interface Web3Authentication {
   method: string;
