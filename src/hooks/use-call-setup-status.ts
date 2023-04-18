@@ -1,7 +1,10 @@
 import { useEffect, useState } from "react";
 import { TranslationKeys } from "../i18n/i18next";
+import { JitsiContext } from "../jitsi/types";
+import { Web3RequestBody } from "../components/web3/api";
 import {
   extractRoomNameFromPath,
+  extractValueFromFragment,
   generateRoomName,
   reportAction,
   reportMethod,
@@ -30,19 +33,21 @@ function calculateInitialRoomNameFromUrl(pathname: string): string | undefined {
 interface JoinConferenceRoomResult {
   jwt?: string;
   retryLater?: boolean;
+  retryAsWeb3?: boolean;
 }
 
 const fetchOrCreateJWT = async (
   roomName: string,
   createP: boolean,
   waitForSubscriptionBeforeCreating: boolean,
-  notice: (message: TranslationKeys) => void
+  notice: (message: TranslationKeys) => void,
+  web3?: Web3RequestBody
 ): Promise<JoinConferenceRoomResult> => {
   reportMethod("joinConferenceRoom", { roomName, createP });
 
   try {
-    const result = await fetchJWT(roomName, createP, notice);
-    return { jwt: result.jwt };
+    const { jwt } = await fetchJWT(roomName, createP, notice, web3);
+    return { jwt };
   } catch (error: any) {
     if (!createP && error.message === "The room does not exist") {
       // we _could_ try and pass down the subscription status via react state, but
@@ -59,6 +64,8 @@ const fetchOrCreateJWT = async (
 
       reportAction(`Creating room`, { roomName });
       return await fetchOrCreateJWT(roomName, true, false, notice);
+    } else if (error.message.includes("Retry as Web3 call")) {
+      return { retryAsWeb3: true };
     } else {
       console.error(error);
       notice(error.message);
@@ -73,7 +80,14 @@ interface CallSetup {
   notice?: TranslationKeys;
   isEstablishingCall: boolean;
   hasInitialRoom: boolean;
+  jitsiContext: JitsiContext;
   onStartCall: () => void;
+  isCallReady: boolean;
+  isWeb3Call: boolean;
+  setIsWeb3Call: (isWeb3Call: boolean) => void;
+  setJwt: (jwt: string) => void;
+  setRoomName: (roomName: string) => void;
+  setJitsiContext: (jitsiContext: JitsiContext) => void;
 }
 
 export function useCallSetupStatus(
@@ -87,45 +101,80 @@ export function useCallSetupStatus(
   // buttons to start a call if the initial url has a valid room name
   // on it
   const [hasInitialRoom, setHasInitialRoom] = useState(() => !!roomName);
-
+  const [isWeb3Call, setIsWeb3Call] = useState(false);
   const [jwt, setJwt] = useState<string>();
   const [notice, setNotice] = useState<TranslationKeys>();
   const [isEstablishingCall, setIsEstablishingCall] = useState(false);
+  const [jitsiContext, setJitsiContext] = useState<JitsiContext>({
+    recordingLink: undefined,
+    recordingTTL: undefined,
+    firstTime: true,
+    // check every 30 seconds (disable by setting to 0)
+    inactiveInterval: 30 * 1000,
+    // total 1 hour of inactivity
+    inactiveTotal: 120,
+    inactiveCount: 0,
+    inactiveTimer: undefined,
+    passcode: extractValueFromFragment("passcode"),
+  });
+
+  const isCallReady = isWeb3Call
+    ? !!(roomName && jwt && jitsiContext.web3Authentication)
+    : !!(roomName && jwt);
 
   useEffect(() => {
-    const tryFetchJwt = (roomName: string) => {
-      // if we don't have a jwt fetch one
-      setIsEstablishingCall(true);
-      fetchOrCreateJWT(
-        roomName,
-        false,
-        waitForSubscriptionBeforeCreating,
-        setNotice
-      )
-        .then((result) => {
+    (async function tryFetchJwt(
+      roomName,
+      hasInitialRoom,
+      waitForSubscriptionBeforeCreating,
+      isWeb3Call
+    ) {
+      if (roomName) {
+        try {
+          // keep the url in sync with the any room name configured
+          window.history.replaceState(null, "", `/${roomName}`);
+          setIsEstablishingCall(true);
+
+          // if we don't have a jwt fetch one
+          const result = await fetchOrCreateJWT(
+            roomName,
+            false,
+            waitForSubscriptionBeforeCreating,
+            setNotice,
+            undefined
+          );
+
           if (result.jwt) {
             setJwt(result.jwt);
+          }
+
+          if (result.retryAsWeb3) {
+            // Convert this to a web3 call
+            setIsWeb3Call(true);
           } else {
             // the error message has already been displayed by fetchOrCreateJWT,
             // but we need to allow the user to recover by enabling all functionality
             setHasInitialRoom(false);
 
             if (result.retryLater) {
-              wait(5_000).then(() => tryFetchJwt(roomName));
+              wait(5_000).then(() =>
+                tryFetchJwt(
+                  roomName,
+                  false,
+                  waitForSubscriptionBeforeCreating,
+                  isWeb3Call
+                )
+              );
             }
           }
-        })
-        .catch(console.error)
-        .finally(() => setIsEstablishingCall(false));
-    };
-
-    if (roomName) {
-      // keep the url in sync with the any room name configured
-      window.history.replaceState(null, "", `/${roomName}`);
-
-      tryFetchJwt(roomName);
-    }
-  }, [roomName, waitForSubscriptionBeforeCreating]);
+        } catch (e: any) {
+          console.error(e);
+        } finally {
+          setIsEstablishingCall(false);
+        }
+      }
+    })(roomName, hasInitialRoom, waitForSubscriptionBeforeCreating, isWeb3Call);
+  }, [roomName, hasInitialRoom, waitForSubscriptionBeforeCreating, isWeb3Call]);
 
   const doStartCall = () => {
     setRoomName(generateRoomName());
@@ -138,6 +187,13 @@ export function useCallSetupStatus(
     jwt,
     isEstablishingCall,
     hasInitialRoom,
+    jitsiContext,
     onStartCall: doStartCall,
+    isCallReady,
+    isWeb3Call,
+    setIsWeb3Call,
+    setJwt,
+    setRoomName,
+    setJitsiContext,
   };
 }
