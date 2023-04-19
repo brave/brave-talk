@@ -55,17 +55,24 @@ export const StartCall: React.FC<Props> = ({
 
       web3NFTs(web3Address)
         .then(setNfts)
-        .catch((err) => console.error("!!! failed to fetch NTFs ", err));
+        .catch((err) => {
+          console.error("!!! failed to fetch NTFs ", err);
+          setFeedbackMessage("Failed to fetch member identifiers (NFTs/POAPs)");
+        });
 
       web3POAPs(web3Address)
         .then(setPoaps)
-        .catch((err) => console.error("!!! failed to fetch POAPs ", err));
+        .catch((err) => {
+          console.error("!!! failed to fetch POAPs ", err);
+          setFeedbackMessage("Failed to fetch member identifiers (NFTs/POAPs)");
+        });
 
       web3NFTcollections(web3Address)
         .then(setNFTCollections)
-        .catch((err) =>
-          console.error("!!! failed to fetch NFT collections ", err)
-        );
+        .catch((err) => {
+          console.error("!!! failed to fetch NFT collections ", err);
+          setFeedbackMessage("Failed to fetch member identifiers (NFTs/POAPs)");
+        });
     }
   }, [web3Address]);
 
