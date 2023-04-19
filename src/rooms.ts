@@ -60,7 +60,7 @@ const roomsRequest = async ({
     const csrfToken = optionsResponse.headers.get("x-csrf-token");
     if (!csrfToken) {
       console.warn(
-        "OPTIONS request failed to return x-csrf-token, which is likely due to incorrectly configured CORS policy"
+        "!!! OPTIONS request failed to return x-csrf-token, which is likely due to incorrectly configured CORS policy"
       );
       throw new Error(GENERIC_ERROR_MESSAGE);
     }
@@ -98,14 +98,14 @@ const roomsRequest = async ({
         failureMessages[status] ||
         `Request failed: ${status} ${response.statusText}`;
 
-      console.warn(`^^^ body: ${await response.text()}`);
+      console.warn(`!!! body: ${await response.text()}`);
       throw new Error(message);
     }
 
     const resBody = await response.json();
 
     if (!resBody.jwt) {
-      console.warn("response does not include jwt eleement!");
+      console.warn("!!! response does not include jwt eleement!");
       throw new Error("Request failed: internal error(1)");
     }
 
@@ -113,7 +113,7 @@ const roomsRequest = async ({
   } catch (e: any) {
     if (e.message === "Failed to fetch") {
       console.warn(
-        "fetch threw an error, which is likely due to incorrectly configured CORS policy"
+        "!!! fetch threw an error, which is likely due to incorrectly configured CORS policy"
       );
       throw new Error(GENERIC_ERROR_MESSAGE);
     }
@@ -163,7 +163,7 @@ const attemptTokenRefresh = async (
     });
     return response;
   } catch (e) {
-    console.warn("failed to refresh jwt: ", e);
+    console.warn("!!! failed to refresh jwt: ", e);
     // but just ignore the error as we can get a new jwt as we always used to
   }
 
