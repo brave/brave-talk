@@ -13,6 +13,7 @@ type Props = {
   setRoomName: (roomName: string) => void;
   jitsiContext: JitsiContext;
   setJitsiContext: (context: JitsiContext) => void;
+  isSubscribed: boolean;
 };
 
 export const StartCall: React.FC<Props> = ({
@@ -20,6 +21,7 @@ export const StartCall: React.FC<Props> = ({
   setRoomName,
   jitsiContext,
   setJitsiContext,
+  isSubscribed,
 }) => {
   const [nfts, setNfts] = useState<string[] | undefined>();
   const [poaps, setPoaps] = useState<POAP[] | undefined>();
@@ -125,7 +127,11 @@ export const StartCall: React.FC<Props> = ({
           />
 
           <Button onClick={onStartCall} css={{ marginTop: "45px" }}>
-            Start free 1:1 Web3 call
+            {isSubscribed ? (
+              <>Start a Web3 Call</>
+            ) : (
+              <>Start free 1:1 Web3 call</>
+            )}
           </Button>
 
           <div css={[bodyText, { marginTop: "28px" }]}>{feedbackMessage}</div>

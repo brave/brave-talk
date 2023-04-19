@@ -68,6 +68,7 @@ export const WelcomeScreen: React.FC<Props> = ({
           setRoomName={setRoomName}
           jitsiContext={jitsiContext}
           setJitsiContext={setJitsiContext}
+          isSubscribed={subscribed === "yes"}
         />
       );
     }
