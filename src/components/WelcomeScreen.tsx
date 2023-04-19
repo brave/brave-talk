@@ -84,7 +84,10 @@ export const WelcomeScreen: React.FC<Props> = ({
           hideButtons={hasInitialRoomName}
         />
 
-        <Web3CTA onClick={() => setIsWeb3Call(true)} />
+        <Web3CTA
+          onClick={() => setIsWeb3Call(true)}
+          isSubscribed={subscribed === "yes"}
+        />
 
         <Recordings />
 

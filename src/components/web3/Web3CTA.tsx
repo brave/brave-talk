@@ -5,9 +5,10 @@ import { Text } from "../Text";
 
 interface Props {
   onClick: Dispatch<void>;
+  isSubscribed: boolean;
 }
 
-export const Web3CTA: React.FC<Props> = ({ onClick }) => {
+export const Web3CTA: React.FC<Props> = ({ onClick, isSubscribed }) => {
   return (
     <Section
       css={{
@@ -21,7 +22,11 @@ export const Web3CTA: React.FC<Props> = ({ onClick }) => {
           avatar, assign moderator privileges using POAPs, and more.
         </p>
         <Button hollow onClick={onClick}>
-          Start a Web3 Call
+          {isSubscribed ? (
+            <>Start a Web3 Call</>
+          ) : (
+            <>Start a Free Trial To Start a Web3 Call</>
+          )}
         </Button>
         <p>
           <a
