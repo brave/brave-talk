@@ -133,6 +133,8 @@ export const StartCall: React.FC<Props> = ({
             setModeratorNFTCollections={setModeratorNFTCollections}
           />
 
+          <div css={[bodyText, { marginTop: "28px" }]}>{feedbackMessage}</div>
+
           <Button onClick={onStartCall} css={{ marginTop: "45px" }}>
             {isSubscribed ? (
               <>Start a Web3 Call</>
@@ -140,8 +142,6 @@ export const StartCall: React.FC<Props> = ({
               <>Start free 1:1 Web3 call</>
             )}
           </Button>
-
-          <div css={[bodyText, { marginTop: "28px" }]}>{feedbackMessage}</div>
         </div>
       )}
     </div>

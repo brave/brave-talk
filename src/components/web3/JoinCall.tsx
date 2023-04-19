@@ -49,7 +49,10 @@ export const JoinCall: React.FC<Props> = ({
 
       web3NFTs(web3Address)
         .then(setNfts)
-        .catch((err) => console.error("!!! failed to fetch NTFs ", err));
+        .catch((err) => {
+          console.error("!!! failed to fetch NTFs ", err);
+          setFeedbackMessage("Failed to fetch avatar NFTs");
+        });
     }
   }, [web3Address]);
 
@@ -109,11 +112,11 @@ export const JoinCall: React.FC<Props> = ({
               setModeratorNFTCollections={setModeratorNFTCollections}
             />
 
+            <div css={[bodyText, { marginTop: "28px" }]}>{feedbackMessage}</div>
+
             <Button onClick={onJoinCallClicked} css={{ marginTop: "45px" }}>
               <div>Join Web3 call</div>
             </Button>
-
-            <div css={[bodyText, { marginTop: "28px" }]}>{feedbackMessage}</div>
           </div>
         )}
       </div>
