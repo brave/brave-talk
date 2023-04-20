@@ -71,13 +71,6 @@ export const web3NFTs = async (address: string): Promise<NFT[]> => {
     const nfts = await response.json();
     const result: NFT[] = [];
     nfts.nfts.forEach((nft: any) => {
-      //const tooltip: string = nft.collection.name + ": " + nft.name;
-      const thumbnail: string = nft.previews?.image_small_url
-        ? nft.previews.image_small_url
-        : nft.image_url;
-      /* TBD: uncomment this line, and delete the line following the comment...
-      result.push({ tooltip, thumbnail });
-*/
       result.push({
         image_url: nft.previews?.image_small_url
           ? nft.previews.image_small_url
