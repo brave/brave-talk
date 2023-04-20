@@ -44,6 +44,11 @@ export function useWeb3CallState(
     NFTcollection[]
   >([]);
 
+  window.ethereum.on("accountsChanged", (accounts: string[]) => {
+    console.log("!!! accountsChanged", accounts);
+    setWeb3Address(accounts[0]);
+  });
+
   const joinCall = async (
     roomName: string
   ): Promise<[string, Web3Authentication] | undefined> => {
