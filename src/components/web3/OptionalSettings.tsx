@@ -70,7 +70,9 @@ export const OptionalSettings: React.FC<Props> = ({
 
       {startCall && (
         <>
-          <div css={{ textAlign: "left", marginTop: "2rem" }}>
+          <div
+            css={{ textAlign: "left", marginTop: "2rem", fontSize: "1.25rem" }}
+          >
             Call permission type:
           </div>
 
