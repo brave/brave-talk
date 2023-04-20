@@ -1,5 +1,5 @@
 import React from "react";
-import { POAP, NFTcollection } from "./core";
+import { POAP, NFTcollection, NFT } from "./core";
 import { ExapandablePanel } from "./ExpandablePanel";
 import { SelectableImageList } from "./SelectableImageList";
 import { SelectablePoapList } from "./SelectablePoapList";
@@ -8,7 +8,7 @@ import { PermissionTypeSelector } from "./PermissionTypeSelector";
 
 interface Props {
   startCall: boolean;
-  nfts?: string[];
+  nfts?: NFT[];
   poaps?: POAP[];
   nftCollections?: NFTcollection[];
   nft: string | null;
@@ -47,8 +47,8 @@ export const OptionalSettings: React.FC<Props> = ({
   moderatorNFTCollections,
   setModeratorNFTCollections,
 }) => {
-  const nftItems = nfts.map((url) => ({ imageUrl: url }));
-  const selectedNftIdx = nfts.findIndex((n) => n === nft);
+  const nftItems = nfts.map((n: NFT) => ({ ...n, imageUrl: n.image_url }));
+  const selectedNftIdx = nfts.findIndex((n) => n.image_url === nft);
 
   return (
     <div css={{ maxWidth: "563px", margin: "0 auto 0" }}>
@@ -64,7 +64,7 @@ export const OptionalSettings: React.FC<Props> = ({
           selectedIdxs={
             typeof selectedNftIdx === "number" ? [selectedNftIdx] : []
           }
-          onToggleSelection={(idx) => setNft(nfts[idx])}
+          onToggleSelection={(idx) => setNft(nfts[idx].image_url)}
         />
       </ExapandablePanel>
 

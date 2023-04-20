@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { Button } from "../Button";
 import { JitsiContext } from "../../jitsi/types";
 import { web3NFTs, web3POAPs, web3NFTcollections } from "./api";
-import { POAP, NFTcollection, rememberAvatarUrl } from "./core";
+import { POAP, NFT, NFTcollection, rememberAvatarUrl } from "./core";
 import { Login } from "./Login";
 import { OptionalSettings } from "./OptionalSettings";
 import { bodyText, header } from "./styles";
@@ -23,7 +23,7 @@ export const StartCall: React.FC<Props> = ({
   setJitsiContext,
   isSubscribed,
 }) => {
-  const [nfts, setNfts] = useState<string[] | undefined>();
+  const [nfts, setNfts] = useState<NFT[] | undefined>();
   const [poaps, setPoaps] = useState<POAP[] | undefined>();
   const [nftCollections, setNFTCollections] = useState<
     NFTcollection[] | undefined

@@ -26,6 +26,7 @@ export const SelectableImageList: React.FC<Props> = ({
           title={item.name}
         >
           <img
+            title={item.name}
             height={167}
             width={167}
             src={item.imageUrl}

@@ -50,7 +50,7 @@ export const web3Login = async (): Promise<string> => {
   return allAddresses[0];
 };
 
-export const web3NFTs = async (address: string): Promise<any[]> => {
+export const web3NFTs = async (address: string): Promise<NFT[]> => {
   try {
     const getNFTsURL = `${SIMPLEHASH_PROXY_ROOT_URL}/api/v0/nfts/owners?chains=ethereum&wallet_addresses=${encodeURIComponent(
       address
@@ -69,7 +69,7 @@ export const web3NFTs = async (address: string): Promise<any[]> => {
     }
 
     const nfts = await response.json();
-    const result: any[] = [];
+    const result: NFT[] = [];
     nfts.nfts.forEach((nft: any) => {
       //const tooltip: string = nft.collection.name + ": " + nft.name;
       const thumbnail: string = nft.previews?.image_small_url
@@ -78,7 +78,16 @@ export const web3NFTs = async (address: string): Promise<any[]> => {
       /* TBD: uncomment this line, and delete the line following the comment...
       result.push({ tooltip, thumbnail });
 */
-      result.push(thumbnail);
+      result.push({
+        image_url: nft.previews?.image_small_url
+          ? nft.previews.image_small_url
+          : nft.image_url,
+        name: nft.name,
+        collection: {
+          collection_id: nft.collection?.collection_id,
+          name: nft.collection?.name,
+        },
+      });
     });
 
     return result;

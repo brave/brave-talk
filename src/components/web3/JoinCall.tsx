@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { web3NFTs } from "./api";
-import { rememberAvatarUrl } from "./core";
+import { rememberAvatarUrl, NFT } from "./core";
 import { JitsiContext } from "../../jitsi/types";
 import { Login } from "./Login";
 import { OptionalSettings } from "./OptionalSettings";
@@ -22,7 +22,7 @@ export const JoinCall: React.FC<Props> = ({
   jitsiContext,
   setJitsiContext,
 }) => {
-  const [nfts, setNfts] = useState<string[] | undefined>();
+  const [nfts, setNfts] = useState<NFT[] | undefined>();
   const [feedbackMessage, setFeedbackMessage] = useState("");
   const {
     web3Address,
