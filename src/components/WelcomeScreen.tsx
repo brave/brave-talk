@@ -14,6 +14,7 @@ import { TranslationKeys } from "../i18n/i18next";
 import { Web3CTA } from "./web3/Web3CTA";
 import { StartCall } from "./web3/StartCall";
 import { JitsiContext } from "../jitsi/types";
+import { resolveService } from "../services";
 
 interface Props {
   onStartCall: DispatchWithoutAction;
@@ -44,6 +45,18 @@ export const WelcomeScreen: React.FC<Props> = ({
 }) => {
   const subscribed = useSubscribedStatus();
   const { t } = useTranslation();
+  const onClickWeb3CTA = () => {
+    if (subscribed === "yes") {
+      setIsWeb3Call(true);
+    } else {
+      const accountUrl = resolveService("account");
+      window.open(
+        `${accountUrl}/plans/?intent=checkout&product=talk`,
+        "_self",
+        "noopener"
+      );
+    }
+  };
 
   const Body: React.FC = () => {
     if (!hasInitialRoomName && browser.isBrave === false) {
@@ -84,10 +97,7 @@ export const WelcomeScreen: React.FC<Props> = ({
           hideButtons={hasInitialRoomName}
         />
 
-        <Web3CTA
-          onClick={() => setIsWeb3Call(true)}
-          isSubscribed={subscribed === "yes"}
-        />
+        <Web3CTA onClick={onClickWeb3CTA} isSubscribed={subscribed === "yes"} />
 
         <Recordings />
 
