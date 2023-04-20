@@ -56,7 +56,7 @@ export const StartCall: React.FC<Props> = ({
       web3NFTs(web3Address)
         .then(setNfts)
         .catch((err) => {
-          console.error("!!! failed to fetch NTFs ", err);
+          console.error("!!! failed to fetch NFTs ", err);
           setFeedbackMessage("Failed to fetch member identifiers (NFTs/POAPs)");
         });
 
