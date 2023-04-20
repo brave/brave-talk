@@ -1,6 +1,7 @@
 import { createRoot } from "react-dom/client";
 import { App } from "./App";
 import { env, isProduction, config } from "./environment";
+import { miniLoadExternalApi } from "./jitsi";
 
 import "./js/jwt-decode";
 
@@ -13,30 +14,15 @@ if (!isProduction) {
   document.title = env.toUpperCase() + " " + document.title;
 }
 
-// taken from https://github.com/jitsi/jitsi-meet-react-sdk/blob/main/src/init.ts#L4-L22
-// the goal is to load the bootstrap JS for the current JAAS release (we load JitsiMeetExternalAPI elsewhere)
-// so this function does exactly that and nothing else.
+const mountReactApp = async () => {
+  await miniLoadExternalApi("8x8.vc", "", config.vpaas);
 
-const miniLoadExternalApi = (
-  domain: string,
-  release?: string,
-  appId?: string
-) => {
-  const script: HTMLScriptElement = document.createElement("script");
-  const releaseParam: string = release ? `?release=${release}` : "";
-  const appIdPath: string = appId ? `${appId}/` : "";
+  const rootNode = document.getElementById("root");
 
-  script.async = false;
-  script.src = `https://${domain}/${appIdPath}external_api.js${releaseParam}`;
-  console.log(`!!! bootstrap ${script.src}`);
-  document.head.appendChild(script as Node);
+  if (rootNode) {
+    const root = createRoot(rootNode);
+    root.render(<App />);
+  }
 };
 
-miniLoadExternalApi("8x8.vc", "", config.vpaas);
-
-const rootNode = document.getElementById("root");
-
-if (rootNode) {
-  const root = createRoot(rootNode);
-  root.render(<App />);
-}
+mountReactApp();
