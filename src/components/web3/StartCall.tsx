@@ -136,11 +136,7 @@ export const StartCall: React.FC<Props> = ({
           <div css={[bodyText, { marginTop: "28px" }]}>{feedbackMessage}</div>
 
           <Button onClick={onStartCall} css={{ marginTop: "45px" }}>
-            {isSubscribed ? (
-              <>Start a Web3 Call</>
-            ) : (
-              <>Start free 1:1 Web3 call</>
-            )}
+            {isSubscribed ? <>Start a Web3 Call</> : <>Start free Web3 call</>}
           </Button>
         </div>
       )}
