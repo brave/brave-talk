@@ -18,22 +18,28 @@ export const Web3CTA: React.FC<Props> = ({ onClick, isSubscribed }) => {
     >
       <Text variant="body">
         <p css={{ margin: "8px auto 18px", maxWidth: "500px" }}>
-          Create a Brave Talk call that allows you to select a unique NFT
-          avatar, assign moderator privileges using POAPs, and more.
+          Create a Web3 video call with token-gated access controls. Select a
+          unique NFT avatar, assign moderator privileges using POAPs, and more.
         </p>
         <Button hollow onClick={onClick}>
           {isSubscribed ? (
-            <>Start a Web3 Call</>
+            <>Host a Web3 Call</>
           ) : (
-            <>Start a Free Trial To Start a Web3 Call</>
+            <>Signup to host a Web3 Call</>
           )}
         </Button>
+        {!isSubscribed && (
+          <p>
+            A Brave Talk Premium account is required in order to host Web3
+            calls. Start your free trial now.
+          </p>
+        )}
         <p>
           <a
             href="https://brave.com/web3/what-is-web3/"
             css={{ color: "inherit" }}
           >
-            What is Web3?
+            Learn more about Web3 calls with Brave Talk
           </a>
         </p>
       </Text>

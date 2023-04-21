@@ -1,41 +1,56 @@
 import React from "react";
+import { css } from "@emotion/react";
 
 type Props = {
   permissionType: string;
   setPermissionType: (permissionType: string) => void;
 };
 
+const styles = {
+  base: css({
+    width: "100%",
+    height: 48,
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+    cursor: "pointer",
+    fontWeight: 600,
+    fontSize: "16px",
+    color: "#ffffff",
+    background: "transparent",
+    border: "1px solid rgba(255, 255, 255, 0.8)",
+    "&:hover": { border: "2px solid #ffffff" },
+  }),
+  selected: css({
+    background: "rgba(255, 255, 255, 0.24)",
+    backdropFilter: "blur(16px)",
+    border: "1px solid transparent",
+
+    "&:hover": { background: "rgba(255, 255, 255, 0.42)" },
+  }),
+};
+
 export const PermissionTypeSelector: React.FC<Props> = ({
   setPermissionType,
   permissionType,
 }) => {
-  const onChange = (e: React.ChangeEvent<HTMLSelectElement>) =>
-    setPermissionType(e.target.value);
-
   return (
-    <select
-      onChange={onChange}
-      css={{
-        width: "100%",
-        borderRadius: "5px",
-        outline: "none",
-        border: "none",
-        color: "#fff",
-        background: "rgba(255, 255, 255, 0.24)",
-        backdropFilter: "blur(8px)",
-        marginTop: "11px",
-        padding: "10px 19px",
-        textAlign: "left",
-        fontSize: "1.25rem",
-      }}
-      value={permissionType}
-    >
-      <option value="POAP" css={{ color: "#000", fontSize: "1.25rem" }}>
+    <div css={{ display: "flex" }}>
+      <button
+        onClick={() => setPermissionType("POAP")}
+        css={[styles.base, permissionType === "POAP" && styles.selected]}
+      >
         POAP
-      </option>
-      <option value="NFT-collection" css={{ color: "#000" }}>
+      </button>
+      <button
+        onClick={() => setPermissionType("NFT-collection")}
+        css={[
+          styles.base,
+          permissionType === "NFT-collection" && styles.selected,
+        ]}
+      >
         NFT Collection
-      </option>
-    </select>
+      </button>
+    </div>
   );
 };
