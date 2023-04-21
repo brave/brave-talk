@@ -64,7 +64,11 @@ export function useWeb3CallState(
       return [jwt, auth];
     } catch (e: any) {
       console.error(e);
-      setFeedbackMessage(e.message);
+      if (e.message.includes("user rejected action")) {
+        setFeedbackMessage("Sign request cancelled");
+      } else {
+        setFeedbackMessage(e.message);
+      }
     }
   };
 
@@ -107,7 +111,11 @@ export function useWeb3CallState(
       return [roomName, jwt, auth];
     } catch (e: any) {
       console.error(e);
-      setFeedbackMessage(e.message);
+      if (e.message.includes("user rejected action")) {
+        setFeedbackMessage("Sign request cancelled");
+      } else {
+        setFeedbackMessage(e.message);
+      }
     }
   };
 
