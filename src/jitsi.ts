@@ -371,12 +371,14 @@ export const renderConferencePage = (
 
 declare let window: any;
 
+let loadingPromise: Promise<IJistiMeetApi>;
+
 export const miniLoadExternalApi = (
   domain: string,
   release?: string,
   appId?: string
-): Promise<IJistiMeetApi> =>
-  new Promise((resolve, reject) => {
+): Promise<IJistiMeetApi> => {
+  loadingPromise = new Promise((resolve, reject) => {
     if (window.JitsiMeetExternalApi) {
       return resolve(window.JitsiMeetExternalApi);
     }
@@ -396,3 +398,10 @@ export const miniLoadExternalApi = (
 
     document.head.appendChild(script as Node);
   });
+
+  return loadingPromise;
+};
+
+export const miniLoadedExternalApi = async () => {
+  await loadingPromise;
+};

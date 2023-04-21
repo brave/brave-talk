@@ -1,5 +1,9 @@
 import { useEffect, useRef, useState } from "react";
-import { IJistiMeetApi, renderConferencePage } from "../jitsi";
+import {
+  IJistiMeetApi,
+  renderConferencePage,
+  miniLoadedExternalApi,
+} from "../jitsi";
 
 interface Props {
   roomName: string;
@@ -13,6 +17,7 @@ export const InCall: React.FC<Props> = (props) => {
 
   useEffect(() => {
     if (!jistiMeet && divRef.current) {
+      miniLoadedExternalApi();
       setJitsiMeet(
         renderConferencePage(
           divRef.current,

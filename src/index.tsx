@@ -15,7 +15,7 @@ if (!isProduction) {
 }
 
 const mountReactApp = async () => {
-  await miniLoadExternalApi("8x8.vc", "", config.vpaas);
+  miniLoadExternalApi("8x8.vc", "", config.vpaas);
 
   const rootNode = document.getElementById("root");
 
