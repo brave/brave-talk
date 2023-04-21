@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { Button } from "../Button";
 import { JitsiContext } from "../../jitsi/types";
 import { web3NFTs, web3POAPs, web3NFTcollections } from "./api";
-import { POAP, NFTcollection, rememberAvatarUrl } from "./core";
+import { POAP, NFT, NFTcollection, rememberAvatarUrl } from "./core";
 import { Login } from "./Login";
 import { OptionalSettings } from "./OptionalSettings";
 import { bodyText, header } from "./styles";
@@ -13,6 +13,7 @@ type Props = {
   setRoomName: (roomName: string) => void;
   jitsiContext: JitsiContext;
   setJitsiContext: (context: JitsiContext) => void;
+  isSubscribed: boolean;
 };
 
 export const StartCall: React.FC<Props> = ({
@@ -20,8 +21,9 @@ export const StartCall: React.FC<Props> = ({
   setRoomName,
   jitsiContext,
   setJitsiContext,
+  isSubscribed,
 }) => {
-  const [nfts, setNfts] = useState<string[] | undefined>();
+  const [nfts, setNfts] = useState<NFT[] | undefined>();
   const [poaps, setPoaps] = useState<POAP[] | undefined>();
   const [nftCollections, setNFTCollections] = useState<
     NFTcollection[] | undefined
@@ -53,17 +55,24 @@ export const StartCall: React.FC<Props> = ({
 
       web3NFTs(web3Address)
         .then(setNfts)
-        .catch((err) => console.error("!!! failed to fetch NTFs ", err));
+        .catch((err) => {
+          console.error("!!! failed to fetch NFTs ", err);
+          setFeedbackMessage("Failed to fetch member identifiers (NFTs/POAPs)");
+        });
 
       web3POAPs(web3Address)
         .then(setPoaps)
-        .catch((err) => console.error("!!! failed to fetch POAPs ", err));
+        .catch((err) => {
+          console.error("!!! failed to fetch POAPs ", err);
+          setFeedbackMessage("Failed to fetch member identifiers (NFTs/POAPs)");
+        });
 
       web3NFTcollections(web3Address)
         .then(setNFTCollections)
-        .catch((err) =>
-          console.error("!!! failed to fetch NFT collections ", err)
-        );
+        .catch((err) => {
+          console.error("!!! failed to fetch NFT collections ", err);
+          setFeedbackMessage("Failed to fetch member identifiers (NFTs/POAPs)");
+        });
     }
   }, [web3Address]);
 
@@ -124,11 +133,11 @@ export const StartCall: React.FC<Props> = ({
             setModeratorNFTCollections={setModeratorNFTCollections}
           />
 
-          <Button onClick={onStartCall} css={{ marginTop: "45px" }}>
-            Start free 1:1 Web3 call
-          </Button>
-
           <div css={[bodyText, { marginTop: "28px" }]}>{feedbackMessage}</div>
+
+          <Button onClick={onStartCall} css={{ marginTop: "45px" }}>
+            {isSubscribed ? <>Start a Web3 Call</> : <>Start free Web3 call</>}
+          </Button>
         </div>
       )}
     </div>
