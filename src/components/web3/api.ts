@@ -1,4 +1,5 @@
 import { ethers, hexlify } from "ethers";
+import { isProduction } from "../../environment";
 import { fetchWithTimeout } from "../../lib";
 import { NFTcollection, POAP, NFT } from "./core";
 import { EIP4361Message, createEIP4361Message } from "./EIP4361";
@@ -69,6 +70,10 @@ export const web3NFTs = async (address: string): Promise<NFT[]> => {
     }
 
     const nfts = await response.json();
+    if (!isProduction) {
+      console.warn(`!!! response`, nfts);
+    }
+
     const result: NFT[] = [];
     nfts.nfts.forEach((nft: any) => {
       result.push({
@@ -227,6 +232,10 @@ export const web3POAPs = async (address: string): Promise<POAP[]> => {
     }
 
     const data = await response.json();
+    if (!isProduction) {
+      console.warn(`!!! response`, data);
+    }
+
     const result: any[] = [];
     data.nfts.forEach((nft: any) => {
       const parts: string[] = nft.external_url.split("/");
@@ -263,6 +272,10 @@ export const web3POAPevent = async (eventID: number): Promise<boolean> => {
     }
 
     const data = await response.json();
+    if (!isProduction) {
+      console.warn(`!!! response`, data);
+    }
+
     return !!data.nft_id;
   } catch (error: any) {
     console.error(`!!! web3POAPevent: eventID=${eventID}`, error);
@@ -291,6 +304,10 @@ export const web3NFTcollection = async (
     }
 
     const collections: any[] = await response.json();
+    if (!isProduction) {
+      console.warn(`!!! response`, collections);
+    }
+
     return collections.length > 0;
   } catch (error: any) {
     console.error(`!!! web3NFTcollection: collectionId=${collectionID}`, error);
