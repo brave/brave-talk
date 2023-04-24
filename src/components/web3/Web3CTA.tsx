@@ -18,7 +18,7 @@ export const Web3CTA: React.FC<Props> = ({ onClick, isSubscribed }) => {
     >
       <Text variant="body">
         <p css={{ margin: "8px auto 18px", maxWidth: "500px" }}>
-          Create a Web3 video call with token-gated access controls. Select a
+          Create a Web3 video call with token-gated access controls. Select an
           unique NFT avatar, assign moderator privileges using POAPs, and more.
         </p>
         <Button hollow onClick={onClick}>
