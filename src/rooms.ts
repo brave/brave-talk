@@ -222,7 +222,9 @@ export const fetchJWT = async (
           ? web3BadRequest(web3, method === "POST")
           : "Sorry, you are not a subscriber"
         : "Sorry, the call is already full",
-      401: "Not listed as participant",
+      401: web3
+        ? "Access failure: You must have an approved token to join this call"
+        : "Not listed as participant",
       403: "Forbidden",
       404: "The room does not exist",
       405: "Method not allowed",
