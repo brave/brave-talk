@@ -179,7 +179,7 @@ export const web3Prove = async (
   const nonce = await getNonce();
   console.log("!!! nonce", nonce);
   const message: EIP4361Message = {
-    domain: "talk.brave.com",
+    domain: window.location.host,
     address: web3Address,
     statement:
       "Please sign this message so Brave Talk knows that you own this address",
