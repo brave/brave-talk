@@ -84,11 +84,11 @@ export function useWeb3CallState(
           method: permissionType,
           POAPs: {
             participantADs: {
-              allow: participantPoaps.map((p) => p.tokenId),
+              allow: participantPoaps.map((p) => p.event.id.toString()),
               deny: [],
             },
             moderatorADs: {
-              allow: moderatorPoaps.map((p) => p.tokenId),
+              allow: moderatorPoaps.map((p) => p.event.id.toString()),
               deny: [],
             },
           },
@@ -98,7 +98,7 @@ export function useWeb3CallState(
               deny: [],
             },
             moderatorADs: {
-              allow: participantNFTCollections.map((c) => c.id),
+              allow: moderatorNFTCollections.map((c) => c.id),
               deny: [],
             },
           },
