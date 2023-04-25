@@ -10,6 +10,10 @@ export const Login: React.FC<Props> = ({ web3address, onAddressSelected }) => {
   const [notice, setNotice] = useState<JSX.Element | undefined>();
 
   useEffect(() => {
+    window.ethereum?.on("accountsChanged", () => setNotice(undefined));
+  }, []);
+
+  useEffect(() => {
     if (!web3address) {
       setNotice(<span>Requesting wallet access...</span>);
       web3Login()
