@@ -98,7 +98,7 @@ export function useWeb3CallState(
               deny: [],
             },
             moderatorADs: {
-              allow: participantNFTCollections.map((c) => c.id),
+              allow: moderatorNFTCollections.map((c) => c.id),
               deny: [],
             },
           },
