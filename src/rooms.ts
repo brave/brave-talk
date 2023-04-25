@@ -218,8 +218,13 @@ export const fetchJWT = async (
     successCodes: [success],
     failureMessages: {
       400: createP
-        ? "Sorry, you are not a subscriber"
+        ? web3
+          ? "Error joining room, please try again"
+          : "Sorry, you are not a subscriber"
         : "Sorry, the call is already full",
+      401: web3
+        ? "Access failure: You must have an approved token to join this call"
+        : "Not listed as participant",
       403: "Forbidden",
       404: "The room does not exist",
       405: "Method not allowed",
