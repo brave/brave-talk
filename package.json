@@ -15,6 +15,9 @@
     "type": "git",
     "url": "git+https://github.com/brave/brave-talk.git"
   },
+  "overrides": {
+    "yaml": "2.2.2"
+  },
   "homepage": "https://github.com/brave/brave-talk#readme",
   "devDependencies": {
     "@brave-intl/skus-sdk": "0.1.3",
