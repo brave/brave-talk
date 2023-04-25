@@ -2,6 +2,7 @@ import { reportAction } from "../lib";
 import { ethers } from "ethers";
 import { IJitsiMeetApi, JitsiContext, JitsiOptions } from "./types";
 import { availableRecordings } from "../recordings-store";
+import { acquireWakeLock, releaseWakeLock } from "../wakelock";
 import {
   nowActive,
   updateRecTimestamp,
@@ -91,6 +92,7 @@ export const readyToCloseHandler = {
         clearTimeout(context.inactiveTimer);
       }
       jitsi.dispose();
+      releaseWakeLock();
       window.open(
         window.location.protocol + "//" + window.location.host,
         "_self",
@@ -248,4 +250,10 @@ export const dataChannelOpenedHandler = {
       })
     );
   },
+};
+
+// Prevent the screen from turning off while in the video conference
+export const videoConferenceJoinedHandler = {
+  name: "videoConferenceJoined",
+  fn: () => () => acquireWakeLock(),
 };

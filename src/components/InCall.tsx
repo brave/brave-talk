@@ -16,6 +16,7 @@ import {
   recordingStatusChangedHandler,
   subjectChangeHandler,
   videoQualityChangeHandler,
+  videoConferenceJoinedHandler,
 } from "../jitsi/event-handlers";
 
 interface Props {
@@ -54,6 +55,7 @@ export const InCall: React.FC<Props> = ({
         errorOccurredHandler,
         dataChannelOpenedHandler,
         endpointTextMessageReceivedHandler,
+        videoConferenceJoinedHandler,
       ];
 
       const options = jitsiOptions(roomName, divRef.current, jwt, isMobile);
