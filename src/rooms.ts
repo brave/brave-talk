@@ -219,7 +219,7 @@ export const fetchJWT = async (
     failureMessages: {
       400: createP
         ? web3
-          ? web3BadRequest(web3, method === "POST")
+          ? "Error joining room, please try again"
           : "Sorry, you are not a subscriber"
         : "Sorry, the call is already full",
       401: web3
@@ -249,21 +249,3 @@ export const fetchJWT = async (
     url: "//" + window.location.host + "/" + roomName,
   };
 };
-
-function web3BadRequest(web3: Web3RequestBody, isCreate: boolean): string {
-  if (isCreate) {
-    if (web3.web3Authorization?.method === "POAP") {
-      if (web3.web3Authorization?.POAPs.participantADs.allow.length === 0) {
-        return "Please choose one or more POAPs for participants";
-      }
-    } else {
-      if (
-        web3.web3Authorization?.Collections.participantADs.allow.length === 0
-      ) {
-        return "Please choose one or more NFT collections for participants";
-      }
-    }
-  }
-
-  return "Error joining room, please try again";
-}
