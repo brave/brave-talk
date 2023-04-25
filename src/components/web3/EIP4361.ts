@@ -1,13 +1,5 @@
 // this code is derived from the reference implementation at https://eips.ethereum.org/assets/eip-4361/example.js
 
-// can't use import since there aren't any declaration files
-/* eslint-disable */
-global.Buffer = require("buffer/").Buffer;
-
-const apgLib = require("apg-js/src/apg-lib/node-exports");
-const grammar = new (require("./eip4361-grammar.js"))();
-/* eslint-enable */
-
 export interface EIP4361Message {
   domain: string;
   address: string;
