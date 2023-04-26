@@ -183,7 +183,7 @@ export const web3Prove = async (
     address: web3Address,
     statement:
       "Please sign this message so Brave Talk knows that you own this address",
-    uri: "https://talk.brave.com",
+    uri: window.location.toString(),
     version: "1",
     chainId: 1,
     // HT:https://stackoverflow.com/questions/40031688/javascript-arraybuffer-to-hex/40031979
