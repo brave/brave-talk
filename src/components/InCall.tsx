@@ -13,14 +13,12 @@ export const InCall: React.FC<Props> = (props) => {
 
   useEffect(() => {
     if (!jistiMeet && divRef.current) {
-      setJitsiMeet(
-        renderConferencePage(
-          divRef.current,
-          props.roomName,
-          props.jwt,
-          props.isMobile
-        )
-      );
+      renderConferencePage(
+        divRef.current,
+        props.roomName,
+        props.jwt,
+        props.isMobile
+      ).then(setJitsiMeet);
     }
   }, [divRef, jistiMeet, props]);
 
