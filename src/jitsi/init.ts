@@ -4,12 +4,14 @@ import { IJitsiMeetApi } from "./types";
 // the goal is to load the bootstrap JS for the current JAAS release (we load JitsiMeetExternalAPI elsewhere)
 // so this function does exactly that and nothing else.
 
+let loadingPromise: Promise<IJistiMeetApi>;
+
 export const miniLoadExternalApi = (
   domain: string,
   release?: string,
   appId?: string
-): Promise<IJitsiMeetApi> =>
-  new Promise((resolve, reject) => {
+): Promise<IJitsiMeetApi> => {
+  loadingPromise = new Promise((resolve, reject) => {
     if (window.JitsiMeetExternalApi) {
       return resolve(window.JitsiMeetExternalApi);
     }
@@ -29,3 +31,15 @@ export const miniLoadExternalApi = (
 
     document.head.appendChild(script as Node);
   });
+
+  return loadingPromise;
+};
+
+export const ensureJitsiApiLoaded = async () => {
+  if (!loadingPromise) {
+    throw Error(
+      "!!! you must call miniLoadExternalApi before ensureJitsiApiLoaded"
+    );
+  }
+  await loadingPromise;
+};

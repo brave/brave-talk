@@ -14,15 +14,14 @@ if (!isProduction) {
   document.title = env.toUpperCase() + " " + document.title;
 }
 
-const mountReactApp = async () => {
-  await miniLoadExternalApi("8x8.vc", "", config.vpaas);
+// deliberately don't wait for the resolution of the promise
+// returned here - we'll await it only when we need to interact with
+// the jitsi api.
+void miniLoadExternalApi("8x8.vc", "", config.vpaas);
 
-  const rootNode = document.getElementById("root");
+const rootNode = document.getElementById("root");
 
-  if (rootNode) {
-    const root = createRoot(rootNode);
-    root.render(<App />);
-  }
-};
-
-mountReactApp();
+if (rootNode) {
+  const root = createRoot(rootNode);
+  root.render(<App />);
+}

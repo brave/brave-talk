@@ -60,7 +60,9 @@ export const InCall: React.FC<Props> = ({
 
       const options = jitsiOptions(roomName, divRef.current, jwt, isMobile);
 
-      setJitsiMeet(renderConferencePage(jitsiEventHandlers, options, context));
+      renderConferencePage(jitsiEventHandlers, options, context).then(
+        setJitsiMeet
+      );
     }
   }, [
     divRef,
