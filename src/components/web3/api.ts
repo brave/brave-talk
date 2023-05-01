@@ -278,7 +278,7 @@ export const web3POAPevent = async (eventID: number): Promise<boolean> => {
 
     return !!data.nft_id;
   } catch (error: any) {
-    console.error(`!!! web3POAPevent: eventID=${eventID}`, error);
+    console.error(error);
     return false;
   }
 };
@@ -310,7 +310,7 @@ export const web3NFTcollection = async (
 
     return collections.length > 0;
   } catch (error: any) {
-    console.error(`!!! web3NFTcollection: collectionId=${collectionID}`, error);
+    console.error(error);
     return false;
   }
 };
