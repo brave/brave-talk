@@ -4,7 +4,7 @@ import { IJitsiMeetApi } from "./types";
 // the goal is to load the bootstrap JS for the current JAAS release (we load JitsiMeetExternalAPI elsewhere)
 // so this function does exactly that and nothing else.
 
-let loadingPromise: Promise<IJistiMeetApi>;
+let loadingPromise: Promise<IJitsiMeetApi>;
 
 export const miniLoadExternalApi = (
   domain: string,
