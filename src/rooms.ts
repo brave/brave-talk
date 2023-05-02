@@ -1,5 +1,7 @@
 import { TranslationKeys } from "./i18n/i18next";
 import { loadLocalJwtStore } from "./jwt-store";
+import { fetchWithTimeout } from "./lib";
+import { Web3RequestBody } from "./components/web3/api";
 import { isProduction } from "./environment";
 
 // the subscriptions service is forwarded by CloudFront onto talk.brave* so we're not
@@ -14,6 +16,9 @@ interface RoomRequestBody {
 
   // some requests expect a jwt
   jwt?: string;
+
+  // web3 request payload
+  web3?: Web3RequestBody;
 }
 
 interface RoomResponse {
@@ -33,7 +38,6 @@ interface RoomsRequestParams {
 
 const GENERIC_ERROR_MESSAGE =
   "Oops! We were unable to connect to your meeting room. Please try again.";
-const FETCH_TIMEOUT_MS = 5_000;
 
 const roomsRequest = async ({
   roomName,
@@ -126,27 +130,6 @@ const roomsRequest = async ({
   }
 };
 
-// HT: https://dmitripavlutin.com/timeout-fetch-request/
-async function fetchWithTimeout(
-  input: RequestInfo,
-  init: RequestInit
-): Promise<Response> {
-  const controller = new AbortController();
-
-  const id = window.setTimeout(() => {
-    controller.abort();
-  }, FETCH_TIMEOUT_MS);
-
-  const response = await fetch(input, {
-    ...init,
-    signal: controller.signal,
-  });
-
-  clearTimeout(id);
-
-  return response;
-}
-
 const attemptTokenRefresh = async (
   roomName: string,
   refreshToken: string
@@ -178,7 +161,8 @@ interface FetchJWTResult {
 export const fetchJWT = async (
   roomName: string,
   createP: boolean,
-  reportProgress: (message: TranslationKeys) => void
+  reportProgress: (message: TranslationKeys) => void,
+  web3?: Web3RequestBody
 ): Promise<FetchJWTResult> => {
   const store = loadLocalJwtStore();
 
@@ -205,6 +189,7 @@ export const fetchJWT = async (
 
   const body: RoomRequestBody = {
     mauP: store.isNewMonthlyActiveUser() && true,
+    web3,
   };
 
   let method: RequestMethod, success: number;
@@ -233,13 +218,20 @@ export const fetchJWT = async (
     successCodes: [success],
     failureMessages: {
       400: createP
-        ? "Sorry, you are not a subscriber"
+        ? web3
+          ? "Error joining room, please try again"
+          : "Sorry, you are not a subscriber"
         : "Sorry, the call is already full",
+      401: web3
+        ? "Access failure: You must have an approved token to join this call"
+        : "Not listed as participant",
       403: "Forbidden",
       404: "The room does not exist",
       405: "Method not allowed",
       408: "Request timeout",
-      409: "Sorry, call already exists! (this should not happen)",
+      409: web3
+        ? "Sorry, call already exists! (this should not happen)"
+        : "Retry as Web3 call",
       417: "Expectation failed",
       420: "Method failure",
       429: "Too many requests",

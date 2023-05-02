@@ -10,6 +10,7 @@ export const Background: React.FC<Props> = ({ children }) => {
         backgroundImage: `url(${require("../images/background.svg")})`,
         backgroundRepeat: "no-repeat",
         backgroundSize: "cover",
+        backgroundAttachment: "fixed",
         display: "flex",
         flexDirection: "column",
         justifyContent: "space-between",
