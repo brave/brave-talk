@@ -1,5 +1,6 @@
 import React from "react";
 import { css } from "@emotion/react";
+import { useTranslation } from "react-i18next";
 
 type Props = {
   permissionType: string;
@@ -34,13 +35,14 @@ export const PermissionTypeSelector: React.FC<Props> = ({
   setPermissionType,
   permissionType,
 }) => {
+  const { t } = useTranslation();
   return (
     <div css={{ display: "flex" }}>
       <button
         onClick={() => setPermissionType("POAP")}
         css={[styles.base, permissionType === "POAP" && styles.selected]}
       >
-        POAP
+        {t("poap_permission_type")}
       </button>
       <button
         onClick={() => setPermissionType("NFT-collection")}
@@ -49,7 +51,7 @@ export const PermissionTypeSelector: React.FC<Props> = ({
           permissionType === "NFT-collection" && styles.selected,
         ]}
       >
-        NFT Collection
+        {t("nft_collection_permission_type")}
       </button>
     </div>
   );

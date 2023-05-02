@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { Button } from "../Button";
 import { JitsiContext } from "../../jitsi/types";
 import { web3NFTs, web3POAPs, web3NFTcollections } from "./api";
@@ -7,6 +8,7 @@ import { Login } from "./Login";
 import { OptionalSettings } from "./OptionalSettings";
 import { bodyText, header } from "./styles";
 import { useWeb3CallState } from "../../hooks/use-web3-call-state";
+import { TranslationKeys } from "../../i18n/i18next";
 
 type Props = {
   setJwt: (jwt: string) => void;
@@ -23,12 +25,13 @@ export const StartCall: React.FC<Props> = ({
   setJitsiContext,
   isSubscribed,
 }) => {
+  const { t } = useTranslation();
   const [nfts, setNfts] = useState<NFT[] | undefined>();
   const [poaps, setPoaps] = useState<POAP[] | undefined>();
   const [nftCollections, setNFTCollections] = useState<
     NFTcollection[] | undefined
   >();
-  const [feedbackMessage, setFeedbackMessage] = useState("");
+  const [feedbackMessage, setFeedbackMessage] = useState<TranslationKeys>();
   const {
     web3Address,
     permissionType,
@@ -57,21 +60,21 @@ export const StartCall: React.FC<Props> = ({
         .then(setNfts)
         .catch((err) => {
           console.error("!!! failed to fetch NFTs ", err);
-          setFeedbackMessage("Failed to fetch member identifiers (NFTs/POAPs)");
+          setFeedbackMessage("identifier_fetch_error");
         });
 
       web3POAPs(web3Address)
         .then(setPoaps)
         .catch((err) => {
           console.error("!!! failed to fetch POAPs ", err);
-          setFeedbackMessage("Failed to fetch member identifiers (NFTs/POAPs)");
+          setFeedbackMessage("identifier_fetch_error");
         });
 
       web3NFTcollections(web3Address)
         .then(setNFTCollections)
         .catch((err) => {
           console.error("!!! failed to fetch NFT collections ", err);
-          setFeedbackMessage("Failed to fetch member identifiers (NFTs/POAPs)");
+          setFeedbackMessage("identifier_fetch_error");
         });
     }
   }, [web3Address]);
@@ -95,7 +98,7 @@ export const StartCall: React.FC<Props> = ({
       }
     } catch (err: any) {
       console.error("!!! failed to start call ", err);
-      setFeedbackMessage(err.message);
+      setFeedbackMessage("start_call_error");
     }
   };
 
@@ -136,7 +139,7 @@ export const StartCall: React.FC<Props> = ({
           <div css={[bodyText, { marginTop: "28px" }]}>{feedbackMessage}</div>
 
           <Button onClick={onStartCall} css={{ marginTop: "45px" }}>
-            {isSubscribed ? <>Start a Web3 Call</> : <>Start free Web3 call</>}
+            {isSubscribed ? t("start_web3_call") : t("start_free_web3_call")}
           </Button>
         </div>
       )}

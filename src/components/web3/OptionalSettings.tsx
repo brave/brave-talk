@@ -1,4 +1,5 @@
 import React from "react";
+import { useTranslation } from "react-i18next";
 import { POAP, NFTcollection, NFT } from "./core";
 import { ExapandablePanel } from "./ExpandablePanel";
 import { SelectableImageList } from "./SelectableImageList";
@@ -49,14 +50,15 @@ export const OptionalSettings: React.FC<Props> = ({
 }) => {
   const nftItems = nfts.map((n: NFT) => ({ ...n, imageUrl: n.image_url }));
   const selectedNftIdx = nfts.findIndex((n) => n.image_url === nft);
+  const { t } = useTranslation();
 
   return (
     <div css={{ maxWidth: "563px", margin: "0 auto 0" }}>
       <div>Optional Web3 room preferences:</div>
 
       <ExapandablePanel
-        header="Your Avatar NFT"
-        subhead="Currently supports Ethereum ERC-721 NFTs"
+        header={t("your_avatar_nft_header")}
+        subhead={t("avatar_nft_subhead")}
         loading={!nfts}
       >
         <SelectableImageList
@@ -73,7 +75,7 @@ export const OptionalSettings: React.FC<Props> = ({
           <div
             css={{ textAlign: "left", marginTop: "2rem", fontSize: "1.25rem" }}
           >
-            Call permission type:
+            {t("call_permission_type")}
           </div>
 
           <PermissionTypeSelector
@@ -86,8 +88,8 @@ export const OptionalSettings: React.FC<Props> = ({
       {startCall && permissionType === "POAP" && poaps !== undefined && (
         <React.Fragment>
           <ExapandablePanel
-            header="Require a POAP"
-            subhead="Select a POAP that participants must verify to join"
+            header={t("participant_poap_panel_header")}
+            subhead={t("participant_poap_panel_subhead")}
             loading={!poaps}
           >
             <SelectablePoapList
@@ -100,8 +102,8 @@ export const OptionalSettings: React.FC<Props> = ({
           </ExapandablePanel>
 
           <ExapandablePanel
-            header="Moderator POAP"
-            subhead="Select a POAP that gives moderator privileges"
+            header={t("moderator_poap_panel_header")}
+            subhead={t("moderator_poap_panel_subhead")}
             loading={!poaps}
           >
             <SelectablePoapList
@@ -118,8 +120,8 @@ export const OptionalSettings: React.FC<Props> = ({
         nftCollections !== undefined && (
           <React.Fragment>
             <ExapandablePanel
-              header="Require an NFT Collection"
-              subhead="Select an NFT Collection that participants must verify to join"
+              header={t("participant_nft_collection_panel_header")}
+              subhead={t("participant_nft_collection_panel_subhead")}
               loading={!poaps}
             >
               <SelectableNFTCollectionList
@@ -132,8 +134,8 @@ export const OptionalSettings: React.FC<Props> = ({
             </ExapandablePanel>
 
             <ExapandablePanel
-              header="Moderator NFT Collection"
-              subhead="Select an NFT Collection that gives moderator privileges"
+              header={t("moderator_nft_collection_panel_header")}
+              subhead={t("moderator_nft_collection_panel_subhead")}
               loading={!nftCollections}
             >
               <SelectableNFTCollectionList

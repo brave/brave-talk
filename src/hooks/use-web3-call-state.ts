@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { TranslationKeys } from "../i18n/i18next";
 import { Web3Authentication, web3Prove } from "../components/web3/api";
 import { POAP, NFTcollection } from "../components/web3/core";
 import { generateRoomName } from "../lib";
@@ -30,7 +31,7 @@ interface Web3CallState {
 }
 
 export function useWeb3CallState(
-  setFeedbackMessage: (message: string) => void
+  setFeedbackMessage: (message: TranslationKeys) => void
 ): Web3CallState {
   const [web3Address, setWeb3Address] = useState<string>();
   const [permissionType, setPermissionType] = useState<string>("POAP");
@@ -65,9 +66,9 @@ export function useWeb3CallState(
     } catch (e: any) {
       console.error(e);
       if (e.message.includes("user rejected action")) {
-        setFeedbackMessage("Sign request cancelled");
+        setFeedbackMessage("sign_request_cancelled");
       } else {
-        setFeedbackMessage(e.message);
+        setFeedbackMessage("sign_request_error");
       }
     }
   };
@@ -112,9 +113,9 @@ export function useWeb3CallState(
     } catch (e: any) {
       console.error(e);
       if (e.message.includes("user rejected action")) {
-        setFeedbackMessage("Sign request cancelled");
+        setFeedbackMessage("sign_request_cancelled");
       } else {
-        setFeedbackMessage(e.message);
+        setFeedbackMessage("sign_request_error");
       }
     }
   };
