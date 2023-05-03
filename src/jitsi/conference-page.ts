@@ -2,6 +2,7 @@ import { reportAction, reportMethod } from "../lib";
 import { config } from "../environment";
 import { inactiveTimeout, updateSubject } from "./lib";
 import { getAvatarUrl } from "../components/web3/core";
+import { ensureJitsiApiLoaded } from "./init";
 import {
   JitsiOptions,
   IJitsiMeetApi,
@@ -16,11 +17,12 @@ import {
  * @param {JitsiOptions} options - Configuration options for the conference room
  * @returns {IJitsiMeetApi} The Jitsi API instance for the conference room
  */
-export const renderConferencePage = (
+export const renderConferencePage = async (
   jitsiEventHandlers: JitsiEventHandler[],
   options: JitsiOptions,
   context: JitsiContext
-): IJitsiMeetApi => {
+): Promise<IJitsiMeetApi> => {
+  await ensureJitsiApiLoaded();
   const { roomName, jwt } = options;
   reportMethod("renderConferencePage", { roomName, jwt });
   reportMethod("JitsiMeetExternalAPI", options);
