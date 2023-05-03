@@ -115,7 +115,9 @@ export const JoinCall: React.FC<Props> = ({
               setModeratorNFTCollections={setModeratorNFTCollections}
             />
 
-            <div css={[bodyText, { marginTop: "28px" }]}>{feedbackMessage}</div>
+            <div css={[bodyText, { marginTop: "28px" }]}>
+              {feedbackMessage ? t(feedbackMessage) : ""}
+            </div>
 
             <Button onClick={onJoinCallClicked} css={{ marginTop: "45px" }}>
               <div>{t("join_web3_call")}</div>
