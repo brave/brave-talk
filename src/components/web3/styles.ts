@@ -20,3 +20,7 @@ export const bodyText = css(baseText, {
   lineHeight: "24px",
   color: "#E2E3E7",
 });
+
+export const walletAddress = css(baseText, {
+  wordWrap: "break-word",
+});

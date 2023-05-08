@@ -1,7 +1,7 @@
 import { Dispatch, useEffect, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
 import { web3Login } from "./api";
-import { bodyText } from "./styles";
+import { bodyText, walletAddress } from "./styles";
 
 interface Props {
   web3address?: string;
@@ -53,7 +53,7 @@ export const Login: React.FC<Props> = ({ web3address, onAddressSelected }) => {
       {web3address && (
         <>
           <div css={[bodyText]}>{t("wallet_address")}</div>
-          <div css={[bodyText]}>
+          <div css={[bodyText, walletAddress]}>
             <strong>{web3address}</strong>
           </div>
         </>
