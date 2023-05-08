@@ -1,4 +1,5 @@
 import { Dispatch } from "react";
+import { useTranslation } from "react-i18next";
 import { Button } from "../Button";
 import { Section } from "../Section";
 import { Text } from "../Text";
@@ -9,6 +10,7 @@ interface Props {
 }
 
 export const Web3CTA: React.FC<Props> = ({ onClick, isSubscribed }) => {
+  const { t } = useTranslation();
   return (
     <Section
       css={{
@@ -22,18 +24,9 @@ export const Web3CTA: React.FC<Props> = ({ onClick, isSubscribed }) => {
           unique NFT avatar, assign moderator privileges using POAPs, and more.
         </p>
         <Button hollow onClick={onClick}>
-          {isSubscribed ? (
-            <>Host a Web3 Call</>
-          ) : (
-            <>Signup to host a Web3 Call</>
-          )}
+          {isSubscribed ? t("host_web3_button") : t("web3_sign_up_button")}
         </Button>
-        {!isSubscribed && (
-          <p>
-            A Brave Talk Premium account is required in order to host Web3
-            calls. Start your free trial now.
-          </p>
-        )}
+        {!isSubscribed && <p>{t("web3_premium_trial")}</p>}
         <p>
           <a
             href="https://brave.com/web3/what-is-web3/"

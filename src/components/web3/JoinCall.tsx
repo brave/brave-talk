@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { web3NFTs } from "./api";
 import { rememberAvatarUrl, NFT } from "./core";
 import { JitsiContext } from "../../jitsi/types";
@@ -8,6 +9,7 @@ import { bodyText, header } from "./styles";
 import { useWeb3CallState } from "../../hooks/use-web3-call-state";
 import { Background } from "../Background";
 import { Button } from "../Button";
+import { TranslationKeys } from "../../i18n/i18next";
 
 interface Props {
   roomName: string;
@@ -22,8 +24,9 @@ export const JoinCall: React.FC<Props> = ({
   jitsiContext,
   setJitsiContext,
 }) => {
+  const { t } = useTranslation();
   const [nfts, setNfts] = useState<NFT[] | undefined>();
-  const [feedbackMessage, setFeedbackMessage] = useState("");
+  const [feedbackMessage, setFeedbackMessage] = useState<TranslationKeys>();
   const {
     web3Address,
     permissionType,
@@ -51,7 +54,7 @@ export const JoinCall: React.FC<Props> = ({
         .then(setNfts)
         .catch((err) => {
           console.error("!!! failed to fetch NTFs ", err);
-          setFeedbackMessage("Failed to fetch avatar NFTs");
+          setFeedbackMessage("avatar_fetch_error");
         });
     }
   }, [web3Address]);
@@ -61,7 +64,7 @@ export const JoinCall: React.FC<Props> = ({
 
     try {
       rememberAvatarUrl(nft);
-      setFeedbackMessage("Joining...");
+      setFeedbackMessage("join_call");
       const result = await joinCall(roomName);
       if (result) {
         const [jwt, web3Authentication] = result;
@@ -75,7 +78,7 @@ export const JoinCall: React.FC<Props> = ({
       }
     } catch (e: any) {
       console.error("!!! failed to join the call", e);
-      setFeedbackMessage(e.message);
+      setFeedbackMessage("join_call_error");
     }
   };
 
@@ -112,10 +115,12 @@ export const JoinCall: React.FC<Props> = ({
               setModeratorNFTCollections={setModeratorNFTCollections}
             />
 
-            <div css={[bodyText, { marginTop: "28px" }]}>{feedbackMessage}</div>
+            <div css={[bodyText, { marginTop: "28px" }]}>
+              {feedbackMessage ? t(feedbackMessage) : ""}
+            </div>
 
             <Button onClick={onJoinCallClicked} css={{ marginTop: "45px" }}>
-              <div>Join Web3 call</div>
+              <div>{t("join_web3_call")}</div>
             </Button>
           </div>
         )}
