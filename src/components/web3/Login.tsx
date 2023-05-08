@@ -44,7 +44,7 @@ export const Login: React.FC<Props> = ({ web3address, onAddressSelected }) => {
           );
         });
     }
-  }, [web3address, onAddressSelected]);
+  }, [web3address, onAddressSelected, t]);
 
   return (
     <>
