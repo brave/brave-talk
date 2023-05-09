@@ -46,8 +46,6 @@ export const WelcomeScreen: React.FC<Props> = ({
   const subscribed = useSubscribedStatus();
   const { t } = useTranslation();
   const onClickWeb3CTA = () => {
-    setIsWeb3Call(true);
-    return;
     if (subscribed === "yes") {
       setIsWeb3Call(true);
     } else {
