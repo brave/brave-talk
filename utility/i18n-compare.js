@@ -108,7 +108,7 @@ models.forEach((target) => {
   console.log("{" + (multipleP ? ` // ${target.lang}` : ""));
   Object.keys(baseline.model).forEach((key) => {
     const value = target.model[key] || `<<< ${baseline.model[key]}`;
-    console.log(`  "${key}": ${value}",`);
+    console.log(`  "${key}": "${value}",`);
   });
   console.log("}");
 });
