@@ -66,3 +66,26 @@ export const extractValueFromFragment = (key: string): string | undefined => {
 
   return value;
 };
+
+const FETCH_TIMEOUT_MS = 5_000;
+
+// HT: https://dmitripavlutin.com/timeout-fetch-request/
+export async function fetchWithTimeout(
+  input: RequestInfo,
+  init: RequestInit
+): Promise<Response> {
+  const controller = new AbortController();
+
+  const id = window.setTimeout(() => {
+    controller.abort();
+  }, FETCH_TIMEOUT_MS);
+
+  const response = await fetch(input, {
+    ...init,
+    signal: controller.signal,
+  });
+
+  clearTimeout(id);
+
+  return response;
+}

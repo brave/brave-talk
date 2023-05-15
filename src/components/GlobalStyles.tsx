@@ -27,6 +27,11 @@ export const GlobalStyles = () => (
         border: "none",
         font: "inherit",
       },
+      iframe: {
+        position: "absolute",
+        top: "0px",
+        left: "0px",
+      },
     })}
   />
 );
