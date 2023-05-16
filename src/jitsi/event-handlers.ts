@@ -178,19 +178,8 @@ export const endpointTextMessageReceivedHandler = {
       return;
     }
 
-    //let displayName = "";
     try {
       const sender = params.data.senderInfo.id;
-      /*
-      const info: any = await jitsi.getRoomsInfo();
-      info.rooms.forEach((room: any) => {
-        room.participants.forEach((participant: any) => {
-          if (participant.id === sender) {
-            displayName = participant.displayName;
-          }
-        });
-      });
-      */
       const message = JSON.parse(params.data.eventData.text);
       if (!message.web3) {
         return;
@@ -217,17 +206,20 @@ export const endpointTextMessageReceivedHandler = {
       }
 
       const proof = payload.proof;
-      const signer = ethers.verifyMessage(proof.payload, proof.signature);
+      const hexOctets = proof.payload
+        .match(/[\da-f]{2}/gi)
+        .map((h: any) => parseInt(h, 16));
+      const hexArray = new Uint8Array(hexOctets);
+      const payloadBytes = new TextDecoder().decode(hexArray.buffer);
+      const signer = ethers.verifyMessage(payloadBytes, proof.signature);
       if (signer.toLowerCase() !== proof.signer.toLowerCase()) {
         console.log("!!! payload", payload);
         throw new Error(`address mismatch in payload, got ${signer}`);
       }
 
       context.web3Participants[sender] = proof.signer;
-      //notice(`${sender} participant ${displayName}: web3 ${proof.signer}`);
       reportAction("web3 participants", context.web3Participants);
     } catch (error: any) {
-      //notice("${sender} participant ${displayName}: web3 " + error.message);
       console.error("!!! web3 " + error.message);
     }
   },
