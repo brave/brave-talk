@@ -1,3 +1,4 @@
+import { isProduction } from "../environment";
 import { reportAction } from "../lib";
 import { ethers } from "ethers";
 import { IJitsiMeetApi, JitsiContext, JitsiOptions } from "./types";
@@ -174,6 +175,10 @@ export const endpointTextMessageReceivedHandler = {
   fn: (jitsi: IJitsiMeetApi, context: JitsiContext) => async (params: any) => {
     reportAction("endpointTextMessageReceived", params);
 
+    if (isProduction) {
+      return;
+    }
+
     if (!context.web3Participants) {
       return;
     }
@@ -229,6 +234,10 @@ export const dataChannelOpenedHandler = {
   name: "dataChannelOpened",
   fn: (jitsi: IJitsiMeetApi, context: JitsiContext) => (params: any) => {
     reportAction("dataChannelOpened", params);
+
+    if (isProduction) {
+      return;
+    }
 
     if (!context.web3Authentication) {
       return;
