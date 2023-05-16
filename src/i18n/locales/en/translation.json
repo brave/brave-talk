@@ -51,6 +51,8 @@
   "poap_permission_type": "POAP",
   "nft_collection_permission_type": "NFT Collection",
   "host_web3_call_body": "Use NFTs and POAPs to token-gate access, configure avatars, assign moderators, and more.",
+  "invalid_token_error": "Access failure: You must have an approved token to join this call",
+  "not_participant_error": "Not listed as participant",
 
   "Checking subscription status...": "Checking subscription status...",
   "Created meeting room": "Created meeting room",

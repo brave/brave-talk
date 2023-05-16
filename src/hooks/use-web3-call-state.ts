@@ -1,6 +1,10 @@
 import { useState } from "react";
 import { TranslationKeys } from "../i18n/i18next";
-import { Web3Authentication, web3Prove } from "../components/web3/api";
+import {
+  Web3RequestBody,
+  Web3Authentication,
+  web3Prove,
+} from "../components/web3/api";
 import { POAP, NFTcollection } from "../components/web3/core";
 import { generateRoomName } from "../lib";
 import { fetchJWT } from "../rooms";
@@ -53,24 +57,51 @@ export function useWeb3CallState(
   const joinCall = async (
     roomName: string
   ): Promise<[string, Web3Authentication] | undefined> => {
+    let web3: Web3RequestBody | null = null;
+    let auth: Web3Authentication | null = null;
+    let jwt = "";
     try {
-      const auth = await web3Prove(web3Address as string);
-      const web3 = {
+      auth = await web3Prove(web3Address as string);
+      web3 = {
         web3Authentication: auth,
         avatarURL: nft,
       };
-
-      const { jwt } = await fetchJWT(roomName, false, setFeedbackMessage, web3);
-      window.history.pushState({}, "", "/" + roomName);
-      return [jwt, auth];
     } catch (e: any) {
       console.error(e);
+
       if (e.message.includes("user rejected action")) {
         setFeedbackMessage("sign_request_cancelled");
       } else {
         setFeedbackMessage("sign_request_error");
       }
+      return;
     }
+
+    try {
+      const { jwt: jwtResponse } = await fetchJWT(
+        roomName,
+        false,
+        setFeedbackMessage,
+        web3
+      );
+      jwt = jwtResponse;
+    } catch (e: any) {
+      console.error(e);
+
+      if (
+        e.message.includes(
+          "You must have an appropriate token to join this call"
+        )
+      ) {
+        setFeedbackMessage("invalid_token_error");
+      } else {
+        setFeedbackMessage("not_participant_error");
+      }
+      return;
+    }
+
+    window.history.pushState({}, "", "/" + roomName);
+    return [jwt, auth];
   };
 
   const startCall = async (): Promise<
