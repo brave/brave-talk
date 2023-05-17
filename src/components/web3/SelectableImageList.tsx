@@ -1,4 +1,5 @@
 import { Dispatch } from "react";
+import genericNFTImage from "../../images/nft.png";
 
 interface Item {
   imageUrl: string;
@@ -29,7 +30,7 @@ export const SelectableImageList: React.FC<Props> = ({
             title={item.name}
             height={167}
             width={167}
-            src={item.imageUrl}
+            src={item.imageUrl ? item.imageUrl : genericNFTImage}
             css={{
               border: `5px solid ${
                 selectedIdxs.includes(idx) ? "white" : "transparent"
