@@ -17,7 +17,7 @@ interface Web3CallState {
   moderatorPoaps: POAP[];
   participantNFTCollections: NFTcollection[];
   moderatorNFTCollections: NFTcollection[];
-  setWeb3Address: (web3Address: string) => void;
+  setWeb3Address: (web3Address: string, event: string) => void;
   setPermissionType: (permissionType: string) => void;
   setNft: (nft: string) => void;
   setParticipantPoaps: (participanPoaps: POAP[]) => void;
@@ -37,7 +37,7 @@ interface Web3CallState {
 export function useWeb3CallState(
   setFeedbackMessage: (message: TranslationKeys) => void
 ): Web3CallState {
-  const [web3Address, setWeb3Address] = useState<string>();
+  const [web3Address, _setWeb3Address] = useState<string>();
   const [permissionType, setPermissionType] = useState<string>("POAP");
   const [nft, setNft] = useState<string | null>(null);
   const [participantPoaps, setParticipantPoaps] = useState<POAP[]>([]);
@@ -49,9 +49,29 @@ export function useWeb3CallState(
     NFTcollection[]
   >([]);
 
+  const setWeb3Address = (address: string, event: string) => {
+    _setWeb3Address((prevAddress) => {
+      switch (event) {
+        case "login": {
+          if (prevAddress) return prevAddress;
+          return address;
+          break;
+        }
+        case "accountsChanged": {
+          return address;
+          break;
+        }
+        default: {
+          return address;
+          break;
+        }
+      }
+    });
+  };
+
   window.ethereum?.on("accountsChanged", (accounts: string[]) => {
     console.log("!!! accountsChanged", accounts);
-    setWeb3Address(accounts[0]);
+    setWeb3Address(accounts[0], "accountsChanged");
   });
 
   const joinCall = async (
@@ -67,7 +87,7 @@ export function useWeb3CallState(
         avatarURL: nft,
       };
     } catch (e: any) {
-      console.error(e);
+      console.error(e.message);
 
       if (e.message.includes("user rejected action")) {
         setFeedbackMessage("sign_request_cancelled");
@@ -142,7 +162,7 @@ export function useWeb3CallState(
       window.history.pushState({}, "", "/" + roomName);
       return [roomName, jwt, auth];
     } catch (e: any) {
-      console.error(e);
+      console.error(e.message);
       if (e.message.includes("user rejected action")) {
         setFeedbackMessage("sign_request_cancelled");
       } else {

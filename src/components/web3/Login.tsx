@@ -5,7 +5,7 @@ import { bodyText, walletAddress } from "./styles";
 
 interface Props {
   web3address?: string;
-  onAddressSelected: Dispatch<string>;
+  onAddressSelected: (address: string, event: string) => void;
 }
 
 export const Login: React.FC<Props> = ({ web3address, onAddressSelected }) => {
@@ -21,7 +21,7 @@ export const Login: React.FC<Props> = ({ web3address, onAddressSelected }) => {
       setNotice(<span>{t("wallet_connect_request")}</span>);
       web3Login()
         .then((address) => {
-          onAddressSelected(address);
+          onAddressSelected(address, "login");
           setNotice(undefined);
         })
         .catch((err) => {
