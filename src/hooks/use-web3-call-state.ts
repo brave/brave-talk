@@ -55,15 +55,12 @@ export function useWeb3CallState(
         case "login": {
           if (prevAddress) return prevAddress;
           return address;
-          break;
         }
         case "accountsChanged": {
           return address;
-          break;
         }
         default: {
           return address;
-          break;
         }
       }
     });
