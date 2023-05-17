@@ -1,6 +1,6 @@
 import { IJitsiMeetApi } from "./types";
 
-// taken from http://localhost:8080/Uw8dfAU56OYYzACPQ59_sU0WpQTWlC4sSQDQNeC7HOEhttps://github.com/jitsi/jitsi-meet-react-sdk/blob/main/src/init.ts#L4-L22
+// taken from https://github.com/jitsi/jitsi-meet-react-sdk/blob/main/src/init.ts#L4-L22
 // the goal is to load the bootstrap JS for the current JAAS release (we load JitsiMeetExternalAPI elsewhere)
 // so this function does exactly that and nothing else.
 

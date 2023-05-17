@@ -1,6 +1,10 @@
 import { useState } from "react";
 import { TranslationKeys } from "../i18n/i18next";
-import { Web3Authentication, web3Prove } from "../components/web3/api";
+import {
+  Web3RequestBody,
+  Web3Authentication,
+  web3Prove,
+} from "../components/web3/api";
 import { POAP, NFTcollection } from "../components/web3/core";
 import { generateRoomName } from "../lib";
 import { fetchJWT } from "../rooms";
@@ -13,7 +17,7 @@ interface Web3CallState {
   moderatorPoaps: POAP[];
   participantNFTCollections: NFTcollection[];
   moderatorNFTCollections: NFTcollection[];
-  setWeb3Address: (web3Address: string) => void;
+  setWeb3Address: (web3Address: string, event: string) => void;
   setPermissionType: (permissionType: string) => void;
   setNft: (nft: string) => void;
   setParticipantPoaps: (participanPoaps: POAP[]) => void;
@@ -33,7 +37,7 @@ interface Web3CallState {
 export function useWeb3CallState(
   setFeedbackMessage: (message: TranslationKeys) => void
 ): Web3CallState {
-  const [web3Address, setWeb3Address] = useState<string>();
+  const [web3Address, _setWeb3Address] = useState<string>();
   const [permissionType, setPermissionType] = useState<string>("POAP");
   const [nft, setNft] = useState<string | null>(null);
   const [participantPoaps, setParticipantPoaps] = useState<POAP[]>([]);
@@ -45,32 +49,76 @@ export function useWeb3CallState(
     NFTcollection[]
   >([]);
 
+  const setWeb3Address = (address: string, event: string) => {
+    _setWeb3Address((prevAddress) => {
+      switch (event) {
+        case "login": {
+          if (prevAddress) return prevAddress;
+          return address;
+        }
+        case "accountsChanged": {
+          return address;
+        }
+        default: {
+          return address;
+        }
+      }
+    });
+  };
+
   window.ethereum?.on("accountsChanged", (accounts: string[]) => {
     console.log("!!! accountsChanged", accounts);
-    setWeb3Address(accounts[0]);
+    setWeb3Address(accounts[0], "accountsChanged");
   });
 
   const joinCall = async (
     roomName: string
   ): Promise<[string, Web3Authentication] | undefined> => {
+    let web3: Web3RequestBody | null = null;
+    let auth: Web3Authentication | null = null;
+    let jwt = "";
     try {
-      const auth = await web3Prove(web3Address as string);
-      const web3 = {
+      auth = await web3Prove(web3Address as string);
+      web3 = {
         web3Authentication: auth,
         avatarURL: nft,
       };
-
-      const { jwt } = await fetchJWT(roomName, false, setFeedbackMessage, web3);
-      window.history.pushState({}, "", "/" + roomName);
-      return [jwt, auth];
     } catch (e: any) {
-      console.error(e);
+      console.error(e.message);
+
       if (e.message.includes("user rejected action")) {
         setFeedbackMessage("sign_request_cancelled");
       } else {
         setFeedbackMessage("sign_request_error");
       }
+      return;
     }
+
+    try {
+      const { jwt: jwtResponse } = await fetchJWT(
+        roomName,
+        false,
+        setFeedbackMessage,
+        web3
+      );
+      jwt = jwtResponse;
+    } catch (e: any) {
+      console.error(e);
+
+      if (
+        e.message.includes(
+          "You must have an appropriate token to join this call"
+        )
+      ) {
+        setFeedbackMessage("invalid_token_error");
+      } else {
+        setFeedbackMessage("not_participant_error");
+      }
+      return;
+    }
+
+    window.history.pushState({}, "", "/" + roomName);
+    return [jwt, auth];
   };
 
   const startCall = async (): Promise<
@@ -111,7 +159,7 @@ export function useWeb3CallState(
       window.history.pushState({}, "", "/" + roomName);
       return [roomName, jwt, auth];
     } catch (e: any) {
-      console.error(e);
+      console.error(e.message);
       if (e.message.includes("user rejected action")) {
         setFeedbackMessage("sign_request_cancelled");
       } else {
