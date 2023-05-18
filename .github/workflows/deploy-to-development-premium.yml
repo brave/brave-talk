@@ -8,7 +8,7 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
       - name: Build
         uses: ./.github/actions/build
         with:
@@ -23,7 +23,7 @@ jobs:
       url: https://talk.brave.software
 
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
       - name: Deploy
         uses: ./.github/actions/deploy
         env:
