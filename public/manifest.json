@@ -5,6 +5,11 @@
   "description": "Unlimited private video calls with your friends and colleagues",
   "icons": [
     {
+      "sizes": "64x64",
+      "src": "images/brave-talk-64x64.png",
+      "type": "image/png"
+    },
+    {
       "sizes": "96x96",
       "src": "images/brave-talk-96x96.png",
       "type": "image/png"
