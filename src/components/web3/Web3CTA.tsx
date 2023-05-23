@@ -20,6 +20,7 @@ export const Web3CTA: React.FC<Props> = ({ onClick, isSubscribed }) => {
       }}
     >
       <Text variant="body">
+        <h2>{t("web3_card_title")}</h2>
         <p css={{ margin: "8px auto 18px", maxWidth: "500px" }}>
           {t("host_web3_call_body")}
         </p>

@@ -44,7 +44,8 @@ export const SubscriptionCTA: React.FC<Props> = ({ subscribed }) => {
   return (
     <Text variant="body">
       <Section>
-        <p css={{ marginBottom: 18, paddingTop: 34 }}>{t("subscribe_text")}</p>
+        <h2 css={{ paddingTop: 34 }}>{t("premium_card_title")}</h2>
+        <p css={{ marginBottom: 18 }}>{t("subscribe_text")}</p>
         <Button hollow>
           <a href={`${subsUrl}/plans/?intent=checkout&product=talk`}>
             {t("welcome_page_button_hollow")}
