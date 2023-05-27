@@ -43,8 +43,6 @@ export const WelcomeScreen: React.FC<Props> = ({
   setRoomName,
   setJitsiContext,
 }) => {
-  const query = new URLSearchParams(window.location.search);
-  const enableWeb3 = !!query.get("web3");
   const subscribed = useSubscribedStatus();
   const { t } = useTranslation();
   const onClickWeb3CTA = () => {
@@ -99,12 +97,7 @@ export const WelcomeScreen: React.FC<Props> = ({
           hideButtons={hasInitialRoomName}
         />
 
-        {enableWeb3 && (
-          <Web3CTA
-            onClick={onClickWeb3CTA}
-            isSubscribed={subscribed === "yes"}
-          />
-        )}
+        <Web3CTA onClick={onClickWeb3CTA} isSubscribed={subscribed === "yes"} />
 
         <Recordings />
 
