@@ -3,7 +3,6 @@ import { css, Global } from "@emotion/react";
 export const GlobalStyles = () => (
   <Global
     styles={css({
-      "*": { userSelect: "none" },
       "*,*:before,*:after": { boxSizing: "inherit" },
       "input,textarea": {
         userSelect: "text",
