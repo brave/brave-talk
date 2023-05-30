@@ -21,6 +21,10 @@ export interface NFT {
   collection?: {
     collection_id: string;
     name: string;
+    image_url: string;
+  };
+  previews?: {
+    image_small_url: string;
   };
 }
 
