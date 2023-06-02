@@ -84,6 +84,7 @@ export const web3NFTs = async (address: string): Promise<NFT[]> => {
         collection: {
           collection_id: nft.collection?.collection_id,
           name: nft.collection?.name,
+          image_url: nft.collection?.image_url,
         },
       });
     });
@@ -127,7 +128,11 @@ export const web3NFTcollections = async (
           collections[nft.collection.collection_id] = {
             id: nft.collection.collection_id,
             name: nft.collection.name,
-            image_url: nft.image_url,
+            image_url: nft.previews?.image_small_url
+              ? nft.previews.image_small_url
+              : nft.image_url
+              ? nft.image_url
+              : nft.collection?.image_url,
           };
         }
 

@@ -97,11 +97,11 @@ export const WelcomeScreen: React.FC<Props> = ({
           hideButtons={hasInitialRoomName}
         />
 
-        <Web3CTA onClick={onClickWeb3CTA} isSubscribed={subscribed === "yes"} />
-
         <Recordings />
 
         {!hasInitialRoomName && <SubscriptionCTA subscribed={subscribed} />}
+
+        <Web3CTA onClick={onClickWeb3CTA} isSubscribed={subscribed === "yes"} />
       </React.Fragment>
     );
   };

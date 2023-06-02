@@ -48,9 +48,7 @@ export const OptionalSettings: React.FC<Props> = ({
   moderatorNFTCollections,
   setModeratorNFTCollections,
 }) => {
-  const nftItems = nfts
-    .map((n: NFT) => ({ ...n, imageUrl: n.image_url }))
-    .filter((i: { imageUrl: string }) => i.imageUrl);
+  const nftItems = nfts.map((n: NFT) => ({ ...n, imageUrl: n.image_url }));
   const selectedNftIdx = nfts.findIndex((n) => n.image_url === nft);
   const { t } = useTranslation();
 
