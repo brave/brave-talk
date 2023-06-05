@@ -41,7 +41,7 @@ export const Web3CTA: React.FC<Props> = ({ onClick, isSubscribed }) => {
         )}
         <p>
           <a
-            href="https://brave.com/web3/what-is-web3/"
+            href="https://brave.com/web3-talk-calls"
             css={{ color: "inherit" }}
           >
             {t("web3_cta_fine_print")}
