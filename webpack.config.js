@@ -50,6 +50,10 @@ module.exports = {
         ],
       },
       {
+        test: /\.(png|jpg)$/,
+        type: "asset/inline",
+      },
+      {
         test: /\.svg$/,
         type: "asset",
         use: "svgo-loader",
