@@ -1,0 +1,45 @@
+name: Deploy to Development2
+on:
+  push:
+    branches: [dev2]
+  workflow_dispatch:
+
+permissions:
+  id-token: write
+  contents: read # This is required for actions/checkout
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Build
+        uses: ./.github/actions/build
+        with:
+          environment: development2
+
+  deploy:
+    runs-on: ubuntu-latest
+    needs: build
+
+    environment:
+      name: development2
+      url: https://dev2.talk.brave.software
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Configure aws credentials
+        uses: aws-actions/configure-aws-credentials@v2
+        with:
+          role-to-assume: ${{ secrets.AWS_ROLE_ARN }}
+          role-session-name: github-actions-talk-brave-com-${{ github.triggering_actor }}-${{ github.run_id }}
+          aws-region: ${{ vars.AWS_REGION }}
+
+      - name: Deploy
+        uses: ./.github/actions/deploy
+        env:
+          AWS_REGION: ${{ vars.AWS_REGION }}
+        with:
+          cloudfront-distribution-id: ${{ secrets.CLOUDFRONT_DISTRIBUTION_ID }}
+          s3-bucket: ${{ secrets.S3_BUCKET }}
