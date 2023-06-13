@@ -1,7 +1,7 @@
 export const env = process.env.ENVIRONMENT ?? "local";
 export const config = {
   vpaas:
-    env === "development"
+    env === "development" || env === "development2"
       ? "vpaas-magic-cookie-cd4131ef77674a71b73411408226e232"
       : env === "staging"
       ? "vpaas-magic-cookie-520aa9362071418c8a8661950bc0a470"
