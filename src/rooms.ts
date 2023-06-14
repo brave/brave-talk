@@ -169,7 +169,7 @@ export const fetchJWT = async (
   const jwt = store.findJwtForRoom(roomName);
   if (jwt) {
     if (!isProduction) {
-      console.log("found local jwt: ", jwt);
+      console.log("!!! found local jwt: ", jwt);
     }
     return { jwt };
   }
@@ -178,7 +178,7 @@ export const fetchJWT = async (
   if (refreshToken) {
     reportProgress("Checking moderator status...");
     if (!isProduction) {
-      console.log("attempting refresh: ", refreshToken);
+      console.log("!!! attempting refresh: ", refreshToken);
     }
     const response = await attemptTokenRefresh(roomName, refreshToken);
     if (response) {
