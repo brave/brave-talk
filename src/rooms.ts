@@ -243,7 +243,6 @@ export const fetchJWT = async (
   });
 
   store.storeJwtForRoom(roomName, response.jwt, response.refresh);
-
   return {
     jwt: response.jwt,
     url: "//" + window.location.host + "/" + roomName,

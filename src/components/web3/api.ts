@@ -3,6 +3,7 @@ import { isProduction } from "../../environment";
 import { fetchWithTimeout } from "../../lib";
 import { NFTcollection, POAP, NFT } from "./core";
 import { EIP4361Message, createEIP4361Message } from "./EIP4361";
+import { Buffer } from "buffer";
 
 declare let window: any;
 
@@ -13,7 +14,7 @@ const SIMPLEHASH_PROXY_ROOT_URL = "/api/v1/simplehash";
 export interface Web3Authentication {
   method: string;
   proof: {
-    signer: string;
+    signer: any;
     signature: any;
     payload: any;
   };
@@ -22,6 +23,11 @@ export interface Web3Authentication {
 export interface Web3Authorization {
   method: string;
   POAPs: Web3AuthList;
+  Collections: Web3AuthList;
+}
+
+export interface Web3SolAuthorization {
+  method: string;
   Collections: Web3AuthList;
 }
 
@@ -41,6 +47,12 @@ export interface Web3RequestBody {
   avatarURL: string | null;
 }
 
+export interface Web3SolRequestBody {
+  web3Authentication: Web3Authentication;
+  web3Authorization?: Web3SolAuthorization;
+  avatarURL: string | null;
+}
+
 export const web3Login = async (): Promise<string> => {
   const allAddresses: string[] = await window.ethereum.request({
     method: "eth_requestAccounts",
@@ -51,9 +63,17 @@ export const web3Login = async (): Promise<string> => {
   return allAddresses[0];
 };
 
+export const web3LoginSol = async (): Promise<string> => {
+  const result = await window.braveSolana.connect();
+
+  console.log("!!! allAddresses", result);
+
+  return result.publicKey.toBase58();
+};
+
 export const web3NFTs = async (address: string): Promise<NFT[]> => {
   try {
-    const getNFTsURL = `${SIMPLEHASH_PROXY_ROOT_URL}/api/v0/nfts/owners?chains=ethereum&wallet_addresses=${encodeURIComponent(
+    const getNFTsURL = `${SIMPLEHASH_PROXY_ROOT_URL}/api/v0/nfts/owners?chains=ethereum,solana&wallet_addresses=${encodeURIComponent(
       address
     )}`;
     console.log(`>>> GET ${getNFTsURL}`);
@@ -145,7 +165,7 @@ export const web3NFTcollections = async (
   };
 
   try {
-    const getNFTsByWalletURL = `${SIMPLEHASH_PROXY_ROOT_URL}/api/v0/nfts/owners?chains=ethereum&wallet_addresses=${encodeURIComponent(
+    const getNFTsByWalletURL = `${SIMPLEHASH_PROXY_ROOT_URL}/api/v0/nfts/owners?chains=ethereum,solana&wallet_addresses=${encodeURIComponent(
       address
     )}`;
     console.log(`>>> GET ${getNFTsByWalletURL}`);
@@ -208,6 +228,46 @@ export const web3Prove = async (
     proof: {
       signer: web3Address,
       signature: signature,
+      payload: hexPayload,
+    },
+  };
+
+  return result;
+};
+
+export const web3SolProve = async (
+  web3Address: string
+): Promise<Web3Authentication> => {
+  if (!web3Address) {
+    throw new Error("not logged into Web3");
+  }
+
+  const nonce = await getNonce();
+  console.log("!!! nonce", nonce);
+  const message: EIP4361Message = {
+    domain: window.location.host,
+    address: web3Address,
+    statement:
+      "Please sign this message so Brave Talk knows that you own this address",
+    uri: window.location.toString(),
+    version: "1",
+    chainId: 1,
+    // HT:https://stackoverflow.com/questions/40031688/javascript-arraybuffer-to-hex/40031979
+    // btoa has some characters not allowed by the EIP-4361 ABNF
+    nonce: nonce,
+    issuedAt: new Date().toISOString(),
+  };
+  const payload = createEIP4361Message(message);
+  const payloadBytes = new TextEncoder().encode(payload);
+  const hexPayload = hexlify(payloadBytes);
+  const { publicKey, signature } = await window.braveSolana.signMessage(
+    payloadBytes
+  );
+  const result = {
+    method: "CAIP-122-json",
+    proof: {
+      signer: publicKey.toBase58(),
+      signature: Buffer.from(signature).toString("hex"),
       payload: hexPayload,
     },
   };

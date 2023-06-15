@@ -44,20 +44,18 @@
     "ts-jest": "27.1.4",
     "ts-loader": "9.4.3",
     "typescript": "4.9.5",
-    "webpack-cli": "5.1.1",
     "webpack": "5.84.1",
+    "webpack-cli": "5.1.1",
     "webpack-dev-server": "4.15.0"
   },
   "dependencies": {
     "@emotion/react": "11.11.0",
+    "@solana/web3.js": "^1.77.3",
     "@types/dom-screen-wake-lock": "^1.0.1",
     "ethers": "6.3.0",
     "i18next": "22.5.0",
     "react": "18.2.0",
     "react-dom": "18.2.0",
     "react-i18next": "12.3.1"
-  },
-  "overrides": {
-    "yaml": "2.2.2"
   }
 }
