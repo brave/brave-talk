@@ -1,5 +1,5 @@
 import * as Rewards from "@brave-intl/skus-sdk";
-import { isProduction } from "./environment";
+import { isDevelopment, isProduction } from "./environment";
 
 let sdkref: Rewards.JSSDK | undefined;
 
@@ -13,7 +13,7 @@ const loadRewardsSdk = async (): Promise<Rewards.JSSDK> => {
 
   log(`calling initialize(${env}, false)...`);
   const sdk = await Rewards.initialize(
-    env,
+    isDevelopment ? "development" : env,
     false,
     isProduction ? "error" : "info"
   );
