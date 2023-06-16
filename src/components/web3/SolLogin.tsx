@@ -16,7 +16,7 @@ export const SolLogin: React.FC<Props> = ({
   const { t } = useTranslation();
 
   useEffect(() => {
-    window.braveSolana?.on("accountChanged", () => setNotice(undefined));
+    window.braveSolana?.on("!!! accountChanged", () => setNotice(undefined));
   }, []);
 
   useEffect(() => {
