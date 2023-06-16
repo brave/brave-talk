@@ -17,6 +17,7 @@ import { StartCallSol } from "./web3/StartCallSol";
 import { JitsiContext } from "../jitsi/types";
 import { resolveService } from "../services";
 import { Text } from "./Text";
+import { isProduction, env } from "../environment";
 
 interface Props {
   onStartCall: DispatchWithoutAction;
@@ -25,13 +26,9 @@ interface Props {
   hasInitialRoomName: boolean;
   browser: BrowserProperties;
   isWeb3Call: boolean;
-  // isSolAccount: boolean;
-  // isEthAccount: boolean;
   web3Account: "ETH" | "SOL" | null;
   jitsiContext: JitsiContext;
   setIsWeb3Call: (isWeb3Call: boolean) => void;
-  // setIsSolAccount: (isSolAccount: boolean) => void;
-  // setIsEthAccount: (isEthAccount: boolean) => void;
   setWeb3Account: (web3Account: "ETH" | "SOL") => void;
   setJwt: (jwt: string) => void;
   setRoomName: (roomName: string) => void;
@@ -56,7 +53,7 @@ export const WelcomeScreen: React.FC<Props> = ({
   const subscribed = useSubscribedStatus();
   const { t } = useTranslation();
   const onClickWeb3CTA = () => {
-    if (process.env.ENVIRONMENT === "local") {
+    if (!isProduction && env !== "staging") {
       setIsWeb3Call(true);
       return;
     }

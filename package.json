@@ -24,8 +24,8 @@
     "@types/jest": "27.5.0",
     "@types/react": "18.2.12",
     "@types/react-dom": "18.2.4",
-    "@typescript-eslint/parser": "5.59.11",
     "@typescript-eslint/eslint-plugin": "5.59.11",
+    "@typescript-eslint/parser": "5.59.11",
     "copy-webpack-plugin": "11.0.0",
     "css-loader": "6.8.1",
     "css-minimizer-webpack-plugin": "5.0.0",
@@ -50,6 +50,7 @@
   },
   "dependencies": {
     "@emotion/react": "11.11.1",
+    "@solana/web3.js": "^1.77.3",
     "@types/dom-screen-wake-lock": "^1.0.1",
     "ethers": "6.3.0",
     "i18next": "22.5.1",
