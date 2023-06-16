@@ -164,12 +164,12 @@ export const WelcomeScreen: React.FC<Props> = ({
               <div style={buttonWrapperStyle}>
                 <button style={buttonStyle} onClick={onClickEthAccount}>
                   <img
-                    src={require("../images/etherium.svg")}
+                    src={require("../images/ethereum.svg")}
                     alt="Logo"
                     style={logoStyle}
                   />
                   <Text css={{ color: "black" }} variant="body">
-                    Etherium
+                    Ethereum
                   </Text>
                 </button>
                 <button style={buttonStyle} onClick={onClickSolAccount}>
@@ -187,60 +187,6 @@ export const WelcomeScreen: React.FC<Props> = ({
           </div>
         </div>
       );
-      // const popupContainerStyle: React.CSSProperties = {
-      //   position: "fixed",
-      //   top: 0,
-      //   left: 0,
-      //   right: 0,
-      //   bottom: 0,
-      //   background: "rgba(0, 0, 0, 0.5)",
-      //   display: "flex",
-      //   justifyContent: "center",
-      //   alignItems: "center",
-      //   zIndex: 9999,
-      // };
-      // const popupContentStyle: React.CSSProperties = {
-      //   background: "white",
-      //   padding: "20px",
-      //   borderRadius: "5px",
-      //   textAlign: "center",
-      // };
-      // const buttonContainerStyle = {
-      //   marginTop: "20px",
-      // };
-      // const buttonStyle = {
-      //   margin: "0 10px",
-      //   padding: "10px 20px",
-      //   border: "none",
-      //   borderRadius: "3px",
-      //   backgroundColor: "#007bff",
-      //   color: "white",
-      //   cursor: "pointer",
-      // };
-      // return (
-      //   <div style={popupContainerStyle}>
-      //     <div style={popupContentStyle}>
-      //       <Text css={{ color: "black", display: "block" }} variant="header">
-      //         Web3 Account
-      //       </Text>
-      //       <Text css={{ color: "black", display: "block" }} variant="body">
-      //         Choose the network of the account you want to connect
-      //       </Text>
-      //       <Text css={{ color: "black" }} variant="body">
-      //         {" "}
-      //         start the Web3 call.
-      //       </Text>
-      //       <div style={buttonContainerStyle}>
-      //         <button style={buttonStyle} onClick={onClickEthAccount}>
-      //           Ehterium
-      //         </button>
-      //         <button style={buttonStyle} onClick={onClickSolAccount}>
-      //           Solana
-      //         </button>
-      //       </div>
-      //     </div>
-      //   </div>
-      // );
     }
     if (isWeb3Call && web3Account === "SOL") {
       return (
