@@ -16,10 +16,10 @@ interface Props {
   setNft: (nft: string) => void;
   permissionType: string;
   setPermissionType: (permissionType: string) => void;
-  participantPoaps: POAP[];
-  setParticipantPoaps: (participantPoaps: POAP[]) => void;
-  moderatorPoaps: POAP[];
-  setModeratorPoaps: (moderatorPoaps: POAP[]) => void;
+  participantPoaps?: POAP[];
+  setParticipantPoaps?: (participantPoaps: POAP[]) => void;
+  moderatorPoaps?: POAP[];
+  setModeratorPoaps?: (moderatorPoaps: POAP[]) => void;
   participantNFTCollections: NFTcollection[];
   setParticipantNFTCollections: (
     participantNFTCollections: NFTcollection[]
@@ -39,10 +39,14 @@ export const OptionalSettings: React.FC<Props> = ({
   setNft,
   permissionType,
   setPermissionType,
-  participantPoaps,
-  setParticipantPoaps,
-  moderatorPoaps,
-  setModeratorPoaps,
+  participantPoaps = [],
+  setParticipantPoaps = () => {
+    return [];
+  },
+  moderatorPoaps = [],
+  setModeratorPoaps = () => {
+    return [];
+  },
   participantNFTCollections,
   setParticipantNFTCollections,
   moderatorNFTCollections,
