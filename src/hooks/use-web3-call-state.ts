@@ -36,7 +36,8 @@ interface Web3CallState {
 }
 
 export function useWeb3CallState(
-  setFeedbackMessage: (message: TranslationKeys) => void
+  setFeedbackMessage: (message: TranslationKeys) => void,
+  setWeb3Account: (web3Account: "ETH" | "SOL") => void
 ): Web3CallState {
   const [web3Address, _setWeb3Address] = useState<string>();
   const [permissionType, setPermissionType] = useState<string>("POAP");
@@ -69,11 +70,13 @@ export function useWeb3CallState(
 
   window.ethereum?.on("accountsChanged", (accounts: string[]) => {
     console.log("!!! ETH accountsChanged", accounts);
+    setWeb3Account("ETH");
     setWeb3Address(accounts[0], "accountsChanged");
   });
 
   window.braveSolana?.on("accountChanged", (account: any) => {
     console.log("!!! SOL accountChanged", account);
+    setWeb3Account("SOL");
     if (account) {
       setWeb3Address(account.toBase58(), "accountsChanged");
     } else {
@@ -199,7 +202,8 @@ export function useWeb3CallState(
 }
 
 export function useWeb3SolCallState(
-  setFeedbackMessage: (message: TranslationKeys) => void
+  setFeedbackMessage: (message: TranslationKeys) => void,
+  setWeb3Account: (web3Account: "ETH" | "SOL") => void
 ): Web3CallState {
   const [web3Address, _setWeb3Address] = useState<string>();
   const [permissionType, setPermissionType] =
@@ -236,6 +240,7 @@ export function useWeb3SolCallState(
 
   window.braveSolana?.on("accountChanged", (account: any) => {
     console.log("!!! SOL accountChanged", account);
+    setWeb3Account("SOL");
     if (account) {
       setWeb3Address(account.toBase58(), "accountsChanged");
     } else {
@@ -245,6 +250,7 @@ export function useWeb3SolCallState(
 
   window.ethereum?.on("accountsChanged", (accounts: string[]) => {
     console.log("!!! ETH accountsChanged", accounts);
+    setWeb3Account("ETH");
     setWeb3Address(accounts[0], "accountsChanged");
   });
 

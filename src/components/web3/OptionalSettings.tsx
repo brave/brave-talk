@@ -9,6 +9,7 @@ import { PermissionTypeSelector } from "./PermissionTypeSelector";
 
 interface Props {
   startCall: boolean;
+  web3Account: "ETH" | "SOL" | null;
   nfts?: NFT[];
   poaps?: POAP[];
   nftCollections?: NFTcollection[];
@@ -32,6 +33,7 @@ interface Props {
 
 export const OptionalSettings: React.FC<Props> = ({
   startCall,
+  web3Account,
   nfts = [],
   poaps,
   nftCollections,
@@ -85,6 +87,7 @@ export const OptionalSettings: React.FC<Props> = ({
           <PermissionTypeSelector
             permissionType={permissionType}
             setPermissionType={setPermissionType}
+            web3Account={web3Account}
           />
         </>
       )}

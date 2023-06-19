@@ -146,13 +146,7 @@ export const WelcomeScreen: React.FC<Props> = ({
         marginBottom: "10px",
         borderRadius: "50%",
       };
-      window.ethereum?.on("accountsChanged", (accounts: string[]) => {
-        console.log("!!! ETH accountsChanged", accounts);
-      });
 
-      window.braveSolana?.on("accountChanged", (account: any) => {
-        console.log("!!! SOL accountChanged", account);
-      });
       return (
         <div style={popupContainerStyle}>
           <div style={popupContentStyle}>
@@ -200,6 +194,8 @@ export const WelcomeScreen: React.FC<Props> = ({
           setRoomName={setRoomName}
           jitsiContext={jitsiContext}
           setJitsiContext={setJitsiContext}
+          web3Account={web3Account}
+          setWeb3Account={setWeb3Account}
           isSubscribed={subscribed === "yes"}
         />
       );
@@ -211,6 +207,8 @@ export const WelcomeScreen: React.FC<Props> = ({
           setRoomName={setRoomName}
           jitsiContext={jitsiContext}
           setJitsiContext={setJitsiContext}
+          web3Account={web3Account}
+          setWeb3Account={setWeb3Account}
           isSubscribed={subscribed === "yes"}
         />
       );
