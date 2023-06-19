@@ -148,6 +148,11 @@ export const OptionalSettings: React.FC<Props> = ({
             </ExapandablePanel>
           </React.Fragment>
         )}
+      {startCall && permissionType === "BAT-gating" && (
+        <React.Fragment>
+          <div>BAT gating will be applied.</div>
+        </React.Fragment>
+      )}
     </div>
   );
 };
