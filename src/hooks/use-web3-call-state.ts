@@ -61,6 +61,9 @@ export function useWeb3CallState(
         case "accountsChanged": {
           return address;
         }
+        case "accountChanged": {
+          return address;
+        }
         default: {
           return address;
         }
@@ -242,9 +245,11 @@ export function useWeb3SolCallState(
     console.log("!!! SOL accountChanged", account);
     setWeb3Account("SOL");
     if (account) {
-      setWeb3Address(account.toBase58(), "accountsChanged");
+      console.log("!!! SOL accountChanged", account.toBase58());
+      setWeb3Address(account.toBase58(), "accountChanged");
     } else {
-      setWeb3Address(account, "accountsChanged");
+      console.log("!!! SOL accountChanged", account);
+      setWeb3Address(account, "accountChanged");
     }
   });
 
@@ -307,48 +312,48 @@ export function useWeb3SolCallState(
   const startCall = async (): Promise<
     [string, string, Web3Authentication] | undefined
   > => {
-    // try {
-    const auth = await web3SolProve(web3Address as string);
-    const roomName = generateRoomName();
-    const web3 = {
-      web3Authentication: auth,
-      web3Authorization: {
-        method: permissionType,
-        POAPs: {
-          participantADs: {
-            allow: [],
-            deny: [],
+    try {
+      const auth = await web3SolProve(web3Address as string);
+      const roomName = generateRoomName();
+      const web3 = {
+        web3Authentication: auth,
+        web3Authorization: {
+          method: permissionType,
+          POAPs: {
+            participantADs: {
+              allow: [],
+              deny: [],
+            },
+            moderatorADs: {
+              allow: [],
+              deny: [],
+            },
           },
-          moderatorADs: {
-            allow: [],
-            deny: [],
+          Collections: {
+            participantADs: {
+              allow: participantNFTCollections.map((c) => c.id),
+              deny: [],
+            },
+            moderatorADs: {
+              allow: moderatorNFTCollections.map((c) => c.id),
+              deny: [],
+            },
           },
         },
-        Collections: {
-          participantADs: {
-            allow: participantNFTCollections.map((c) => c.id),
-            deny: [],
-          },
-          moderatorADs: {
-            allow: moderatorNFTCollections.map((c) => c.id),
-            deny: [],
-          },
-        },
-      },
-      avatarURL: nft,
-    };
-    const { jwt } = await fetchJWT(roomName, true, setFeedbackMessage, web3);
-    console.log("!!! jwt", jwt);
-    window.history.pushState({}, "", "/" + roomName);
-    return [roomName, jwt, auth];
-    // } catch (e: any) {
-    //   console.error(e.message);
-    //   if (e.message.includes("user rejected action")) {
-    //     setFeedbackMessage("sign_request_cancelled");
-    //   } else {
-    //     setFeedbackMessage("sign_request_error");
-    //   }
-    // }
+        avatarURL: nft,
+      };
+      const { jwt } = await fetchJWT(roomName, true, setFeedbackMessage, web3);
+      console.log("!!! jwt", jwt);
+      window.history.pushState({}, "", "/" + roomName);
+      return [roomName, jwt, auth];
+    } catch (e: any) {
+      console.error(e.message);
+      if (e.message.includes("user rejected action")) {
+        setFeedbackMessage("sign_request_cancelled");
+      } else {
+        setFeedbackMessage("sign_request_error");
+      }
+    }
   };
 
   return {
