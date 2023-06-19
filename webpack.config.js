@@ -109,7 +109,7 @@ module.exports = {
     proxy: {
       "/api": {
         target: "https://subscriptions.bsg.brave.software",
-        target: "http://localhost:3003/",
+        // target: "http://localhost:3003/",
         pathRewrite: { "^/api": "" },
         changeOrigin: true,
       },
