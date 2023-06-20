@@ -28,9 +28,7 @@
     "#FF7654",
     "#FFD43B"
   ],
-  "labels": {
-    "recording": {
-      "serviceDescriptionCloudInfo": "Recorded meetings are automatically cleared 24h after their recording time. NO EXCEPTIONS!"
-    }
+  "recording": {
+    "serviceDescriptionCloudInfo": "Recorded meetings are automatically cleared 24h after their recording time. NO EXCEPTIONS!"
   }
 }
