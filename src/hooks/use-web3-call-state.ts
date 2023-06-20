@@ -4,6 +4,7 @@ import {
   Web3RequestBody,
   Web3Authentication,
   web3Prove,
+  web3SolProve,
 } from "../components/web3/api";
 import { POAP, NFTcollection } from "../components/web3/core";
 import { generateRoomName } from "../lib";
@@ -67,8 +68,17 @@ export function useWeb3CallState(
   };
 
   window.ethereum?.on("accountsChanged", (accounts: string[]) => {
-    console.log("!!! accountsChanged", accounts);
+    console.log("!!! ETH accountsChanged", accounts);
     setWeb3Address(accounts[0], "accountsChanged");
+  });
+
+  window.braveSolana?.on("accountChanged", (account: any) => {
+    console.log("!!! SOL accountChanged", account);
+    if (account) {
+      setWeb3Address(account.toBase58(), "accountsChanged");
+    } else {
+      setWeb3Address(account, "accountsChanged");
+    }
   });
 
   const joinCall = async (
@@ -166,6 +176,173 @@ export function useWeb3CallState(
         setFeedbackMessage("sign_request_error");
       }
     }
+  };
+
+  return {
+    web3Address,
+    permissionType,
+    nft,
+    participantPoaps,
+    moderatorPoaps,
+    participantNFTCollections,
+    moderatorNFTCollections,
+    setWeb3Address,
+    setPermissionType,
+    setNft,
+    setParticipantPoaps,
+    setModeratorPoaps,
+    setParticipantNFTCollections,
+    setModeratorNFTCollections,
+    startCall,
+    joinCall,
+  };
+}
+
+export function useWeb3SolCallState(
+  setFeedbackMessage: (message: TranslationKeys) => void
+): Web3CallState {
+  const [web3Address, _setWeb3Address] = useState<string>();
+  const [permissionType, setPermissionType] =
+    useState<string>("NFT-collection");
+  const [nft, setNft] = useState<string | null>(null);
+  const [participantPoaps, setParticipantPoaps] = useState<POAP[]>([]);
+  const [moderatorPoaps, setModeratorPoaps] = useState<POAP[]>([]);
+  const [participantNFTCollections, setParticipantNFTCollections] = useState<
+    NFTcollection[]
+  >([]);
+  const [moderatorNFTCollections, setModeratorNFTCollections] = useState<
+    NFTcollection[]
+  >([]);
+
+  const setWeb3Address = (address: string, event: string) => {
+    _setWeb3Address((prevAddress) => {
+      switch (event) {
+        case "login": {
+          if (prevAddress) return prevAddress;
+          return address;
+        }
+        case "accountsChanged": {
+          return address;
+        }
+        case "accountChanged": {
+          return address;
+        }
+        default: {
+          return address;
+        }
+      }
+    });
+  };
+
+  window.braveSolana?.on("accountChanged", (account: any) => {
+    console.log("!!! SOL accountChanged", account);
+    if (account) {
+      setWeb3Address(account.toBase58(), "accountsChanged");
+    } else {
+      setWeb3Address(account, "accountsChanged");
+    }
+  });
+
+  window.ethereum?.on("accountsChanged", (accounts: string[]) => {
+    console.log("!!! ETH accountsChanged", accounts);
+    setWeb3Address(accounts[0], "accountsChanged");
+  });
+
+  const joinCall = async (
+    roomName: string
+  ): Promise<[string, Web3Authentication] | undefined> => {
+    let web3: Web3RequestBody | null = null;
+    let auth: Web3Authentication | null = null;
+    let jwt = "";
+    try {
+      auth = await web3SolProve(web3Address as string);
+      web3 = {
+        web3Authentication: auth,
+        avatarURL: nft,
+      };
+    } catch (e: any) {
+      console.error(e.message);
+
+      if (e.message.includes("user rejected action")) {
+        setFeedbackMessage("sign_request_cancelled");
+      } else {
+        setFeedbackMessage("sign_request_error");
+      }
+      return;
+    }
+
+    try {
+      const { jwt: jwtResponse } = await fetchJWT(
+        roomName,
+        false,
+        setFeedbackMessage,
+        web3
+      );
+      jwt = jwtResponse;
+    } catch (e: any) {
+      console.error(e);
+
+      if (
+        e.message.includes(
+          "You must have an appropriate token to join this call"
+        )
+      ) {
+        setFeedbackMessage("invalid_token_error");
+      } else {
+        setFeedbackMessage("not_participant_error");
+      }
+      return;
+    }
+
+    window.history.pushState({}, "", "/" + roomName);
+    return [jwt, auth];
+  };
+
+  const startCall = async (): Promise<
+    [string, string, Web3Authentication] | undefined
+  > => {
+    // try {
+    const auth = await web3SolProve(web3Address as string);
+    const roomName = generateRoomName();
+    const web3 = {
+      web3Authentication: auth,
+      web3Authorization: {
+        method: permissionType,
+        POAPs: {
+          participantADs: {
+            allow: [],
+            deny: [],
+          },
+          moderatorADs: {
+            allow: [],
+            deny: [],
+          },
+        },
+        Collections: {
+          participantADs: {
+            allow: participantNFTCollections.map((c) => c.id),
+            deny: [],
+          },
+          moderatorADs: {
+            allow: moderatorNFTCollections.map((c) => c.id),
+            deny: [],
+          },
+        },
+      },
+      avatarURL: nft,
+    };
+    const { jwt } = await fetchJWT(roomName, true, setFeedbackMessage, web3);
+    console.log("!!! jwt", jwt);
+    window.history.pushState({}, "", "/" + roomName);
+    return [roomName, jwt, auth];
+    // } catch (e: any) {
+    //   console.error(e.message);
+    //   if (e.message.includes("user rejected action")) {
+    //     setFeedbackMessage("sign_request_cancelled");
+    //   } else {
+    //     setFeedbackMessage("sign_request_error");
+    //   }
+    // }
   };
 
   return {
