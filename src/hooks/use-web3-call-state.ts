@@ -78,11 +78,12 @@ export function useWeb3CallState(
   });
 
   window.braveSolana?.on("accountChanged", (account: any) => {
-    console.log("!!! SOL accountChanged", account);
     setWeb3Account("SOL");
     if (account) {
+      console.log("!!! SOL accountChanged", account.toBase58());
       setWeb3Address(account.toBase58(), "accountsChanged");
     } else {
+      console.log("!!! SOL accountChanged", account);
       setWeb3Address(account, "accountsChanged");
     }
   });
@@ -242,7 +243,6 @@ export function useWeb3SolCallState(
   };
 
   window.braveSolana?.on("accountChanged", (account: any) => {
-    console.log("!!! SOL accountChanged", account);
     setWeb3Account("SOL");
     if (account) {
       console.log("!!! SOL accountChanged", account.toBase58());
