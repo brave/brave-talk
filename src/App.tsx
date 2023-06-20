@@ -38,6 +38,8 @@ export const App: React.FC = () => {
     isCallReady,
     isWeb3Call,
     setIsWeb3Call,
+    web3Account,
+    setWeb3Account,
     setJwt,
     setRoomName,
     setJitsiContext,
@@ -80,6 +82,8 @@ export const App: React.FC = () => {
               browser={browserProps}
               isWeb3Call={isWeb3Call}
               setIsWeb3Call={setIsWeb3Call}
+              web3Account={web3Account}
+              setWeb3Account={setWeb3Account}
               setJwt={setJwt}
               setRoomName={setRoomName}
               jitsiContext={jitsiContext}
