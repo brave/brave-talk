@@ -31,7 +31,7 @@
   "labels": {
     "en": {
       "recording": {
-        "serviceDescriptionCloudInfo": "Recorded meetings are automatically cleared 24h after their recording time. <b>NO EXCEPTIONS!</b>"
+        "serviceDescriptionCloudInfo": "<b>Warning: Recordings are automatically deleted after 24 hours.</b> >Avoid file loss by downloading the video file shortly after your Talk session ends."
       }
     }
   }
