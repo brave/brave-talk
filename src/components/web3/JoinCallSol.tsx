@@ -3,10 +3,10 @@ import { useTranslation } from "react-i18next";
 import { web3NFTs } from "./api";
 import { rememberAvatarUrl, NFT } from "./core";
 import { JitsiContext } from "../../jitsi/types";
-import { Login } from "./Login";
+import { SolLogin } from "./SolLogin";
 import { OptionalSettings } from "./OptionalSettings";
 import { bodyText, header } from "./styles";
-import { useWeb3CallState } from "../../hooks/use-web3-call-state";
+import { useWeb3SolCallState } from "../../hooks/use-web3-call-state";
 import { Background } from "../Background";
 import { Button } from "../Button";
 import { TranslationKeys } from "../../i18n/i18next";
@@ -20,7 +20,7 @@ interface Props {
   setWeb3Account: (web3Account: "ETH" | "SOL") => void;
 }
 
-export const JoinCall: React.FC<Props> = ({
+export const JoinCallSol: React.FC<Props> = ({
   roomName,
   setJwt,
   jitsiContext,
@@ -35,19 +35,15 @@ export const JoinCall: React.FC<Props> = ({
     web3Address,
     permissionType,
     nft,
-    participantPoaps,
-    moderatorPoaps,
     participantNFTCollections,
     moderatorNFTCollections,
     setWeb3Address,
     setPermissionType,
     setNft,
-    setParticipantPoaps,
-    setModeratorPoaps,
     setParticipantNFTCollections,
     setModeratorNFTCollections,
     joinCall,
-  } = useWeb3CallState(setFeedbackMessage, setWeb3Account);
+  } = useWeb3SolCallState(setFeedbackMessage, setWeb3Account);
 
   // this magic says "run this function when the web3address changes"
   useEffect(() => {
@@ -98,7 +94,10 @@ export const JoinCall: React.FC<Props> = ({
       >
         <div css={[header, { marginBottom: "22px" }]}>Join a Web3 Call</div>
 
-        <Login web3address={web3Address} onAddressSelected={setWeb3Address} />
+        <SolLogin
+          web3address={web3Address}
+          onAddressSelected={setWeb3Address}
+        />
 
         {web3Address && (
           <div css={{ marginTop: "28px" }}>
@@ -110,10 +109,6 @@ export const JoinCall: React.FC<Props> = ({
               nfts={nfts}
               nft={nft}
               setNft={setNft}
-              participantPoaps={participantPoaps}
-              setParticipantPoaps={setParticipantPoaps}
-              moderatorPoaps={moderatorPoaps}
-              setModeratorPoaps={setModeratorPoaps}
               participantNFTCollections={participantNFTCollections}
               setParticipantNFTCollections={setParticipantNFTCollections}
               moderatorNFTCollections={moderatorNFTCollections}

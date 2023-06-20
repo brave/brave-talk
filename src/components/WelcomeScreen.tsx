@@ -146,25 +146,18 @@ export const WelcomeScreen: React.FC<Props> = ({
         marginBottom: "10px",
         borderRadius: "50%",
       };
-      window.ethereum?.on("accountsChanged", (accounts: string[]) => {
-        console.log("!!! ETH accountsChanged", accounts);
-      });
 
-      window.braveSolana?.on("accountChanged", (account: any) => {
-        console.log("!!! SOL accountChanged", account);
-      });
       return (
         <div style={popupContainerStyle}>
           <div style={popupContentStyle}>
             <Text css={{ color: "black", display: "block" }} variant="header">
               Web3 Account
             </Text>
-            <Text css={{ color: "black", display: "block" }} variant="body">
-              Choose the network of the account you want to connect
-            </Text>
-            <Text css={{ color: "black" }} variant="body">
-              start the Web3 call.
-            </Text>
+            <Text
+              css={{ color: "black", display: "block" }}
+              variant="body"
+              children={t("web3_account_body")}
+            />
             <div style={buttonContainerStyle}>
               <div style={buttonWrapperStyle}>
                 <button style={buttonStyle} onClick={onClickEthAccount}>
@@ -200,6 +193,8 @@ export const WelcomeScreen: React.FC<Props> = ({
           setRoomName={setRoomName}
           jitsiContext={jitsiContext}
           setJitsiContext={setJitsiContext}
+          web3Account={web3Account}
+          setWeb3Account={setWeb3Account}
           isSubscribed={subscribed === "yes"}
         />
       );
@@ -211,6 +206,8 @@ export const WelcomeScreen: React.FC<Props> = ({
           setRoomName={setRoomName}
           jitsiContext={jitsiContext}
           setJitsiContext={setJitsiContext}
+          web3Account={web3Account}
+          setWeb3Account={setWeb3Account}
           isSubscribed={subscribed === "yes"}
         />
       );

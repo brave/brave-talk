@@ -15,6 +15,8 @@ type Props = {
   setRoomName: (roomName: string) => void;
   jitsiContext: JitsiContext;
   setJitsiContext: (context: JitsiContext) => void;
+  web3Account: "ETH" | "SOL" | null;
+  setWeb3Account: (web3Account: "ETH" | "SOL") => void;
   isSubscribed: boolean;
 };
 
@@ -23,6 +25,8 @@ export const StartCall: React.FC<Props> = ({
   setRoomName,
   jitsiContext,
   setJitsiContext,
+  web3Account,
+  setWeb3Account,
   isSubscribed,
 }) => {
   const { t } = useTranslation();
@@ -48,7 +52,7 @@ export const StartCall: React.FC<Props> = ({
     setParticipantNFTCollections,
     setModeratorNFTCollections,
     startCall,
-  } = useWeb3CallState(setFeedbackMessage);
+  } = useWeb3CallState(setFeedbackMessage, setWeb3Account);
 
   // this magic says "run this function when the web3address changes"
   useEffect(() => {
@@ -119,6 +123,7 @@ export const StartCall: React.FC<Props> = ({
         <div css={{ marginTop: "28px" }}>
           <OptionalSettings
             startCall={true}
+            web3Account={web3Account}
             permissionType={permissionType}
             nfts={nfts}
             poaps={poaps}
