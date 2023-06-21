@@ -29,10 +29,6 @@
     "#FFD43B"
   ],
   "labels": {
-    "en": {
-      "recording": {
-        "serviceDescriptionCloudInfo": "Warning: Recordings are automatically deleted after 24 hours. Avoid file loss by downloading the video file shortly after your Talk session ends."
-      }
-    }
+    "en": "https://talk.brave.software/labels-english-dev.json"
   }
 }
