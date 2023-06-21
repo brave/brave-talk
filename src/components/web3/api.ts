@@ -96,6 +96,12 @@ export const web3NFTs = async (address: string): Promise<NFT[]> => {
 
     const result: NFT[] = [];
     nfts.nfts.forEach((nft: any) => {
+      if (
+        "spam_score" in nft.collection &&
+        typeof nft.collection.spam_score === "number" &&
+        nft.collection.spam_score >= 80
+      )
+        return;
       result.push({
         image_url: nft.previews?.image_small_url
           ? nft.previews.image_small_url
