@@ -148,7 +148,7 @@ export const OptionalSettings: React.FC<Props> = ({
             </ExapandablePanel>
           </React.Fragment>
         )}
-      {startCall && permissionType === "BAT-gating" && (
+      {startCall && permissionType === "balance" && (
         <React.Fragment>
           <ExapandablePanel
             header={"Non Zero BAT gating"}
