@@ -150,7 +150,12 @@ export const OptionalSettings: React.FC<Props> = ({
         )}
       {startCall && permissionType === "BAT-gating" && (
         <React.Fragment>
-          <div>BAT gating will be applied.</div>
+          <ExapandablePanel
+            header={"Non Zero BAT gating"}
+            subhead={
+              "Only participants with non-zero BAT balance can join the call"
+            }
+          />
         </React.Fragment>
       )}
     </div>

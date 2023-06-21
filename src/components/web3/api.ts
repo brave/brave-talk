@@ -23,6 +23,18 @@ export interface Web3Authorization {
   method: string;
   POAPs: Web3AuthList;
   Collections: Web3AuthList;
+  Balances: Web3BalancesList;
+}
+
+export interface Web3BalancesList {
+  participants: Web3BalancesRequireList;
+  moderators: Web3BalancesRequireList;
+}
+
+export interface Web3BalancesRequireList {
+  network: string; // Use enum instead?
+  token: string; //optional
+  minimum: string; // in wei, e.g. 10e-18
 }
 
 export interface Web3AuthList {
