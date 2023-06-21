@@ -9,6 +9,7 @@ import { PermissionTypeSelector } from "./PermissionTypeSelector";
 
 interface Props {
   startCall: boolean;
+  web3Account: "ETH" | "SOL" | null;
   nfts?: NFT[];
   poaps?: POAP[];
   nftCollections?: NFTcollection[];
@@ -16,10 +17,10 @@ interface Props {
   setNft: (nft: string) => void;
   permissionType: string;
   setPermissionType: (permissionType: string) => void;
-  participantPoaps: POAP[];
-  setParticipantPoaps: (participantPoaps: POAP[]) => void;
-  moderatorPoaps: POAP[];
-  setModeratorPoaps: (moderatorPoaps: POAP[]) => void;
+  participantPoaps?: POAP[];
+  setParticipantPoaps?: (participantPoaps: POAP[]) => void;
+  moderatorPoaps?: POAP[];
+  setModeratorPoaps?: (moderatorPoaps: POAP[]) => void;
   participantNFTCollections: NFTcollection[];
   setParticipantNFTCollections: (
     participantNFTCollections: NFTcollection[]
@@ -32,6 +33,7 @@ interface Props {
 
 export const OptionalSettings: React.FC<Props> = ({
   startCall,
+  web3Account,
   nfts = [],
   poaps,
   nftCollections,
@@ -39,10 +41,14 @@ export const OptionalSettings: React.FC<Props> = ({
   setNft,
   permissionType,
   setPermissionType,
-  participantPoaps,
-  setParticipantPoaps,
-  moderatorPoaps,
-  setModeratorPoaps,
+  participantPoaps = [],
+  setParticipantPoaps = () => {
+    return [];
+  },
+  moderatorPoaps = [],
+  setModeratorPoaps = () => {
+    return [];
+  },
   participantNFTCollections,
   setParticipantNFTCollections,
   moderatorNFTCollections,
@@ -81,6 +87,7 @@ export const OptionalSettings: React.FC<Props> = ({
           <PermissionTypeSelector
             permissionType={permissionType}
             setPermissionType={setPermissionType}
+            web3Account={web3Account}
           />
         </>
       )}

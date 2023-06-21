@@ -2,12 +2,12 @@ import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Button } from "../Button";
 import { JitsiContext } from "../../jitsi/types";
-import { web3NFTs, web3POAPs, web3NFTcollections } from "./api";
+import { web3NFTs, web3NFTcollections } from "./api";
 import { POAP, NFT, NFTcollection, rememberAvatarUrl } from "./core";
-import { Login } from "./Login";
+import { SolLogin } from "./SolLogin";
 import { OptionalSettings } from "./OptionalSettings";
 import { bodyText, header } from "./styles";
-import { useWeb3CallState } from "../../hooks/use-web3-call-state";
+import { useWeb3SolCallState } from "../../hooks/use-web3-call-state";
 import { TranslationKeys } from "../../i18n/i18next";
 
 type Props = {
@@ -20,7 +20,7 @@ type Props = {
   isSubscribed: boolean;
 };
 
-export const StartCall: React.FC<Props> = ({
+export const StartCallSol: React.FC<Props> = ({
   setJwt,
   setRoomName,
   jitsiContext,
@@ -36,23 +36,20 @@ export const StartCall: React.FC<Props> = ({
     NFTcollection[] | undefined
   >();
   const [feedbackMessage, setFeedbackMessage] = useState<TranslationKeys>();
+
   const {
     web3Address,
     permissionType,
     nft,
-    participantPoaps,
-    moderatorPoaps,
     participantNFTCollections,
     moderatorNFTCollections,
     setWeb3Address,
     setPermissionType,
     setNft,
-    setParticipantPoaps,
-    setModeratorPoaps,
     setParticipantNFTCollections,
     setModeratorNFTCollections,
     startCall,
-  } = useWeb3CallState(setFeedbackMessage, setWeb3Account);
+  } = useWeb3SolCallState(setFeedbackMessage, setWeb3Account);
 
   // this magic says "run this function when the web3address changes"
   useEffect(() => {
@@ -64,13 +61,6 @@ export const StartCall: React.FC<Props> = ({
         .then(setNfts)
         .catch((err) => {
           console.error("!!! failed to fetch NFTs ", err);
-          setFeedbackMessage("identifier_fetch_error");
-        });
-
-      web3POAPs(web3Address)
-        .then(setPoaps)
-        .catch((err) => {
-          console.error("!!! failed to fetch POAPs ", err);
           setFeedbackMessage("identifier_fetch_error");
         });
 
@@ -117,7 +107,7 @@ export const StartCall: React.FC<Props> = ({
     >
       <div css={[header, { marginBottom: "22px" }]}>Start a Web3 Call</div>
 
-      <Login web3address={web3Address} onAddressSelected={setWeb3Address} />
+      <SolLogin web3address={web3Address} onAddressSelected={setWeb3Address} />
 
       {web3Address && (
         <div css={{ marginTop: "28px" }}>
@@ -131,10 +121,6 @@ export const StartCall: React.FC<Props> = ({
             nft={nft}
             setPermissionType={setPermissionType}
             setNft={setNft}
-            participantPoaps={participantPoaps}
-            setParticipantPoaps={setParticipantPoaps}
-            moderatorPoaps={moderatorPoaps}
-            setModeratorPoaps={setModeratorPoaps}
             participantNFTCollections={participantNFTCollections}
             setParticipantNFTCollections={setParticipantNFTCollections}
             moderatorNFTCollections={moderatorNFTCollections}
