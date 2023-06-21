@@ -54,8 +54,8 @@ export const PermissionTypeSelector: React.FC<Props> = ({
         {t("nft_collection_permission_type")}
       </button>
       <button
-        onClick={() => setPermissionType("BAT-gating")}
-        css={[styles.base, permissionType === "BAT-gating" && styles.selected]}
+        onClick={() => setPermissionType("balance")}
+        css={[styles.base, permissionType === "balance" && styles.selected]}
       >
         {"BAT-gating"}
       </button>
