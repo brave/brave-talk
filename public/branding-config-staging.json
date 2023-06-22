@@ -28,5 +28,8 @@
     "#FF4B6A",
     "#FF7654",
     "#FFD43B"
-  ]
+  ],
+  "labels": {
+    "en": "https://talk.brave.software/labels-english-staging.json"
+  }
 }
