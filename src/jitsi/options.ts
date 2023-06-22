@@ -97,6 +97,8 @@ export const jitsiOptions = (
         "participants-pane",
         "profile",
         "raisehand",
+        // added to help de-clutter hand raising and gestures
+        "reactions",
         "recording",
         "security",
         "select-background",
