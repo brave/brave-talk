@@ -4,6 +4,7 @@ import { web3NFTs } from "./api";
 import { rememberAvatarUrl, NFT } from "./core";
 import { JitsiContext } from "../../jitsi/types";
 import { Login } from "./Login";
+import { SolLogin } from "./SolLogin";
 import { OptionalSettings } from "./OptionalSettings";
 import { bodyText, header } from "./styles";
 import { useWeb3CallState } from "../../hooks/use-web3-call-state";
@@ -47,7 +48,7 @@ export const JoinCall: React.FC<Props> = ({
     setParticipantNFTCollections,
     setModeratorNFTCollections,
     joinCall,
-  } = useWeb3CallState(setFeedbackMessage, setWeb3Account);
+  } = useWeb3CallState(setFeedbackMessage, web3Account, setWeb3Account);
 
   // this magic says "run this function when the web3address changes"
   useEffect(() => {
@@ -98,7 +99,14 @@ export const JoinCall: React.FC<Props> = ({
       >
         <div css={[header, { marginBottom: "22px" }]}>Join a Web3 Call</div>
 
-        <Login web3address={web3Address} onAddressSelected={setWeb3Address} />
+        {web3Account === "ETH" ? (
+          <Login web3address={web3Address} onAddressSelected={setWeb3Address} />
+        ) : (
+          <SolLogin
+            web3address={web3Address}
+            onAddressSelected={setWeb3Address}
+          />
+        )}
 
         {web3Address && (
           <div css={{ marginTop: "28px" }}>

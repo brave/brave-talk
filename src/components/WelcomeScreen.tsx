@@ -13,7 +13,6 @@ import { useTranslation } from "react-i18next";
 import { TranslationKeys } from "../i18n/i18next";
 import { Web3CTA } from "./web3/Web3CTA";
 import { StartCall } from "./web3/StartCall";
-import { StartCallSol } from "./web3/StartCallSol";
 import { JitsiContext } from "../jitsi/types";
 import { resolveService } from "../services";
 import { Text } from "./Text";
@@ -186,20 +185,7 @@ export const WelcomeScreen: React.FC<Props> = ({
         </div>
       );
     }
-    if (isWeb3Call && web3Account === "SOL") {
-      return (
-        <StartCallSol
-          setJwt={setJwt}
-          setRoomName={setRoomName}
-          jitsiContext={jitsiContext}
-          setJitsiContext={setJitsiContext}
-          web3Account={web3Account}
-          setWeb3Account={setWeb3Account}
-          isSubscribed={subscribed === "yes"}
-        />
-      );
-    }
-    if (isWeb3Call && web3Account === "ETH") {
+    if (isWeb3Call && web3Account !== null) {
       return (
         <StartCall
           setJwt={setJwt}
