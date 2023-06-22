@@ -63,7 +63,6 @@ export const StartCallSol: React.FC<Props> = ({
           console.error("!!! failed to fetch NFTs ", err);
           setFeedbackMessage("identifier_fetch_error");
         });
-
       web3NFTcollections(web3Address)
         .then(setNFTCollections)
         .catch((err) => {
