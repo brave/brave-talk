@@ -28,7 +28,7 @@ export const SolLogin: React.FC<Props> = ({
           setNotice(undefined);
         })
         .catch((err) => {
-          console.error("!!! web3 window.ethereum.request", err);
+          console.error("!!! web3 window.braveSolana.connect", err);
           setNotice(
             <Trans i18nKey="wallet_connect_failed">
               <div>
@@ -46,6 +46,8 @@ export const SolLogin: React.FC<Props> = ({
             </Trans>
           );
         });
+    } else {
+      setNotice(undefined);
     }
   }, [web3address, onAddressSelected, t]);
 
