@@ -16,7 +16,8 @@
     "url": "git+https://github.com/brave/brave-talk.git"
   },
   "overrides": {
-    "yaml": "2.2.2"
+    "yaml": "2.2.2",
+    "semver": "7.5.2"
   },
   "homepage": "https://github.com/brave/brave-talk#readme",
   "devDependencies": {
@@ -56,8 +57,5 @@
     "react": "18.2.0",
     "react-dom": "18.2.0",
     "react-i18next": "12.3.1"
-  },
-  "overrides": {
-    "yaml": "2.2.2"
   }
 }
