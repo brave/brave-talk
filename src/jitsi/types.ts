@@ -74,6 +74,7 @@ export type JitsiOptions = {
     toolbarConfig: {
       autoHideWhileChatIsOpen: boolean;
     };
+    toolbarButtons: string[];
     transcribingEnabled: boolean;
     useHostPageLocalStorage: boolean;
     videoQuality: {
