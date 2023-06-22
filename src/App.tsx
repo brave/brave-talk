@@ -2,7 +2,8 @@ import { css } from "@emotion/react";
 import React from "react";
 import { GlobalStyles } from "./components/GlobalStyles";
 import { InCall } from "./components/InCall";
-import { JoinCall as JoinWeb3Call } from "./components/web3/JoinCall";
+import { JoinCall as JoinETHCall } from "./components/web3/JoinCall";
+import { JoinCallSol as JoinSOLCall } from "./components/web3/JoinCallSol";
 import { WelcomeScreen } from "./components/WelcomeScreen";
 import "./css/poppins.css";
 import { useBrowserProperties } from "./hooks/use-browser-properties";
@@ -38,6 +39,8 @@ export const App: React.FC = () => {
     isCallReady,
     isWeb3Call,
     setIsWeb3Call,
+    web3Account,
+    setWeb3Account,
     setJwt,
     setRoomName,
     setJitsiContext,
@@ -65,12 +68,25 @@ export const App: React.FC = () => {
         />
         {!isCallReady &&
           (isWeb3Call && hasInitialRoom ? (
-            <JoinWeb3Call
-              roomName={roomName as string}
-              setJwt={setJwt}
-              jitsiContext={jitsiContext}
-              setJitsiContext={setJitsiContext}
-            />
+            web3Account === "ETH" ? (
+              <JoinETHCall
+                roomName={roomName as string}
+                setJwt={setJwt}
+                jitsiContext={jitsiContext}
+                setJitsiContext={setJitsiContext}
+                web3Account={web3Account}
+                setWeb3Account={setWeb3Account}
+              />
+            ) : (
+              <JoinSOLCall
+                roomName={roomName as string}
+                setJwt={setJwt}
+                jitsiContext={jitsiContext}
+                setJitsiContext={setJitsiContext}
+                web3Account={web3Account}
+                setWeb3Account={setWeb3Account}
+              />
+            )
           ) : (
             <WelcomeScreen
               onStartCall={onStartCall}
@@ -80,6 +96,8 @@ export const App: React.FC = () => {
               browser={browserProps}
               isWeb3Call={isWeb3Call}
               setIsWeb3Call={setIsWeb3Call}
+              web3Account={web3Account}
+              setWeb3Account={setWeb3Account}
               setJwt={setJwt}
               setRoomName={setRoomName}
               jitsiContext={jitsiContext}
