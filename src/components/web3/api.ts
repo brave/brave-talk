@@ -263,7 +263,6 @@ export const web3SolProve = async (
   const { publicKey, signature } = await window.braveSolana.signMessage(
     payloadBytes
   );
-  console.log("!!! Signature", Buffer.from(signature));
   const result = {
     method: "CAIP-122-json",
     proof: {
