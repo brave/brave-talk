@@ -16,7 +16,8 @@
     "url": "git+https://github.com/brave/brave-talk.git"
   },
   "overrides": {
-    "yaml": "2.2.2"
+    "yaml": "2.2.2",
+    "semver": "7.5.2"
   },
   "homepage": "https://github.com/brave/brave-talk#readme",
   "devDependencies": {
