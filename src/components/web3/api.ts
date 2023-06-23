@@ -216,7 +216,7 @@ export const web3Prove = async (
     nonce: nonce,
     issuedAt: new Date().toISOString(),
   };
-  const payload = createEIP4361Message(message);
+  const payload = createEIP4361Message(message, "Ethereum");
   const payloadBytes = new TextEncoder().encode(payload);
   const hexPayload = hexlify(payloadBytes);
   const signer = await window.web3.getSigner(web3Address);
@@ -257,7 +257,7 @@ export const web3SolProve = async (
     nonce: nonce,
     issuedAt: new Date().toISOString(),
   };
-  const payload = createEIP4361Message(message);
+  const payload = createEIP4361Message(message, "Solana");
   const payloadBytes = new TextEncoder().encode(payload);
   const hexPayload = hexlify(payloadBytes);
   const { publicKey, signature } = await window.braveSolana.signMessage(
