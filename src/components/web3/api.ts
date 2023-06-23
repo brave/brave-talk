@@ -14,7 +14,7 @@ const SIMPLEHASH_PROXY_ROOT_URL = "/api/v1/simplehash";
 export interface Web3Authentication {
   method: string;
   proof: {
-    signer: any;
+    signer: string;
     signature: any;
     payload: any;
   };
@@ -222,7 +222,7 @@ export const web3Prove = async (
     nonce: nonce,
     issuedAt: new Date().toISOString(),
   };
-  const payload = createEIP4361Message(message);
+  const payload = createEIP4361Message(message, "Ethereum");
   const payloadBytes = new TextEncoder().encode(payload);
   const hexPayload = hexlify(payloadBytes);
   const signer = await window.web3.getSigner(web3Address);
@@ -263,7 +263,7 @@ export const web3SolProve = async (
     nonce: nonce,
     issuedAt: new Date().toISOString(),
   };
-  const payload = createEIP4361Message(message);
+  const payload = createEIP4361Message(message, "Solana");
   const payloadBytes = new TextEncoder().encode(payload);
   const hexPayload = hexlify(payloadBytes);
   const { publicKey, signature } = await window.braveSolana.signMessage(

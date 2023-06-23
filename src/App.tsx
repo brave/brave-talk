@@ -68,25 +68,14 @@ export const App: React.FC = () => {
         />
         {!isCallReady &&
           (isWeb3Call && hasInitialRoom ? (
-            web3Account === "ETH" ? (
-              <JoinETHCall
-                roomName={roomName as string}
-                setJwt={setJwt}
-                jitsiContext={jitsiContext}
-                setJitsiContext={setJitsiContext}
-                web3Account={web3Account}
-                setWeb3Account={setWeb3Account}
-              />
-            ) : (
-              <JoinSOLCall
-                roomName={roomName as string}
-                setJwt={setJwt}
-                jitsiContext={jitsiContext}
-                setJitsiContext={setJitsiContext}
-                web3Account={web3Account}
-                setWeb3Account={setWeb3Account}
-              />
-            )
+            <JoinWeb3Call
+              roomName={roomName as string}
+              setJwt={setJwt}
+              jitsiContext={jitsiContext}
+              setJitsiContext={setJitsiContext}
+              web3Account={web3Account}
+              setWeb3Account={setWeb3Account}
+            />
           ) : (
             <WelcomeScreen
               onStartCall={onStartCall}
