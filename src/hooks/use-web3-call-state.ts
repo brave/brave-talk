@@ -48,10 +48,6 @@ export function useWeb3CallState(
   const [moderatorNFTCollections, setModeratorNFTCollections] = useState<
     NFTcollection[]
   >([]);
-  const [minimumParticipantBATBalance, setMinimumParticipanyBATBalance] =
-    useState<string>("0");
-  const [minimumModeratorBATBalance, setMinimumModeratorBATBalance] =
-    useState<string>("0");
 
   const setWeb3Address = (address: string, event: string) => {
     _setWeb3Address((prevAddress) => {
@@ -153,18 +149,6 @@ export function useWeb3CallState(
             moderatorADs: {
               allow: moderatorNFTCollections.map((c) => c.id),
               deny: [],
-            },
-          },
-          Balances: {
-            participants: {
-              network: "ETH", // TODO: can change
-              token: "BAT",
-              minimum: minimumParticipantBATBalance,
-            },
-            moderators: {
-              network: "ETH",
-              token: "BAT",
-              minimum: minimumModeratorBATBalance,
             },
           },
         },
