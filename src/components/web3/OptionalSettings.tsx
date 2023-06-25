@@ -148,6 +148,9 @@ export const OptionalSettings: React.FC<Props> = ({
             </ExapandablePanel>
           </React.Fragment>
         )}
+      {startCall && permissionType === "balance" && (
+        <React.Fragment></React.Fragment>
+      )}
     </div>
   );
 };
