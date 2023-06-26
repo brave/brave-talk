@@ -149,14 +149,7 @@ export const OptionalSettings: React.FC<Props> = ({
           </React.Fragment>
         )}
       {startCall && permissionType === "balance" && (
-        <React.Fragment>
-          <ExapandablePanel
-            header={"Non Zero BAT gating"}
-            subhead={
-              "Only participants with non-zero BAT balance can join the call"
-            }
-          />
-        </React.Fragment>
+        <React.Fragment></React.Fragment>
       )}
     </div>
   );

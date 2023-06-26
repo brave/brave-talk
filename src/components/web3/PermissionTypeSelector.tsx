@@ -57,7 +57,7 @@ export const PermissionTypeSelector: React.FC<Props> = ({
         onClick={() => setPermissionType("balance")}
         css={[styles.base, permissionType === "balance" && styles.selected]}
       >
-        {"BAT-gating"}
+        {"BAT Gating"}
       </button>
     </div>
   );
