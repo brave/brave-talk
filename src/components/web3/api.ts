@@ -64,7 +64,22 @@ export const web3Login = async (): Promise<string> => {
 };
 
 export const web3LoginSol = async (): Promise<string> => {
-  const result = await window.braveSolana.connect();
+  let result;
+
+  try {
+    result = await window.braveSolana.connect();
+    // Code to execute if the connection is successful
+  } catch (error) {
+    console.error("!!! Error connecting to braveSolana:", error);
+
+    try {
+      result = await window.solana.connect();
+      // Code to execute if the connection using solana is successful
+    } catch (error) {
+      console.error("!!! Error connecting to solana:", error);
+      throw new Error("!!! Failed to connect to both braveSolana and solana");
+    }
+  }
 
   console.log("!!! allAddresses", result);
 
