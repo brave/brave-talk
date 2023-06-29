@@ -2,6 +2,7 @@ import React from "react";
 import { useTranslation } from "react-i18next";
 import { POAP, NFTcollection, NFT } from "./core";
 import { ExapandablePanel } from "./ExpandablePanel";
+import { NonExapandablePanel } from "./NonExpandablePanel";
 import { SelectableImageList } from "./SelectableImageList";
 import { SelectablePoapList } from "./SelectablePoapList";
 import { SelectableNFTCollectionList } from "./SelectableNFTCollectionList";
@@ -150,8 +151,8 @@ export const OptionalSettings: React.FC<Props> = ({
         )}
       {startCall && permissionType === "balance" && (
         <React.Fragment>
-          <ExapandablePanel
-            header={"Non Zero BAT gating"}
+          <NonExapandablePanel
+            header={"Non Zero BAT gating will be applied."}
             subhead={
               "Only participants with non-zero BAT balance can join the call"
             }
