@@ -266,6 +266,7 @@ export const web3SolProve = async (
   };
   const payload = createEIP4361Message(message, "Solana");
   const payloadBytes = new TextEncoder().encode(payload);
+  const { hexlify } = await import("ethers");
   const hexPayload = hexlify(payloadBytes);
   const { publicKey, signature } = await window.braveSolana.signMessage(
     payloadBytes
