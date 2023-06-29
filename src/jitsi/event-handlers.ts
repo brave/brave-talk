@@ -1,6 +1,5 @@
 import { isProduction } from "../environment";
 import { reportAction } from "../lib";
-import { ethers } from "ethers";
 import { IJitsiMeetApi, JitsiContext, JitsiOptions } from "./types";
 import { availableRecordings } from "../recordings-store";
 import { acquireWakeLock, releaseWakeLock } from "../wakelock";
@@ -216,6 +215,7 @@ export const endpointTextMessageReceivedHandler = {
         .map((h: any) => parseInt(h, 16));
       const hexArray = new Uint8Array(hexOctets);
       const payloadBytes = new TextDecoder().decode(hexArray.buffer);
+      const { ethers } = await import("ethers");
       const signer = ethers.verifyMessage(payloadBytes, proof.signature);
       if (signer.toLowerCase() !== proof.signer.toLowerCase()) {
         console.log("!!! payload", payload);
