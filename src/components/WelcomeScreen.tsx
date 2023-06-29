@@ -16,7 +16,6 @@ import { StartCall } from "./web3/StartCall";
 import { JitsiContext } from "../jitsi/types";
 import { resolveService } from "../services";
 import { Text } from "./Text";
-import { isProduction, env } from "../environment";
 
 interface Props {
   onStartCall: DispatchWithoutAction;
