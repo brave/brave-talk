@@ -16,7 +16,6 @@ import { StartCall } from "./web3/StartCall";
 import { JitsiContext } from "../jitsi/types";
 import { resolveService } from "../services";
 import { Text } from "./Text";
-import { isProduction, env } from "../environment";
 
 interface Props {
   onStartCall: DispatchWithoutAction;
@@ -52,10 +51,6 @@ export const WelcomeScreen: React.FC<Props> = ({
   const subscribed = useSubscribedStatus();
   const { t } = useTranslation();
   const onClickWeb3CTA = () => {
-    if (!isProduction && env !== "staging") {
-      setIsWeb3Call(true);
-      return;
-    }
     if (subscribed === "yes") {
       setIsWeb3Call(true);
     } else {

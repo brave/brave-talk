@@ -33,7 +33,7 @@ jobs:
         uses: aws-actions/configure-aws-credentials@v2
         with:
           role-to-assume: ${{ secrets.AWS_ROLE_ARN }}
-          role-session-name: github-actions-talk-brave-com-${{ github.triggering_actor }}-${{ github.run_id }}
+          role-session-name: github-actions-talk-brave-com-${{ github.run_id }}
           aws-region: ${{ vars.AWS_REGION }}
 
       - name: Deploy

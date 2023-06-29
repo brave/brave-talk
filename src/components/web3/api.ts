@@ -1,4 +1,3 @@
-import { ethers, hexlify } from "ethers";
 import { isProduction } from "../../environment";
 import { fetchWithTimeout } from "../../lib";
 import { NFTcollection, POAP, NFT } from "./core";
@@ -217,6 +216,7 @@ export const web3Prove = async (
     throw new Error("not logged into Web3");
   }
 
+  const { ethers } = await import("ethers");
   window.web3 = new ethers.BrowserProvider(window.ethereum);
   if (!window.web3) {
     throw new Error("unable to create ethers.BrowserProvider object");
@@ -239,6 +239,7 @@ export const web3Prove = async (
   };
   const payload = createEIP4361Message(message, "Ethereum");
   const payloadBytes = new TextEncoder().encode(payload);
+  const { hexlify } = await import("ethers");
   const hexPayload = hexlify(payloadBytes);
   const signer = await window.web3.getSigner(web3Address);
   const signature = await signer.signMessage(payload);
@@ -280,6 +281,7 @@ export const web3SolProve = async (
   };
   const payload = createEIP4361Message(message, "Solana");
   const payloadBytes = new TextEncoder().encode(payload);
+  const { hexlify } = await import("ethers");
   const hexPayload = hexlify(payloadBytes);
   const { publicKey, signature } = await window.braveSolana.signMessage(
     payloadBytes
