@@ -63,11 +63,15 @@ export const web3Login = async (): Promise<string> => {
 };
 
 export const web3LoginSol = async (): Promise<string> => {
-  const result = await window.braveSolana.connect();
-
-  console.log("!!! allAddresses", result);
-
-  return result.publicKey.toBase58();
+  try{
+    const result = await window.braveSolana.connect();
+    console.log("!!! allAddresses", result);
+    return result.publicKey.toBase58();
+  }catch{
+      const result = await window.phantom.solana.connect();
+      console.log("!!! allAddresses", result);
+      return result.publicKey.toBase58();
+  }
 };
 
 export const web3NFTs = async (address: string): Promise<NFT[]> => {
