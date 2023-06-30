@@ -272,19 +272,34 @@ export const web3SolProve = async (
   const payloadBytes = new TextEncoder().encode(payload);
   const { hexlify } = await import("ethers");
   const hexPayload = hexlify(payloadBytes);
-  const { publicKey, signature } = await window.braveSolana.signMessage(
+  try{
+    const { publicKey, signature } = await window.braveSolana.signMessage(
     payloadBytes
-  );
-  const result = {
-    method: "CAIP-122-json",
-    proof: {
-      signer: publicKey.toBase58(),
-      signature: Buffer.from(signature).toString("hex"),
-      payload: hexPayload,
-    },
-  };
-
-  return result;
+    );
+    const result = {
+      method: "CAIP-122-json",
+      proof: {
+        signer: publicKey.toBase58(),
+        signature: Buffer.from(signature).toString("hex"),
+        payload: hexPayload,
+      },
+    }; 
+    return result;
+  }catch {
+    const { publicKey, signature } = await window.phantom.solana.signMessage(
+      payloadBytes
+      );
+    const result = {
+      method: "CAIP-122-json",
+      proof: {
+        signer: publicKey.toBase58(),
+        signature: Buffer.from(signature).toString("hex"),
+        payload: hexPayload,
+      },
+    };
+    
+    return result;  
+  }
 };
 
 const poapContractAddress = "0x22c1f6050e56d2876009903609a2cc3fef83b415";
