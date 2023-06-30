@@ -63,26 +63,15 @@ export const web3Login = async (): Promise<string> => {
 };
 
 export const web3LoginSol = async (): Promise<string> => {
-  let result;
-
-  try {
-    result = await window.braveSolana.connect();
-    // Code to execute if the connection is successful
-  } catch (error) {
-    console.error("!!! Error connecting to braveSolana:", error);
-
-    try {
-      result = await window.solana.connect();
-      // Code to execute if the connection using solana is successful
-    } catch (error) {
-      console.error("!!! Error connecting to solana:", error);
-      throw new Error("!!! Failed to connect to both braveSolana and solana");
-    }
+  try{
+    const result = await window.braveSolana.connect();
+    console.log("!!! allAddresses", result);
+    return result.publicKey.toBase58();
+  }catch{
+      const result = await window.phantom.solana.connect();
+      console.log("!!! allAddresses", result);
+      return result.publicKey.toBase58();
   }
-
-  console.log("!!! allAddresses", result);
-
-  return result.publicKey.toBase58();
 };
 
 export const web3NFTs = async (address: string): Promise<NFT[]> => {

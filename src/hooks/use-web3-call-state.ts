@@ -79,16 +79,36 @@ export function useWeb3CallState(
     setWeb3Address(accounts[0], "accountsChanged");
   });
 
-  window.braveSolana?.on("accountChanged", (account: any) => {
-    setWeb3Account("SOL");
-    if (account) {
-      console.log("!!! SOL accountChanged", account.toBase58());
-      setWeb3Address(account.toBase58(), "accountsChanged");
-    } else {
-      console.log("!!! SOL accountChanged", account);
-      setWeb3Address(account, "accountsChanged");
-    }
-  });
+  try{
+    window.braveSolana?.on("accountChanged", (account: any) => {
+      setWeb3Account("SOL");
+      if (account) {
+        console.log("!!! SOL accountChanged", account.toBase58());
+        setWeb3Address(account.toBase58(), "accountsChanged");
+      } else {
+        console.log("!!! SOL accountChanged", account);
+        setWeb3Address(account, "accountsChanged");
+      }
+    });  
+  }catch{
+    console.warn("!!! Brave Wallet does not exists")
+  }
+
+  try{
+    window.phantom?.solana.on("accountChanged", (account: any) => {
+      setWeb3Account("SOL");
+      console.log(account);
+      if (account) {
+        console.log("!!! SOL accountChanged", account.toBase58());
+        setWeb3Address(account.toBase58(), "accountsChanged");
+      } else {
+        console.log("!!! SOL accountChanged", account);
+        setWeb3Address(account, "accountsChanged");
+      }
+    });
+  }catch {
+    console.warn("!!! Phantom Wallet does not exists")
+  }
 
   const joinCall = async (
     roomName: string
