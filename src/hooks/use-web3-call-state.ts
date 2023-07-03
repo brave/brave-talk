@@ -48,10 +48,10 @@ export function useWeb3CallState(
   const [moderatorNFTCollections, setModeratorNFTCollections] = useState<
     NFTcollection[]
   >([]);
-  const [minimumParticipantBATBalance, setMinimumParticipanyBATBalance] =
-    useState<string>("0");
+  const [minimumParticipantBATBalance, setMinimumParticipantBATBalance] =
+    useState<string>("1");
   const [minimumModeratorBATBalance, setMinimumModeratorBATBalance] =
-    useState<string>("0");
+    useState<string>("1");
 
   const setWeb3Address = (address: string, event: string) => {
     _setWeb3Address((prevAddress) => {
