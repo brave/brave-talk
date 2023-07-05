@@ -81,6 +81,7 @@ export function useWeb3CallState(
     });
   }
 
+
   try {
     window.braveSolana?.on("accountChanged", (account: any) => {
       setWeb3Account("SOL");
