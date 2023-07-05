@@ -19,7 +19,7 @@ import {
  */
 
 function clearAvatarInfoFromLocalStorage() {
-  //window.sessionStorage.removeItem("avatar_url");
+  window.sessionStorage.removeItem("avatar_url");
   const jitsiLocalStorageSettings =
     window.localStorage.getItem("jitsiLocalStorage");
   if (jitsiLocalStorageSettings) {
