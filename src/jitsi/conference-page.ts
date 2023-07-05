@@ -19,7 +19,6 @@ import {
  */
 
 function clearAvatarInfoFromLocalStorage() {
-  window.sessionStorage.removeItem("avatar_url");
   const jitsiLocalStorageSettings =
     window.localStorage.getItem("jitsiLocalStorage");
   if (jitsiLocalStorageSettings) {
@@ -47,7 +46,7 @@ export const renderConferencePage = async (
   const { roomName, jwt } = options;
   reportMethod("renderConferencePage", { roomName, jwt });
   reportMethod("JitsiMeetExternalAPI", options);
-
+  clearAvatarInfoFromLocalStorage();
   const JitsiMeetJS = new JitsiMeetExternalAPI(config.webrtc_domain, options);
   reportAction("JitsiMeetExternalAPI", { status: "activated!" });
   updateSubject(JitsiMeetJS, options);
@@ -63,7 +62,7 @@ export const renderConferencePage = async (
   if (avatarUrl) {
     JitsiMeetJS.executeCommand("avatarUrl", avatarUrl);
   }
-  clearAvatarInfoFromLocalStorage();
+  window.sessionStorage.removeItem("avatar_url");
   jitsiEventHandlers.forEach(({ name, fn }: JitsiEventHandler) => {
     JitsiMeetJS.on(name, fn(JitsiMeetJS, context, options));
   });
