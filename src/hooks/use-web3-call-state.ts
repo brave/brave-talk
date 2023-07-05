@@ -73,13 +73,16 @@ export function useWeb3CallState(
     });
   };
 
-  window.ethereum?.on("accountsChanged", (accounts: string[]) => {
-    console.log("!!! ETH accountsChanged", accounts);
-    setWeb3Account("ETH");
-    setWeb3Address(accounts[0], "accountsChanged");
-  });
+  if (web3Account === "ETH") {
+    window.ethereum?.on("accountsChanged", (accounts: string[]) => {
+      console.log("!!! ETH accountsChanged", accounts);
+      setWeb3Account("ETH");
+      setWeb3Address(accounts[0], "accountsChanged");
+    });
+  }
 
-  try{
+
+  try {
     window.braveSolana?.on("accountChanged", (account: any) => {
       setWeb3Account("SOL");
       if (account) {
@@ -89,12 +92,12 @@ export function useWeb3CallState(
         console.log("!!! SOL accountChanged", account);
         setWeb3Address(account, "accountsChanged");
       }
-    });  
-  }catch{
-    console.warn("!!! Brave Wallet does not exists")
+    });
+  } catch {
+    console.warn("!!! Brave Wallet does not exists");
   }
 
-  try{
+  try {
     window.phantom?.solana.on("accountChanged", (account: any) => {
       setWeb3Account("SOL");
       console.log(account);
@@ -106,8 +109,8 @@ export function useWeb3CallState(
         setWeb3Address(account, "accountsChanged");
       }
     });
-  }catch {
-    console.warn("!!! Phantom Wallet does not exists")
+  } catch {
+    console.warn("!!! Phantom Wallet does not exists");
   }
 
   const joinCall = async (

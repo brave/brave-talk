@@ -63,14 +63,14 @@ export const web3Login = async (): Promise<string> => {
 };
 
 export const web3LoginSol = async (): Promise<string> => {
-  try{
+  try {
     const result = await window.braveSolana.connect();
     console.log("!!! allAddresses", result);
     return result.publicKey.toBase58();
-  }catch{
-      const result = await window.phantom.solana.connect();
-      console.log("!!! allAddresses", result);
-      return result.publicKey.toBase58();
+  } catch {
+    const result = await window.phantom.solana.connect();
+    console.log("!!! allAddresses", result);
+    return result.publicKey.toBase58();
   }
 };
 
@@ -99,12 +99,6 @@ export const web3NFTs = async (address: string): Promise<NFT[]> => {
 
     const result: NFT[] = [];
     nfts.nfts.forEach((nft: any) => {
-      if (
-        "spam_score" in nft.collection &&
-        typeof nft.collection.spam_score === "number" &&
-        nft.collection.spam_score >= 80
-      )
-        return;
       result.push({
         image_url: nft.previews?.image_small_url
           ? nft.previews.image_small_url
@@ -114,6 +108,7 @@ export const web3NFTs = async (address: string): Promise<NFT[]> => {
           collection_id: nft.collection?.collection_id,
           name: nft.collection?.name,
           image_url: nft.collection?.image_url,
+          spam_score: nft.collection.spam_score,
         },
       });
     });
@@ -272,9 +267,9 @@ export const web3SolProve = async (
   const payloadBytes = new TextEncoder().encode(payload);
   const { hexlify } = await import("ethers");
   const hexPayload = hexlify(payloadBytes);
-  try{
+  try {
     const { publicKey, signature } = await window.braveSolana.signMessage(
-    payloadBytes
+      payloadBytes
     );
     const result = {
       method: "CAIP-122-json",
@@ -283,12 +278,12 @@ export const web3SolProve = async (
         signature: Buffer.from(signature).toString("hex"),
         payload: hexPayload,
       },
-    }; 
+    };
     return result;
-  }catch {
+  } catch {
     const { publicKey, signature } = await window.phantom.solana.signMessage(
       payloadBytes
-      );
+    );
     const result = {
       method: "CAIP-122-json",
       proof: {
@@ -297,8 +292,8 @@ export const web3SolProve = async (
         payload: hexPayload,
       },
     };
-    
-    return result;  
+
+    return result;
   }
 };
 

@@ -82,7 +82,7 @@ export const StartCall: React.FC<Props> = ({
           setFeedbackMessage("identifier_fetch_error");
         });
     }
-  }, [web3Address]);
+  }, [web3Address, web3Account]);
 
   const onStartCall = async () => {
     if (!web3Address) return;
