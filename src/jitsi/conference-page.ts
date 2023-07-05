@@ -48,7 +48,6 @@ export const renderConferencePage = async (
   reportMethod("renderConferencePage", { roomName, jwt });
   reportMethod("JitsiMeetExternalAPI", options);
 
-  clearAvatarInfoFromLocalStorage();
   const JitsiMeetJS = new JitsiMeetExternalAPI(config.webrtc_domain, options);
   reportAction("JitsiMeetExternalAPI", { status: "activated!" });
   updateSubject(JitsiMeetJS, options);
@@ -64,7 +63,7 @@ export const renderConferencePage = async (
   if (avatarUrl) {
     JitsiMeetJS.executeCommand("avatarUrl", avatarUrl);
   }
-
+  clearAvatarInfoFromLocalStorage();
   jitsiEventHandlers.forEach(({ name, fn }: JitsiEventHandler) => {
     JitsiMeetJS.on(name, fn(JitsiMeetJS, context, options));
   });
