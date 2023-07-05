@@ -66,6 +66,6 @@ export const renderConferencePage = async (
   jitsiEventHandlers.forEach(({ name, fn }: JitsiEventHandler) => {
     JitsiMeetJS.on(name, fn(JitsiMeetJS, context, options));
   });
-
+  clearAvatarInfoFromLocalStorage();
   return JitsiMeetJS;
 };
