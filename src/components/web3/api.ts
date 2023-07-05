@@ -9,6 +9,8 @@ declare let window: any;
 // making a cross domain call - see https://github.com/brave/devops/issues/5445.
 const SIMPLEHASH_PROXY_ROOT_URL = "/api/v1/simplehash";
 
+export type Web3PermissionType = "POAP" | "NFT-collection" | "balance";
+
 export interface Web3Authentication {
   method: string;
   proof: {
@@ -31,8 +33,8 @@ export interface Web3BalancesList {
 }
 
 export interface Web3BalancesRequireList {
-  network: string; // Use enum instead?
-  token: string; //optional
+  network: "ETH"; // "ETH" | "SOL" in the future probably
+  token?: string;
   minimum: string; // in wei, e.g. 10e-18
 }
 

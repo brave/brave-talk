@@ -4,6 +4,7 @@ import {
   Web3RequestBody,
   Web3Authentication,
   web3Prove,
+  Web3PermissionType,
 } from "../components/web3/api";
 import { POAP, NFTcollection } from "../components/web3/core";
 import { generateRoomName } from "../lib";
@@ -11,14 +12,14 @@ import { fetchJWT } from "../rooms";
 
 interface Web3CallState {
   web3Address?: string;
-  permissionType: string;
+  permissionType: Web3PermissionType;
   nft: string | null;
   participantPoaps: POAP[];
   moderatorPoaps: POAP[];
   participantNFTCollections: NFTcollection[];
   moderatorNFTCollections: NFTcollection[];
   setWeb3Address: (web3Address: string, event: string) => void;
-  setPermissionType: (permissionType: string) => void;
+  setPermissionType: (permissionType: Web3PermissionType) => void;
   setNft: (nft: string) => void;
   setParticipantPoaps: (participanPoaps: POAP[]) => void;
   setModeratorPoaps: (moderatorPoaps: POAP[]) => void;
@@ -38,7 +39,8 @@ export function useWeb3CallState(
   setFeedbackMessage: (message: TranslationKeys) => void
 ): Web3CallState {
   const [web3Address, _setWeb3Address] = useState<string>();
-  const [permissionType, setPermissionType] = useState<string>("POAP");
+  const [permissionType, setPermissionType] =
+    useState<Web3PermissionType>("POAP");
   const [nft, setNft] = useState<string | null>(null);
   const [participantPoaps, setParticipantPoaps] = useState<POAP[]>([]);
   const [moderatorPoaps, setModeratorPoaps] = useState<POAP[]>([]);
@@ -48,10 +50,6 @@ export function useWeb3CallState(
   const [moderatorNFTCollections, setModeratorNFTCollections] = useState<
     NFTcollection[]
   >([]);
-  const [minimumParticipantBATBalance, setMinimumParticipantBATBalance] =
-    useState<string>("1");
-  const [minimumModeratorBATBalance, setMinimumModeratorBATBalance] =
-    useState<string>("1");
 
   const setWeb3Address = (address: string, event: string) => {
     _setWeb3Address((prevAddress) => {
@@ -157,14 +155,14 @@ export function useWeb3CallState(
           },
           Balances: {
             participants: {
-              network: "ETH", // TODO: can change
+              network: "ETH" as const,
               token: "BAT",
-              minimum: minimumParticipantBATBalance,
+              minimum: "1",
             },
             moderators: {
-              network: "ETH",
+              network: "ETH" as const,
               token: "BAT",
-              minimum: minimumModeratorBATBalance,
+              minimum: "1",
             },
           },
         },

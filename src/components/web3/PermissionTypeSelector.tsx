@@ -1,10 +1,11 @@
 import React from "react";
 import { css } from "@emotion/react";
 import { useTranslation } from "react-i18next";
+import { Web3PermissionType } from "./api";
 
 type Props = {
   permissionType: string;
-  setPermissionType: (permissionType: string) => void;
+  setPermissionType: (permissionType: Web3PermissionType) => void;
 };
 
 const styles = {
