@@ -6,6 +6,7 @@ import { SelectableImageList } from "./SelectableImageList";
 import { SelectablePoapList } from "./SelectablePoapList";
 import { SelectableNFTCollectionList } from "./SelectableNFTCollectionList";
 import { PermissionTypeSelector } from "./PermissionTypeSelector";
+import noNftImage from "../../images/no-nft-image.png";
 
 interface Props {
   startCall: boolean;
@@ -54,7 +55,7 @@ export const OptionalSettings: React.FC<Props> = ({
   const onToggle = (idx: number) => {
     const imageUrl = nfts[idx].image_url;
     if (nft === imageUrl) {
-      setNft("");
+      setNft(noNftImage);
     } else {
       setNft(imageUrl);
     }
