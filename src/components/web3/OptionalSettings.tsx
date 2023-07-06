@@ -51,6 +51,14 @@ export const OptionalSettings: React.FC<Props> = ({
   const nftItems = nfts.map((n: NFT) => ({ ...n, imageUrl: n.image_url }));
   const selectedNftIdx = nfts.findIndex((n) => n.image_url === nft);
   const { t } = useTranslation();
+  const onToggle = (idx: number) => {
+    const imageUrl = nfts[idx].image_url;
+    if (nft === imageUrl) {
+      setNft("");
+    } else {
+      setNft(imageUrl);
+    }
+  };
 
   return (
     <div css={{ maxWidth: "563px", margin: "0 auto 0" }}>
@@ -66,7 +74,7 @@ export const OptionalSettings: React.FC<Props> = ({
           selectedIdxs={
             typeof selectedNftIdx === "number" ? [selectedNftIdx] : []
           }
-          onToggleSelection={(idx) => setNft(nfts[idx].image_url)}
+          onToggleSelection={onToggle}
         />
       </ExapandablePanel>
 
