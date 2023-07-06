@@ -53,7 +53,7 @@ export const SelectableImageList: React.FC<Props> = ({
               checked={showSpamItems}
               onChange={onToggleSpamItems}
             />
-            {showSpamItems ? "Show All NFTs" : "Show NFTs with Less Spam Score"}
+            {showSpamItems ? "Show all NFTs" : "Show all NFTs (not all being shown)"}
           </label>
         </div>
       )}
