@@ -46,7 +46,7 @@ export const renderConferencePage = async (
   const { roomName, jwt } = options;
   reportMethod("renderConferencePage", { roomName, jwt });
   reportMethod("JitsiMeetExternalAPI", options);
-  clearAvatarInfoFromLocalStorage();
+
   const JitsiMeetJS = new JitsiMeetExternalAPI(config.webrtc_domain, options);
   reportAction("JitsiMeetExternalAPI", { status: "activated!" });
   updateSubject(JitsiMeetJS, options);
