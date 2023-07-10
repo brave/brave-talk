@@ -1,4 +1,3 @@
-import { ethers, hexlify } from "ethers";
 import { isProduction } from "../../environment";
 import { fetchWithTimeout } from "../../lib";
 import { NFTcollection, POAP, NFT } from "./core";
@@ -76,12 +75,6 @@ export const web3NFTs = async (address: string): Promise<NFT[]> => {
 
     const result: NFT[] = [];
     nfts.nfts.forEach((nft: any) => {
-      if (
-        "spam_score" in nft.collection &&
-        typeof nft.collection.spam_score === "number" &&
-        nft.collection.spam_score >= 80
-      )
-        return;
       result.push({
         image_url: nft.previews?.image_small_url
           ? nft.previews.image_small_url
@@ -91,6 +84,7 @@ export const web3NFTs = async (address: string): Promise<NFT[]> => {
           collection_id: nft.collection?.collection_id,
           name: nft.collection?.name,
           image_url: nft.collection?.image_url,
+          spam_score: nft.collection.spam_score,
         },
       });
     });
@@ -182,6 +176,7 @@ export const web3Prove = async (
     throw new Error("not logged into Web3");
   }
 
+  const { ethers } = await import("ethers");
   window.web3 = new ethers.BrowserProvider(window.ethereum);
   if (!window.web3) {
     throw new Error("unable to create ethers.BrowserProvider object");
@@ -204,6 +199,7 @@ export const web3Prove = async (
   };
   const payload = createEIP4361Message(message);
   const payloadBytes = new TextEncoder().encode(payload);
+  const { hexlify } = await import("ethers");
   const hexPayload = hexlify(payloadBytes);
   const signer = await window.web3.getSigner(web3Address);
   const signature = await signer.signMessage(payload);
