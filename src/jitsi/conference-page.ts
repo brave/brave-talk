@@ -57,8 +57,7 @@ export const renderConferencePage = async (
       context.inactiveInterval
     );
   }
-
-  const avatarUrl = getAvatarUrl();
+  const avatarUrl = getAvatarUrl(jwt);
   if (avatarUrl) {
     JitsiMeetJS.executeCommand("avatarUrl", avatarUrl);
   }
