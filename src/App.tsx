@@ -47,6 +47,7 @@ export const App: React.FC = () => {
   } = useCallSetupStatus(params.isCreate);
 
   const browserProps = useBrowserProperties();
+  const isSolPath = window.location.search.includes("sol");
 
   if (isCallReady && params.isCreateOnly) {
     reportAction("closing window as requested", params);
@@ -56,52 +57,54 @@ export const App: React.FC = () => {
   return (
     <Router>
       <Routes>
-        <Route
-          path="/sol"
-          element={
-            <React.Fragment>
-              <GlobalStyles />
+        {isSolPath && (
+          <Route
+            path="/"
+            element={
+              <React.Fragment>
+                <GlobalStyles />
 
-              <div css={styles.container}>
-                <InCall
-                  roomName={roomName ?? ""}
-                  jwt={jwt ?? ""}
-                  isMobile={browserProps.isMobile}
-                  isCallReady={isCallReady}
-                  isWeb3Call={isWeb3Call}
-                  jitsiContext={jitsiContext}
-                />
-                {!isCallReady &&
-                  (isWeb3Call && hasInitialRoom ? (
-                    <JoinWeb3Call
-                      roomName={roomName as string}
-                      setJwt={setJwt}
-                      jitsiContext={jitsiContext}
-                      setJitsiContext={setJitsiContext}
-                      web3Account={web3Account}
-                      setWeb3Account={setWeb3Account}
-                    />
-                  ) : (
-                    <WelcomeScreen
-                      onStartCall={onStartCall}
-                      notice={notice}
-                      disabled={isEstablishingCall}
-                      hasInitialRoomName={hasInitialRoom}
-                      browser={browserProps}
-                      isWeb3Call={isWeb3Call}
-                      setIsWeb3Call={setIsWeb3Call}
-                      web3Account={web3Account}
-                      setWeb3Account={setWeb3Account}
-                      setJwt={setJwt}
-                      setRoomName={setRoomName}
-                      jitsiContext={jitsiContext}
-                      setJitsiContext={setJitsiContext}
-                    />
-                  ))}
-              </div>
-            </React.Fragment>
-          }
-        />
+                <div css={styles.container}>
+                  <InCall
+                    roomName={roomName ?? ""}
+                    jwt={jwt ?? ""}
+                    isMobile={browserProps.isMobile}
+                    isCallReady={isCallReady}
+                    isWeb3Call={isWeb3Call}
+                    jitsiContext={jitsiContext}
+                  />
+                  {!isCallReady &&
+                    (isWeb3Call && hasInitialRoom ? (
+                      <JoinWeb3Call
+                        roomName={roomName as string}
+                        setJwt={setJwt}
+                        jitsiContext={jitsiContext}
+                        setJitsiContext={setJitsiContext}
+                        web3Account={web3Account}
+                        setWeb3Account={setWeb3Account}
+                      />
+                    ) : (
+                      <WelcomeScreen
+                        onStartCall={onStartCall}
+                        notice={notice}
+                        disabled={isEstablishingCall}
+                        hasInitialRoomName={hasInitialRoom}
+                        browser={browserProps}
+                        isWeb3Call={isWeb3Call}
+                        setIsWeb3Call={setIsWeb3Call}
+                        web3Account={web3Account}
+                        setWeb3Account={setWeb3Account}
+                        setJwt={setJwt}
+                        setRoomName={setRoomName}
+                        jitsiContext={jitsiContext}
+                        setJitsiContext={setJitsiContext}
+                      />
+                    ))}
+                </div>
+              </React.Fragment>
+            }
+          />
+        )}
         <Route
           path="/"
           element={
