@@ -1,10 +1,11 @@
 import React from "react";
 import { css } from "@emotion/react";
 import { useTranslation } from "react-i18next";
+import { Web3PermissionType } from "./api";
 
 type Props = {
   permissionType: string;
-  setPermissionType: (permissionType: string) => void;
+  setPermissionType: (permissionType: Web3PermissionType) => void;
 };
 
 const styles = {
@@ -52,6 +53,12 @@ export const PermissionTypeSelector: React.FC<Props> = ({
         ]}
       >
         {t("nft_collection_permission_type")}
+      </button>
+      <button
+        onClick={() => setPermissionType("balance")}
+        css={[styles.base, permissionType === "balance" && styles.selected]}
+      >
+        {"BAT Gating"}
       </button>
     </div>
   );
