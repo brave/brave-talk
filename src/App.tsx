@@ -110,7 +110,6 @@ export const App: React.FC = () => {
           element={
             <React.Fragment>
               <GlobalStyles />
-
               <div css={styles.container}>
                 <InCall
                   roomName={roomName ?? ""}
