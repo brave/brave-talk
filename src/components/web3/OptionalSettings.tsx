@@ -7,8 +7,8 @@ import { SelectableImageList } from "./SelectableImageList";
 import { SelectablePoapList } from "./SelectablePoapList";
 import { SelectableNFTCollectionList } from "./SelectableNFTCollectionList";
 import { PermissionTypeSelector } from "./PermissionTypeSelector";
-import { Web3PermissionType } from "./api";
 import noNftImage from "../../images/no-nft-image.png";
+import { Web3PermissionType } from "./api";
 
 interface Props {
   startCall: boolean;
