@@ -38,7 +38,7 @@ Resources:
       "https://example.com/my-web2-claim.json",
     ],
   };
-  const actual = createEIP4361Message(message);
+  const actual = createEIP4361Message(message, "Ethereum");
 
   expect(actual).toEqual(expected);
 });
