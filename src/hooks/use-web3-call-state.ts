@@ -108,9 +108,7 @@ export function useWeb3CallState(
       console.error(e);
 
       if (
-        e.message.includes(
-          "You must have an appropriate token to join this call"
-        )
+        e.message.includes("You must have an approved token to join this call")
       ) {
         setFeedbackMessage("invalid_token_error");
       } else {
