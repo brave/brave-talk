@@ -107,10 +107,10 @@ export function useWeb3CallState(
     } catch (e: any) {
       console.error(e);
 
-      if (
-        e.message.includes("You must have an approved token to join this call")
-      ) {
+      if (e.message.includes("no-token")) {
         setFeedbackMessage("invalid_token_error");
+      } else if (e.message.includes("no-currency")) {
+        setFeedbackMessage("not_enough_currency_error");
       } else {
         setFeedbackMessage("not_participant_error");
       }

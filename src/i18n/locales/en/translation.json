@@ -29,6 +29,7 @@
   "my_account_link": "My Account",
   "nft_collection_permission_type": "NFT Collection",
   "not_participant_error": "Not listed as participant",
+  "not_enough_currency_error": "Access failure: Non-zero amount of BAT in your wallet is required to join this call.",
   "notice_text": "Encrypted video calls. Right in your browser.",
   "participant_nft_collection_panel_header": "Require an NFT Collection",
   "participant_nft_collection_panel_subhead": "Select an NFT Collection that participants must verify to join",
