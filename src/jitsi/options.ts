@@ -182,6 +182,7 @@ export const jitsiOptions = (
   };
 
   const features = jwt_decode(jwt)?.context?.features;
+  features.recording = "true";
   reportAction("features", { features });
 
   Object.entries(features).forEach(([feature, state]) => {
