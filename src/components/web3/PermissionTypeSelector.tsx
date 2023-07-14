@@ -3,6 +3,7 @@ import { css } from "@emotion/react";
 import { useTranslation } from "react-i18next";
 
 type Props = {
+  web3Account: "ETH" | "SOL" | null;
   permissionType: string;
   setPermissionType: (permissionType: string) => void;
 };
@@ -30,17 +31,26 @@ const styles = {
     "&:hover": { background: "rgba(255, 255, 255, 0.42)" },
   }),
 };
+const disabledButton = css({
+  pointerEvents: "none",
+  opacity: 0.5,
+});
 
 export const PermissionTypeSelector: React.FC<Props> = ({
   setPermissionType,
   permissionType,
+  web3Account,
 }) => {
   const { t } = useTranslation();
   return (
     <div css={{ display: "flex" }}>
       <button
         onClick={() => setPermissionType("POAP")}
-        css={[styles.base, permissionType === "POAP" && styles.selected]}
+        css={[
+          styles.base,
+          permissionType === "POAP" && styles.selected,
+          web3Account === "SOL" ? disabledButton : null,
+        ]}
       >
         {t("poap_permission_type")}
       </button>

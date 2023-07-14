@@ -85,6 +85,8 @@ interface CallSetup {
   isCallReady: boolean;
   isWeb3Call: boolean;
   setIsWeb3Call: (isWeb3Call: boolean) => void;
+  web3Account: "ETH" | "SOL" | null;
+  setWeb3Account: (web3Account: "ETH" | "SOL" | null) => void;
   setJwt: (jwt: string) => void;
   setRoomName: (roomName: string) => void;
   setJitsiContext: (jitsiContext: JitsiContext) => void;
@@ -102,6 +104,7 @@ export function useCallSetupStatus(
   // on it
   const [hasInitialRoom, setHasInitialRoom] = useState(() => !!roomName);
   const [isWeb3Call, setIsWeb3Call] = useState(false);
+  const [web3Account, setWeb3Account] = useState<"ETH" | "SOL" | null>(null);
   const [jwt, setJwt] = useState<string>();
   const [notice, setNotice] = useState<TranslationKeys>();
   const [isEstablishingCall, setIsEstablishingCall] = useState(false);
@@ -192,6 +195,8 @@ export function useCallSetupStatus(
     isCallReady,
     isWeb3Call,
     setIsWeb3Call,
+    web3Account,
+    setWeb3Account,
     setJwt,
     setRoomName,
     setJitsiContext,
