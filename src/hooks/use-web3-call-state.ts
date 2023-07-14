@@ -5,6 +5,7 @@ import {
   Web3Authentication,
   web3Prove,
   Web3PermissionType,
+  web3SolProve,
 } from "../components/web3/api";
 import { POAP, NFTcollection } from "../components/web3/core";
 import { generateRoomName } from "../lib";
@@ -36,11 +37,13 @@ interface Web3CallState {
 }
 
 export function useWeb3CallState(
-  setFeedbackMessage: (message: TranslationKeys) => void
+  setFeedbackMessage: (message: TranslationKeys) => void,
+  web3Account: "ETH" | "SOL" | null,
+  setWeb3Account: (web3Account: "ETH" | "SOL") => void
 ): Web3CallState {
   const [web3Address, _setWeb3Address] = useState<string>();
   const [permissionType, setPermissionType] =
-    useState<Web3PermissionType>("POAP");
+    useState<Web3PermissionType>("NFT-collection");
   const [nft, setNft] = useState<string | null>(null);
   const [participantPoaps, setParticipantPoaps] = useState<POAP[]>([]);
   const [moderatorPoaps, setModeratorPoaps] = useState<POAP[]>([]);
@@ -61,6 +64,9 @@ export function useWeb3CallState(
         case "accountsChanged": {
           return address;
         }
+        case "accountChanged": {
+          return address;
+        }
         default: {
           return address;
         }
@@ -68,10 +74,44 @@ export function useWeb3CallState(
     });
   };
 
-  window.ethereum?.on("accountsChanged", (accounts: string[]) => {
-    console.log("!!! accountsChanged", accounts);
-    setWeb3Address(accounts[0], "accountsChanged");
-  });
+  if (web3Account === "ETH") {
+    window.ethereum?.on("accountsChanged", (accounts: string[]) => {
+      console.log("!!! ETH accountsChanged", accounts);
+      setWeb3Account("ETH");
+      setWeb3Address(accounts[0], "accountsChanged");
+    });
+  }
+
+  try {
+    window.braveSolana?.on("accountChanged", (account: any) => {
+      setWeb3Account("SOL");
+      if (account) {
+        console.log("!!! SOL accountChanged", account.toBase58());
+        setWeb3Address(account.toBase58(), "accountsChanged");
+      } else {
+        console.log("!!! SOL accountChanged", account);
+        setWeb3Address(account, "accountsChanged");
+      }
+    });
+  } catch {
+    console.warn("!!! Brave Wallet does not exists");
+  }
+
+  try {
+    window.phantom?.solana.on("accountChanged", (account: any) => {
+      setWeb3Account("SOL");
+      console.log(account);
+      if (account) {
+        console.log("!!! SOL accountChanged", account.toBase58());
+        setWeb3Address(account.toBase58(), "accountsChanged");
+      } else {
+        console.log("!!! SOL accountChanged", account);
+        setWeb3Address(account, "accountsChanged");
+      }
+    });
+  } catch {
+    console.warn("!!! Phantom Wallet does not exists");
+  }
 
   const joinCall = async (
     roomName: string
@@ -80,7 +120,11 @@ export function useWeb3CallState(
     let auth: Web3Authentication | null = null;
     let jwt = "";
     try {
-      auth = await web3Prove(web3Address as string);
+      if (web3Account === "ETH") {
+        auth = await web3Prove(web3Address as string);
+      } else {
+        auth = await web3SolProve(web3Address as string);
+      }
       web3 = {
         web3Authentication: auth,
         avatarURL: nft,
@@ -125,7 +169,12 @@ export function useWeb3CallState(
     [string, string, Web3Authentication] | undefined
   > => {
     try {
-      const auth = await web3Prove(web3Address as string);
+      let auth: Web3Authentication | null = null;
+      if (web3Account === "ETH") {
+        auth = await web3Prove(web3Address as string);
+      } else {
+        auth = await web3SolProve(web3Address as string);
+      }
       const roomName = generateRoomName();
       const web3 = {
         web3Authentication: auth,

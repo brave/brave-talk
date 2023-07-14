@@ -5,6 +5,7 @@ import { JitsiContext } from "../../jitsi/types";
 import { web3NFTs, web3POAPs, web3NFTcollections } from "./api";
 import { POAP, NFT, NFTcollection, rememberAvatarUrl } from "./core";
 import { Login } from "./Login";
+import { SolLogin } from "./SolLogin";
 import { OptionalSettings } from "./OptionalSettings";
 import { bodyText, header } from "./styles";
 import { useWeb3CallState } from "../../hooks/use-web3-call-state";
@@ -15,6 +16,8 @@ type Props = {
   setRoomName: (roomName: string) => void;
   jitsiContext: JitsiContext;
   setJitsiContext: (context: JitsiContext) => void;
+  web3Account: "ETH" | "SOL" | null;
+  setWeb3Account: (web3Account: "ETH" | "SOL") => void;
   isSubscribed: boolean;
 };
 
@@ -23,6 +26,8 @@ export const StartCall: React.FC<Props> = ({
   setRoomName,
   jitsiContext,
   setJitsiContext,
+  web3Account,
+  setWeb3Account,
   isSubscribed,
 }) => {
   const { t } = useTranslation();
@@ -48,7 +53,7 @@ export const StartCall: React.FC<Props> = ({
     setParticipantNFTCollections,
     setModeratorNFTCollections,
     startCall,
-  } = useWeb3CallState(setFeedbackMessage);
+  } = useWeb3CallState(setFeedbackMessage, web3Account, setWeb3Account);
 
   // this magic says "run this function when the web3address changes"
   useEffect(() => {
@@ -62,14 +67,14 @@ export const StartCall: React.FC<Props> = ({
           console.error("!!! failed to fetch NFTs ", err);
           setFeedbackMessage("identifier_fetch_error");
         });
-
-      web3POAPs(web3Address)
-        .then(setPoaps)
-        .catch((err) => {
-          console.error("!!! failed to fetch POAPs ", err);
-          setFeedbackMessage("identifier_fetch_error");
-        });
-
+      if (web3Account === "ETH") {
+        web3POAPs(web3Address)
+          .then(setPoaps)
+          .catch((err) => {
+            console.error("!!! failed to fetch POAPs ", err);
+            setFeedbackMessage("identifier_fetch_error");
+          });
+      }
       web3NFTcollections(web3Address)
         .then(setNFTCollections)
         .catch((err) => {
@@ -77,7 +82,7 @@ export const StartCall: React.FC<Props> = ({
           setFeedbackMessage("identifier_fetch_error");
         });
     }
-  }, [web3Address]);
+  }, [web3Address, web3Account]);
 
   const onStartCall = async () => {
     if (!web3Address) return;
@@ -113,28 +118,54 @@ export const StartCall: React.FC<Props> = ({
     >
       <div css={[header, { marginBottom: "22px" }]}>Start a Web3 Call</div>
 
-      <Login web3address={web3Address} onAddressSelected={setWeb3Address} />
+      {web3Account === "ETH" ? (
+        <Login web3address={web3Address} onAddressSelected={setWeb3Address} />
+      ) : (
+        <SolLogin
+          web3address={web3Address}
+          onAddressSelected={setWeb3Address}
+        />
+      )}
 
       {web3Address && (
         <div css={{ marginTop: "28px" }}>
-          <OptionalSettings
-            startCall={true}
-            permissionType={permissionType}
-            nfts={nfts}
-            poaps={poaps}
-            nftCollections={nftCollections}
-            nft={nft}
-            setPermissionType={setPermissionType}
-            setNft={setNft}
-            participantPoaps={participantPoaps}
-            setParticipantPoaps={setParticipantPoaps}
-            moderatorPoaps={moderatorPoaps}
-            setModeratorPoaps={setModeratorPoaps}
-            participantNFTCollections={participantNFTCollections}
-            setParticipantNFTCollections={setParticipantNFTCollections}
-            moderatorNFTCollections={moderatorNFTCollections}
-            setModeratorNFTCollections={setModeratorNFTCollections}
-          />
+          {web3Account === "ETH" ? (
+            <OptionalSettings
+              startCall={true}
+              web3Account={web3Account}
+              permissionType={permissionType}
+              nfts={nfts}
+              poaps={poaps}
+              nftCollections={nftCollections}
+              nft={nft}
+              setPermissionType={setPermissionType}
+              setNft={setNft}
+              participantPoaps={participantPoaps}
+              setParticipantPoaps={setParticipantPoaps}
+              moderatorPoaps={moderatorPoaps}
+              setModeratorPoaps={setModeratorPoaps}
+              participantNFTCollections={participantNFTCollections}
+              setParticipantNFTCollections={setParticipantNFTCollections}
+              moderatorNFTCollections={moderatorNFTCollections}
+              setModeratorNFTCollections={setModeratorNFTCollections}
+            />
+          ) : (
+            <OptionalSettings
+              startCall={true}
+              web3Account={web3Account}
+              permissionType={permissionType}
+              nfts={nfts}
+              poaps={poaps}
+              nftCollections={nftCollections}
+              nft={nft}
+              setPermissionType={setPermissionType}
+              setNft={setNft}
+              participantNFTCollections={participantNFTCollections}
+              setParticipantNFTCollections={setParticipantNFTCollections}
+              moderatorNFTCollections={moderatorNFTCollections}
+              setModeratorNFTCollections={setModeratorNFTCollections}
+            />
+          )}
 
           <div css={[bodyText, { marginTop: "28px" }]}>
             {feedbackMessage ? t(feedbackMessage) : ""}

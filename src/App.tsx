@@ -1,4 +1,5 @@
 import { css } from "@emotion/react";
+import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import React from "react";
 import { GlobalStyles } from "./components/GlobalStyles";
 import { InCall } from "./components/InCall";
@@ -38,12 +39,15 @@ export const App: React.FC = () => {
     isCallReady,
     isWeb3Call,
     setIsWeb3Call,
+    web3Account,
+    setWeb3Account,
     setJwt,
     setRoomName,
     setJitsiContext,
   } = useCallSetupStatus(params.isCreate);
 
   const browserProps = useBrowserProperties();
+  const isSolPath = window.location.search.includes("sol");
 
   if (isCallReady && params.isCreateOnly) {
     reportAction("closing window as requested", params);
@@ -51,42 +55,102 @@ export const App: React.FC = () => {
   }
 
   return (
-    <React.Fragment>
-      <GlobalStyles />
+    <Router>
+      <Routes>
+        {isSolPath && (
+          <Route
+            path="/"
+            element={
+              <React.Fragment>
+                <GlobalStyles />
 
-      <div css={styles.container}>
-        <InCall
-          roomName={roomName ?? ""}
-          jwt={jwt ?? ""}
-          isMobile={browserProps.isMobile}
-          isCallReady={isCallReady}
-          isWeb3Call={isWeb3Call}
-          jitsiContext={jitsiContext}
+                <div css={styles.container}>
+                  <InCall
+                    roomName={roomName ?? ""}
+                    jwt={jwt ?? ""}
+                    isMobile={browserProps.isMobile}
+                    isCallReady={isCallReady}
+                    isWeb3Call={isWeb3Call}
+                    jitsiContext={jitsiContext}
+                  />
+                  {!isCallReady &&
+                    (isWeb3Call && hasInitialRoom ? (
+                      <JoinWeb3Call
+                        roomName={roomName as string}
+                        setJwt={setJwt}
+                        jitsiContext={jitsiContext}
+                        setJitsiContext={setJitsiContext}
+                        web3Account={web3Account}
+                        setWeb3Account={setWeb3Account}
+                      />
+                    ) : (
+                      <WelcomeScreen
+                        onStartCall={onStartCall}
+                        notice={notice}
+                        disabled={isEstablishingCall}
+                        hasInitialRoomName={hasInitialRoom}
+                        browser={browserProps}
+                        isWeb3Call={isWeb3Call}
+                        setIsWeb3Call={setIsWeb3Call}
+                        web3Account={web3Account}
+                        setWeb3Account={setWeb3Account}
+                        setJwt={setJwt}
+                        setRoomName={setRoomName}
+                        jitsiContext={jitsiContext}
+                        setJitsiContext={setJitsiContext}
+                      />
+                    ))}
+                </div>
+              </React.Fragment>
+            }
+          />
+        )}
+        <Route
+          path="/"
+          element={
+            <React.Fragment>
+              <GlobalStyles />
+              <div css={styles.container}>
+                <InCall
+                  roomName={roomName ?? ""}
+                  jwt={jwt ?? ""}
+                  isMobile={browserProps.isMobile}
+                  isCallReady={isCallReady}
+                  isWeb3Call={isWeb3Call}
+                  jitsiContext={jitsiContext}
+                />
+                {!isCallReady &&
+                  (isWeb3Call && hasInitialRoom ? (
+                    <JoinWeb3Call
+                      roomName={roomName as string}
+                      setJwt={setJwt}
+                      jitsiContext={jitsiContext}
+                      setJitsiContext={setJitsiContext}
+                      web3Account={"ETH"}
+                      setWeb3Account={setWeb3Account}
+                    />
+                  ) : (
+                    <WelcomeScreen
+                      onStartCall={onStartCall}
+                      notice={notice}
+                      disabled={isEstablishingCall}
+                      hasInitialRoomName={hasInitialRoom}
+                      browser={browserProps}
+                      isWeb3Call={isWeb3Call}
+                      setIsWeb3Call={setIsWeb3Call}
+                      web3Account={"ETH"}
+                      setWeb3Account={setWeb3Account}
+                      setJwt={setJwt}
+                      setRoomName={setRoomName}
+                      jitsiContext={jitsiContext}
+                      setJitsiContext={setJitsiContext}
+                    />
+                  ))}
+              </div>
+            </React.Fragment>
+          }
         />
-        {!isCallReady &&
-          (isWeb3Call && hasInitialRoom ? (
-            <JoinWeb3Call
-              roomName={roomName as string}
-              setJwt={setJwt}
-              jitsiContext={jitsiContext}
-              setJitsiContext={setJitsiContext}
-            />
-          ) : (
-            <WelcomeScreen
-              onStartCall={onStartCall}
-              notice={notice}
-              disabled={isEstablishingCall}
-              hasInitialRoomName={hasInitialRoom}
-              browser={browserProps}
-              isWeb3Call={isWeb3Call}
-              setIsWeb3Call={setIsWeb3Call}
-              setJwt={setJwt}
-              setRoomName={setRoomName}
-              jitsiContext={jitsiContext}
-              setJitsiContext={setJitsiContext}
-            />
-          ))}
-      </div>
-    </React.Fragment>
+      </Routes>
+    </Router>
   );
 };
