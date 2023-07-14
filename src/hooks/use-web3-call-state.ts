@@ -4,7 +4,6 @@ import {
   Web3RequestBody,
   Web3Authentication,
   web3Prove,
-  Web3PermissionType,
 } from "../components/web3/api";
 import { POAP, NFTcollection } from "../components/web3/core";
 import { generateRoomName } from "../lib";
@@ -12,14 +11,14 @@ import { fetchJWT } from "../rooms";
 
 interface Web3CallState {
   web3Address?: string;
-  permissionType: Web3PermissionType;
+  permissionType: string;
   nft: string | null;
   participantPoaps: POAP[];
   moderatorPoaps: POAP[];
   participantNFTCollections: NFTcollection[];
   moderatorNFTCollections: NFTcollection[];
   setWeb3Address: (web3Address: string, event: string) => void;
-  setPermissionType: (permissionType: Web3PermissionType) => void;
+  setPermissionType: (permissionType: string) => void;
   setNft: (nft: string) => void;
   setParticipantPoaps: (participanPoaps: POAP[]) => void;
   setModeratorPoaps: (moderatorPoaps: POAP[]) => void;
@@ -39,8 +38,7 @@ export function useWeb3CallState(
   setFeedbackMessage: (message: TranslationKeys) => void
 ): Web3CallState {
   const [web3Address, _setWeb3Address] = useState<string>();
-  const [permissionType, setPermissionType] =
-    useState<Web3PermissionType>("POAP");
+  const [permissionType, setPermissionType] = useState<string>("POAP");
   const [nft, setNft] = useState<string | null>(null);
   const [participantPoaps, setParticipantPoaps] = useState<POAP[]>([]);
   const [moderatorPoaps, setModeratorPoaps] = useState<POAP[]>([]);
@@ -151,18 +149,6 @@ export function useWeb3CallState(
             moderatorADs: {
               allow: moderatorNFTCollections.map((c) => c.id),
               deny: [],
-            },
-          },
-          Balances: {
-            participants: {
-              network: "ETH" as const,
-              token: "BAT",
-              minimum: "1",
-            },
-            moderators: {
-              network: "ETH" as const,
-              token: "BAT",
-              minimum: "1",
             },
           },
         },

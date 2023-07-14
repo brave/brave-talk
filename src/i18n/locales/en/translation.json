@@ -1,8 +1,6 @@
 {
   "avatar_fetch_error": "Failed to fetch avatar NFTs",
   "avatar_nft_subhead": "Currently supports Ethereum ERC-721 NFTs",
-  "bat_gating_panel_header": "Non Zero BAT gating will be applied.",
-  "bat_gating_panel_subheader": "Users will need to have a non-zero balance of BAT in their wallet to join this call.",
   "call_permission_type": "Call permission type:",
   "check_subscription": "Checking subscription status...",
   "create_link": "Create link",

@@ -2,13 +2,11 @@ import React from "react";
 import { useTranslation } from "react-i18next";
 import { POAP, NFTcollection, NFT } from "./core";
 import { ExapandablePanel } from "./ExpandablePanel";
-import { NonExapandablePanel } from "./NonExpandablePanel";
 import { SelectableImageList } from "./SelectableImageList";
 import { SelectablePoapList } from "./SelectablePoapList";
 import { SelectableNFTCollectionList } from "./SelectableNFTCollectionList";
 import { PermissionTypeSelector } from "./PermissionTypeSelector";
 import noNftImage from "../../images/no-nft-image.png";
-import { Web3PermissionType } from "./api";
 
 interface Props {
   startCall: boolean;
@@ -18,7 +16,7 @@ interface Props {
   nft: string | null;
   setNft: (nft: string) => void;
   permissionType: string;
-  setPermissionType: (permissionType: Web3PermissionType) => void;
+  setPermissionType: (permissionType: string) => void;
   participantPoaps: POAP[];
   setParticipantPoaps: (participantPoaps: POAP[]) => void;
   moderatorPoaps: POAP[];
@@ -159,14 +157,6 @@ export const OptionalSettings: React.FC<Props> = ({
             </ExapandablePanel>
           </React.Fragment>
         )}
-      {startCall && permissionType === "balance" && (
-        <React.Fragment>
-          <NonExapandablePanel
-            header={t("bat_gating_panel_header")}
-            subhead={t("bat_gating_panel_subheader")}
-          />
-        </React.Fragment>
-      )}
     </div>
   );
 };
