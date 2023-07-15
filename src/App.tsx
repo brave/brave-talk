@@ -106,7 +106,7 @@ export const App: React.FC = () => {
           />
         )}
         <Route
-          path="/"
+          path="*"
           element={
             <React.Fragment>
               <GlobalStyles />
