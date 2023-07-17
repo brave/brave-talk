@@ -1,6 +1,6 @@
 {
   "avatar_fetch_error": "Failed to fetch avatar NFTs",
-  "avatar_nft_subhead": "Currently supports Ethereum ERC-721 NFTs and Solana Metaplex NFTs",
+  "avatar_nft_subhead": "Currently supports Ethereum ERC-721 NFTs",
   "call_permission_type": "Call permission type:",
   "check_subscription": "Checking subscription status...",
   "create_link": "Create link",
@@ -55,7 +55,6 @@
   "your_avatar_nft_header": "Your Avatar NFT",
   "premium_card_title": "Premium calls",
   "web3_card_title": "Host a Web3 call",
-  "web3_account_body": "Choose the network of the account you want to connect start the Web3 call.",
 
   "Bad gateway": "Bad gateway",
   "Checking moderator status...": "Checking moderator status...",
