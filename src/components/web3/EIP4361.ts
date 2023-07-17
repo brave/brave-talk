@@ -15,11 +15,8 @@ export interface EIP4361Message {
   resources?: string[];
 }
 
-export const createEIP4361Message = (
-  message: EIP4361Message,
-  account: string
-): string => {
-  let result = `${message.domain} wants you to sign in with your ${account} account:\n${message.address}\n\n`;
+export const createEIP4361Message = (message: EIP4361Message): string => {
+  let result = `${message.domain} wants you to sign in with your Ethereum account:\n${message.address}\n\n`;
 
   if (message.statement) {
     result = result.concat(message.statement, "\n");
