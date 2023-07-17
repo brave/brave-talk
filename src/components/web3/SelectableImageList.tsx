@@ -25,7 +25,7 @@ export const SelectableImageList: React.FC<Props> = ({
   onToggleSelection,
 }) => {
   const showCheckbox = items.some(
-    (item) => item.collection !== undefined && item.collection.spam_score >= 80
+    (item) => item.collection !== undefined && item.collection.spam_score > 80
   );
 
   const [showSpamItems, setShowSpamItems] = useState(false);

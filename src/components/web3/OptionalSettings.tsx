@@ -12,7 +12,6 @@ import { Web3PermissionType } from "./api";
 
 interface Props {
   startCall: boolean;
-  web3Account: "ETH" | "SOL" | null;
   nfts?: NFT[];
   poaps?: POAP[];
   nftCollections?: NFTcollection[];
@@ -36,7 +35,6 @@ interface Props {
 
 export const OptionalSettings: React.FC<Props> = ({
   startCall,
-  web3Account,
   nfts = [],
   poaps,
   nftCollections,
@@ -44,14 +42,10 @@ export const OptionalSettings: React.FC<Props> = ({
   setNft,
   permissionType,
   setPermissionType,
-  participantPoaps = [],
-  setParticipantPoaps = () => {
-    return [];
-  },
-  moderatorPoaps = [],
-  setModeratorPoaps = () => {
-    return [];
-  },
+  participantPoaps,
+  setParticipantPoaps,
+  moderatorPoaps,
+  setModeratorPoaps,
   participantNFTCollections,
   setParticipantNFTCollections,
   moderatorNFTCollections,
@@ -98,7 +92,6 @@ export const OptionalSettings: React.FC<Props> = ({
           <PermissionTypeSelector
             permissionType={permissionType}
             setPermissionType={setPermissionType}
-            web3Account={web3Account}
           />
         </>
       )}

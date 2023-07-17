@@ -1,6 +1,6 @@
 {
   "avatar_fetch_error": "アバターNFTの取得に失敗しました",
-  "avatar_nft_subhead": "Ethereum ERC-721のNFT、Solana MetaplexのNFTが使用可能です。",
+  "avatar_nft_subhead": "現在イーサリアムERC-721 NFTをサポートしています",
   "call_permission_type": "通話の許可タイプ:",
   "check_subscription": "サブスクリプションの状態を確認しています...",
   "create_link": "リンクを作成",
@@ -55,7 +55,6 @@
   "your_avatar_nft_header": "あなたのアバターNFT",
   "premium_card_title": "プレミアム通話",
   "web3_card_title": "Web3通話を開始する",
-  "web3_account_body": "Web3コールを開始するにあたって使用するアカウントのネットワークを選択してください。",
 
   "Bad gateway": "バッド・ゲートウェイ",
   "Checking moderator status...": "モデレーターの状態を確認しています...",
