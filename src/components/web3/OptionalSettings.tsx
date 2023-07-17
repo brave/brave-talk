@@ -19,10 +19,10 @@ interface Props {
   setNft: (nft: string) => void;
   permissionType: string;
   setPermissionType: (permissionType: Web3PermissionType) => void;
-  participantPoaps?: POAP[];
-  setParticipantPoaps?: (participantPoaps: POAP[]) => void;
-  moderatorPoaps?: POAP[];
-  setModeratorPoaps?: (moderatorPoaps: POAP[]) => void;
+  participantPoaps: POAP[];
+  setParticipantPoaps: (participantPoaps: POAP[]) => void;
+  moderatorPoaps: POAP[];
+  setModeratorPoaps: (moderatorPoaps: POAP[]) => void;
   participantNFTCollections: NFTcollection[];
   setParticipantNFTCollections: (
     participantNFTCollections: NFTcollection[]
