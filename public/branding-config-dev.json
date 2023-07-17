@@ -1,10 +1,10 @@
 {
-  "X-backgroundColor": "#000000",
+  "backgroundColor": "#000000",
   "didPageUrl": "",
   "inviteDomain": "https://talk.brave.software",
   "logoClickUrl": "",
   "logoImageUrl": "https://talk.brave.software/images/brave_logo_dev.svg",
-  "X-premeetingBackground": "url(https://talk.brave.software/images/background.svg) no-repeat center fixed",
+  "premeetingBackground": "url(https://talk.brave.software/images/background.svg) no-repeat center fixed",
   "avatarBackgrounds": [
     "#12A378",
     "#339AF0",
