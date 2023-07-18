@@ -57,7 +57,7 @@ export const OptionalSettings: React.FC<Props> = ({
   const onToggle = (idx: number) => {
     const imageUrl = nfts[idx].image_url;
     if (nft === imageUrl) {
-      setNft(noNftImage);
+      setNft("");
       console.log("debug: NFT deselected");
     } else {
       setNft(imageUrl);
