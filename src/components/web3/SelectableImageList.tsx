@@ -25,7 +25,7 @@ export const SelectableImageList: React.FC<Props> = ({
   onToggleSelection,
 }) => {
   const showCheckbox = items.some(
-    (item) => item.collection !== undefined && item.collection.spam_score > 80
+    (item) => item.collection !== undefined && item.collection.spam_score >= 80
   );
 
   const [showSpamItems, setShowSpamItems] = useState(false);
@@ -53,7 +53,9 @@ export const SelectableImageList: React.FC<Props> = ({
               checked={showSpamItems}
               onChange={onToggleSpamItems}
             />
-            {showSpamItems ? "Show all NFTs" : "Show all NFTs (not all being shown)"}
+            {showSpamItems
+              ? "Show all NFTs"
+              : "Show all NFTs (not all being shown)"}
           </label>
         </div>
       )}
