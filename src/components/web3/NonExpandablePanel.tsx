@@ -16,7 +16,6 @@ export const NonExapandablePanel: React.FC<Props> = ({
   header,
   subhead,
   loading = false,
-  children,
 }) => {
   return (
     <div
