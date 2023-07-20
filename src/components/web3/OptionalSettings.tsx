@@ -61,7 +61,9 @@ export const OptionalSettings: React.FC<Props> = ({
       console.log("debug: NFT unset");
     } else {
       setNft(imageUrl);
-      console.log(`debug: current NFT is ${nfts[idx]} with url ${imageUrl}`);
+      console.log(
+        `debug: current NFT #${idx} is ${nfts[idx].name} with url ${imageUrl}`
+      );
     }
   };
 
