@@ -1,6 +1,7 @@
 import React from "react";
 import { useTranslation } from "react-i18next";
 import { POAP, NFTcollection, NFT } from "./core";
+import { isProduction } from "../../environment";
 import { ExapandablePanel } from "./ExpandablePanel";
 import { NonExapandablePanel } from "./NonExpandablePanel";
 import { SelectableImageList } from "./SelectableImageList";
@@ -58,10 +59,11 @@ export const OptionalSettings: React.FC<Props> = ({
     const selectedId = nfts[idx].id;
     if (nft != null && nft.id === selectedId) {
       setNft(null);
-      console.log("debug: NFT deselected");
+      if (!isProduction) console.log("debug: NFT deselected");
     } else {
       setNft(nfts[idx]);
-      console.log(`debug: NFT #${idx} [${nfts[idx].name}] selected.`);
+      if (!isProduction)
+        console.log(`debug: NFT #${idx} [${nfts[idx].name}] selected.`);
     }
   };
 
