@@ -94,6 +94,7 @@ export const web3NFTs = async (address: string): Promise<NFT[]> => {
           ? nft.previews.image_small_url
           : nft.image_url,
         name: nft.name,
+        id: nft.nft_id,
         collection: {
           collection_id: nft.collection?.collection_id,
           name: nft.collection?.name,
