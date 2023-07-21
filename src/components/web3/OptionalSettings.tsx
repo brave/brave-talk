@@ -1,6 +1,7 @@
 import React from "react";
 import { useTranslation } from "react-i18next";
 import { POAP, NFTcollection, NFT } from "./core";
+import { isProduction } from "../../environment";
 import { ExapandablePanel } from "./ExpandablePanel";
 import { NonExapandablePanel } from "./NonExpandablePanel";
 import { SelectableImageList } from "./SelectableImageList";
@@ -15,8 +16,8 @@ interface Props {
   nfts?: NFT[];
   poaps?: POAP[];
   nftCollections?: NFTcollection[];
-  nft: string | null;
-  setNft: (nft: string) => void;
+  nft: NFT | null;
+  setNft: (nft: NFT | null) => void;
   permissionType: string;
   setPermissionType: (permissionType: Web3PermissionType) => void;
   participantPoaps: POAP[];
@@ -52,14 +53,17 @@ export const OptionalSettings: React.FC<Props> = ({
   setModeratorNFTCollections,
 }) => {
   const nftItems = nfts.map((n: NFT) => ({ ...n, imageUrl: n.image_url }));
-  const selectedNftIdx = nfts.findIndex((n) => n.image_url === nft);
+  const selectedNftIdx = nfts.findIndex((n) => nft != null && n.id === nft.id);
   const { t } = useTranslation();
   const onToggle = (idx: number) => {
-    const imageUrl = nfts[idx].image_url;
-    if (nft === imageUrl) {
-      setNft("");
+    const selectedId = nfts[idx].id;
+    if (nft != null && nft.id === selectedId) {
+      setNft(null);
+      if (!isProduction) console.log("debug: NFT deselected");
     } else {
-      setNft(imageUrl);
+      setNft(nfts[idx]);
+      if (!isProduction)
+        console.log(`debug: NFT #${idx} [${nfts[idx].name}] selected.`);
     }
   };
 

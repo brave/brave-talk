@@ -83,7 +83,7 @@ export const StartCall: React.FC<Props> = ({
     if (!web3Address) return;
 
     try {
-      rememberAvatarUrl(nft);
+      rememberAvatarUrl(nft != null ? nft.image_url : "");
       const result = await startCall();
       if (result) {
         const [roomName, jwt, web3Authentication] = result;
