@@ -66,7 +66,7 @@ export const web3Login = async (): Promise<string> => {
 
 export const web3NFTs = async (address: string): Promise<NFT[]> => {
   try {
-    const getNFTsURL = `${SIMPLEHASH_PROXY_ROOT_URL}/api/v0/nfts/owners?chains=ethereum&wallet_addresses=${encodeURIComponent(
+    const getNFTsURL = `${SIMPLEHASH_PROXY_ROOT_URL}/api/v0/nfts/owners?chains=ethereum,polygon&wallet_addresses=${encodeURIComponent(
       address
     )}`;
     console.log(`>>> GET ${getNFTsURL}`);
