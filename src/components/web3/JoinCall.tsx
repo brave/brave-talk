@@ -63,7 +63,7 @@ export const JoinCall: React.FC<Props> = ({
     if (!web3Address) return;
 
     try {
-      rememberAvatarUrl(nft);
+      rememberAvatarUrl(nft != null ? nft.image_url : "");
       setFeedbackMessage("join_call");
       const result = await joinCall(roomName);
       if (result) {

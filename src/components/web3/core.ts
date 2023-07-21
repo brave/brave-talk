@@ -18,6 +18,7 @@ export interface NFTcollection {
 export interface NFT {
   image_url: string;
   name: string;
+  id: string;
   collection?: {
     collection_id: string;
     name: string;
