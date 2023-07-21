@@ -61,6 +61,7 @@ export const OptionalSettings: React.FC<Props> = ({
     if (nft != null && nft.id === selectedId) {
       setNft(null);
       console.log("debug: NFT deselected");
+
     } else {
       setNft(nfts[idx]);
       console.log(`debug: NFT #${idx} [${nfts[idx].name}] selected.`);
