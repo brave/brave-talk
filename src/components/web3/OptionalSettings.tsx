@@ -52,16 +52,13 @@ export const OptionalSettings: React.FC<Props> = ({
   setModeratorNFTCollections,
 }) => {
   const nftItems = nfts.map((n: NFT) => ({ ...n, imageUrl: n.image_url }));
-  const selectedNftIdx = nfts.findIndex((n) =>
-    nft != null ? n.id === nft.id : -1
-  );
+  const selectedNftIdx = nfts.findIndex((n) => nft != null && n.id === nft.id);
   const { t } = useTranslation();
   const onToggle = (idx: number) => {
     const selectedId = nfts[idx].id;
     if (nft != null && nft.id === selectedId) {
       setNft(null);
       console.log("debug: NFT deselected");
-
     } else {
       setNft(nfts[idx]);
       console.log(`debug: NFT #${idx} [${nfts[idx].name}] selected.`);
