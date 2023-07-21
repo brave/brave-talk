@@ -60,6 +60,7 @@ export const OptionalSettings: React.FC<Props> = ({
       setNft("");
     } else {
       setNft(imageUrl);
+      console.log(`debug: NFT #${idx} [${nfts[idx].name}] selected.`);
     }
   };
 
