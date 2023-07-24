@@ -6,21 +6,21 @@ import {
   web3Prove,
   Web3PermissionType,
 } from "../components/web3/api";
-import { POAP, NFTcollection } from "../components/web3/core";
+import { POAP, NFTcollection, NFT } from "../components/web3/core";
 import { generateRoomName } from "../lib";
 import { fetchJWT } from "../rooms";
 
 interface Web3CallState {
   web3Address?: string;
   permissionType: Web3PermissionType;
-  nft: string | null;
+  nft: NFT | null;
   participantPoaps: POAP[];
   moderatorPoaps: POAP[];
   participantNFTCollections: NFTcollection[];
   moderatorNFTCollections: NFTcollection[];
   setWeb3Address: (web3Address: string, event: string) => void;
   setPermissionType: (permissionType: Web3PermissionType) => void;
-  setNft: (nft: string) => void;
+  setNft: (nft: NFT | null) => void;
   setParticipantPoaps: (participanPoaps: POAP[]) => void;
   setModeratorPoaps: (moderatorPoaps: POAP[]) => void;
   setParticipantNFTCollections: (
@@ -41,7 +41,7 @@ export function useWeb3CallState(
   const [web3Address, _setWeb3Address] = useState<string>();
   const [permissionType, setPermissionType] =
     useState<Web3PermissionType>("NFT-collection");
-  const [nft, setNft] = useState<string | null>(null);
+  const [nft, setNft] = useState<NFT | null>(null);
   const [participantPoaps, setParticipantPoaps] = useState<POAP[]>([]);
   const [moderatorPoaps, setModeratorPoaps] = useState<POAP[]>([]);
   const [participantNFTCollections, setParticipantNFTCollections] = useState<
@@ -83,7 +83,7 @@ export function useWeb3CallState(
       auth = await web3Prove(web3Address as string);
       web3 = {
         web3Authentication: auth,
-        avatarURL: nft,
+        avatarURL: nft != null ? nft.image_url : "",
       };
     } catch (e: any) {
       console.error(e.message);
@@ -164,7 +164,7 @@ export function useWeb3CallState(
             },
           },
         },
-        avatarURL: nft,
+        avatarURL: nft != null ? nft.image_url : "",
       };
 
       const { jwt } = await fetchJWT(roomName, true, setFeedbackMessage, web3);

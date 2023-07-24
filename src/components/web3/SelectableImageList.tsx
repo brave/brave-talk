@@ -27,14 +27,14 @@ export const SelectableImageList: React.FC<Props> = ({
   const showCheckbox = items.some(
     (item) => item.collection !== undefined && item.collection.spam_score >= 80
   );
-
+  const itemsIndexed: [Item, number][] = items.map((item, idx) => [item, idx]);
   const [showSpamItems, setShowSpamItems] = useState(false);
 
   const filteredItems = showSpamItems
-    ? items
-    : items.filter((item) => {
-        if (item.collection?.spam_score !== undefined) {
-          return item.collection.spam_score < 80;
+    ? itemsIndexed
+    : itemsIndexed.filter((item) => {
+        if (item[0].collection?.spam_score !== undefined) {
+          return item[0].collection.spam_score < 80;
         }
         return true;
       });
@@ -63,18 +63,18 @@ export const SelectableImageList: React.FC<Props> = ({
         {filteredItems.map((item, idx) => (
           <div
             key={idx}
-            onClick={() => onToggleSelection(idx)}
+            onClick={() => onToggleSelection(item[1])}
             css={{ padding: "5px 5px 5px 0" }}
-            title={item.name}
+            title={item[0].name}
           >
             <img
-              title={item.name}
+              title={item[0].name}
               height={167}
               width={167}
-              src={item.imageUrl ? item.imageUrl : noNftImage}
+              src={item[0].imageUrl ? item[0].imageUrl : noNftImage}
               css={{
                 border: `5px solid ${
-                  selectedIdxs.includes(idx) ? "white" : "transparent"
+                  selectedIdxs.includes(item[1]) ? "white" : "transparent"
                 }`,
               }}
               alt="item"
