@@ -16,6 +16,7 @@ export const SelectablePoapList: React.FC<Props> = ({
   const poapItems = poaps.map((p) => ({
     imageUrl: p.event.image_url,
     name: p.event.name,
+    chain: p.chain,
   }));
 
   const selectedIdxs = poaps.flatMap((p, idx) => {
