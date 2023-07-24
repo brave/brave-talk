@@ -162,7 +162,7 @@ export const web3NFTcollections = async (
   };
 
   try {
-    const getNFTsByWalletURL = `${SIMPLEHASH_PROXY_ROOT_URL}/api/v0/nfts/owners?chains=ethereum&wallet_addresses=${encodeURIComponent(
+    const getNFTsByWalletURL = `${SIMPLEHASH_PROXY_ROOT_URL}/api/v0/nfts/owners?chains=ethereum,polygon&wallet_addresses=${encodeURIComponent(
       address
     )}`;
     console.log(`>>> GET ${getNFTsByWalletURL}`);
