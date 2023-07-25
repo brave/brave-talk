@@ -46,7 +46,6 @@ export const App: React.FC = () => {
   } = useCallSetupStatus(params.isCreate);
 
   const browserProps = useBrowserProperties();
-  const isSolPath = window.location.search.includes("sol");
 
   if (isCallReady && params.isCreateOnly) {
     reportAction("closing window as requested", params);
