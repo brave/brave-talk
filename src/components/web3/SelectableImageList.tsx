@@ -5,6 +5,7 @@ import noNftImage from "../../images/no-nft-image.png";
 interface Item {
   imageUrl: string;
   name?: string;
+  chain: string;
   collection?: {
     collection_id: string;
     name: string;
@@ -68,7 +69,7 @@ export const SelectableImageList: React.FC<Props> = ({
             title={item[0].name}
           >
             <img
-              title={item[0].name}
+              title={`${item[0].name} (${item[0].chain})`}
               height={167}
               width={167}
               src={item[0].imageUrl ? item[0].imageUrl : noNftImage}
