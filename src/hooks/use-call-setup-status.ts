@@ -34,6 +34,7 @@ interface JoinConferenceRoomResult {
   jwt?: string;
   retryLater?: boolean;
   retryAsWeb3?: boolean;
+  web3account?: string;
 }
 
 const fetchOrCreateJWT = async (
@@ -66,6 +67,10 @@ const fetchOrCreateJWT = async (
       return await fetchOrCreateJWT(roomName, true, false, notice);
     } else if (error.message.includes("Retry as Web3 call")) {
       return { retryAsWeb3: true };
+    } else if (error.message.includes("ETH")) {
+      return { web3account: "ETH" };
+    } else if (error.message.includes("SOL")) {
+      return { web3account: "SOL" };
     } else {
       console.error(error);
       notice(error.message);
@@ -151,9 +156,12 @@ export function useCallSetupStatus(
             setJwt(result.jwt);
           }
 
-          if (result.retryAsWeb3) {
-            // Convert this to a web3 call
+          if (result.web3account === "ETH") {
             setIsWeb3Call(true);
+            setWeb3Account("ETH");
+          } else if (result.web3account === "SOL") {
+            setIsWeb3Call(true);
+            setWeb3Account("SOL");
           } else {
             // the error message has already been displayed by fetchOrCreateJWT,
             // but we need to allow the user to recover by enabling all functionality

@@ -74,14 +74,11 @@ export function useWeb3CallState(
     });
   };
 
-  if (web3Account === "ETH") {
-    window.ethereum?.on("accountsChanged", (accounts: string[]) => {
-      console.log("!!! ETH accountsChanged", accounts);
-      setWeb3Account("ETH");
-      setWeb3Address(accounts[0], "accountsChanged");
-    });
-  }
-
+  window.ethereum?.on("accountsChanged", (accounts: string[]) => {
+    console.log("!!! ETH accountsChanged", accounts);
+    setWeb3Account("ETH");
+    setWeb3Address(accounts[0], "accountsChanged");
+  });
 
   try {
     window.braveSolana?.on("accountChanged", (account: any) => {
@@ -181,6 +178,7 @@ export function useWeb3CallState(
         web3Authentication: auth,
         web3Authorization: {
           method: permissionType,
+          account: web3Account,
           POAPs: {
             participantADs: {
               allow: participantPoaps.map((p) => p.event.id.toString()),

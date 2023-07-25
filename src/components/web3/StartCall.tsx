@@ -166,7 +166,6 @@ export const StartCall: React.FC<Props> = ({
               setModeratorNFTCollections={setModeratorNFTCollections}
             />
           )}
-
           <div css={[bodyText, { marginTop: "28px" }]}>
             {feedbackMessage ? t(feedbackMessage) : ""}
           </div>

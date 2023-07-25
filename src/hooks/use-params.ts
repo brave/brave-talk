@@ -8,6 +8,9 @@ interface Params {
   // url has "create_only=y" meaning we should create the room but then immediately close the window
   // rather than entering the room. This is used by the google calendar extension.
   isCreateOnly: boolean;
+
+  // url has "sol=y" meaning we should show option to start either solana or ethereum call
+  isSolana: boolean;
 }
 
 export function useParams(): Params {
@@ -18,6 +21,7 @@ export function useParams(): Params {
     return {
       isCreate: p.get("create") === "y",
       isCreateOnly: p.get("create_only") === "y",
+      isSolana: p.get("sol") === "y",
     };
   });
 

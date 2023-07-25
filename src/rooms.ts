@@ -98,6 +98,11 @@ const roomsRequest = async ({
         });
       }
       const respText = await response.text();
+      if (respText.includes("ETH")) {
+        throw new Error("ETH");
+      } else if (respText.includes("SOL")) {
+        throw new Error("SOL");
+      }
       const message =
         status == 401
           ? respText

@@ -11,7 +11,6 @@ import { PermissionTypeSelector } from "./PermissionTypeSelector";
 import noNftImage from "../../images/no-nft-image.png";
 import { Web3PermissionType } from "./api";
 
-
 interface Props {
   startCall: boolean;
   web3Account: "ETH" | "SOL" | null;
@@ -22,10 +21,10 @@ interface Props {
   setNft: (nft: NFT | null) => void;
   permissionType: string;
   setPermissionType: (permissionType: Web3PermissionType) => void;
-  participantPoaps: POAP[];
-  setParticipantPoaps: (participantPoaps: POAP[]) => void;
-  moderatorPoaps: POAP[];
-  setModeratorPoaps: (moderatorPoaps: POAP[]) => void;
+  participantPoaps?: POAP[];
+  setParticipantPoaps?: (participantPoaps: POAP[]) => void;
+  moderatorPoaps?: POAP[];
+  setModeratorPoaps?: (moderatorPoaps: POAP[]) => void;
   participantNFTCollections: NFTcollection[];
   setParticipantNFTCollections: (
     participantNFTCollections: NFTcollection[]
