@@ -17,6 +17,26 @@ import {
  * @param {JitsiOptions} options - Configuration options for the conference room
  * @returns {IJitsiMeetApi} The Jitsi API instance for the conference room
  */
+
+function clearAvatarInfoFromLocalStorage() {
+  const jitsiLocalStorageSettings =
+    window.localStorage.getItem("jitsiLocalStorage");
+  if (jitsiLocalStorageSettings) {
+    const jitsiLocalStorageSettingsObj = JSON.parse(jitsiLocalStorageSettings);
+    let baseSettings = jitsiLocalStorageSettingsObj["features/base/settings"];
+    if (baseSettings) {
+      baseSettings = JSON.parse(baseSettings);
+      baseSettings["avatarURL"] = "";
+      jitsiLocalStorageSettingsObj["features/base/settings"] =
+        JSON.stringify(baseSettings);
+    }
+    window.localStorage.setItem(
+      "jitsiLocalStorage",
+      JSON.stringify(jitsiLocalStorageSettingsObj)
+    );
+  }
+}
+
 export const renderConferencePage = async (
   jitsiEventHandlers: JitsiEventHandler[],
   options: JitsiOptions,
@@ -26,7 +46,7 @@ export const renderConferencePage = async (
   const { roomName, jwt } = options;
   reportMethod("renderConferencePage", { roomName, jwt });
   reportMethod("JitsiMeetExternalAPI", options);
-
+  clearAvatarInfoFromLocalStorage();
   const JitsiMeetJS = new JitsiMeetExternalAPI(config.webrtc_domain, options);
   reportAction("JitsiMeetExternalAPI", { status: "activated!" });
   updateSubject(JitsiMeetJS, options);
@@ -37,12 +57,11 @@ export const renderConferencePage = async (
       context.inactiveInterval
     );
   }
-
-  const avatarUrl = getAvatarUrl();
+  const avatarUrl = getAvatarUrl(jwt);
   if (avatarUrl) {
     JitsiMeetJS.executeCommand("avatarUrl", avatarUrl);
   }
-
+  window.sessionStorage.removeItem("avatar_url");
   jitsiEventHandlers.forEach(({ name, fn }: JitsiEventHandler) => {
     JitsiMeetJS.on(name, fn(JitsiMeetJS, context, options));
   });
