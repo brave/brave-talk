@@ -5,22 +5,23 @@ import {
   Web3Authentication,
   web3Prove,
   web3SolProve,
+  Web3PermissionType,
 } from "../components/web3/api";
-import { POAP, NFTcollection } from "../components/web3/core";
+import { POAP, NFTcollection, NFT } from "../components/web3/core";
 import { generateRoomName } from "../lib";
 import { fetchJWT } from "../rooms";
 
 interface Web3CallState {
   web3Address?: string;
-  permissionType: string;
-  nft: string | null;
+  permissionType: Web3PermissionType;
+  nft: NFT | null;
   participantPoaps: POAP[];
   moderatorPoaps: POAP[];
   participantNFTCollections: NFTcollection[];
   moderatorNFTCollections: NFTcollection[];
   setWeb3Address: (web3Address: string, event: string) => void;
-  setPermissionType: (permissionType: string) => void;
-  setNft: (nft: string) => void;
+  setPermissionType: (permissionType: Web3PermissionType) => void;
+  setNft: (nft: NFT | null) => void;
   setParticipantPoaps: (participanPoaps: POAP[]) => void;
   setModeratorPoaps: (moderatorPoaps: POAP[]) => void;
   setParticipantNFTCollections: (
@@ -42,8 +43,8 @@ export function useWeb3CallState(
 ): Web3CallState {
   const [web3Address, _setWeb3Address] = useState<string>();
   const [permissionType, setPermissionType] =
-    useState<string>("NFT-collection");
-  const [nft, setNft] = useState<string | null>(null);
+    useState<Web3PermissionType>("NFT-collection");
+  const [nft, setNft] = useState<NFT | null>(null);
   const [participantPoaps, setParticipantPoaps] = useState<POAP[]>([]);
   const [moderatorPoaps, setModeratorPoaps] = useState<POAP[]>([]);
   const [participantNFTCollections, setParticipantNFTCollections] = useState<
@@ -127,7 +128,7 @@ export function useWeb3CallState(
       }
       web3 = {
         web3Authentication: auth,
-        avatarURL: nft,
+        avatarURL: nft != null ? nft.image_url : "",
       };
     } catch (e: any) {
       console.error(e.message);
@@ -151,12 +152,10 @@ export function useWeb3CallState(
     } catch (e: any) {
       console.error(e);
 
-      if (
-        e.message.includes(
-          "You must have an appropriate token to join this call"
-        )
-      ) {
+      if (e.message.includes("no-token")) {
         setFeedbackMessage("invalid_token_error");
+      } else if (e.message.includes("no-currency")) {
+        setFeedbackMessage("not_enough_currency_error");
       } else {
         setFeedbackMessage("not_participant_error");
       }
@@ -202,8 +201,20 @@ export function useWeb3CallState(
               deny: [],
             },
           },
+          Balances: {
+            participants: {
+              network: "ETH" as const,
+              token: "BAT",
+              minimum: "1",
+            },
+            moderators: {
+              network: "ETH" as const,
+              token: "BAT",
+              minimum: "1",
+            },
+          },
         },
-        avatarURL: nft,
+        avatarURL: nft != null ? nft.image_url : "",
       };
 
       const { jwt } = await fetchJWT(roomName, true, setFeedbackMessage, web3);

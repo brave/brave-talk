@@ -24,62 +24,30 @@ export const SelectableImageList: React.FC<Props> = ({
   selectedIdxs,
   onToggleSelection,
 }) => {
-  const showCheckbox = items.some(
-    (item) => item.collection !== undefined && item.collection.spam_score > 80
-  );
-
-  const [showSpamItems, setShowSpamItems] = useState(false);
-
-  const filteredItems = showSpamItems
-    ? items
-    : items.filter((item) => {
-        if (item.collection?.spam_score !== undefined) {
-          return item.collection.spam_score < 80;
-        }
-        return true;
-      });
-
-  const onToggleSpamItems = () => {
-    setShowSpamItems(!showSpamItems);
-  };
-
   return (
-    <div css={{ display: "flex", flexDirection: "column" }}>
-      {showCheckbox && (
-        <div css={{ marginBottom: "10px" }}>
-          <label>
-            <input
-              type="checkbox"
-              checked={showSpamItems}
-              onChange={onToggleSpamItems}
-            />
-            {showSpamItems ? "Show all NFTs" : "Show all NFTs (not all being shown)"}
-          </label>
-        </div>
-      )}
-      <div css={{ display: "flex", flexWrap: "wrap" }}>
-        {filteredItems.map((item, idx) => (
-          <div
-            key={idx}
-            onClick={() => onToggleSelection(idx)}
-            css={{ padding: "5px 5px 5px 0" }}
+    <div css={{ display: "flex", flexWrap: "wrap" }}>
+      {items.map((item, idx) => (
+        <div
+          key={idx}
+          onClick={() => onToggleSelection(idx)}
+          css={{ padding: "5px 5px 5px 0" }}
+          title={item.name}
+        >
+          <img
             title={item.name}
-          >
-            <img
-              title={item.name}
-              height={167}
-              width={167}
-              src={item.imageUrl ? item.imageUrl : noNftImage}
-              css={{
-                border: `5px solid ${
-                  selectedIdxs.includes(idx) ? "white" : "transparent"
-                }`,
-              }}
-              alt="item"
-            />
-          </div>
-        ))}
-      </div>
+            height={167}
+            width={167}
+            src={item.imageUrl ? item.imageUrl : noNftImage}
+            css={{
+              border: `5px solid ${
+                selectedIdxs.includes(idx) ? "white" : "transparent"
+              }`,
+            }}
+            alt="item"
+          />
+          {}
+        </div>
+      ))}
     </div>
   );
 };

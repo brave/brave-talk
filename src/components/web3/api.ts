@@ -10,6 +10,8 @@ declare let window: any;
 // making a cross domain call - see https://github.com/brave/devops/issues/5445.
 const SIMPLEHASH_PROXY_ROOT_URL = "/api/v1/simplehash";
 
+export type Web3PermissionType = "POAP" | "NFT-collection" | "balance";
+
 export interface Web3Authentication {
   method: string;
   proof: {
@@ -23,6 +25,18 @@ export interface Web3Authorization {
   method: string;
   POAPs: Web3AuthList;
   Collections: Web3AuthList;
+  Balances: Web3BalancesList;
+}
+
+export interface Web3BalancesList {
+  participants: Web3BalancesRequireList;
+  moderators: Web3BalancesRequireList;
+}
+
+export interface Web3BalancesRequireList {
+  network: "ETH"; // "ETH" | "SOL" in the future probably
+  token?: string;
+  minimum: string; // in wei, e.g. 10e-18
 }
 
 export interface Web3SolAuthorization {
@@ -104,6 +118,7 @@ export const web3NFTs = async (address: string): Promise<NFT[]> => {
           ? nft.previews.image_small_url
           : nft.image_url,
         name: nft.name,
+        id: nft.nft_id,
         collection: {
           collection_id: nft.collection?.collection_id,
           name: nft.collection?.name,

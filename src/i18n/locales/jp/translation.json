@@ -1,6 +1,8 @@
 {
   "avatar_fetch_error": "アバターNFTの取得に失敗しました",
   "avatar_nft_subhead": "Ethereum ERC-721のNFT、Solana MetaplexのNFTが使用可能です。",
+  "bat_gating_panel_header": "BATを用いたトークンゲート（入場制限）が適用されます。",
+  "bat_gating_panel_subheader": "ウォレットでBATを保有していない場合（0BATの場合）、このコールには参加できません。",
   "call_permission_type": "通話の許可タイプ:",
   "check_subscription": "サブスクリプションの状態を確認しています...",
   "create_link": "リンクを作成",
@@ -27,6 +29,7 @@
   "my_account_link": "自分のアカウント",
   "nft_collection_permission_type": "NFTコレクション",
   "not_participant_error": "参加者として登録されていません",
+  "not_enough_currency_error": "アクセス失敗：ウォレットでBATを保有していない場合（0BATの場合）、このコールには参加できません。",
   "notice_text": "友人や同僚と、無制限のプライバシーが保護されたビデオ通話を楽しもう",
   "participant_nft_collection_panel_header": "NFTコレクションが必要",
   "participant_nft_collection_panel_subhead": "参加者が認証に必要なNFTコレクションを選択してください",

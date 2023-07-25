@@ -97,12 +97,14 @@ const roomsRequest = async ({
           failureMessages: failureMessages,
         });
       }
-
+      const respText = await response.text();
       const message =
-        failureMessages[status] ||
-        `Request failed: ${status} ${response.statusText}`;
+        status == 401
+          ? respText
+          : failureMessages[status] ||
+            `Request failed: ${status} ${response.statusText}`;
 
-      console.warn(`!!! body: ${await response.text()}`);
+      console.warn(`!!! body: ${respText}`);
       throw new Error(message);
     }
 
