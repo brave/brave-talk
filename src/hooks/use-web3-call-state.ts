@@ -74,11 +74,13 @@ export function useWeb3CallState(
     });
   };
 
-  window.ethereum?.on("accountsChanged", (accounts: string[]) => {
-    console.log("!!! ETH accountsChanged", accounts);
-    setWeb3Account("ETH");
-    setWeb3Address(accounts[0], "accountsChanged");
-  });
+  if (web3Account === "ETH") {
+    window.ethereum?.on("accountsChanged", (accounts: string[]) => {
+      console.log("!!! ETH accountsChanged", accounts);
+      setWeb3Account("ETH");
+      setWeb3Address(accounts[0], "accountsChanged");
+    });
+  }
 
   try {
     window.braveSolana?.on("accountChanged", (account: any) => {
