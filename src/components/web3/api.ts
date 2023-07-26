@@ -90,7 +90,7 @@ export const web3LoginSol = async (): Promise<string> => {
 
 export const web3NFTs = async (address: string): Promise<NFT[]> => {
   try {
-    const getNFTsURL = `${SIMPLEHASH_PROXY_ROOT_URL}/api/v0/nfts/owners?chains=ethereum,solana&wallet_addresses=${encodeURIComponent(
+    const getNFTsURL = `${SIMPLEHASH_PROXY_ROOT_URL}/api/v0/nfts/owners?chains=ethereum,solana,polygon&wallet_addresses=${encodeURIComponent(
       address
     )}`;
     console.log(`>>> GET ${getNFTsURL}`);
@@ -119,6 +119,7 @@ export const web3NFTs = async (address: string): Promise<NFT[]> => {
           : nft.image_url,
         name: nft.name,
         id: nft.nft_id,
+        chain: nft.chain,
         collection: {
           collection_id: nft.collection?.collection_id,
           name: nft.collection?.name,
@@ -167,6 +168,7 @@ export const web3NFTcollections = async (
           collections[nft.collection.collection_id] = {
             id: nft.collection.collection_id,
             name: nft.collection.name,
+            chain: nft.chain,
             image_url: nft.previews?.image_small_url
               ? nft.previews.image_small_url
               : nft.image_url
@@ -184,7 +186,7 @@ export const web3NFTcollections = async (
   };
 
   try {
-    const getNFTsByWalletURL = `${SIMPLEHASH_PROXY_ROOT_URL}/api/v0/nfts/owners?chains=ethereum,solana&wallet_addresses=${encodeURIComponent(
+    const getNFTsByWalletURL = `${SIMPLEHASH_PROXY_ROOT_URL}/api/v0/nfts/owners?chains=ethereum,solana,polygon&wallet_addresses=${encodeURIComponent(
       address
     )}`;
     console.log(`>>> GET ${getNFTsByWalletURL}`);
