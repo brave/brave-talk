@@ -16,16 +16,18 @@ export const SolLogin: React.FC<Props> = ({
   const { t } = useTranslation();
 
   useEffect(() => {
-    try{
+    try {
       window.braveSolana?.on("!!! accountChanged", () => setNotice(undefined));
-    }catch {
-      console.warn("!!! Brave Wallet does not exists")
+    } catch {
+      console.warn("!!! Brave Wallet does not exists");
     }
 
-    try{
-      window.phantom?.solana.on("!!! accountChanged", () => setNotice(undefined));
-    }catch {
-      console.warn("!!! Phantom Wallet does not exists")
+    try {
+      window.phantom?.solana.on("!!! accountChanged", () =>
+        setNotice(undefined)
+      );
+    } catch {
+      console.warn("!!! Phantom Wallet does not exists");
     }
   }, []);
 
