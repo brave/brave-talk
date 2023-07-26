@@ -2,6 +2,7 @@ import { isProduction } from "../../environment";
 import { fetchWithTimeout } from "../../lib";
 import { NFTcollection, POAP, NFT } from "./core";
 import { EIP4361Message, createEIP4361Message } from "./EIP4361";
+import { Buffer } from "buffer";
 
 declare let window: any;
 
@@ -38,6 +39,11 @@ export interface Web3BalancesRequireList {
   minimum: string; // in wei, e.g. 10e-18
 }
 
+export interface Web3SolAuthorization {
+  method: string;
+  Collections: Web3AuthList;
+}
+
 export interface Web3AuthList {
   participantADs: Web3ResourceIdentifierList;
   moderatorADs: Web3ResourceIdentifierList;
@@ -54,6 +60,12 @@ export interface Web3RequestBody {
   avatarURL: string | null;
 }
 
+export interface Web3SolRequestBody {
+  web3Authentication: Web3Authentication;
+  web3Authorization?: Web3SolAuthorization;
+  avatarURL: string | null;
+}
+
 export const web3Login = async (): Promise<string> => {
   const allAddresses: string[] = await window.ethereum.request({
     method: "eth_requestAccounts",
@@ -64,9 +76,21 @@ export const web3Login = async (): Promise<string> => {
   return allAddresses[0];
 };
 
+export const web3LoginSol = async (): Promise<string> => {
+  try {
+    const result = await window.braveSolana.connect();
+    console.log("!!! allAddresses", result);
+    return result.publicKey.toBase58();
+  } catch {
+    const result = await window.phantom.solana.connect();
+    console.log("!!! allAddresses", result);
+    return result.publicKey.toBase58();
+  }
+};
+
 export const web3NFTs = async (address: string): Promise<NFT[]> => {
   try {
-    const getNFTsURL = `${SIMPLEHASH_PROXY_ROOT_URL}/api/v0/nfts/owners?chains=ethereum,polygon&wallet_addresses=${encodeURIComponent(
+    const getNFTsURL = `${SIMPLEHASH_PROXY_ROOT_URL}/api/v0/nfts/owners?chains=ethereum,solana,polygon&wallet_addresses=${encodeURIComponent(
       address
     )}`;
     console.log(`>>> GET ${getNFTsURL}`);
@@ -162,7 +186,7 @@ export const web3NFTcollections = async (
   };
 
   try {
-    const getNFTsByWalletURL = `${SIMPLEHASH_PROXY_ROOT_URL}/api/v0/nfts/owners?chains=ethereum,polygon&wallet_addresses=${encodeURIComponent(
+    const getNFTsByWalletURL = `${SIMPLEHASH_PROXY_ROOT_URL}/api/v0/nfts/owners?chains=ethereum,solana,polygon&wallet_addresses=${encodeURIComponent(
       address
     )}`;
     console.log(`>>> GET ${getNFTsByWalletURL}`);
@@ -214,7 +238,7 @@ export const web3Prove = async (
     nonce: nonce,
     issuedAt: new Date().toISOString(),
   };
-  const payload = createEIP4361Message(message);
+  const payload = createEIP4361Message(message, "Ethereum");
   const payloadBytes = new TextEncoder().encode(payload);
   const { hexlify } = await import("ethers");
   const hexPayload = hexlify(payloadBytes);
@@ -232,6 +256,62 @@ export const web3Prove = async (
   };
 
   return result;
+};
+
+export const web3SolProve = async (
+  web3Address: string
+): Promise<Web3Authentication> => {
+  if (!web3Address) {
+    throw new Error("not logged into Web3");
+  }
+
+  const nonce = await getNonce();
+  console.log("!!! nonce", nonce);
+  const message: EIP4361Message = {
+    domain: window.location.host,
+    address: web3Address,
+    statement:
+      "Please sign this message so Brave Talk knows that you own this address",
+    uri: window.location.toString(),
+    version: "1",
+    chainId: 1,
+    // HT:https://stackoverflow.com/questions/40031688/javascript-arraybuffer-to-hex/40031979
+    // btoa has some characters not allowed by the EIP-4361 ABNF
+    nonce: nonce,
+    issuedAt: new Date().toISOString(),
+  };
+  const payload = createEIP4361Message(message, "Solana");
+  const payloadBytes = new TextEncoder().encode(payload);
+  const { hexlify } = await import("ethers");
+  const hexPayload = hexlify(payloadBytes);
+  try {
+    const { publicKey, signature } = await window.braveSolana.signMessage(
+      payloadBytes
+    );
+    const result = {
+      method: "CAIP-122-json",
+      proof: {
+        signer: publicKey.toBase58(),
+        signature: Buffer.from(signature).toString("hex"),
+        payload: hexPayload,
+      },
+    };
+    return result;
+  } catch {
+    const { publicKey, signature } = await window.phantom.solana.signMessage(
+      payloadBytes
+    );
+    const result = {
+      method: "CAIP-122-json",
+      proof: {
+        signer: publicKey.toBase58(),
+        signature: Buffer.from(signature).toString("hex"),
+        payload: hexPayload,
+      },
+    };
+
+    return result;
+  }
 };
 
 const poapContractAddress = "0x22c1f6050e56d2876009903609a2cc3fef83b415";
