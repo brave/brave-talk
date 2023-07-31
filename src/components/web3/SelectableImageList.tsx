@@ -72,7 +72,6 @@ export const SelectableImageList: React.FC<Props> = ({
             key={idx}
             onClick={() => {
               onToggleSelection(item[1]);
-              console.log(item[1], selectedIdxs);
             }}
             css={{ padding: "5px 5px 5px 0" }}
             title={item[0].name}

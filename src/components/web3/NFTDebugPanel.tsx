@@ -32,7 +32,6 @@ export const NFTDebugPanel: React.FC<Props> = ({
       n.collection ? n.collection.collection_id : "no-collection-id"
     );
   const onToggle = (idx: number) => {
-    console.log(selectedNftIdxs);
     if (selectedNftIdxs.includes(idx))
       setSelectedNftIdxs(selectedNftIdxs.filter((i: number) => i != idx));
     else {
