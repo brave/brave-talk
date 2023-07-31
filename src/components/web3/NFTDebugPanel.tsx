@@ -11,8 +11,10 @@ interface Props {
 }
 
 const showSpamScore = (item: Item) => {
-  return `${item.name} (${item.chain}) Spam Score : ${
-    item.collection ? item.collection.spam_score : "n/a"
+  return `${item.name} (${item.chain}) ${
+    item.collection?.spam_score
+      ? "Spam Score: " + `${item.collection.spam_score}`
+      : ""
   }`;
 };
 
