@@ -8,7 +8,9 @@ import { Login } from "./Login";
 import { OptionalSettings } from "./OptionalSettings";
 import { bodyText, header } from "./styles";
 import { useWeb3CallState } from "../../hooks/use-web3-call-state";
+import { useParams } from "../../hooks/use-params";
 import { TranslationKeys } from "../../i18n/i18next";
+import { NFTDebugPanel } from "./NFTDebugPanel";
 
 type Props = {
   setJwt: (jwt: string) => void;
@@ -31,6 +33,8 @@ export const StartCall: React.FC<Props> = ({
   const [nftCollections, setNFTCollections] = useState<
     NFTcollection[] | undefined
   >();
+  const isNFTDebug = useParams().isDebug;
+  const [debugMode, setDebugMode] = useState<boolean>(false);
   const [feedbackMessage, setFeedbackMessage] = useState<TranslationKeys>();
   const {
     web3Address,
@@ -79,6 +83,10 @@ export const StartCall: React.FC<Props> = ({
     }
   }, [web3Address]);
 
+  const onChangeDebugMode = () => {
+    setDebugMode(!debugMode);
+  };
+
   const onStartCall = async () => {
     if (!web3Address) return;
 
@@ -112,10 +120,18 @@ export const StartCall: React.FC<Props> = ({
       }}
     >
       <div css={[header, { marginBottom: "22px" }]}>Start a Web3 Call</div>
-
+      {isNFTDebug && (
+        <label>
+          <input
+            type="checkbox"
+            value="DEBUG MODE"
+            onChange={onChangeDebugMode}
+          />
+          Debug Mode
+        </label>
+      )}
       <Login web3address={web3Address} onAddressSelected={setWeb3Address} />
-
-      {web3Address && (
+      {web3Address && (!isNFTDebug || !debugMode) && (
         <div css={{ marginTop: "28px" }}>
           <OptionalSettings
             startCall={true}
@@ -144,6 +160,9 @@ export const StartCall: React.FC<Props> = ({
             {isSubscribed ? t("start_web3_call") : t("start_free_web3_call")}
           </Button>
         </div>
+      )}
+      {isNFTDebug && debugMode && (
+        <NFTDebugPanel startCall={true} nfts={nfts} nft={nft} setNft={setNft} />
       )}
     </div>
   );
