@@ -27,7 +27,6 @@ export const StartCall: React.FC<Props> = ({
   setJitsiContext,
   isSubscribed,
 }) => {
-  console.log(useParams());
   const { t } = useTranslation();
   const [nfts, setNfts] = useState<NFT[] | undefined>();
   const [poaps, setPoaps] = useState<POAP[] | undefined>();
