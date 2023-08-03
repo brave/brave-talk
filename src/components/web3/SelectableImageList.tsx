@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { Dispatch } from "react";
 import noNftImage from "../../images/no-nft-image.png";
 
-interface Item {
+export interface Item {
   imageUrl: string;
   name?: string;
   chain: string;
@@ -18,12 +18,18 @@ interface Props {
   items: Item[];
   selectedIdxs: number[];
   onToggleSelection: Dispatch<number>;
+  onMouseOverText?: (item: Item) => string;
 }
+
+const showNameAndNetwork = (item: Item) => {
+  return `${item.name} (${item.chain})`;
+};
 
 export const SelectableImageList: React.FC<Props> = ({
   items,
   selectedIdxs,
   onToggleSelection,
+  onMouseOverText = showNameAndNetwork,
 }) => {
   const showCheckbox = items.some(
     (item) => item.collection !== undefined && item.collection.spam_score >= 80
@@ -64,12 +70,14 @@ export const SelectableImageList: React.FC<Props> = ({
         {filteredItems.map((item, idx) => (
           <div
             key={idx}
-            onClick={() => onToggleSelection(item[1])}
+            onClick={() => {
+              onToggleSelection(item[1]);
+            }}
             css={{ padding: "5px 5px 5px 0" }}
             title={item[0].name}
           >
             <img
-              title={`${item[0].name} (${item[0].chain})`}
+              title={onMouseOverText(item[0])}
               height={167}
               width={167}
               src={item[0].imageUrl ? item[0].imageUrl : noNftImage}
