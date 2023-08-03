@@ -38,6 +38,8 @@ export const StartCall: React.FC<Props> = ({
   const [nftCollections, setNFTCollections] = useState<
     NFTcollection[] | undefined
   >();
+  const [isExceptionAddressWrong, setIsExceptionAddressWrong] =
+    useState<boolean>(false);
   const isNFTDebug = useParams().isDebug;
   const [debugMode, setDebugMode] = useState<boolean>(false);
   const [feedbackMessage, setFeedbackMessage] = useState<TranslationKeys>();
@@ -45,10 +47,12 @@ export const StartCall: React.FC<Props> = ({
     web3Address,
     permissionType,
     nft,
+    exceptionList,
     participantPoaps,
     moderatorPoaps,
     participantNFTCollections,
     moderatorNFTCollections,
+    setExceptionList,
     setWeb3Address,
     setPermissionType,
     setNft,
@@ -154,6 +158,10 @@ export const StartCall: React.FC<Props> = ({
               poaps={poaps}
               nftCollections={nftCollections}
               nft={nft}
+              exceptionList={exceptionList}
+              setExceptionList={setExceptionList}
+              isExceptionAddressWrong={isExceptionAddressWrong}
+              setIsExceptionAddressWrong={setIsExceptionAddressWrong}
               setPermissionType={setPermissionType}
               setNft={setNft}
               participantPoaps={participantPoaps}
@@ -174,6 +182,10 @@ export const StartCall: React.FC<Props> = ({
               poaps={poaps}
               nftCollections={nftCollections}
               nft={nft}
+              exceptionList={exceptionList}
+              setExceptionList={setExceptionList}
+              isExceptionAddressWrong={isExceptionAddressWrong}
+              setIsExceptionAddressWrong={setIsExceptionAddressWrong}
               setPermissionType={setPermissionType}
               setNft={setNft}
               participantNFTCollections={participantNFTCollections}

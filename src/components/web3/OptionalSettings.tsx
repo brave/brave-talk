@@ -4,6 +4,7 @@ import { POAP, NFTcollection, NFT } from "./core";
 import { isProduction } from "../../environment";
 import { ExapandablePanel } from "./ExpandablePanel";
 import { NonExapandablePanel } from "./NonExpandablePanel";
+import { ExceptionListPanel } from "./ExceptionListPanel";
 import { SelectableImageList } from "./SelectableImageList";
 import { SelectablePoapList } from "./SelectablePoapList";
 import { SelectableNFTCollectionList } from "./SelectableNFTCollectionList";
@@ -16,6 +17,10 @@ interface Props {
   web3Account: "ETH" | "SOL" | null;
   nfts?: NFT[];
   poaps?: POAP[];
+  exceptionList?: string[];
+  setExceptionList?: (exceptionList: string[]) => void;
+  isExceptionAddressWrong?: boolean;
+  setIsExceptionAddressWrong?: (val: boolean) => void;
   nftCollections?: NFTcollection[];
   nft: NFT | null;
   setNft: (nft: NFT | null) => void;
@@ -40,6 +45,14 @@ export const OptionalSettings: React.FC<Props> = ({
   web3Account,
   nfts = [],
   poaps,
+  exceptionList = [],
+  setExceptionList = () => {
+    return [];
+  },
+  isExceptionAddressWrong,
+  setIsExceptionAddressWrong = () => {
+    return false;
+  },
   nftCollections,
   nft,
   setNft,
@@ -175,6 +188,21 @@ export const OptionalSettings: React.FC<Props> = ({
           <NonExapandablePanel
             header={t("bat_gating_panel_header")}
             subhead={t("bat_gating_panel_subheader")}
+          />
+        </React.Fragment>
+      )}
+      {startCall && (
+        <React.Fragment>
+          <ExceptionListPanel
+            header={t("address_exception_header")}
+            subhead={t("address_exception_subheader")}
+            web3Account={web3Account}
+            exceptionList={exceptionList}
+            onChange={(addr) => {
+              setExceptionList(addr);
+            }}
+            isExceptionAddressWrong={isExceptionAddressWrong}
+            setIsExceptionAddressWrong={setIsExceptionAddressWrong}
           />
         </React.Fragment>
       )}

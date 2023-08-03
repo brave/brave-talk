@@ -26,6 +26,17 @@ export interface Web3Authorization {
   POAPs: Web3AuthList;
   Collections: Web3AuthList;
   Balances: Web3BalancesList;
+  Addresses: Web3AddressExclusionList;
+}
+
+export interface Web3AddressExclusionList {
+  participantADs: Web3AddressIdentifierList;
+  moderatorADs: Web3AddressIdentifierList;
+}
+
+export interface Web3AddressIdentifierList {
+  allow: string[] | undefined;
+  deny: string[] | undefined;
 }
 
 export interface Web3BalancesList {
