@@ -53,7 +53,7 @@
   "dependencies": {
     "@emotion/react": "11.11.1",
     "@types/dom-screen-wake-lock": "1.0.1",
-    "buffer": "6.0.3",
+    "buffer": "^6.0.3",
     "ethers": "6.6.7",
     "i18next": "23.4.1",
     "jest-environment-jsdom": "29.6.2",
