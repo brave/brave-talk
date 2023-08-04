@@ -198,7 +198,11 @@ export const StartCall: React.FC<Props> = ({
             {feedbackMessage ? t(feedbackMessage) : ""}
           </div>
 
-          <Button onClick={onStartCall} css={{ marginTop: "45px" }}>
+          <Button
+            onClick={onStartCall}
+            css={{ marginTop: "45px" }}
+            disabled={isExceptionAddressWrong}
+          >
             {isSubscribed ? t("start_web3_call") : t("start_free_web3_call")}
           </Button>
         </div>
