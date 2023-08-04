@@ -72,7 +72,7 @@ export const ExceptionListPanel: React.FC<Props> = ({
       return /^0x[a-fA-F0-9]{40}$/.test(address);
     } else if (accountType === "SOL") {
       // Base58 character set
-      return /^[1-9A-HJ-NP-Za-km-z]{44}$/.test(address);
+      return /^[1-9A-HJ-NP-Za-km-z]{32,44}$/.test(address);
     } else {
       return false; // Invalid accountType
     }
