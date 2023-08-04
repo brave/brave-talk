@@ -34,7 +34,10 @@ export const ExceptionListPanel: React.FC<Props> = ({
   };
 
   const validateAddresses = () => {
-    const addresses = inputText.split(",").map((address) => address.trim());
+    const delimitersRegex = /,|\s|\t|\n/; // Regex to match comma, space, tab, or newline
+    const addresses = inputText
+      .split(delimitersRegex)
+      .map((address) => address.trim());
     const invalidAddressesList: string[] = [];
     const validAddressesList: string[] = [];
     let flag = 0;
