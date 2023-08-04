@@ -1,4 +1,5 @@
 import React, { ReactNode, useState, Dispatch } from "react";
+import { bodyText } from "./styles";
 
 interface Props {
   header: string;
@@ -79,77 +80,63 @@ export const ExceptionListPanel: React.FC<Props> = ({
   };
 
   return (
-    <div
-      css={{
-        background: "rgba(255, 255, 255, 0.24)",
-        backdropFilter: "blur(8px)",
-        marginTop: "11px",
-        padding: "24px 19px",
-        textAlign: "left",
-      }}
-    >
-      <div
-        css={{
-          display: "flex",
-          alignItems: "center",
-        }}
-      >
-        <div css={{ flex: 1 }}>
-          <div
-            css={{
-              fontWeight: 500,
-              fontSize: "22px",
-              lineHeight: "32px",
-            }}
-          >
-            {header}
-          </div>
-          <div>{subhead}</div>
-        </div>
-      </div>
-      {invalidAddresses.length > 0 && (
+    <div>
         <div
-          css={{
-            color: "red",
-            fontSize: "12px",
-            marginBottom: "8px",
-          }}
+        css={{
+            background: 'rgba(255, 255, 255, 0.24)',
+            backdropFilter: 'blur(8px)',
+            marginTop: '11px',
+            padding: '24px 19px',
+            textAlign: 'left',
+        }}
         >
-          Invalid address(es): {invalidAddresses.join(", ")}
+        <div
+            css={{
+            display: 'flex',
+            alignItems: 'center',
+            }}
+        >
+            <div css={{ flex: 1 }}>
+            <div
+                css={{
+                fontWeight: 500,
+                fontSize: '22px',
+                lineHeight: '32px',
+                }}
+            >
+                {header}
+            </div>
+            <div>{subhead}</div>
+            </div>
         </div>
-      )}
-      {/* <input
-        type="text"
-        css={{
-          fontWeight: 200,
-          fontSize: '15px',
-          lineHeight: '15px',
-          width: '100%',
-          marginTop: '3px',
-          borderColor: invalidAddresses.length > 0 ? 'red' : undefined, // Add red border if there are invalid addresses
-        }}
-        placeholder={placeholderText}
-        value={inputText}
-        onChange={handleInputChange}
-        onBlur={validateAddresses}
-      /> */}
-      <textarea
-        css={{
-          fontWeight: 200,
-          fontSize: "15px",
-          lineHeight: "15px",
-          width: "100%",
-          height: "auto", // Adjust height based on content
-          resize: "vertical", // Allow vertical resizing if needed
-          marginTop: "3px",
-          borderColor: invalidAddresses.length > 0 ? "red" : undefined, // Add red border if there are invalid addresses
-        }}
-        placeholder={placeholderText}
-        value={inputText}
-        onChange={handleInputChange}
-        onBlur={validateAddresses}
-        rows={3} // Set the number of visible rows here (adjust as needed)
-      />
+        <textarea
+            css={{
+            fontWeight: 200,
+            fontSize: '15px',
+            lineHeight: '15px',
+            width: '100%',
+            height: 'auto', // Adjust height based on content
+            resize: 'vertical', // Allow vertical resizing if needed
+            marginTop: '3px',
+            borderColor: invalidAddresses.length > 0 ? 'red' : undefined, // Add red border if there are invalid addresses
+            }}
+            placeholder={placeholderText}
+            value={inputText}
+            onChange={handleInputChange}
+            onBlur={validateAddresses}
+            rows={3} // Set the number of visible rows here (adjust as needed)
+        />
+        </div>
+        {invalidAddresses.length > 0 && (
+            <div css={[bodyText, { marginTop: "28px" }]}>
+                {invalidAddresses.length === 1
+                ? 'Invalid address:'
+                : 'Invalid addresses:'}
+                {invalidAddresses.map((address, index) => (
+                <div key={index}>{address}</div>
+                ))}
+            </div>
+        )}
     </div>
   );
 };
