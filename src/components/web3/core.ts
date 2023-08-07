@@ -7,18 +7,21 @@ export interface POAP {
     image_url: string;
   };
   tokenId: string;
+  chain: string;
 }
 
 export interface NFTcollection {
   id: string;
   name: string;
   image_url: string;
+  chain: string;
 }
 
 export interface NFT {
   image_url: string;
   name: string;
   id: string;
+  chain: string;
   collection?: {
     collection_id: string;
     name: string;
