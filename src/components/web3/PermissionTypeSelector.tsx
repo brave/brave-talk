@@ -50,7 +50,7 @@ export const PermissionTypeSelector: React.FC<Props> = ({
         css={[
           styles.base,
           permissionType === "POAP" && styles.selected,
-          web3Account === "SOL" ? disabledButton : null,
+          web3Account === "SOL" && disabledButton,
         ]}
       >
         {t("poap_permission_type")}
@@ -67,7 +67,7 @@ export const PermissionTypeSelector: React.FC<Props> = ({
       <button
         onClick={() => setPermissionType("balance")}
         css={[styles.base, permissionType === "balance" && styles.selected,
-             web3Account === "SOL" ? disabledButton : null]}
+             web3Account === "SOL" && disabledButton]}
       >
         {"BAT Gating"}
       </button>

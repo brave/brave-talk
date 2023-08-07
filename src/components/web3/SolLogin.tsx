@@ -19,7 +19,7 @@ export const SolLogin: React.FC<Props> = ({
     try {
       window.braveSolana?.on("!!! accountChanged", () => setNotice(undefined));
     } catch {
-      console.warn("!!! Brave Wallet does not exists");
+      console.warn("!!! Brave Wallet does not exist");
     }
 
     try {
@@ -27,7 +27,7 @@ export const SolLogin: React.FC<Props> = ({
         setNotice(undefined)
       );
     } catch {
-      console.warn("!!! Phantom Wallet does not exists");
+      console.warn("!!! Phantom Wallet does not exist");
     }
   }, []);
 
