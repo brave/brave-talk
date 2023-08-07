@@ -1,4 +1,5 @@
 import React, { DispatchWithoutAction } from "react";
+import { css } from '@emotion/react';
 import { useSubscribedStatus } from "../hooks/use-subscribed-status";
 import { Background } from "./Background";
 import { Footer } from "./Footer";
