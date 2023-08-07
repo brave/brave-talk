@@ -38,6 +38,8 @@ export const App: React.FC = () => {
     isCallReady,
     isWeb3Call,
     setIsWeb3Call,
+    web3Account,
+    setWeb3Account,
     setJwt,
     setRoomName,
     setJitsiContext,
@@ -53,7 +55,6 @@ export const App: React.FC = () => {
   return (
     <React.Fragment>
       <GlobalStyles />
-
       <div css={styles.container}>
         <InCall
           roomName={roomName ?? ""}
@@ -70,6 +71,8 @@ export const App: React.FC = () => {
               setJwt={setJwt}
               jitsiContext={jitsiContext}
               setJitsiContext={setJitsiContext}
+              web3Account={web3Account}
+              setWeb3Account={setWeb3Account}
             />
           ) : (
             <WelcomeScreen
@@ -80,6 +83,8 @@ export const App: React.FC = () => {
               browser={browserProps}
               isWeb3Call={isWeb3Call}
               setIsWeb3Call={setIsWeb3Call}
+              web3Account={params.isSolana ? web3Account : "ETH"}
+              setWeb3Account={setWeb3Account}
               setJwt={setJwt}
               setRoomName={setRoomName}
               jitsiContext={jitsiContext}
