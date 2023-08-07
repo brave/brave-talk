@@ -6,7 +6,7 @@
   "address_exception_header": "Address Exception List",
   "address_exception_subheader": "Users with these addresses will not be allowed to join the call.",
   "address_allow_header": "Address Allow List",
-  "address_allow_subheader": "Users with these address will be allowed to join the call.",
+  "address_allow_subheader": "Users with these addresses will be allowed to join the call.",
   "call_permission_type": "Call permission type:",
   "check_subscription": "Checking subscription status...",
   "create_link": "Create link",
