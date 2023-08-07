@@ -9,7 +9,7 @@ import { SelectableImageList } from "./SelectableImageList";
 import { SelectablePoapList } from "./SelectablePoapList";
 import { SelectableNFTCollectionList } from "./SelectableNFTCollectionList";
 import { PermissionTypeSelector } from "./PermissionTypeSelector";
-import noNftImage from "../../images/no-nft-image.png";
+import { useParams } from "../../hooks/use-params";
 import { Web3PermissionType } from "./api";
 
 interface Props {
@@ -21,6 +21,8 @@ interface Props {
   setExceptionList?: (exceptionList: string[]) => void;
   isExceptionAddressWrong?: boolean;
   setIsExceptionAddressWrong?: (val: boolean) => void;
+  allowList?: string[];
+  setAllowList?: (exceptionList: string[]) => void;
   nftCollections?: NFTcollection[];
   nft: NFT | null;
   setNft: (nft: NFT | null) => void;
@@ -53,6 +55,10 @@ export const OptionalSettings: React.FC<Props> = ({
   setIsExceptionAddressWrong = () => {
     return false;
   },
+  allowList = [],
+  setAllowList = () => {
+    return [];
+  },
   nftCollections,
   nft,
   setNft,
@@ -71,6 +77,7 @@ export const OptionalSettings: React.FC<Props> = ({
   moderatorNFTCollections,
   setModeratorNFTCollections,
 }) => {
+  const isAllow = useParams().isAllow;
   const nftItems = nfts.map((n: NFT) => ({ ...n, imageUrl: n.image_url }));
   const selectedNftIdx = nfts.findIndex((n) => nft != null && n.id === nft.id);
   const { t } = useTranslation();
@@ -202,6 +209,20 @@ export const OptionalSettings: React.FC<Props> = ({
               setExceptionList(addr);
             }}
             isExceptionAddressWrong={isExceptionAddressWrong}
+            setIsExceptionAddressWrong={setIsExceptionAddressWrong}
+          />
+        </React.Fragment>
+      )}
+      {startCall && isAllow && (
+        <React.Fragment>
+          <ExceptionListPanel
+            header={t("address_allow_header")}
+            subhead={t("address_allow_subheader")}
+            web3Account={web3Account}
+            exceptionList={allowList}
+            onChange={(addr) => {
+              setAllowList(addr);}}
+            isExceptionAddressWrong={isExceptionAddressWrong} 
             setIsExceptionAddressWrong={setIsExceptionAddressWrong}
           />
         </React.Fragment>

@@ -21,6 +21,8 @@ interface Web3CallState {
   moderatorNFTCollections: NFTcollection[];
   exceptionList?: string[];
   setExceptionList: (exceptionList: string[]) => void;
+  allowList?: string[];
+  setAllowList: (allowList: string[]) => void;
   setWeb3Address: (web3Address: string, event: string) => void;
   setPermissionType: (permissionType: Web3PermissionType) => void;
   setNft: (nft: NFT | null) => void;
@@ -56,6 +58,7 @@ export function useWeb3CallState(
     NFTcollection[]
   >([]);
   const [exceptionList, setExceptionList] = useState<string[]>();
+  const [allowList, setAllowList] = useState<string[]>()
 
   const setWeb3Address = (address: string, event: string) => {
     _setWeb3Address((prevAddress) => {
@@ -218,7 +221,7 @@ export function useWeb3CallState(
           },
           Addresses: {
             participantADs: {
-              allow: [],
+              allow: allowList,
               deny: exceptionList,
             },
             moderatorADs: {
@@ -248,10 +251,12 @@ export function useWeb3CallState(
     permissionType,
     nft,
     exceptionList,
+    allowList,
     participantPoaps,
     moderatorPoaps,
     participantNFTCollections,
     moderatorNFTCollections,
+    setAllowList,
     setExceptionList,
     setWeb3Address,
     setPermissionType,

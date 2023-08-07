@@ -48,10 +48,12 @@ export const StartCall: React.FC<Props> = ({
     permissionType,
     nft,
     exceptionList,
+    allowList,
     participantPoaps,
     moderatorPoaps,
     participantNFTCollections,
     moderatorNFTCollections,
+    setAllowList,
     setExceptionList,
     setWeb3Address,
     setPermissionType,
@@ -160,6 +162,8 @@ export const StartCall: React.FC<Props> = ({
               nft={nft}
               exceptionList={exceptionList}
               setExceptionList={setExceptionList}
+              allowList={allowList}
+              setAllowList={setAllowList}
               isExceptionAddressWrong={isExceptionAddressWrong}
               setIsExceptionAddressWrong={setIsExceptionAddressWrong}
               setPermissionType={setPermissionType}
@@ -184,6 +188,8 @@ export const StartCall: React.FC<Props> = ({
               nft={nft}
               exceptionList={exceptionList}
               setExceptionList={setExceptionList}
+              allowList={allowList}
+              setAllowList={setAllowList}
               isExceptionAddressWrong={isExceptionAddressWrong}
               setIsExceptionAddressWrong={setIsExceptionAddressWrong}
               setPermissionType={setPermissionType}
