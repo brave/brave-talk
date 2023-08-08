@@ -1,5 +1,5 @@
 import React, { DispatchWithoutAction } from "react";
-import { css } from '@emotion/react';
+import { css } from "@emotion/react";
 import { useSubscribedStatus } from "../hooks/use-subscribed-status";
 import { Background } from "./Background";
 import { Footer } from "./Footer";
@@ -74,10 +74,6 @@ export const WelcomeScreen: React.FC<Props> = ({
     return;
   };
   const Body: React.FC = () => {
-    if (!hasInitialRoomName && browser.isBrave === false) {
-      return <DownloadBrave />;
-    }
-
     if (!browser.supportsWebRTC) {
       return (
         <SectionWithLogo
