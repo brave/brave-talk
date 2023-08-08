@@ -1,4 +1,5 @@
 import React, { DispatchWithoutAction } from "react";
+import { css } from "@emotion/react";
 import { useSubscribedStatus } from "../hooks/use-subscribed-status";
 import { Background } from "./Background";
 import { Footer } from "./Footer";
@@ -89,61 +90,63 @@ export const WelcomeScreen: React.FC<Props> = ({
     }
 
     if (isWeb3Call && web3Account === null) {
-      const popupContainerStyle: React.CSSProperties = {
-        position: "fixed",
-        top: 0,
-        left: 0,
-        right: 0,
-        bottom: 0,
-        background: "rgba(0, 0, 0, 0.5)",
-        display: "flex",
-        justifyContent: "center",
-        alignItems: "center",
-        zIndex: 9999,
-      };
-      const popupContentStyle: React.CSSProperties = {
-        background: "white",
-        padding: "20px",
-        borderRadius: "5px",
-        textAlign: "center",
-      };
+      // Define styles using the css prop
+      const popupContainerStyle = css`
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: rgba(0, 0, 0, 0.5);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        z-index: 9999;
+      `;
 
-      const buttonContainerStyle: React.CSSProperties = {
-        marginTop: "20px",
-        display: "flex",
-        justifyContent: "center",
-      };
+      const popupContentStyle = css`
+        background: white;
+        padding: 20px;
+        border-radius: 5px;
+        text-align: center;
+      `;
 
-      const buttonStyle: React.CSSProperties = {
-        margin: "0 10px",
-        padding: "10px 20px",
-        border: "solid 1px #ccc",
-        borderRadius: "10px",
-        backgroundColor: "transparent",
-        color: "black",
-        cursor: "pointer",
-        display: "flex",
-        flexDirection: "column",
-        alignItems: "center",
-        overflow: "hidden",
-        flex: 1,
-      };
+      const buttonContainerStyle = css`
+        margin-top: 20px;
+        display: flex;
+        justify-content: center;
+      `;
 
-      const buttonWrapperStyle: React.CSSProperties = {
-        display: "flex",
-        width: "100%",
-      };
+      const buttonStyle = css`
+        margin: 0 10px;
+        padding: 10px 20px;
+        border: solid 1px #ccc;
+        border-radius: 10px;
+        background-color: transparent;
+        color: black;
+        cursor: pointer;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        overflow: hidden;
+        flex: 1;
+      `;
 
-      const logoStyle: React.CSSProperties = {
-        width: "50px",
-        height: "50px",
-        marginBottom: "10px",
-        borderRadius: "50%",
-      };
+      const buttonWrapperStyle = css`
+        display: flex;
+        width: 100%;
+      `;
+
+      const logoStyle = css`
+        width: 50px;
+        height: 50px;
+        margin-bottom: 10px;
+        border-radius: 50%;
+      `;
 
       return (
-        <div style={popupContainerStyle}>
-          <div style={popupContentStyle}>
+        <div css={popupContainerStyle}>
+          <div css={popupContentStyle}>
             <Text css={{ color: "black", display: "block" }} variant="header">
               Web3 Account
             </Text>
@@ -152,23 +155,23 @@ export const WelcomeScreen: React.FC<Props> = ({
               variant="body"
               children={t("web3_account_body")}
             />
-            <div style={buttonContainerStyle}>
-              <div style={buttonWrapperStyle}>
-                <button style={buttonStyle} onClick={onClickEthAccount}>
+            <div css={buttonContainerStyle}>
+              <div css={buttonWrapperStyle}>
+                <button css={buttonStyle} onClick={onClickEthAccount}>
                   <img
                     src={require("../images/ethereum.svg")}
                     alt="Logo"
-                    style={logoStyle}
+                    css={logoStyle}
                   />
                   <Text css={{ color: "black" }} variant="body">
                     Ethereum
                   </Text>
                 </button>
-                <button style={buttonStyle} onClick={onClickSolAccount}>
+                <button css={buttonStyle} onClick={onClickSolAccount}>
                   <img
                     src={require("../images/solana.svg")}
                     alt="Logo"
-                    style={logoStyle}
+                    css={logoStyle}
                   />
                   <Text css={{ color: "black" }} variant="body">
                     Solana
