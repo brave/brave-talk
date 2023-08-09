@@ -205,6 +205,7 @@ export const OptionalSettings: React.FC<Props> = ({
             subhead={t("address_exception_subheader")}
             web3Account={web3Account}
             exceptionList={exceptionList}
+            compareList={allowList}
             onChange={(addr) => {
               setExceptionList(addr);
             }}
@@ -220,9 +221,11 @@ export const OptionalSettings: React.FC<Props> = ({
             subhead={t("address_allow_subheader")}
             web3Account={web3Account}
             exceptionList={allowList}
+            compareList={exceptionList}
             onChange={(addr) => {
-              setAllowList(addr);}}
-            isExceptionAddressWrong={isExceptionAddressWrong} 
+              setAllowList(addr);
+            }}
+            isExceptionAddressWrong={isExceptionAddressWrong}
             setIsExceptionAddressWrong={setIsExceptionAddressWrong}
           />
         </React.Fragment>
