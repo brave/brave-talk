@@ -9,6 +9,7 @@ interface Props {
   setIsExceptionAddressWrong?: (val: boolean) => void;
   children?: ReactNode;
   exceptionList: string[];
+  compareList: string[];
   onChange: Dispatch<string[]>;
 }
 
@@ -19,6 +20,7 @@ export const ExceptionListPanel: React.FC<Props> = ({
   isExceptionAddressWrong,
   setIsExceptionAddressWrong,
   exceptionList,
+  compareList,
   onChange,
 }) => {
   const [inputText, setInputText] = useState("");
@@ -47,7 +49,10 @@ export const ExceptionListPanel: React.FC<Props> = ({
         // Skip empty addresses (remove empty strings from the list)
         return;
       }
-      if (!isValidAddress(address, web3Account)) {
+      if (
+        !isValidAddress(address, web3Account) ||
+        compareList.includes(address)
+      ) {
         flag = 1;
         invalidAddressesList.push(address);
       } else {
@@ -81,62 +86,62 @@ export const ExceptionListPanel: React.FC<Props> = ({
 
   return (
     <div>
-        <div
+      <div
         css={{
-            background: 'rgba(255, 255, 255, 0.24)',
-            backdropFilter: 'blur(8px)',
-            marginTop: '11px',
-            padding: '24px 19px',
-            textAlign: 'left',
+          background: "rgba(255, 255, 255, 0.24)",
+          backdropFilter: "blur(8px)",
+          marginTop: "11px",
+          padding: "24px 19px",
+          textAlign: "left",
         }}
-        >
+      >
         <div
-            css={{
-            display: 'flex',
-            alignItems: 'center',
-            }}
+          css={{
+            display: "flex",
+            alignItems: "center",
+          }}
         >
-            <div css={{ flex: 1 }}>
+          <div css={{ flex: 1 }}>
             <div
-                css={{
+              css={{
                 fontWeight: 500,
-                fontSize: '22px',
-                lineHeight: '32px',
-                }}
+                fontSize: "22px",
+                lineHeight: "32px",
+              }}
             >
-                {header}
+              {header}
             </div>
             <div>{subhead}</div>
-            </div>
+          </div>
         </div>
         <textarea
-            css={{
+          css={{
             fontWeight: 200,
-            fontSize: '15px',
-            lineHeight: '15px',
-            width: '100%',
-            height: 'auto', // Adjust height based on content
-            resize: 'vertical', // Allow vertical resizing if needed
-            marginTop: '3px',
-            borderColor: invalidAddresses.length > 0 ? 'red' : undefined, // Add red border if there are invalid addresses
-            }}
-            placeholder={placeholderText}
-            value={inputText}
-            onChange={handleInputChange}
-            onBlur={validateAddresses}
-            rows={3} // Set the number of visible rows here (adjust as needed)
+            fontSize: "15px",
+            lineHeight: "15px",
+            width: "100%",
+            height: "auto", // Adjust height based on content
+            resize: "vertical", // Allow vertical resizing if needed
+            marginTop: "3px",
+            borderColor: invalidAddresses.length > 0 ? "red" : undefined, // Add red border if there are invalid addresses
+          }}
+          placeholder={placeholderText}
+          value={inputText}
+          onChange={handleInputChange}
+          onBlur={validateAddresses}
+          rows={3} // Set the number of visible rows here (adjust as needed)
         />
+      </div>
+      {invalidAddresses.length > 0 && (
+        <div css={[bodyText, { marginTop: "28px" }]}>
+          {invalidAddresses.length === 1
+            ? "Invalid address:"
+            : "Invalid addresses:"}
+          {invalidAddresses.map((address, index) => (
+            <div key={index}>{address}</div>
+          ))}
         </div>
-        {invalidAddresses.length > 0 && (
-            <div css={[bodyText, { marginTop: "28px" }]}>
-                {invalidAddresses.length === 1
-                ? 'Invalid address:'
-                : 'Invalid addresses:'}
-                {invalidAddresses.map((address, index) => (
-                <div key={index}>{address}</div>
-                ))}
-            </div>
-        )}
+      )}
     </div>
   );
 };
