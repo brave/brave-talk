@@ -7,6 +7,8 @@ declare let JitsiMeetExternalAPI: any;
 declare function jwt_decode(input: string): any;
 
 interface Window {
+  braveSolana: any;
+  phantom: any;
   ethereum: any;
   chrome?: {
     braveRequestAdsEnabled?: () => Promise<boolean>;
