@@ -11,8 +11,8 @@ interface Params {
 
   // url has "sol=y" meaning we should show option to start either solana or ethereum call
   isSolana: boolean;
-  // url has "sol=y" meaning we should show option for allowing address
-  isAllow: boolean;
+  // url has "isAllowAddressExclusion=y" meaning we should show option for allowing address
+  isAllowAddress: boolean;
   isDebug: boolean;
 }
 
@@ -25,7 +25,7 @@ export function useParams(): Params {
       isCreate: p.get("create") === "y",
       isCreateOnly: p.get("create_only") === "y",
       isSolana: p.get("sol") === "y",
-      isAllow: p.get("allow") === "y",
+      isAllowAddress: p.get("isAllowAddressExclusion") === "y",
       isDebug: p.get("debug") === "y",
     };
   });

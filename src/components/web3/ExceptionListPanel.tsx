@@ -14,6 +14,10 @@ interface Props {
   onChange: Dispatch<string[]>;
 }
 
+function splitAddresses(addr: string): string[] {
+  return addr.split(/,|\s|\t|\n/).map((address) => address.trim());
+}
+
 export const ExceptionListPanel: React.FC<Props> = ({
   header,
   subhead,
@@ -40,29 +44,25 @@ export const ExceptionListPanel: React.FC<Props> = ({
 
   const validateAddresses = () => {
     const delimitersRegex = /,|\s|\t|\n/; // Regex to match comma, space, tab, or newline
-    const addresses = inputText
-      .split(delimitersRegex)
-      .map((address) => address.trim());
-    const invalidAddressesList: string[] = [];
-    const validAddressesList: string[] = [];
-    let flag = 0;
-    addresses.forEach((address) => {
-      if (!address) {
-        // Skip empty addresses (remove empty strings from the list)
-        return;
-      }
-      if (
-        !isValidAddress(address, web3Account) ||
-        compareList.includes(address) ||
-        address === web3Address
-      ) {
-        flag = 1;
-        invalidAddressesList.push(address);
-      } else {
-        validAddressesList.push(address);
-      }
+    const addresses = splitAddresses(inputText);
+    const invalidAddressesList = addresses.filter((address) => {
+      return (
+        address &&
+        (!isValidAddress(address, web3Account) ||
+          compareList.includes(address) ||
+          address === web3Address)
+      );
     });
-    if (flag === 1) {
+
+    const validAddressesList = addresses.filter((address) => {
+      return (
+        address &&
+        isValidAddress(address, web3Account) &&
+        !compareList.includes(address) &&
+        address !== web3Address
+      );
+    });
+    if (invalidAddressesList.length !== 0) {
       setIsExceptionAddressWrong?.(true);
     } else {
       setIsExceptionAddressWrong?.(false);
