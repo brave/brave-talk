@@ -22,6 +22,7 @@
   "host_web3_call_body": "Use NFTs and POAPs to token-gate access, configure avatars, assign moderators, and more.",
   "identifier_fetch_error": "Failed to fetch member identifiers (NFTs/POAPs)",
   "invalid_token_error": "Access failure: You must have an approved token to join this call",
+  "address_exclusion_error": "Access failure: Your address is not in the allow list to join this call",
   "join_call": "Joining...",
   "join_call_error": "Error joining room",
   "join_web3_call": "Join Web3 call",
