@@ -1,5 +1,6 @@
 import React, { ReactNode, useState, Dispatch } from "react";
 import { bodyText } from "./styles";
+import { splitAddresses } from "./api";
 
 interface Props {
   header: string;
@@ -12,10 +13,6 @@ interface Props {
   exceptionList: string[];
   compareList: string[];
   onChange: Dispatch<string[]>;
-}
-
-function splitAddresses(addr: string): string[] {
-  return addr.split(/,|\s|\t|\n/).map((address) => address.trim());
 }
 
 export const ExceptionListPanel: React.FC<Props> = ({
