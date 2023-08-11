@@ -74,10 +74,6 @@ export const WelcomeScreen: React.FC<Props> = ({
     return;
   };
   const Body: React.FC = () => {
-    if (!hasInitialRoomName && browser.isBrave === false) {
-      return <DownloadBrave />;
-    }
-
     if (!browser.supportsWebRTC) {
       return (
         <SectionWithLogo
