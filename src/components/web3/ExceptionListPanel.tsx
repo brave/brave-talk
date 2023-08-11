@@ -4,6 +4,7 @@ import { bodyText } from "./styles";
 interface Props {
   header: string;
   subhead: string;
+  web3Address: string;
   web3Account: "ETH" | "SOL" | null;
   isExceptionAddressWrong?: boolean;
   setIsExceptionAddressWrong?: (val: boolean) => void;
@@ -17,6 +18,7 @@ export const ExceptionListPanel: React.FC<Props> = ({
   header,
   subhead,
   web3Account,
+  web3Address,
   isExceptionAddressWrong,
   setIsExceptionAddressWrong,
   exceptionList,
@@ -51,7 +53,8 @@ export const ExceptionListPanel: React.FC<Props> = ({
       }
       if (
         !isValidAddress(address, web3Account) ||
-        compareList.includes(address)
+        compareList.includes(address) ||
+        address === web3Address
       ) {
         flag = 1;
         invalidAddressesList.push(address);

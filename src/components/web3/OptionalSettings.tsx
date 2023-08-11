@@ -14,6 +14,7 @@ import { Web3PermissionType } from "./api";
 
 interface Props {
   startCall: boolean;
+  web3Address?: string;
   web3Account: "ETH" | "SOL" | null;
   nfts?: NFT[];
   poaps?: POAP[];
@@ -45,6 +46,7 @@ interface Props {
 export const OptionalSettings: React.FC<Props> = ({
   startCall,
   web3Account,
+  web3Address = "",
   nfts = [],
   poaps,
   exceptionList = [],
@@ -204,6 +206,7 @@ export const OptionalSettings: React.FC<Props> = ({
             header={t("address_exception_header")}
             subhead={t("address_exception_subheader")}
             web3Account={web3Account}
+            web3Address={web3Address}
             exceptionList={exceptionList}
             compareList={allowList}
             onChange={(addr) => {
@@ -220,6 +223,7 @@ export const OptionalSettings: React.FC<Props> = ({
             header={t("address_allow_header")}
             subhead={t("address_allow_subheader")}
             web3Account={web3Account}
+            web3Address={web3Address}
             exceptionList={allowList}
             compareList={exceptionList}
             onChange={(addr) => {

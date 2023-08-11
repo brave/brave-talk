@@ -58,7 +58,7 @@ export function useWeb3CallState(
     NFTcollection[]
   >([]);
   const [exceptionList, setExceptionList] = useState<string[]>();
-  const [allowList, setAllowList] = useState<string[]>()
+  const [allowList, setAllowList] = useState<string[]>();
 
   const setWeb3Address = (address: string, event: string) => {
     _setWeb3Address((prevAddress) => {
@@ -161,6 +161,8 @@ export function useWeb3CallState(
         setFeedbackMessage("invalid_token_error");
       } else if (e.message.includes("no-currency")) {
         setFeedbackMessage("not_enough_currency_error");
+      } else if (e.message.includes("addr-excluded")) {
+        setFeedbackMessage("address_exclusion_error");
       } else {
         setFeedbackMessage("not_participant_error");
       }

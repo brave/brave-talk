@@ -156,6 +156,7 @@ export const StartCall: React.FC<Props> = ({
             <OptionalSettings
               startCall={true}
               web3Account={web3Account}
+              web3Address={web3Address}
               permissionType={permissionType}
               nfts={nfts}
               poaps={poaps}
@@ -182,6 +183,7 @@ export const StartCall: React.FC<Props> = ({
             <OptionalSettings
               startCall={true}
               web3Account={web3Account}
+              web3Address={web3Address}
               permissionType={permissionType}
               nfts={nfts}
               poaps={poaps}
