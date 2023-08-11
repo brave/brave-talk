@@ -4,18 +4,26 @@ import { POAP, NFTcollection, NFT } from "./core";
 import { isProduction } from "../../environment";
 import { ExapandablePanel } from "./ExpandablePanel";
 import { NonExapandablePanel } from "./NonExpandablePanel";
+import { ExceptionListPanel } from "./ExceptionListPanel";
 import { SelectableImageList } from "./SelectableImageList";
 import { SelectablePoapList } from "./SelectablePoapList";
 import { SelectableNFTCollectionList } from "./SelectableNFTCollectionList";
 import { PermissionTypeSelector } from "./PermissionTypeSelector";
-import noNftImage from "../../images/no-nft-image.png";
+import { useParams } from "../../hooks/use-params";
 import { Web3PermissionType } from "./api";
 
 interface Props {
   startCall: boolean;
+  web3Address?: string;
   web3Account: "ETH" | "SOL" | null;
   nfts?: NFT[];
   poaps?: POAP[];
+  exceptionList?: string[];
+  setExceptionList?: (exceptionList: string[]) => void;
+  isExceptionAddressWrong?: boolean;
+  setIsExceptionAddressWrong?: (val: boolean) => void;
+  allowList?: string[];
+  setAllowList?: (exceptionList: string[]) => void;
   nftCollections?: NFTcollection[];
   nft: NFT | null;
   setNft: (nft: NFT | null) => void;
@@ -38,8 +46,21 @@ interface Props {
 export const OptionalSettings: React.FC<Props> = ({
   startCall,
   web3Account,
+  web3Address = "",
   nfts = [],
   poaps,
+  exceptionList = [],
+  setExceptionList = () => {
+    return [];
+  },
+  isExceptionAddressWrong,
+  setIsExceptionAddressWrong = () => {
+    return false;
+  },
+  allowList = [],
+  setAllowList = () => {
+    return [];
+  },
   nftCollections,
   nft,
   setNft,
@@ -58,6 +79,7 @@ export const OptionalSettings: React.FC<Props> = ({
   moderatorNFTCollections,
   setModeratorNFTCollections,
 }) => {
+  const isAllow = useParams().isAllowAddress;
   const nftItems = nfts.map((n: NFT) => ({ ...n, imageUrl: n.image_url }));
   const selectedNftIdx = nfts.findIndex((n) => nft != null && n.id === nft.id);
   const { t } = useTranslation();
@@ -175,6 +197,40 @@ export const OptionalSettings: React.FC<Props> = ({
           <NonExapandablePanel
             header={t("bat_gating_panel_header")}
             subhead={t("bat_gating_panel_subheader")}
+          />
+        </React.Fragment>
+      )}
+      {startCall && (
+        <React.Fragment>
+          <ExceptionListPanel
+            header={t("address_exception_header")}
+            subhead={t("address_exception_subheader")}
+            web3Account={web3Account}
+            web3Address={web3Address}
+            exceptionList={exceptionList}
+            compareList={allowList}
+            onChange={(addr) => {
+              setExceptionList(addr);
+            }}
+            isExceptionAddressWrong={isExceptionAddressWrong}
+            setIsExceptionAddressWrong={setIsExceptionAddressWrong}
+          />
+        </React.Fragment>
+      )}
+      {startCall && isAllow && (
+        <React.Fragment>
+          <ExceptionListPanel
+            header={t("address_allow_header")}
+            subhead={t("address_allow_subheader")}
+            web3Account={web3Account}
+            web3Address={web3Address}
+            exceptionList={allowList}
+            compareList={exceptionList}
+            onChange={(addr) => {
+              setAllowList(addr);
+            }}
+            isExceptionAddressWrong={isExceptionAddressWrong}
+            setIsExceptionAddressWrong={setIsExceptionAddressWrong}
           />
         </React.Fragment>
       )}
