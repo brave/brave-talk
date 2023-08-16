@@ -147,6 +147,10 @@ export const web3NFTs = async (address: string): Promise<NFT[]> => {
   }
 };
 
+export function splitAddresses(addr: string): string[] {
+  return addr.split(/,|\s/).map((address) => address.trim());
+}
+
 export const web3NFTcollections = async (
   address: string
 ): Promise<NFTcollection[]> => {

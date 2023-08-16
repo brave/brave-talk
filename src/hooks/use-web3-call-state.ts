@@ -59,7 +59,6 @@ export function useWeb3CallState(
   >([]);
   const [exceptionList, setExceptionList] = useState<string[]>();
   const [allowList, setAllowList] = useState<string[]>();
-
   const setWeb3Address = (address: string, event: string) => {
     _setWeb3Address((prevAddress) => {
       switch (event) {
