@@ -32,8 +32,8 @@ export const ExceptionListPanel: React.FC<Props> = ({
 
   const placeholderText =
     web3Account === "ETH"
-      ? "0x8d247168113b8aa0f020b2441e98b613b9878qmc, ..."
-      : "BtsXBPrf69qEWQrrxVENGvZY2tqFUgZB9zbrpa4t4Rfo, ...";
+      ? "0x0000000000000000000000000000000000000000, ..."
+      : "5GNhXCcQ9uxU5xUN2h3Adi4BK2YGXL7fWZ8Zf8voM1qo, ...";
 
   const handleInputChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
     setInputText(event.target.value);
