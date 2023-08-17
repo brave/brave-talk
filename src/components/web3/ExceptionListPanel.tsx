@@ -28,7 +28,6 @@ export const ExceptionListPanel: React.FC<Props> = ({
 }) => {
   const [inputText, setInputText] = useState("");
   const [invalidAddresses, setInvalidAddresses] = useState<string[]>([]);
-  const [validAddresses, setValidAddresses] = useState<string[]>([]);
 
   const placeholderText =
     web3Account === "ETH"
@@ -64,7 +63,6 @@ export const ExceptionListPanel: React.FC<Props> = ({
       setIsExceptionAddressWrong?.(false);
     }
     setInvalidAddresses(invalidAddressesList);
-    setValidAddresses(validAddressesList);
     onChange(validAddressesList);
   };
 
