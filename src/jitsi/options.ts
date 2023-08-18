@@ -36,6 +36,13 @@ export const jitsiOptions = (
           "top-panel-toggle",
         ],
       },
+      customParticipantMenuButtons: [
+        {
+          icon: "data:image/gif;base64,R0lGODlhAQABAIAAAP///wAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw==",
+          id: "send-crypto",
+          text: "Send Crypto",
+        },
+      ],
       disabledSounds: ["E2EE_OFF_SOUND", "E2EE_ON_SOUND"],
       disableGTM: true,
       doNotStoreRoom: true,

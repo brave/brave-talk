@@ -9,6 +9,15 @@ import {
   askOnUnload,
   updateSubject,
 } from "./lib";
+import {
+  EIP4361Message,
+  createEIP4361Message,
+} from "../components/web3/EIP4361";
+import { getNonce } from "../components/web3/api";
+import {
+  cryptoAction,
+  CryptoTransactionParams,
+} from "../components/web3/SendCryptoPopup";
 
 export const subjectChangeHandler = {
   name: "subjectChange",
@@ -257,4 +266,60 @@ export const dataChannelOpenedHandler = {
 export const videoConferenceJoinedHandler = {
   name: "videoConferenceJoined",
   fn: () => () => acquireWakeLock(),
+};
+
+export const sendCryptoButtonPressedHandler = {
+  name: "participantMenuButtonClick",
+  fn: (jitsi: IJitsiMeetApi, context: JitsiContext) => async (params: any) => {
+    if (params.key != "send-crypto") return;
+
+    // add to outstanding messages
+    if (!cryptoAction.sendOutstandingRequest)
+      return console.error("!!! addOutstandingRequest not defined");
+    cryptoAction.sendOutstandingRequest(params.participantId);
+  },
+};
+
+export const onEndpointTextMessageForCryptoHandler = {
+  name: "endpointTextMessageReceived",
+  fn: (jitsi: IJitsiMeetApi, context: JitsiContext) => async (params: any) => {
+    const msg = JSON.parse(params.data.eventData.text);
+    if (!msg.crypto) return;
+    const tparams: CryptoTransactionParams = msg.crypto;
+
+    tparams.sender = params.data.senderInfo.id;
+
+    // get the displayName
+    const info = (await jitsi.getRoomsInfo()).rooms;
+    const room = info.filter((r: any) => r.isMainRoom)[0];
+    const name = room.participants.filter(
+      (p: any) => p.id === tparams.sender
+    )[0].displayName;
+
+    tparams.senderDisplayName = name;
+    console.log("!!! CRYPTO: incoming", tparams);
+    if (!cryptoAction.isInit)
+      return console.error("!!! cryptoAction not initialized");
+    cryptoAction.addIncomingRequest(tparams);
+  },
+};
+
+export const onEndpointTextMessageCryptoSendReturned = {
+  name: "endpointTextMessageReceived",
+  fn: (jitsi: IJitsiMeetApi, context: JitsiContext) => async (params: any) => {
+    const msg = JSON.parse(params.data.eventData.text);
+    if (!(msg.type == "crypto") || !msg.siwe) return;
+    const SIWEdata = msg.siwe;
+
+    console.log("!!! SIWEdata", SIWEdata);
+
+    const info = (await jitsi.getRoomsInfo()).rooms;
+    const room = info.filter((r: any) => r.isMainRoom)[0];
+    const name = room.participants.filter(
+      (p: any) => p.id === params.data.senderInfo.id
+    )[0].displayName;
+
+    SIWEdata.senderDisplayName = name;
+    cryptoAction.attemptResolveOutstandingRequest(SIWEdata);
+  },
 };

@@ -17,7 +17,12 @@ import {
   subjectChangeHandler,
   videoQualityChangeHandler,
   videoConferenceJoinedHandler,
+  sendCryptoButtonPressedHandler,
+  onEndpointTextMessageForCryptoHandler,
+  onEndpointTextMessageCryptoSendReturned,
 } from "../jitsi/event-handlers";
+
+import { CryptoWrapper } from "./web3/SendCryptoPopup";
 
 interface Props {
   roomName: string;
@@ -26,6 +31,7 @@ interface Props {
   isCallReady: boolean;
   isWeb3Call: boolean;
   jitsiContext: JitsiContext;
+  web3Account: "ETH" | "SOL" | null;
 }
 
 export const InCall: React.FC<Props> = ({
@@ -35,6 +41,7 @@ export const InCall: React.FC<Props> = ({
   isCallReady,
   isWeb3Call,
   jitsiContext: context,
+  web3Account,
 }) => {
   const divRef = useRef(null);
   const [jitsiMeet, setJitsiMeet] = useState<IJitsiMeetApi>();
@@ -56,6 +63,9 @@ export const InCall: React.FC<Props> = ({
         dataChannelOpenedHandler,
         endpointTextMessageReceivedHandler,
         videoConferenceJoinedHandler,
+        sendCryptoButtonPressedHandler,
+        onEndpointTextMessageForCryptoHandler,
+        onEndpointTextMessageCryptoSendReturned,
       ];
 
       const options = jitsiOptions(roomName, divRef.current, jwt, isMobile);
@@ -79,5 +89,9 @@ export const InCall: React.FC<Props> = ({
     return null;
   }
 
-  return <div ref={divRef} css={{ height: "100%" }} />;
+  return (
+    <div ref={divRef} css={{ height: "100%" }}>
+      {isWeb3Call && <CryptoWrapper jitsi={jitsiMeet} />}
+    </div>
+  );
 };

@@ -40,6 +40,11 @@ export type JitsiOptions = {
     conferenceInfo: {
       autoHide: string[];
     };
+    customParticipantMenuButtons: Array<{
+      icon: string;
+      id: string;
+      text: string;
+    }>;
     disabledSounds: string[];
     disableGTM: boolean;
     doNotStoreRoom: boolean;

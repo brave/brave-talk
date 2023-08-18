@@ -3,6 +3,7 @@ import { fetchWithTimeout } from "../../lib";
 import { NFTcollection, POAP, NFT } from "./core";
 import { EIP4361Message, createEIP4361Message } from "./EIP4361";
 import { Buffer } from "buffer";
+import { CryptoTransactionParams } from "./SendCryptoPopup";
 
 declare let window: any;
 
@@ -197,7 +198,7 @@ export const web3NFTcollections = async (
   }
 };
 
-const getNonce = async (): Promise<string> => {
+export const getNonce = async (): Promise<string> => {
   const getNonceURL = "/api/v1/nonce";
   const response = await fetchWithTimeout(getNonceURL, {
     method: "GET",
@@ -255,6 +256,43 @@ export const web3Prove = async (
     },
   };
 
+  return result;
+};
+
+export const generateSIWEForCrypto = async (
+  web3Address: string,
+  params: CryptoTransactionParams,
+  msg: string
+) => {
+  const message: EIP4361Message = {
+    domain: window.location.host,
+    address: web3Address,
+    statement: msg,
+    uri: window.location.toString(),
+    version: "1",
+    chainId: 1,
+    // HT:https://stackoverflow.com/questions/40031688/javascript-arraybuffer-to-hex/40031979
+    // btoa has some characters not allowed by the EIP-4361 ABNF
+    nonce: params.nonce,
+    issuedAt: new Date().toISOString(),
+  };
+  const payload = createEIP4361Message(message, "Ethereum");
+  const payloadBytes = new TextEncoder().encode(payload);
+  const { hexlify } = await import("ethers");
+  const hexPayload = hexlify(payloadBytes);
+  const signer = await window.web3.getSigner(web3Address);
+  const signature = await signer.signMessage(payload);
+  console.log(`!!! web3 signature=${signature}`);
+
+  const result = {
+    method: "EIP-4361-json",
+    proof: {
+      signer: web3Address,
+      signature: signature,
+      payload: hexPayload,
+    },
+  };
+  console.log("!!! result of SIWE", result);
   return result;
 };
 
