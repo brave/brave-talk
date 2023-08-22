@@ -9,7 +9,7 @@ interface Params {
   // in this case, we should create the room but then immediately close the window rather than entering the room
   isCreateOnly: boolean;
 
-  // url has "sol=y" meaning we should show option to allow Solana (or Ethereum)
+  // url doesn't have "sol=n" meaning we should show option to allow Solana (or Ethereum)
   isSolana: boolean;
 
   // url has "allow=y" meaning we should show option for allowing address
@@ -27,7 +27,7 @@ export function useParams(): Params {
     return {
       isCreate: p.get("create") === "y",
       isCreateOnly: p.get("create_only") === "y",
-      isSolana: p.get("sol") === "y",
+      isSolana: p.get("sol") !== "n",
       isAllowAddress: p.get("allow") === "y",
       isDebug: p.get("debug") === "y",
     };
