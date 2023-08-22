@@ -1,8 +1,6 @@
 import { css } from "@emotion/react";
-import React, { ReactNode, useState } from "react";
+import React, { ReactNode } from "react";
 import { baseText } from "./styles";
-import PlusImage from "../../images/plus.svg";
-import MinusImage from "../../images/minus.svg";
 import SpinnerImage from "../../images/spinner.svg";
 
 interface Props {

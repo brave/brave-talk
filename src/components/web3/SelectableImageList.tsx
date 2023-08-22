@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { Dispatch } from "react";
 import noNftImage from "../../images/no-nft-image.png";
 

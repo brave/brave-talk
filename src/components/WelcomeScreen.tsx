@@ -6,7 +6,6 @@ import { Footer } from "./Footer";
 import { Header } from "./Header";
 import { JoinCallSection } from "./JoinCallSection";
 import { SubscriptionCTA } from "./SubscriptionCTA";
-import { DownloadBrave } from "./DownloadBrave";
 import { Recordings } from "./Recordings";
 import { SectionWithLogo } from "./SectionWithLogo";
 import { BrowserProperties } from "../hooks/use-browser-properties";
