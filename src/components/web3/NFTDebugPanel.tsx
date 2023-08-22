@@ -13,7 +13,7 @@ interface Props {
 const showSpamScore = (item: Item) => {
   return `${item.name} (${item.chain}) ${
     item.collection?.spam_score
-      ? "Spam Score: " + `${item.collection.spam_score}`
+      ? `Spam Score: ${item.collection.spam_score}`
       : ""
   }`;
 };
@@ -33,7 +33,7 @@ export const NFTDebugPanel: React.FC<Props> = ({
     );
   const onToggle = (idx: number) => {
     if (selectedNftIdxs.includes(idx))
-      setSelectedNftIdxs(selectedNftIdxs.filter((i: number) => i != idx));
+      setSelectedNftIdxs(selectedNftIdxs.filter((i: number) => i !== idx));
     else {
       setSelectedNftIdxs(selectedNftIdxs.concat([idx]));
     }
