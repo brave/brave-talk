@@ -38,6 +38,8 @@ export const StartCall: React.FC<Props> = ({
   const [nftCollections, setNFTCollections] = useState<
     NFTcollection[] | undefined
   >();
+  const [isExceptionAddressWrong, setIsExceptionAddressWrong] =
+    useState<boolean>(false);
   const isNFTDebug = useParams().isDebug;
   const [debugMode, setDebugMode] = useState<boolean>(false);
   const [feedbackMessage, setFeedbackMessage] = useState<TranslationKeys>();
@@ -45,10 +47,14 @@ export const StartCall: React.FC<Props> = ({
     web3Address,
     permissionType,
     nft,
+    exceptionList,
+    allowList,
     participantPoaps,
     moderatorPoaps,
     participantNFTCollections,
     moderatorNFTCollections,
+    setAllowList,
+    setExceptionList,
     setWeb3Address,
     setPermissionType,
     setNft,
@@ -126,15 +132,15 @@ export const StartCall: React.FC<Props> = ({
     >
       <div css={[header, { marginBottom: "22px" }]}>Start a Web3 Call</div>
       {isNFTDebug && (
-              <label>
-                <input
-                  type="checkbox"
-                  value="DEBUG MODE"
-                  onChange={onChangeDebugMode}
-                />
-                Debug Mode
-              </label>
-            )}
+        <label>
+          <input
+            type="checkbox"
+            value="DEBUG MODE"
+            onChange={onChangeDebugMode}
+          />
+          Debug Mode
+        </label>
+      )}
 
       {web3Account === "ETH" ? (
         <Login web3address={web3Address} onAddressSelected={setWeb3Address} />
@@ -150,11 +156,18 @@ export const StartCall: React.FC<Props> = ({
             <OptionalSettings
               startCall={true}
               web3Account={web3Account}
+              web3Address={web3Address}
               permissionType={permissionType}
               nfts={nfts}
               poaps={poaps}
               nftCollections={nftCollections}
               nft={nft}
+              exceptionList={exceptionList}
+              setExceptionList={setExceptionList}
+              allowList={allowList}
+              setAllowList={setAllowList}
+              isExceptionAddressWrong={isExceptionAddressWrong}
+              setIsExceptionAddressWrong={setIsExceptionAddressWrong}
               setPermissionType={setPermissionType}
               setNft={setNft}
               participantPoaps={participantPoaps}
@@ -170,11 +183,18 @@ export const StartCall: React.FC<Props> = ({
             <OptionalSettings
               startCall={true}
               web3Account={web3Account}
+              web3Address={web3Address}
               permissionType={permissionType}
               nfts={nfts}
               poaps={poaps}
               nftCollections={nftCollections}
               nft={nft}
+              exceptionList={exceptionList}
+              setExceptionList={setExceptionList}
+              allowList={allowList}
+              setAllowList={setAllowList}
+              isExceptionAddressWrong={isExceptionAddressWrong}
+              setIsExceptionAddressWrong={setIsExceptionAddressWrong}
               setPermissionType={setPermissionType}
               setNft={setNft}
               participantNFTCollections={participantNFTCollections}
@@ -187,7 +207,11 @@ export const StartCall: React.FC<Props> = ({
             {feedbackMessage ? t(feedbackMessage) : ""}
           </div>
 
-          <Button onClick={onStartCall} css={{ marginTop: "45px" }}>
+          <Button
+            onClick={onStartCall}
+            css={{ marginTop: "45px" }}
+            disabled={isExceptionAddressWrong}
+          >
             {isSubscribed ? t("start_web3_call") : t("start_free_web3_call")}
           </Button>
         </div>
