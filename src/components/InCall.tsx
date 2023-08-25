@@ -18,8 +18,9 @@ import {
   videoQualityChangeHandler,
   videoConferenceJoinedHandler,
   sendCryptoButtonPressedHandler,
-  onEndpointTextMessageForCryptoHandler,
-  onEndpointTextMessageCryptoSendReturned,
+  //onEndpointTextMessageForCryptoHandler,
+  // onEndpointTextMessageCryptoSendReturned,
+  onEndpointTextMessageForCryptoSendHandler,
 } from "../jitsi/event-handlers";
 
 import { CryptoWrapper } from "./web3/SendCryptoPopup";
@@ -64,8 +65,9 @@ export const InCall: React.FC<Props> = ({
         endpointTextMessageReceivedHandler,
         videoConferenceJoinedHandler,
         sendCryptoButtonPressedHandler,
-        onEndpointTextMessageForCryptoHandler,
-        onEndpointTextMessageCryptoSendReturned,
+        //onEndpointTextMessageForCryptoHandler,
+        // onEndpointTextMessageCryptoSendReturned,
+        onEndpointTextMessageForCryptoSendHandler,
       ];
 
       const options = jitsiOptions(roomName, divRef.current, jwt, isMobile);

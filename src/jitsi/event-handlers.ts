@@ -17,6 +17,7 @@ import { getNonce } from "../components/web3/api";
 import {
   cryptoAction,
   CryptoTransactionParams,
+  SIWEReturnParams,
 } from "../components/web3/SendCryptoPopup";
 
 export const subjectChangeHandler = {
@@ -280,38 +281,13 @@ export const sendCryptoButtonPressedHandler = {
   },
 };
 
-export const onEndpointTextMessageForCryptoHandler = {
+export const onEndpointTextMessageForCryptoSendHandler = {
   name: "endpointTextMessageReceived",
   fn: (jitsi: IJitsiMeetApi, context: JitsiContext) => async (params: any) => {
     const msg = JSON.parse(params.data.eventData.text);
-    if (!msg.crypto) return;
-    const tparams: CryptoTransactionParams = msg.crypto;
-
-    tparams.sender = params.data.senderInfo.id;
-
-    // get the displayName
-    const info = (await jitsi.getRoomsInfo()).rooms;
-    const room = info.filter((r: any) => r.isMainRoom)[0];
-    const name = room.participants.filter(
-      (p: any) => p.id === tparams.sender
-    )[0].displayName;
-
-    tparams.senderDisplayName = name;
-    console.log("!!! CRYPTO: incoming", tparams);
-    if (!cryptoAction.isInit)
-      return console.error("!!! cryptoAction not initialized");
-    cryptoAction.addIncomingRequest(tparams);
-  },
-};
-
-export const onEndpointTextMessageCryptoSendReturned = {
-  name: "endpointTextMessageReceived",
-  fn: (jitsi: IJitsiMeetApi, context: JitsiContext) => async (params: any) => {
-    const msg = JSON.parse(params.data.eventData.text);
-    if (!(msg.type == "crypto") || !msg.siwe) return;
-    const SIWEdata = msg.siwe;
-
-    console.log("!!! SIWEdata", SIWEdata);
+    console.log("!!! msg", msg);
+    if (!(msg.type == "crypto")) return;
+    const type = msg.msgType;
 
     const info = (await jitsi.getRoomsInfo()).rooms;
     const room = info.filter((r: any) => r.isMainRoom)[0];
@@ -319,7 +295,28 @@ export const onEndpointTextMessageCryptoSendReturned = {
       (p: any) => p.id === params.data.senderInfo.id
     )[0].displayName;
 
-    SIWEdata.senderDisplayName = name;
-    cryptoAction.attemptResolveOutstandingRequest(SIWEdata);
+    switch (type) {
+      case "REQ": {
+        const txparams: CryptoTransactionParams = msg.payload;
+        txparams.sender = params.data.senderInfo.id;
+        txparams.senderDisplayName = name;
+
+        cryptoAction.addIncomingRequest(txparams);
+        break;
+      }
+
+      case "SIGNED": {
+        const siwe: SIWEReturnParams = msg.payload;
+        cryptoAction.attemptResolveOutstandingRequest({
+          senderDisplayName: name,
+          siwe: siwe,
+        });
+      }
+
+      case "REJECT": {
+        const nonce = msg.payload;
+        cryptoAction.rejectOutstandingRequest(nonce);
+      }
+    }
   },
 };

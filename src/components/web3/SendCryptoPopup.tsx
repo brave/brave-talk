@@ -4,7 +4,10 @@ import { useEffect, useRef, useState } from "react";
 import { generateSIWEForCrypto } from "./api";
 import { IJitsiMeetApi } from "../../jitsi/types";
 import { getNonce } from "./api";
-
+import { SiweMessage } from "siwe";
+import { verifyMessage, parseUnits, Transaction } from "ethers";
+import { Buffer } from "buffer";
+import { AllowedERC20Tokens, sendCrypto } from "./send-crypto";
 const popupBaseCSS = css`
   position: absolute;
   margin: 10px;
@@ -46,8 +49,28 @@ export interface CryptoTransactionParams {
   recipient: string;
   recipientDisplayName: string;
   amount: number;
-  token: string;
+  token: AllowedERC20Tokens;
   nonce: string;
+}
+
+export interface SIWEReturnParams {
+  proof: {
+    signer: string;
+    signature: string;
+    payload: string;
+  };
+  method: string;
+}
+
+interface TransactionPendingResolution {
+  senderDisplayName: string;
+  siwe: SIWEReturnParams;
+}
+
+interface CryptoSendMessage {
+  type: "crypto";
+  msgType: "REQ" | "REJECT" | "SIGNED";
+  payload: SIWEReturnParams | CryptoTransactionParams | string;
 }
 
 interface CryptoPopupProps {
@@ -57,16 +80,6 @@ interface CryptoPopupProps {
   >;
   web3Address: string;
   jitsi: IJitsiMeetApi;
-}
-
-interface SIWEReturnParams {
-  senderDisplayName: string;
-  proof: {
-    signer: string;
-    signature: string;
-    payload: string;
-  };
-  method: string;
 }
 
 export const CryptoRecievePopup: React.FC<CryptoPopupProps> = ({
@@ -79,12 +92,17 @@ export const CryptoRecievePopup: React.FC<CryptoPopupProps> = ({
   const [params, setParams] = useState({} as any);
 
   const returnSIWEToOrigin = async () => {
-    const siwe = await generateSIWEForCrypto(web3Address, params, "Confirm");
+    const siwe: SIWEReturnParams = await generateSIWEForCrypto(
+      web3Address,
+      params,
+      "Confirm"
+    );
     if (!params) return console.log("!!! params not set");
     if (!jitsi) return console.log("!!! jitsi not set");
-    const msg = {
+    const msg: CryptoSendMessage = {
       type: "crypto",
-      siwe: siwe,
+      msgType: "SIGNED",
+      payload: siwe,
     };
     jitsi.executeCommand(
       "sendEndpointTextMessage",
@@ -95,6 +113,18 @@ export const CryptoRecievePopup: React.FC<CryptoPopupProps> = ({
   };
   const incomingRequestsPopFront = () => {
     setIncomingRequests(incomingRequests.slice(1));
+  };
+  const rejectIncomingRequest = () => {
+    jitsi.executeCommand(
+      "sendEndpointTextMessage",
+      params.sender,
+      JSON.stringify({
+        type: "crypto",
+        msgType: "REJECT",
+        payload: params.nonce,
+      })
+    );
+    incomingRequestsPopFront();
   };
   useEffect(() => {
     console.log("!!! incomingRequests", incomingRequests);
@@ -120,7 +150,7 @@ export const CryptoRecievePopup: React.FC<CryptoPopupProps> = ({
             <button onClick={returnSIWEToOrigin} css={buttonCSS}>
               Accept
             </button>
-            <button onClick={incomingRequestsPopFront} css={buttonCSS}>
+            <button onClick={rejectIncomingRequest} css={buttonCSS}>
               Reject
             </button>
           </div>
@@ -169,14 +199,20 @@ export const CryptoSendPopup: React.FC<CryptoSendPopupProps> = ({
       recipient: pending,
       recipientDisplayName,
     };
-
+    const msg: CryptoSendMessage = {
+      type: "crypto",
+      msgType: "REQ",
+      payload: sendParams,
+    };
     setOutgoingRequests([...outgoingRequests, sendParams]);
 
     jitsi.executeCommand(
       "sendEndpointTextMessage",
       pending,
       JSON.stringify({
-        crypto: { amount, token, nonce },
+        type: "crypto",
+        msgType: "REQ",
+        payload: { amount, token, nonce },
       })
     );
 
@@ -211,7 +247,10 @@ export const CryptoSendPopup: React.FC<CryptoSendPopupProps> = ({
 };
 
 interface CryptoOOBPopupProps {
-  currentResolution: null | SIWEReturnParams;
+  currentResolution: null | TransactionPendingResolution;
+  setCurrentResolution: React.Dispatch<
+    React.SetStateAction<null | TransactionPendingResolution>
+  >;
   outstandingRequests: CryptoTransactionParams[];
   setOutstandingRequests: React.Dispatch<
     React.SetStateAction<CryptoTransactionParams[]>
@@ -220,19 +259,55 @@ interface CryptoOOBPopupProps {
 
 export const CryptoOOBPopup: React.FC<CryptoOOBPopupProps> = ({
   currentResolution,
+  setCurrentResolution,
   outstandingRequests,
   setOutstandingRequests,
 }) => {
   const [showing, setShowing] = useState(false);
 
+  // TODO: wrap in try catch
   const resolvePending = async () => {
     if (!currentResolution) return console.log("!!! currentResolution not set");
-    const { proof, method } = currentResolution;
-    const { hexlify } = await import("ethers");
+    const { proof } = currentResolution.siwe;
+    const { signer, signature, payload } = proof;
+    const payloadStr = Buffer.from(payload.slice(2), "hex").toString("utf8");
+    const msg = new SiweMessage(payloadStr);
+    const currentRequest = outstandingRequests.filter(
+      (r) => r.nonce === msg.nonce
+    )[0];
+    // check nonce exists
+    const tx = await sendCrypto(
+      currentRequest.amount,
+      currentRequest.token,
+      proof.signer
+    );
+    setOutstandingRequests(
+      outstandingRequests.filter((r) => r.nonce !== msg.nonce)
+    );
+    setCurrentResolution(null);
   };
 
+  // TODO: wrap in try catch
   useEffect(() => {
     if (currentResolution) {
+      const { proof } = currentResolution.siwe;
+      const { signer, signature, payload } = proof;
+      const payloadStr = Buffer.from(payload.slice(2), "hex").toString("utf8");
+      const addr = verifyMessage(payloadStr, signature);
+      const ok = addr === signer;
+      console.log("!!! ok", ok);
+      console.log("!!! addr", addr, " ", signer);
+      const msg = new SiweMessage(payloadStr);
+
+      // check nonce exists
+      const nonce = msg.nonce;
+      const nonceExists =
+        outstandingRequests.filter((r) => r.nonce === nonce).length > 0;
+      if (!ok || !nonceExists) {
+        setCurrentResolution(null);
+        console.log("!!! not ok, bad signature");
+        return;
+      }
       setShowing(true);
     } else {
       setShowing(false);
@@ -252,9 +327,14 @@ export const CryptoOOBPopup: React.FC<CryptoOOBPopupProps> = ({
               textAlign: "center",
               fontFamily: "monospace",
             }}
-          >{`${currentResolution.proof.signer}`}</div>
-          <button css={buttonCSS}>Send</button>
-          <button css={buttonCSS}>Cancel</button>
+          >{`${currentResolution.siwe.proof.signer}`}</div>
+          <button css={buttonCSS} onClick={resolvePending}>
+            Send
+          </button>
+          <button css={buttonCSS} onClick={() => setCurrentResolution(null)}>
+            {" "}
+            Cancel
+          </button>
         </div>
       )}
     </div>
@@ -273,6 +353,7 @@ export const cryptoAction = {
   resolveIncomingRequest: null as any,
   sendOutstandingRequest: null as any,
   attemptResolveOutstandingRequest: null as any,
+  rejectOutstandingRequest: null as any,
   isInit: false,
 };
 
@@ -287,7 +368,7 @@ export const CryptoWrapper: React.FC<CryptoWrapperProps> = ({ jitsi }) => {
   const [currentPendingOutgoingRequest, setCurrentPendingOutgoingRequest] =
     useState("");
   const [currentAttemptedResolution, setCurrentAttemptedResolution] =
-    useState<null | SIWEReturnParams>(null);
+    useState<null | TransactionPendingResolution>(null);
 
   window.ethereum?.on("accountsChanged", (accounts: string[]) => {
     console.log("!!! ETH accountsChanged", accounts);
@@ -319,7 +400,6 @@ export const CryptoWrapper: React.FC<CryptoWrapperProps> = ({ jitsi }) => {
     };
     cryptoAction.addIncomingRequest = (params: CryptoTransactionParams) => {
       setIncomingRequests(incomingRequests.concat(params));
-      console.log("!!! incomingRequests", incomingRequests);
     };
     cryptoAction.resolveIncomingRequest = (params: CryptoTransactionParams) => {
       setIncomingRequests(
@@ -330,13 +410,17 @@ export const CryptoWrapper: React.FC<CryptoWrapperProps> = ({ jitsi }) => {
       setCurrentPendingOutgoingRequest(id);
     };
     cryptoAction.attemptResolveOutstandingRequest = (
-      siwe: SIWEReturnParams
+      tx: TransactionPendingResolution
     ) => {
-      setCurrentAttemptedResolution(siwe);
-      console.log("!!! currentAttemptedResolution", currentAttemptedResolution);
+      setCurrentAttemptedResolution(tx);
+    };
+    cryptoAction.rejectOutstandingRequest = (nonce: string) => {
+      console.log("!!! rejectOutstandingRequest", nonce);
+      setOutstandingRequests(
+        outstandingRequests.filter((r) => r.nonce !== nonce)
+      );
     };
     cryptoAction.isInit = true;
-    console.log("!!! cryptoAction initialized");
   };
   initializeCryptoAction();
   useEffect(() => {
@@ -360,6 +444,7 @@ export const CryptoWrapper: React.FC<CryptoWrapperProps> = ({ jitsi }) => {
       />
       <CryptoOOBPopup
         currentResolution={currentAttemptedResolution}
+        setCurrentResolution={setCurrentAttemptedResolution}
         outstandingRequests={outstandingRequests}
         setOutstandingRequests={setOutstandingRequests}
       />
