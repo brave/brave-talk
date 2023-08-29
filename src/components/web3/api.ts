@@ -27,6 +27,17 @@ export interface Web3Authorization {
   POAPs: Web3AuthList;
   Collections: Web3AuthList;
   Balances: Web3BalancesList;
+  Addresses: Web3AddressExclusionList;
+}
+
+export interface Web3AddressExclusionList {
+  participantADs: Web3AddressIdentifierList;
+  moderatorADs: Web3AddressIdentifierList;
+}
+
+export interface Web3AddressIdentifierList {
+  allow: string[] | undefined;
+  deny: string[] | undefined;
 }
 
 export interface Web3BalancesList {
@@ -136,6 +147,10 @@ export const web3NFTs = async (address: string): Promise<NFT[]> => {
     throw error;
   }
 };
+
+export function splitAddresses(addr: string): string[] {
+  return addr.split(/,|\s/).map((address) => address.trim());
+}
 
 export const web3NFTcollections = async (
   address: string

@@ -19,6 +19,10 @@ interface Web3CallState {
   moderatorPoaps: POAP[];
   participantNFTCollections: NFTcollection[];
   moderatorNFTCollections: NFTcollection[];
+  exceptionList?: string[];
+  setExceptionList: (exceptionList: string[]) => void;
+  allowList?: string[];
+  setAllowList: (allowList: string[]) => void;
   setWeb3Address: (web3Address: string, event: string) => void;
   setPermissionType: (permissionType: Web3PermissionType) => void;
   setNft: (nft: NFT | null) => void;
@@ -53,7 +57,8 @@ export function useWeb3CallState(
   const [moderatorNFTCollections, setModeratorNFTCollections] = useState<
     NFTcollection[]
   >([]);
-
+  const [exceptionList, setExceptionList] = useState<string[]>();
+  const [allowList, setAllowList] = useState<string[]>();
   const setWeb3Address = (address: string, event: string) => {
     _setWeb3Address((prevAddress) => {
       switch (event) {
@@ -155,6 +160,8 @@ export function useWeb3CallState(
         setFeedbackMessage("invalid_token_error");
       } else if (e.message.includes("no-currency")) {
         setFeedbackMessage("not_enough_currency_error");
+      } else if (e.message.includes("addr-excluded")) {
+        setFeedbackMessage("address_exclusion_error");
       } else {
         setFeedbackMessage("not_participant_error");
       }
@@ -213,6 +220,16 @@ export function useWeb3CallState(
               minimum: "1",
             },
           },
+          Addresses: {
+            participantADs: {
+              allow: allowList,
+              deny: exceptionList,
+            },
+            moderatorADs: {
+              allow: [],
+              deny: [],
+            },
+          },
         },
         avatarURL: nft != null ? nft.image_url : "",
       };
@@ -234,10 +251,14 @@ export function useWeb3CallState(
     web3Address,
     permissionType,
     nft,
+    exceptionList,
+    allowList,
     participantPoaps,
     moderatorPoaps,
     participantNFTCollections,
     moderatorNFTCollections,
+    setAllowList,
+    setExceptionList,
     setWeb3Address,
     setPermissionType,
     setNft,
