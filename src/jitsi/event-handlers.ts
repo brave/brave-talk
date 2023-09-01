@@ -9,6 +9,16 @@ import {
   askOnUnload,
   updateSubject,
 } from "./lib";
+import {
+  EIP4361Message,
+  createEIP4361Message,
+} from "../components/web3/EIP4361";
+import { getNonce } from "../components/web3/api";
+import {
+  cryptoAction,
+  CryptoTransactionParams,
+  SIWEReturnParams,
+} from "../components/web3/SendCryptoPopup";
 
 export const subjectChangeHandler = {
   name: "subjectChange",
@@ -257,4 +267,56 @@ export const dataChannelOpenedHandler = {
 export const videoConferenceJoinedHandler = {
   name: "videoConferenceJoined",
   fn: () => () => acquireWakeLock(),
+};
+
+export const sendCryptoButtonPressedHandler = {
+  name: "participantMenuButtonClick",
+  fn: (jitsi: IJitsiMeetApi, context: JitsiContext) => async (params: any) => {
+    if (params.key != "send-crypto") return;
+
+    // add to outstanding messages
+    if (!cryptoAction.sendOutstandingRequest)
+      return console.error("!!! addOutstandingRequest not defined");
+    cryptoAction.sendOutstandingRequest(params.participantId);
+  },
+};
+
+export const onEndpointTextMessageForCryptoSendHandler = {
+  name: "endpointTextMessageReceived",
+  fn: (jitsi: IJitsiMeetApi, context: JitsiContext) => async (params: any) => {
+    const msg = JSON.parse(params.data.eventData.text);
+    console.log("!!! msg", msg);
+    if (!(msg.type == "crypto")) return;
+    const type = msg.msgType;
+
+    const info = (await jitsi.getRoomsInfo()).rooms;
+    const room = info.filter((r: any) => r.isMainRoom)[0];
+    const name = room.participants.filter(
+      (p: any) => p.id === params.data.senderInfo.id
+    )[0].displayName;
+
+    switch (type) {
+      case "REQ": {
+        const txparams: CryptoTransactionParams = msg.payload;
+        txparams.sender = params.data.senderInfo.id;
+        txparams.senderDisplayName = name;
+
+        cryptoAction.addIncomingRequest(txparams);
+        break;
+      }
+
+      case "SIGNED": {
+        const siwe: SIWEReturnParams = msg.payload;
+        cryptoAction.attemptResolveOutstandingRequest({
+          senderDisplayName: name,
+          siwe: siwe,
+        });
+      }
+
+      case "REJECT": {
+        const nonce = msg.payload;
+        cryptoAction.rejectOutstandingRequest(nonce);
+      }
+    }
+  },
 };
