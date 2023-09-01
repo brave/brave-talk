@@ -1,5 +1,5 @@
 import { Text } from "../Text";
-import { css } from "@emotion/react";
+import { css, keyframes } from "@emotion/react";
 import { useEffect, useRef, useState } from "react";
 import { generateSIWEForCrypto } from "./api";
 import { IJitsiMeetApi } from "../../jitsi/types";
@@ -8,25 +8,47 @@ import { SiweMessage } from "siwe";
 import { verifyMessage, parseUnits, Transaction } from "ethers";
 import { Buffer } from "buffer";
 import { AllowedERC20Tokens, sendCrypto } from "./send-crypto";
+import { AnimatedArrow } from "./AnimatedArrow";
+
+const DEBUG = false;
+
+const fadeInAnim = keyframes`
+  0% { 
+    opacity: 0; 
+    transform: translateY(-20px);
+  }
+  100% { 
+    opacity: 1; 
+    transform: translateY(0);
+  }
+`;
+
 const popupBaseCSS = css`
   position: absolute;
-  margin: 10px;
-  width: 30%;
-  height: 10%;
-  border-radius: 0.5rem;
-  background-color: rgb(128, 128, 128);
+  border-radius: var(--radius-xl, 8px);
+  border: 1px solid var(--semantic-border-color, #e5e5e5);
+  border-radius: 8px;
+  background: var(--semantic-container-background, #fff);
+  display: flex;
+  width: 500px;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  border-radius: 16px;
+  background-color: #ffffff;
+  color: #000000;
   z-index: 99999;
-  font-family: system-ui;
+  animation: ease-in-out 0.5s ${fadeInAnim};
 `;
 
 const popupCSSTopLeft = css`
-  top: 0;
-  left: 0;
+  top: 10px;
+  left: 10px;
 `;
 
 const popupCSSBottomRight = css`
-  bottom: 0;
-  right: 0;
+  bottom: 10px;
+  right: 10px;
 `;
 
 const popupCSSCetner = css`
@@ -36,12 +58,101 @@ const popupCSSCetner = css`
   transform: translate(-50%, -50%);
 `;
 
-const buttonCSS = css`
-  margin: 10px;
-  width: 20%;
-  cursor: pointer;
-  border-radius: 0.2rem;
+const popupContentCSS = css`
+  padding: 20px;
+  font-size: 16px;
 `;
+
+const actionsCSS = css`
+  display: flex;
+  padding: 20px;
+  justify-content: flex-end;
+  align-items: flex-start;
+  gap: var(--spacing-xl, 16px);
+  align-self: stretch;
+`;
+
+const buttonCSS = css`
+  width: 150px;
+  height: 44px;
+  margin-right: 16px;
+  margin-left: 16px;
+  border-radius: 22px;
+  background-color: #3f39e8;
+  color: #ffffff;
+  cursor: pointer;
+  display: flex;
+  padding: 12px 16px;
+  justify-content: center;
+  align-items: center;
+  flex: 1 0 0;
+`;
+
+const popupHeaderCSS = css`
+  display: flex;
+  height: 56px;
+  padding: 8px 16px 8px 24px;
+  align-items: center;
+  gap: 16px;
+  align-self: stretch;
+  font-family: Poppins;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 600;
+  line-height: 24px; /* 150% */
+`;
+
+const inputCSS = css`
+  width: 80px;
+  height: 16px;
+  gap: 8px;
+  border: 0px;
+  font-size: 16px;
+  border-bottom: 1px solid #a1abba;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 24px; /* 171.429% */
+  vertical-align: middle;
+  &:focus {
+    border-bottom: 2px solid #3f39e8;
+  }
+  outline: none;
+`;
+
+const highlightBoxCSS = css`
+  border-radius: 4px;
+  background: #e9eeff;
+  padding: 16px;
+`;
+
+const Divider = () => {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="500px"
+      height="1"
+      viewBox="0 0 500 1"
+      fill="none"
+      css={css`
+        display: flex;
+        height: 1px;
+        justify-content: center;
+        align-items: center;
+        align-self: stretch;
+      `}
+    >
+      <rect width="500" height="1" fill="#A1ABBA" fill-opacity="0.4" />
+    </svg>
+  );
+};
+
+const getNameFromId = async (jitsi: IJitsiMeetApi, id: string) => {
+  const info = (await jitsi.getRoomsInfo()).rooms;
+  const room = info.filter((r: any) => r.isMainRoom)[0];
+  const name = room.participants.filter((p: any) => p.id === id)[0].displayName;
+
+  return name;
+};
 
 export interface CryptoTransactionParams {
   senderDisplayName: string;
@@ -82,21 +193,29 @@ interface CryptoPopupProps {
   jitsi: IJitsiMeetApi;
 }
 
+const DEBUG_SHOW = true;
+
 export const CryptoRecievePopup: React.FC<CryptoPopupProps> = ({
   incomingRequests,
   setIncomingRequests,
   web3Address,
   jitsi,
 }) => {
-  const [showing, setShowing] = useState(false);
+  const [showing, setShowing] = useState(DEBUG_SHOW);
   const [params, setParams] = useState({} as any);
 
   const returnSIWEToOrigin = async () => {
-    const siwe: SIWEReturnParams = await generateSIWEForCrypto(
-      web3Address,
-      params,
-      "Confirm"
-    );
+    let siwe: SIWEReturnParams;
+    try {
+      siwe = await generateSIWEForCrypto(
+        web3Address,
+        params,
+        `Please sign this message so that ${params.senderDisplayName} knows that you own this address, and may send you ${params.amount} ${params.token}.`
+      );
+    } catch (e) {
+      rejectIncomingRequest();
+      return;
+    }
     if (!params) return console.log("!!! params not set");
     if (!jitsi) return console.log("!!! jitsi not set");
     const msg: CryptoSendMessage = {
@@ -140,19 +259,23 @@ export const CryptoRecievePopup: React.FC<CryptoPopupProps> = ({
     <div>
       {showing && (
         <div css={[popupBaseCSS, popupCSSTopLeft]}>
-          {incomingRequests.length > 1 && (
-            <div>{`Pending Requests (${incomingRequests.length})`}</div>
-          )}
-          <div css={{ margin: "10px" }}>
-            <Text variant="body">{`${params.senderDisplayName} wants to send you ${params.amount} ${params.token}! Your current address is ${web3Address}.`}</Text>
-          </div>
-          <div>
-            <button onClick={returnSIWEToOrigin} css={buttonCSS}>
-              Accept
-            </button>
-            <button onClick={rejectIncomingRequest} css={buttonCSS}>
-              Reject
-            </button>
+          <div css={popupHeaderCSS}>Incoming Crypto Send Request</div>
+          <Divider />
+          <div css={popupContentCSS}>
+            {incomingRequests.length > 1 && (
+              <div>{`Pending Requests (${incomingRequests.length})`}</div>
+            )}
+            <div css={{ margin: "10px" }}>
+              <Text variant="body">{`${params.senderDisplayName} wants to send you ${params.amount} ${params.token}! Your current address is ${web3Address}.`}</Text>
+            </div>
+            <div css={actionsCSS}>
+              <button onClick={returnSIWEToOrigin} css={buttonCSS}>
+                Accept
+              </button>
+              <button onClick={rejectIncomingRequest} css={buttonCSS}>
+                Reject
+              </button>
+            </div>
           </div>
         </div>
       )}
@@ -179,9 +302,9 @@ export const CryptoSendPopup: React.FC<CryptoSendPopupProps> = ({
   pending,
   setPending,
 }) => {
-  const [showing, setShowing] = useState(false);
+  const [showing, setShowing] = useState(DEBUG_SHOW);
   const [value, setValue] = useState(0);
-
+  const [pendingName, setPendingName] = useState("");
   const sendAndRegisterOutgoingRequest = async () => {
     const amount = value;
     const token = "BAT";
@@ -219,7 +342,11 @@ export const CryptoSendPopup: React.FC<CryptoSendPopupProps> = ({
     setPending("");
   };
   useEffect(() => {
+    const _setName = async (id: string) => {
+      setPendingName(await getNameFromId(jitsi, id));
+    };
     if (pending) {
+      _setName(pending);
       setShowing(true);
     } else {
       setShowing(false);
@@ -230,16 +357,31 @@ export const CryptoSendPopup: React.FC<CryptoSendPopupProps> = ({
     <div>
       {showing && (
         <div css={[popupBaseCSS, popupCSSBottomRight]}>
-          <span>Amount: </span>
-          <input
-            type="number"
-            value={value}
-            css={{ margin: "10px" }}
-            onChange={(e) => setValue(parseInt(e.target.value, 10))}
-          />
-          <button onClick={sendAndRegisterOutgoingRequest} css={buttonCSS}>
-            Send
-          </button>
+          <div css={popupHeaderCSS}>Send Crypto</div>
+          <Divider />
+          <div css={popupContentCSS}>
+            <div css={{ fontSize: "16px" }}>
+              <span>Send: </span>
+              <input
+                type="text"
+                pattern="[0-9]*"
+                value={value}
+                css={inputCSS}
+                onChange={(e) => setValue(parseInt(e.target.value, 10))}
+              />
+              <span>BAT</span>
+              <AnimatedArrow />
+              <span>{pendingName}</span>
+            </div>
+            <div css={actionsCSS}>
+              <button onClick={sendAndRegisterOutgoingRequest} css={buttonCSS}>
+                Send
+              </button>
+              <button onClick={() => setPending("")} css={buttonCSS}>
+                Cancel
+              </button>
+            </div>
+          </div>
         </div>
       )}
     </div>
@@ -263,7 +405,9 @@ export const CryptoOOBPopup: React.FC<CryptoOOBPopupProps> = ({
   outstandingRequests,
   setOutstandingRequests,
 }) => {
-  const [showing, setShowing] = useState(false);
+  const [showing, setShowing] = useState(DEBUG_SHOW);
+  const [currentPendingParams, setCurrentPendingParams] =
+    useState<CryptoTransactionParams | null>();
 
   // TODO: wrap in try catch
   const resolvePending = async () => {
@@ -276,15 +420,34 @@ export const CryptoOOBPopup: React.FC<CryptoOOBPopupProps> = ({
       (r) => r.nonce === msg.nonce
     )[0];
     // check nonce exists
-    const tx = await sendCrypto(
-      currentRequest.amount,
-      currentRequest.token,
-      proof.signer
-    );
+    let tx;
+    try {
+      tx = await sendCrypto(
+        currentRequest.amount,
+        currentRequest.token,
+        proof.signer
+      );
+    } catch (e) {
+      console.log("!!! error sending crypto", e);
+    }
     setOutstandingRequests(
       outstandingRequests.filter((r) => r.nonce !== msg.nonce)
     );
     setCurrentResolution(null);
+  };
+
+  const removePending = () => {
+    if (!currentResolution) return console.log("!!! currentResolution not set");
+    const { proof } = currentResolution.siwe;
+    const { signer, signature, payload } = proof;
+    const payloadStr = Buffer.from(payload.slice(2), "hex").toString("utf8");
+    const msg = new SiweMessage(payloadStr);
+
+    setOutstandingRequests(
+      outstandingRequests.filter((r) => r.nonce !== msg.nonce)
+    );
+    setCurrentResolution(null);
+    setCurrentPendingParams(null);
   };
 
   // TODO: wrap in try catch
@@ -308,7 +471,12 @@ export const CryptoOOBPopup: React.FC<CryptoOOBPopupProps> = ({
         console.log("!!! not ok, bad signature");
         return;
       }
+
+      const currentPendingParams = outstandingRequests.filter(
+        (r) => r.nonce === nonce
+      )[0];
       setShowing(true);
+      setCurrentPendingParams(currentPendingParams);
     } else {
       setShowing(false);
     }
@@ -318,23 +486,41 @@ export const CryptoOOBPopup: React.FC<CryptoOOBPopupProps> = ({
     <div>
       {currentResolution && (
         <div css={[popupBaseCSS, popupCSSCetner]}>
-          <div
-            css={{ margin: "10px" }}
-          >{`Your send request to ${currentResolution.senderDisplayName} has been signed. Please verify with the recipient that their address is the following:`}</div>
-          <div
-            css={{
-              margin: "10px",
-              textAlign: "center",
-              fontFamily: "monospace",
-            }}
-          >{`${currentResolution.siwe.proof.signer}`}</div>
-          <button css={buttonCSS} onClick={resolvePending}>
-            Send
-          </button>
-          <button css={buttonCSS} onClick={() => setCurrentResolution(null)}>
-            {" "}
-            Cancel
-          </button>
+          <div css={popupHeaderCSS}>Confirm Send</div>
+          <Divider />
+          <div css={popupContentCSS}>
+            <div
+              css={{ margin: "10px" }}
+            >{`${currentResolution.senderDisplayName} has signed a message for you with the address below. Please verify with the recipient that their address is the following:`}</div>
+            <div
+              css={[
+                {
+                  margin: "10px",
+                  textAlign: "center",
+                  fontFamily: "monospace",
+                },
+                highlightBoxCSS,
+              ]}
+            >{`${currentResolution.siwe.proof.signer}`}</div>
+            <div>
+              {`You will be sending ${currentPendingParams?.amount} ${currentPendingParams?.token} to ${currentResolution.senderDisplayName}.`}
+            </div>
+            <div css={actionsCSS}>
+              <button css={buttonCSS} onClick={resolvePending}>
+                Send
+              </button>
+              <button
+                css={buttonCSS}
+                onClick={() => {
+                  setCurrentResolution(null);
+                  removePending();
+                }}
+              >
+                {" "}
+                Cancel
+              </button>
+            </div>
+          </div>
         </div>
       )}
     </div>
@@ -448,29 +634,30 @@ export const CryptoWrapper: React.FC<CryptoWrapperProps> = ({ jitsi }) => {
         outstandingRequests={outstandingRequests}
         setOutstandingRequests={setOutstandingRequests}
       />
-      {(incomingRequests.length > 0 || outstandingRequests.length > 0) && (
-        <div
-          css={[
-            popupBaseCSS,
-            css`
-              left: 0;
-              bottom: 0;
-            `,
-          ]}
-        >
-          <div css={{ margin: "10px" }}>Your address: {web3Address}</div>
-          <div>
-            {outstandingRequests.map((request) => (
-              <div>{`ME -> ${request.recipientDisplayName}: ${request.amount}`}</div>
-            ))}
+      {(incomingRequests.length > 0 || outstandingRequests.length > 0) &&
+        DEBUG && (
+          <div
+            css={[
+              popupBaseCSS,
+              css`
+                left: 0;
+                bottom: 0;
+              `,
+            ]}
+          >
+            <div css={{ margin: "10px" }}>Your address: {web3Address}</div>
+            <div>
+              {outstandingRequests.map((request) => (
+                <div>{`ME -> ${request.recipientDisplayName}: ${request.amount}`}</div>
+              ))}
+            </div>
+            <div>
+              {incomingRequests.map((request) => (
+                <div>{`${request.senderDisplayName} -> ME: ${request.amount}`}</div>
+              ))}
+            </div>
           </div>
-          <div>
-            {incomingRequests.map((request) => (
-              <div>{`${request.senderDisplayName} -> ME: ${request.amount}`}</div>
-            ))}
-          </div>
-        </div>
-      )}
+        )}
     </div>
   );
 };
