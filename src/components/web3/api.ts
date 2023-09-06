@@ -291,6 +291,11 @@ export const generateSIWEForCrypto = async (
     nonce: params.nonce,
     issuedAt: new Date().toISOString(),
   };
+  const { ethers } = await require("ethers");
+  window.web3 = new ethers.BrowserProvider(window.ethereum);
+  if (!window.web3) {
+    throw new Error("unable to create ethers.BrowserProvider object");
+  }
   const payload = createEIP4361Message(message, "Ethereum");
   const payloadBytes = new TextEncoder().encode(payload);
   const { hexlify } = await import("ethers");

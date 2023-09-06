@@ -47,6 +47,11 @@ export const InCall: React.FC<Props> = ({
   const divRef = useRef(null);
   const [jitsiMeet, setJitsiMeet] = useState<IJitsiMeetApi>();
 
+  // why not fix the isWeb3Call setting? because it breaks if we fix it naively. This works for now.
+  const callIsWeb3 = jwt
+    ? jwt_decode(jwt).context["x-brave-features"].web3 === "true"
+    : false;
+
   useEffect(() => {
     if (!jitsiMeet && divRef.current && isCallReady) {
       const jitsiEventHandlers = [
@@ -93,7 +98,7 @@ export const InCall: React.FC<Props> = ({
 
   return (
     <div ref={divRef} css={{ height: "100%" }}>
-      {isWeb3Call && <CryptoWrapper jitsi={jitsiMeet} />}
+      {callIsWeb3 && <CryptoWrapper jitsi={jitsiMeet} />}
     </div>
   );
 };
