@@ -309,6 +309,7 @@ export const onEndpointTextMessageForCryptoSendHandler = {
         const siwe: SIWEReturnParams = msg.payload;
         cryptoAction.attemptResolveOutstandingRequest({
           senderDisplayName: name,
+          jitsiId: params.data.senderInfo.id,
           siwe: siwe,
         });
       }

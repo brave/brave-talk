@@ -116,6 +116,9 @@ const inputCSS = css`
   &:focus {
     border-bottom: 2px solid #3f39e8;
   }
+  &:invalid {
+    border-bottom: 2px solid #ff0000;
+  }
   outline: none;
 `;
 
@@ -124,6 +127,18 @@ const highlightBoxCSS = css`
   background: #e9eeff;
   padding: 16px;
 `;
+
+const onlyNumberOrDecimal = (e: React.KeyboardEvent<HTMLInputElement>) => {
+  const charCode = e.key.charCodeAt(0);
+  if (
+    charCode > 31 &&
+    (charCode < 48 || charCode > 57) &&
+    charCode !== 46 &&
+    e.key != "Backspace"
+  ) {
+    e.preventDefault();
+  }
+};
 
 const Divider = () => {
   return (
@@ -175,6 +190,7 @@ export interface SIWEReturnParams {
 
 interface TransactionPendingResolution {
   senderDisplayName: string;
+  jitsiId: string;
   siwe: SIWEReturnParams;
 }
 
@@ -213,6 +229,7 @@ export const CryptoRecievePopup: React.FC<CryptoPopupProps> = ({
         `Please sign this message so that ${params.senderDisplayName} knows that you own this address, and may send you ${params.amount} ${params.token}.`
       );
     } catch (e) {
+      console.log(e);
       rejectIncomingRequest();
       return;
     }
@@ -303,15 +320,13 @@ export const CryptoSendPopup: React.FC<CryptoSendPopupProps> = ({
   setPending,
 }) => {
   const [showing, setShowing] = useState(DEBUG_SHOW);
-  const [value, setValue] = useState(0);
+  const [value, setValue] = useState(0.0);
   const [pendingName, setPendingName] = useState("");
   const sendAndRegisterOutgoingRequest = async () => {
     const amount = value;
     const token = "BAT";
     const nonce = await getNonce();
-    const recipientDisplayName = (await jitsi.getRoomsInfo()).rooms
-      .filter((r: any) => r.isMainRoom)[0]
-      .participants.filter((p: any) => p.id === pending)[0].displayName;
+    const recipientDisplayName = await getNameFromId(jitsi, pending);
 
     const sendParams: CryptoTransactionParams = {
       senderDisplayName: "me",
@@ -364,10 +379,19 @@ export const CryptoSendPopup: React.FC<CryptoSendPopupProps> = ({
               <span>Send: </span>
               <input
                 type="text"
-                pattern="[0-9]*"
-                value={value}
+                pattern="\d*.?\d*"
+                onKeyDown={onlyNumberOrDecimal}
                 css={inputCSS}
-                onChange={(e) => setValue(parseInt(e.target.value, 10))}
+                onChange={(e) => {
+                  e.target.value === ""
+                    ? setValue(0.0)
+                    : setValue(
+                        Math.min(
+                          parseFloat(e.target.value),
+                          Number.MAX_SAFE_INTEGER
+                        )
+                      );
+                }}
               />
               <span>BAT</span>
               <AnimatedArrow />
@@ -473,7 +497,7 @@ export const CryptoOOBPopup: React.FC<CryptoOOBPopupProps> = ({
       }
 
       const currentPendingParams = outstandingRequests.filter(
-        (r) => r.nonce === nonce
+        (r) => r.nonce === nonce && r.recipient === currentResolution.jitsiId
       )[0];
       setShowing(true);
       setCurrentPendingParams(currentPendingParams);
