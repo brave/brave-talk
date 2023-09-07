@@ -144,7 +144,7 @@ export const CryptoSendPopup: React.FC<CryptoSendPopupProps> = ({
               <span>Send: </span>
               <input
                 type="text"
-                pattern="\d*.?\d*"
+                pattern="\d*\.?\d*"
                 onKeyDown={(e) => {
                   setWarningText("");
                   onlyNumberOrDecimal(e);
