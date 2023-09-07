@@ -14,11 +14,11 @@ import {
   createEIP4361Message,
 } from "../components/web3/EIP4361";
 import { getNonce } from "../components/web3/api";
+import { cryptoAction } from "../components/web3/crypto/CryptoWrapper";
 import {
-  cryptoAction,
-  CryptoTransactionParams,
   SIWEReturnParams,
-} from "../components/web3/SendCryptoPopup";
+  CryptoTransactionParams,
+} from "../components/web3/crypto/common";
 
 export const subjectChangeHandler = {
   name: "subjectChange",
@@ -286,7 +286,7 @@ export const onEndpointTextMessageForCryptoSendHandler = {
   fn: (jitsi: IJitsiMeetApi, context: JitsiContext) => async (params: any) => {
     const msg = JSON.parse(params.data.eventData.text);
     console.log("!!! msg", msg);
-    if (!(msg.type == "crypto")) return;
+    if (msg.type !== "crypto") return;
     const type = msg.msgType;
 
     const info = (await jitsi.getRoomsInfo()).rooms;
