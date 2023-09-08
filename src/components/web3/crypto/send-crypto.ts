@@ -19,9 +19,8 @@ const tokenContractAddresses = {
 
 export type AllowedERC20Tokens = keyof typeof tokenContractAddresses;
 
-// amount in Wei
 export const sendCrypto = async (
-  amount: number,
+  amount: string,
   token: AllowedERC20Tokens,
   toAddress: string
 ) => {
@@ -30,7 +29,9 @@ export const sendCrypto = async (
 
   const cx = new Contract(tokenContractAddresses[token], ERC20Abi, signer);
 
-  const parsedAmount = parseUnits(amount.toString(), 18);
+  const parsedAmount = parseUnits(amount, 18);
   const tx = await cx.transfer(toAddress, parsedAmount);
+
+  // here tx is a promise that resolves once the transaction is mined
   return tx;
 };

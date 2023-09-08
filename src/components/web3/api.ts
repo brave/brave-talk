@@ -3,7 +3,7 @@ import { fetchWithTimeout } from "../../lib";
 import { NFTcollection, POAP, NFT } from "./core";
 import { EIP4361Message, createEIP4361Message } from "./EIP4361";
 import { Buffer } from "buffer";
-import { CryptoTransactionParams } from "./SendCryptoPopup";
+import { CryptoTransactionParams } from "./crypto/common";
 
 declare let window: any;
 
