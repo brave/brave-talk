@@ -102,11 +102,6 @@ export const CryptoSendPopup: React.FC<CryptoSendPopupProps> = ({
       recipient: pending,
       recipientDisplayName,
     };
-    const msg: CryptoSendMessage = {
-      type: "crypto",
-      msgType: "REQ",
-      payload: sendParams,
-    };
     setOutgoingRequests([...outgoingRequests, sendParams]);
 
     jitsi.executeCommand(
