@@ -17,7 +17,11 @@ import {
   subjectChangeHandler,
   videoQualityChangeHandler,
   videoConferenceJoinedHandler,
+  sendCryptoButtonPressedHandler,
+  onEndpointTextMessageForCryptoSendHandler,
 } from "../jitsi/event-handlers";
+
+import { CryptoWrapper } from "./web3/crypto/CryptoWrapper";
 
 interface Props {
   roomName: string;
@@ -26,6 +30,7 @@ interface Props {
   isCallReady: boolean;
   isWeb3Call: boolean;
   jitsiContext: JitsiContext;
+  web3Account: "ETH" | "SOL" | null;
 }
 
 export const InCall: React.FC<Props> = ({
@@ -35,9 +40,15 @@ export const InCall: React.FC<Props> = ({
   isCallReady,
   isWeb3Call,
   jitsiContext: context,
+  web3Account,
 }) => {
   const divRef = useRef(null);
   const [jitsiMeet, setJitsiMeet] = useState<IJitsiMeetApi>();
+
+  // why not fix the isWeb3Call setting? because it breaks if we fix it naively. This works for now.
+  const callIsWeb3 = jwt
+    ? jwt_decode(jwt).context["x-brave-features"].web3 === "true"
+    : false;
 
   useEffect(() => {
     if (!jitsiMeet && divRef.current && isCallReady) {
@@ -56,6 +67,8 @@ export const InCall: React.FC<Props> = ({
         dataChannelOpenedHandler,
         endpointTextMessageReceivedHandler,
         videoConferenceJoinedHandler,
+        sendCryptoButtonPressedHandler,
+        onEndpointTextMessageForCryptoSendHandler,
       ];
 
       const options = jitsiOptions(roomName, divRef.current, jwt, isMobile);
@@ -79,5 +92,9 @@ export const InCall: React.FC<Props> = ({
     return null;
   }
 
-  return <div ref={divRef} css={{ height: "100%" }} />;
+  return (
+    <div ref={divRef} css={{ height: "100%" }}>
+      {callIsWeb3 && <CryptoWrapper jitsi={jitsiMeet} />}
+    </div>
+  );
 };
