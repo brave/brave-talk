@@ -1,13 +1,9 @@
-import { Text } from "../../Text";
-import { css, keyframes } from "@emotion/react";
-import { useEffect, useRef, useState } from "react";
-import { generateSIWEForCrypto } from "../api";
-import { IJitsiMeetApi } from "../../../jitsi/types";
-import { getNonce } from "../api";
+import { css } from "@emotion/react";
+import { useEffect, useState } from "react";
 import { SiweMessage } from "siwe";
-import { verifyMessage, parseUnits, Transaction } from "ethers";
+import { verifyMessage } from "ethers";
 import { Buffer } from "buffer";
-import { AllowedERC20Tokens, sendCrypto } from "./send-crypto";
+import { sendCrypto } from "./send-crypto";
 import {
   CryptoTransactionParams,
   TransactionPendingResolution,

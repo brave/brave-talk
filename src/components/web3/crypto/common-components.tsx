@@ -16,7 +16,7 @@ export const Divider = () => {
         align-self: stretch;
       `}
     >
-      <rect width="500" height="1" fill="#A1ABBA" fill-opacity="0.4" />
+      <rect width="500" height="1" fill="#A1ABBA" />
     </svg>
   );
 };
