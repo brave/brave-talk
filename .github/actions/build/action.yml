@@ -16,7 +16,8 @@ runs:
         cache: npm
     - run: npm ci
       shell: bash
-    - run: npm audit
+    # check includes audit, tsc, lint, prettier
+    - run: npm run check
       shell: bash
     - run: npm test
       shell: bash
