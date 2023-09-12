@@ -7,7 +7,7 @@ export function shouldShowExtensionPromo(): boolean {
 
 export function dismissExtensionPromoCounter(): void {
   window.localStorage.setItem(PROMO_STORAGE_KEY, "true");
-} 
+}
 
 export function incrementExtensionPromoCounter(): void {
   if (window.localStorage.getItem(PROMO_STORAGE_KEY) === "true") {

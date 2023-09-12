@@ -104,7 +104,7 @@ const roomsRequest = async ({
         throw new Error("SOL");
       }
       const message =
-        status == 401
+        status === 401
           ? respText
           : failureMessages[status] ||
             `Request failed: ${status} ${response.statusText}`;
