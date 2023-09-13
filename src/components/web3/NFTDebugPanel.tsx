@@ -1,13 +1,10 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { NFT } from "./core";
 import { Item, SelectableImageList } from "./SelectableImageList";
 import { Button } from "../Button";
 
 interface Props {
-  startCall: boolean;
   nfts?: NFT[];
-  nft: NFT | null;
-  setNft: (nft: NFT | null) => void;
 }
 
 const showSpamScore = (item: Item) => {
@@ -18,12 +15,7 @@ const showSpamScore = (item: Item) => {
   }`;
 };
 
-export const NFTDebugPanel: React.FC<Props> = ({
-  startCall,
-  nfts = [],
-  nft,
-  setNft,
-}) => {
+export const NFTDebugPanel = ({ nfts = [] }: Props) => {
   const nftItems = nfts.map((n: NFT) => ({ ...n, imageUrl: n.image_url }));
   const [selectedNftIdxs, setSelectedNftIdxs] = useState<number[]>([]);
   const selectedNftsId = nfts
@@ -51,8 +43,8 @@ export const NFTDebugPanel: React.FC<Props> = ({
         onToggleSelection={onToggle}
         onMouseOverText={showSpamScore}
       />
-      {selectedNftsId.map((s: string) => (
-        <div>{s}</div>
+      {selectedNftsId.map((s, idx) => (
+        <div key={idx}>{s}</div>
       ))}
       <Button
         css={{

@@ -33,7 +33,7 @@ interface Props {
   setJitsiContext: (context: JitsiContext) => void;
 }
 
-export const WelcomeScreen: React.FC<Props> = ({
+export const WelcomeScreen = ({
   onStartCall,
   notice,
   disabled,
@@ -47,7 +47,7 @@ export const WelcomeScreen: React.FC<Props> = ({
   setJwt,
   setRoomName,
   setJitsiContext,
-}) => {
+}: Props) => {
   const subscribed = useSubscribedStatus();
   const { t } = useTranslation();
   const onClickWeb3CTA = () => {
@@ -72,7 +72,7 @@ export const WelcomeScreen: React.FC<Props> = ({
     setWeb3Account("ETH");
     return;
   };
-  const Body: React.FC = () => {
+  const Body = () => {
     if (!browser.supportsWebRTC) {
       return (
         <SectionWithLogo
@@ -145,11 +145,9 @@ export const WelcomeScreen: React.FC<Props> = ({
             <Text css={{ color: "black", display: "block" }} variant="header">
               Web3 Account
             </Text>
-            <Text
-              css={{ color: "black", display: "block" }}
-              variant="body"
-              children={t("web3_account_body")}
-            />
+            <Text css={{ color: "black", display: "block" }} variant="body">
+              {t("web3_account_body")}
+            </Text>
             <div css={buttonContainerStyle}>
               <div css={buttonWrapperStyle}>
                 <button css={buttonStyle} onClick={onClickEthAccount}>

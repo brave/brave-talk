@@ -15,17 +15,15 @@ interface Props {
   onChange: Dispatch<string[]>;
 }
 
-export const ExceptionListPanel: React.FC<Props> = ({
+export const ExceptionListPanel = ({
   header,
   subhead,
   web3Account,
   web3Address,
-  isExceptionAddressWrong,
   setIsExceptionAddressWrong,
-  exceptionList,
   compareList,
   onChange,
-}) => {
+}: Props) => {
   const [inputText, setInputText] = useState("");
   const [invalidAddresses, setInvalidAddresses] = useState<string[]>([]);
 

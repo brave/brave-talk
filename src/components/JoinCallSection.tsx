@@ -16,14 +16,14 @@ interface Props {
   onStartCall: DispatchWithoutAction;
 }
 
-export const JoinCallSection: React.FC<Props> = ({
+export const JoinCallSection = ({
   subscribed,
   browser,
   notice,
   onStartCall,
   disabled,
   hideButtons,
-}) => {
+}: Props) => {
   const { t } = useTranslation();
   return (
     <SectionWithLogo

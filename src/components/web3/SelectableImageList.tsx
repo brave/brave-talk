@@ -25,12 +25,12 @@ const showNameAndNetwork = (item: Item) => {
   return `${item.name} (${item.chain})`;
 };
 
-export const SelectableImageList: React.FC<Props> = ({
+export const SelectableImageList = ({
   items,
   selectedIdxs,
   onToggleSelection,
   onMouseOverText = showNameAndNetwork,
-}) => {
+}: Props) => {
   const showCheckbox = items.some(
     (item) => item.collection !== undefined && item.collection.spam_score >= 80
   );

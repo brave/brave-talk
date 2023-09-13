@@ -24,7 +24,7 @@ const styles = {
   }),
 };
 
-export const App: React.FC = () => {
+export const App = () => {
   const params = useParams();
 
   const {

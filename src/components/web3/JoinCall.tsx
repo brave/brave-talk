@@ -21,14 +21,14 @@ interface Props {
   setWeb3Account: (web3Account: "ETH" | "SOL") => void;
 }
 
-export const JoinCall: React.FC<Props> = ({
+export const JoinCall = ({
   roomName,
   setJwt,
   jitsiContext,
   web3Account,
   setWeb3Account,
   setJitsiContext,
-}) => {
+}: Props) => {
   const { t } = useTranslation();
   const [nfts, setNfts] = useState<NFT[] | undefined>();
   const [feedbackMessage, setFeedbackMessage] = useState<TranslationKeys>();
