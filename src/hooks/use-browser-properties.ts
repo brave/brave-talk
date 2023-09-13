@@ -45,12 +45,12 @@ export function useBrowserProperties(): BrowserProperties {
   // This helps avoid delays / flashes of content on load.
 
   const [browser, setBrowser] = useState<BrowserProperties>(
-    calcBrowserCapabilities()
+    calcBrowserCapabilities(),
   );
 
   useEffect(() => {
     isBrave().then((isBrave: boolean) =>
-      setBrowser((bp) => ({ ...bp, isBrave: isBrave }))
+      setBrowser((bp) => ({ ...bp, isBrave: isBrave })),
     );
   }, []);
 

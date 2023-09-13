@@ -24,7 +24,7 @@ export const SolLogin: React.FC<Props> = ({
 
     try {
       window.phantom?.solana.on("!!! accountChanged", () =>
-        setNotice(undefined)
+        setNotice(undefined),
       );
     } catch {
       console.warn("!!! Phantom Wallet does not exist");
@@ -55,7 +55,7 @@ export const SolLogin: React.FC<Props> = ({
                   Help with Brave Wallet
                 </a>
               </div>
-            </Trans>
+            </Trans>,
           );
         });
     } else {

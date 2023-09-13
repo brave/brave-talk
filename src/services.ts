@@ -1,6 +1,6 @@
 export function resolveService(
   servicePrefix: string,
-  baseHost: string = window.location.host
+  baseHost: string = window.location.host,
 ): string {
   return `https://${servicePrefix}.${secondLevelDomain(baseHost)}`;
 }
@@ -9,7 +9,7 @@ export function resolveService(
 // it is design for use only with the limited set of domains that brave uses and that this
 // website runs on.
 export function secondLevelDomain(
-  baseHost: string = window.location.host
+  baseHost: string = window.location.host,
 ): string {
   let sld = baseHost.split(".").slice(-2).join(".");
   if (sld.startsWith("localhost:")) {

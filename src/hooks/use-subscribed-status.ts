@@ -7,7 +7,7 @@ export function subscriptionCheckWithTimeout(): Promise<boolean> {
   const timeout = new Promise<boolean>((resolve) => {
     timer = setTimeout(() => {
       console.log(
-        "Timeout on checking subscription status, assuming not subscribed"
+        "Timeout on checking subscription status, assuming not subscribed",
       );
       resolve(false);
     }, 10_000);

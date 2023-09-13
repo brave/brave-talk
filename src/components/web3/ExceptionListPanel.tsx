@@ -68,7 +68,7 @@ export const ExceptionListPanel: React.FC<Props> = ({
 
   const isValidAddress = (
     address: string,
-    accountType: "ETH" | "SOL" | null
+    accountType: "ETH" | "SOL" | null,
   ): boolean => {
     if (accountType === "ETH") {
       // hexadecimal Ethereum address.
