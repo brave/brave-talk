@@ -29,21 +29,21 @@ interface Web3CallState {
   setParticipantPoaps: (participanPoaps: POAP[]) => void;
   setModeratorPoaps: (moderatorPoaps: POAP[]) => void;
   setParticipantNFTCollections: (
-    participantNFTCollections: NFTcollection[]
+    participantNFTCollections: NFTcollection[],
   ) => void;
   setModeratorNFTCollections: (
-    moderatorNFTCollections: NFTcollection[]
+    moderatorNFTCollections: NFTcollection[],
   ) => void;
   startCall: () => Promise<[string, string, Web3Authentication] | undefined>;
   joinCall: (
-    roomName: string
+    roomName: string,
   ) => Promise<[string, Web3Authentication] | undefined>;
 }
 
 export function useWeb3CallState(
   setFeedbackMessage: (message: TranslationKeys) => void,
   web3Account: "ETH" | "SOL" | null,
-  setWeb3Account: (web3Account: "ETH" | "SOL") => void
+  setWeb3Account: (web3Account: "ETH" | "SOL") => void,
 ): Web3CallState {
   const [web3Address, _setWeb3Address] = useState<string>();
   const [permissionType, setPermissionType] =
@@ -119,7 +119,7 @@ export function useWeb3CallState(
   }
 
   const joinCall = async (
-    roomName: string
+    roomName: string,
   ): Promise<[string, Web3Authentication] | undefined> => {
     let web3: Web3RequestBody | null = null;
     let auth: Web3Authentication | null = null;
@@ -150,7 +150,7 @@ export function useWeb3CallState(
         roomName,
         false,
         setFeedbackMessage,
-        web3
+        web3,
       );
       jwt = jwtResponse;
     } catch (e: any) {

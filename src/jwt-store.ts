@@ -17,7 +17,7 @@ export interface JwtStore {
   storeJwtForRoom: (
     roomName: string,
     encodedJwt: string,
-    encodedRefreshToken?: string | undefined
+    encodedRefreshToken?: string | undefined,
   ) => void;
   isNewMonthlyActiveUser: () => boolean;
 }
@@ -109,7 +109,7 @@ const loadConfabsFromStorage = (): ConfabStructure => {
   } catch (error) {
     console.log(
       `!!! localStorage.getItem ${CONFABS_STORAGE_KEY} failed`,
-      error
+      error,
     );
     try {
       window.localStorage.removeItem(CONFABS_STORAGE_KEY);
@@ -221,7 +221,7 @@ const saveConfabsToStorage = (confabs: ConfabStructure): void => {
   } catch (error) {
     console.warn(
       `!!! localStorage.setItem ${CONFABS_STORAGE_KEY} failed`,
-      error
+      error,
     );
   }
 };

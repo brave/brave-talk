@@ -7,7 +7,7 @@ import "./js/jwt-decode";
 
 // these envvars are set by the EnvironmentPlugin in webpack.config.js
 console.log(
-  `!!! version ${process.env.GIT_VERSION} (${process.env.ENVIRONMENT})`
+  `!!! version ${process.env.GIT_VERSION} (${process.env.ENVIRONMENT})`,
 );
 
 if (!isProduction) {

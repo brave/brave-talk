@@ -40,7 +40,7 @@ export const Login: React.FC<Props> = ({ web3address, onAddressSelected }) => {
                   Help with Brave Wallet
                 </a>
               </div>
-            </Trans>
+            </Trans>,
           );
         });
     }

@@ -35,11 +35,11 @@ interface Props {
   setModeratorPoaps?: (moderatorPoaps: POAP[]) => void;
   participantNFTCollections: NFTcollection[];
   setParticipantNFTCollections: (
-    participantNFTCollections: NFTcollection[]
+    participantNFTCollections: NFTcollection[],
   ) => void;
   moderatorNFTCollections: NFTcollection[];
   setModeratorNFTCollections: (
-    moderatorNFTCollections: NFTcollection[]
+    moderatorNFTCollections: NFTcollection[],
   ) => void;
 }
 

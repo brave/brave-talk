@@ -9,7 +9,7 @@ let loadingPromise: Promise<IJitsiMeetApi>;
 export const miniLoadExternalApi = (
   domain: string,
   release?: string,
-  appId?: string
+  appId?: string,
 ): Promise<IJitsiMeetApi> => {
   loadingPromise = new Promise((resolve, reject) => {
     if (window.JitsiMeetExternalApi) {
@@ -38,7 +38,7 @@ export const miniLoadExternalApi = (
 export const ensureJitsiApiLoaded = async () => {
   if (!loadingPromise) {
     throw Error(
-      "!!! you must call miniLoadExternalApi before ensureJitsiApiLoaded"
+      "!!! you must call miniLoadExternalApi before ensureJitsiApiLoaded",
     );
   }
   await loadingPromise;

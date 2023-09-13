@@ -58,7 +58,7 @@ export const WelcomeScreen: React.FC<Props> = ({
       window.open(
         `${accountUrl}/plans/?intent=checkout&product=talk`,
         "_self",
-        "noopener"
+        "noopener",
       );
     }
   };
@@ -78,7 +78,7 @@ export const WelcomeScreen: React.FC<Props> = ({
         <SectionWithLogo
           heading={t("talk_title")}
           subhead={t(
-            "Your iOS device appears to have Lockdown Mode enabled, which prevents Brave Talk from working."
+            "Your iOS device appears to have Lockdown Mode enabled, which prevents Brave Talk from working.",
           )}
         />
       );
