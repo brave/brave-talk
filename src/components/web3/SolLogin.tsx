@@ -8,10 +8,7 @@ interface Props {
   onAddressSelected: (address: string, event: string) => void;
 }
 
-export const SolLogin: React.FC<Props> = ({
-  web3address,
-  onAddressSelected,
-}) => {
+export const SolLogin = ({ web3address, onAddressSelected }: Props) => {
   const [notice, setNotice] = useState<JSX.Element | undefined>();
   const { t } = useTranslation();
 

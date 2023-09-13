@@ -28,14 +28,14 @@ interface Props {
   jitsiContext: JitsiContext;
 }
 
-export const InCall: React.FC<Props> = ({
+export const InCall = ({
   roomName,
   jwt,
   isMobile,
   isCallReady,
   isWeb3Call,
   jitsiContext: context,
-}) => {
+}: Props) => {
   const divRef = useRef(null);
   const [jitsiMeet, setJitsiMeet] = useState<IJitsiMeetApi>();
 

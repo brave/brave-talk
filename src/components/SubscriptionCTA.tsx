@@ -9,7 +9,7 @@ interface Props {
   subscribed: SubscriptionStatus;
 }
 
-export const SubscriptionCTA: React.FC<Props> = ({ subscribed }) => {
+export const SubscriptionCTA = ({ subscribed }: Props) => {
   const { t } = useTranslation();
   const subsUrl = resolveService("account");
 

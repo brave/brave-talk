@@ -6,7 +6,7 @@ interface Props {
   subscribed: SubscriptionStatus;
 }
 
-export const Header: React.FC<Props> = ({ subscribed }) => {
+export const Header = ({ subscribed }: Props) => {
   const { t } = useTranslation();
   return (
     <div>

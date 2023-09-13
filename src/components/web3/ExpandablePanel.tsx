@@ -1,5 +1,5 @@
 import { css } from "@emotion/react";
-import React, { ReactNode, useState } from "react";
+import { ReactNode, useState } from "react";
 import { baseText } from "./styles";
 import PlusImage from "../../images/plus.svg";
 import MinusImage from "../../images/minus.svg";
@@ -12,12 +12,12 @@ interface Props {
   children?: ReactNode;
 }
 
-export const ExapandablePanel: React.FC<Props> = ({
+export const ExapandablePanel = ({
   header,
   subhead,
   loading = false,
   children,
-}) => {
+}: Props) => {
   const [expanded, setExpanded] = useState(false);
 
   const toggleExpanded = () => setExpanded((value) => !value);

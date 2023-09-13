@@ -3,7 +3,7 @@ import { Button } from "./Button";
 import { SectionWithLogo } from "./SectionWithLogo";
 import { Text } from "./Text";
 
-export const DownloadBrave: React.FC = () => {
+export const DownloadBrave = () => {
   const { t } = useTranslation();
 
   return (

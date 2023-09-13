@@ -43,7 +43,7 @@ interface Props {
   ) => void;
 }
 
-export const OptionalSettings: React.FC<Props> = ({
+export const OptionalSettings = ({
   startCall,
   web3Account,
   web3Address = "",
@@ -78,7 +78,7 @@ export const OptionalSettings: React.FC<Props> = ({
   setParticipantNFTCollections,
   moderatorNFTCollections,
   setModeratorNFTCollections,
-}) => {
+}: Props) => {
   const isAllow = useParams().isAllowAddress;
   const nftItems = nfts.map((n: NFT) => ({ ...n, imageUrl: n.image_url }));
   const selectedNftIdx = nfts.findIndex((n) => nft != null && n.id === nft.id);

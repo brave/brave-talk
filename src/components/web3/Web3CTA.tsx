@@ -10,7 +10,7 @@ interface Props {
   isSubscribed: boolean;
 }
 
-export const Web3CTA: React.FC<Props> = ({ onClick, isSubscribed }) => {
+export const Web3CTA = ({ onClick, isSubscribed }: Props) => {
   const { t } = useTranslation();
   return (
     <Section
