@@ -72,7 +72,7 @@ const FETCH_TIMEOUT_MS = 5_000;
 // HT: https://dmitripavlutin.com/timeout-fetch-request/
 export async function fetchWithTimeout(
   input: RequestInfo,
-  init: RequestInit
+  init: RequestInit,
 ): Promise<Response> {
   const controller = new AbortController();
 

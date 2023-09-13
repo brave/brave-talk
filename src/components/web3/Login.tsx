@@ -40,7 +40,7 @@ export const Login = ({ web3address, onAddressSelected }: Props) => {
                   Help with Brave Wallet
                 </a>
               </div>
-            </Trans>
+            </Trans>,
           );
         });
     }

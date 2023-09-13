@@ -21,7 +21,7 @@ export const SolLogin = ({ web3address, onAddressSelected }: Props) => {
 
     try {
       window.phantom?.solana.on("!!! accountChanged", () =>
-        setNotice(undefined)
+        setNotice(undefined),
       );
     } catch {
       console.warn("!!! Phantom Wallet does not exist");
@@ -52,7 +52,7 @@ export const SolLogin = ({ web3address, onAddressSelected }: Props) => {
                   Help with Brave Wallet
                 </a>
               </div>
-            </Trans>
+            </Trans>,
           );
         });
     } else {

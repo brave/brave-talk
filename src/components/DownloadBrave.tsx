@@ -10,7 +10,7 @@ export const DownloadBrave = () => {
     <SectionWithLogo
       heading={t("talk_title")}
       subhead={t(
-        "Unlimited private video calls, right in your browser. No app required."
+        "Unlimited private video calls, right in your browser. No app required.",
       )}
     >
       <div

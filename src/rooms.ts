@@ -49,7 +49,7 @@ const roomsRequest = async ({
   failureMessages,
 }: RoomsRequestParams): Promise<RoomResponse> => {
   const optionsUrl = `${SUBSCRIPTIONS_ROOT_URL}/v1/rooms/${encodeURIComponent(
-    roomName
+    roomName,
   )}`;
   const url = `${optionsUrl}${urlSuffix}`;
   try {
@@ -64,7 +64,7 @@ const roomsRequest = async ({
     const csrfToken = optionsResponse.headers.get("x-csrf-token");
     if (!csrfToken) {
       console.warn(
-        "!!! OPTIONS request failed to return x-csrf-token, which is likely due to incorrectly configured CORS policy"
+        "!!! OPTIONS request failed to return x-csrf-token, which is likely due to incorrectly configured CORS policy",
       );
       throw new Error(GENERIC_ERROR_MESSAGE);
     }
@@ -124,7 +124,7 @@ const roomsRequest = async ({
   } catch (e: any) {
     if (e.message === "Failed to fetch") {
       console.warn(
-        "!!! fetch threw an error, which is likely due to incorrectly configured CORS policy"
+        "!!! fetch threw an error, which is likely due to incorrectly configured CORS policy",
       );
       throw new Error(GENERIC_ERROR_MESSAGE);
     }
@@ -139,7 +139,7 @@ const roomsRequest = async ({
 
 const attemptTokenRefresh = async (
   roomName: string,
-  refreshToken: string
+  refreshToken: string,
 ): Promise<RoomResponse | undefined> => {
   try {
     const response = await roomsRequest({
@@ -169,7 +169,7 @@ export const fetchJWT = async (
   roomName: string,
   createP: boolean,
   reportProgress: (message: TranslationKeys) => void,
-  web3?: Web3RequestBody
+  web3?: Web3RequestBody,
 ): Promise<FetchJWTResult> => {
   const store = loadLocalJwtStore();
 

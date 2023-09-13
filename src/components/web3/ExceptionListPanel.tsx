@@ -66,7 +66,7 @@ export const ExceptionListPanel = ({
 
   const isValidAddress = (
     address: string,
-    accountType: "ETH" | "SOL" | null
+    accountType: "ETH" | "SOL" | null,
   ): boolean => {
     if (accountType === "ETH") {
       // hexadecimal Ethereum address.
