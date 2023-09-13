@@ -7,9 +7,11 @@ import MediaPlayerImage from "../images/media_player.svg";
 import { Section } from "./Section";
 import { Text } from "./Text";
 
-const RecordingDisplay: React.FC<{ recording: Recording }> = ({
-  recording: r,
-}) => {
+interface Props {
+  recording: Recording;
+}
+
+const RecordingDisplay = ({ recording: r }: Props) => {
   const recordingDate = new Date(r.createdAt * 1000);
 
   return (
@@ -42,7 +44,7 @@ const RecordingDisplay: React.FC<{ recording: Recording }> = ({
   );
 };
 
-export const Recordings: React.FC = () => {
+export const Recordings = () => {
   const recordings = useRecordings();
 
   if (recordings.length === 0) {

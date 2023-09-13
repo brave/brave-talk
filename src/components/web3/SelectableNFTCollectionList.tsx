@@ -8,11 +8,11 @@ interface Props {
   onSelectionChange: Dispatch<NFTcollection[]>;
 }
 
-export const SelectableNFTCollectionList: React.FC<Props> = ({
+export const SelectableNFTCollectionList = ({
   nftCollections,
   selected,
   onSelectionChange,
-}) => {
+}: Props) => {
   const nftCollectionItems = nftCollections.map((p) => ({
     imageUrl: p.image_url,
     name: p.name,

@@ -6,7 +6,7 @@ interface Props {
   browser: BrowserProperties;
 }
 
-export const Footer: React.FC<Props> = ({ browser }) => {
+export const Footer = ({ browser }: Props) => {
   const { t } = useTranslation();
 
   return (

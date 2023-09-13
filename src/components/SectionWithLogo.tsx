@@ -8,11 +8,7 @@ interface Props {
   subhead: string;
 }
 
-export const SectionWithLogo: React.FC<Props> = ({
-  children,
-  heading,
-  subhead,
-}) => {
+export const SectionWithLogo = ({ children, heading, subhead }: Props) => {
   return (
     <Section css={{ marginTop: 122 }}>
       <div
