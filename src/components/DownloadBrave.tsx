@@ -3,14 +3,14 @@ import { Button } from "./Button";
 import { SectionWithLogo } from "./SectionWithLogo";
 import { Text } from "./Text";
 
-export const DownloadBrave: React.FC = () => {
+export const DownloadBrave = () => {
   const { t } = useTranslation();
 
   return (
     <SectionWithLogo
       heading={t("talk_title")}
       subhead={t(
-        "Unlimited private video calls, right in your browser. No app required."
+        "Unlimited private video calls, right in your browser. No app required.",
       )}
     >
       <div

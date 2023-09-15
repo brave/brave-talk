@@ -1,9 +1,9 @@
-import React, { ReactNode } from "react";
+import { ReactNode } from "react";
 interface Props {
   children: ReactNode;
 }
 
-export const Background: React.FC<Props> = ({ children }) => {
+export const Background = ({ children }: Props) => {
   return (
     <div
       css={{

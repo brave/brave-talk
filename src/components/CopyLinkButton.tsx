@@ -5,7 +5,7 @@ import { generateRoomName, wait } from "../lib";
 import { fetchJWT } from "../rooms";
 import { Button } from "./Button";
 
-export const CopyLinkButton: React.FC = () => {
+export const CopyLinkButton = () => {
   const [buttonText, setButtonText] = useState<TranslationKeys>();
   const { t } = useTranslation();
 

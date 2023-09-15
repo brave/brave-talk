@@ -32,7 +32,7 @@ function clearAvatarInfoFromLocalStorage() {
     }
     window.localStorage.setItem(
       "jitsiLocalStorage",
-      JSON.stringify(jitsiLocalStorageSettingsObj)
+      JSON.stringify(jitsiLocalStorageSettingsObj),
     );
   }
 }
@@ -40,7 +40,7 @@ function clearAvatarInfoFromLocalStorage() {
 export const renderConferencePage = async (
   jitsiEventHandlers: JitsiEventHandler[],
   options: JitsiOptions,
-  context: JitsiContext
+  context: JitsiContext,
 ): Promise<IJitsiMeetApi> => {
   await ensureJitsiApiLoaded();
   const { roomName, jwt } = options;
@@ -54,7 +54,7 @@ export const renderConferencePage = async (
   if (context.inactiveInterval) {
     context.inactiveTimer = setTimeout(
       inactiveTimeout(JitsiMeetJS, context),
-      context.inactiveInterval
+      context.inactiveInterval,
     );
   }
   const avatarUrl = getAvatarUrl(jwt);

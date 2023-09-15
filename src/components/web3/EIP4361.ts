@@ -17,7 +17,7 @@ export interface EIP4361Message {
 
 export const createEIP4361Message = (
   message: EIP4361Message,
-  account: string
+  account: string,
 ): string => {
   let result = `${message.domain} wants you to sign in with your ${account} account:\n${message.address}\n\n`;
 

@@ -23,7 +23,7 @@ type Props = {
   isSubscribed: boolean;
 };
 
-export const StartCall: React.FC<Props> = ({
+export const StartCall = ({
   setJwt,
   setRoomName,
   jitsiContext,
@@ -31,7 +31,7 @@ export const StartCall: React.FC<Props> = ({
   web3Account,
   setWeb3Account,
   isSubscribed,
-}) => {
+}: Props) => {
   const { t } = useTranslation();
   const [nfts, setNfts] = useState<NFT[] | undefined>();
   const [poaps, setPoaps] = useState<POAP[] | undefined>();
@@ -216,9 +216,7 @@ export const StartCall: React.FC<Props> = ({
           </Button>
         </div>
       )}
-      {isNFTDebug && debugMode && (
-        <NFTDebugPanel startCall={true} nfts={nfts} nft={nft} setNft={setNft} />
-      )}
+      {isNFTDebug && debugMode && <NFTDebugPanel nfts={nfts} />}
     </div>
   );
 };

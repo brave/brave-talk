@@ -1,8 +1,6 @@
 import { css } from "@emotion/react";
-import React, { ReactNode, useState } from "react";
+import { ReactNode } from "react";
 import { baseText } from "./styles";
-import PlusImage from "../../images/plus.svg";
-import MinusImage from "../../images/minus.svg";
 import SpinnerImage from "../../images/spinner.svg";
 
 interface Props {
@@ -12,11 +10,11 @@ interface Props {
   children?: ReactNode;
 }
 
-export const NonExapandablePanel: React.FC<Props> = ({
+export const NonExapandablePanel = ({
   header,
   subhead,
   loading = false,
-}) => {
+}: Props) => {
   return (
     <div
       css={{
