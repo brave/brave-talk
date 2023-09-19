@@ -12,7 +12,7 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - name: Build
         uses: ./.github/actions/build
         with:
@@ -27,7 +27,7 @@ jobs:
       url: https://dev3.talk.brave.software
 
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
 
       - name: Configure aws credentials
         uses: aws-actions/configure-aws-credentials@v4
