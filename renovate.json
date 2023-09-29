@@ -1,5 +1,9 @@
 {
-  "extends": ["config:js-app", ":semanticCommitsDisabled"],
+  "extends": [
+    "local>brave/renovate-config",
+    "config:js-app",
+    ":semanticCommitsDisabled"
+  ],
   "labels": ["dependencies"],
   "postUpdateOptions": ["npmDedupe"],
   "packageRules": [
