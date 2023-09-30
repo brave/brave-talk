@@ -68,6 +68,7 @@ export const jitsiOptions = (
       localSubject: "Brave Talk",
       prejoinPageEnabled: true,
       resolution: isMobile ? 360 : undefined,
+      roomPasswordNumberOfDigits: false,
       startWithAudioMuted: true,
       startWithVideoMuted: true,
       toolbarConfig: {
