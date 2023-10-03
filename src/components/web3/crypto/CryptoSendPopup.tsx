@@ -90,7 +90,7 @@ export const CryptoSendPopup: React.FC<CryptoSendPopupProps> = ({
     const nonce = await getNonce();
     const recipientDisplayName = await getDisplayNameFromParticipantId(
       jitsi,
-      pending
+      pending,
     );
 
     const sendParams: CryptoTransactionParams = {
@@ -116,7 +116,7 @@ export const CryptoSendPopup: React.FC<CryptoSendPopupProps> = ({
         type: "crypto",
         msgType: "REQ",
         payload: { amount, token, nonce },
-      })
+      }),
     );
 
     setPending("");

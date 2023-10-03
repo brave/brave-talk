@@ -54,7 +54,7 @@ export const CryptoOOBPopup: React.FC<CryptoOOBPopupProps> = ({
     const payloadStr = Buffer.from(payload.slice(2), "hex").toString("utf8");
     const msg = new SiweMessage(payloadStr);
     const currentRequest = outstandingRequests.filter(
-      (r) => r.nonce === msg.nonce
+      (r) => r.nonce === msg.nonce,
     )[0];
     // check nonce exists
     let tx;
@@ -62,13 +62,13 @@ export const CryptoOOBPopup: React.FC<CryptoOOBPopupProps> = ({
       tx = await sendCrypto(
         currentRequest.amount,
         currentRequest.token,
-        proof.signer
+        proof.signer,
       );
     } catch (e) {
       console.log("!!! error sending crypto", e);
     }
     setOutstandingRequests(
-      outstandingRequests.filter((r) => r.nonce !== msg.nonce)
+      outstandingRequests.filter((r) => r.nonce !== msg.nonce),
     );
     setCurrentResolution(null);
   };
@@ -81,7 +81,7 @@ export const CryptoOOBPopup: React.FC<CryptoOOBPopupProps> = ({
     const msg = new SiweMessage(payloadStr);
 
     setOutstandingRequests(
-      outstandingRequests.filter((r) => r.nonce !== msg.nonce)
+      outstandingRequests.filter((r) => r.nonce !== msg.nonce),
     );
     setCurrentResolution(null);
     setCurrentPendingParams(null);
@@ -110,7 +110,7 @@ export const CryptoOOBPopup: React.FC<CryptoOOBPopupProps> = ({
       }
 
       const currentPendingParams = outstandingRequests.filter(
-        (r) => r.nonce === nonce && r.recipient === currentResolution.jitsiId
+        (r) => r.nonce === nonce && r.recipient === currentResolution.jitsiId,
       )[0];
       setShowing(true);
       setCurrentPendingParams(currentPendingParams);

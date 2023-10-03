@@ -48,7 +48,7 @@ export const CryptoRecievePopup: React.FC<CryptoPopupProps> = ({
       siwe = await generateSIWEForCrypto(
         web3Address,
         params,
-        `Please sign this message so that ${params.senderDisplayName} knows that you own this address, and may send you ${params.amount} ${params.token}.`
+        `Please sign this message so that ${params.senderDisplayName} knows that you own this address, and may send you ${params.amount} ${params.token}.`,
       );
     } catch (e) {
       console.log(e);
@@ -65,7 +65,7 @@ export const CryptoRecievePopup: React.FC<CryptoPopupProps> = ({
     jitsi.executeCommand(
       "sendEndpointTextMessage",
       params.sender,
-      JSON.stringify(msg)
+      JSON.stringify(msg),
     );
     incomingRequestsPopFront();
   };
@@ -80,7 +80,7 @@ export const CryptoRecievePopup: React.FC<CryptoPopupProps> = ({
         type: "crypto",
         msgType: "REJECT",
         payload: params.nonce,
-      })
+      }),
     );
     incomingRequestsPopFront();
   };

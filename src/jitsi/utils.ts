@@ -2,7 +2,7 @@ import { IJitsiMeetApi } from "./types";
 
 export const getDisplayNameFromParticipantId = async (
   jitsi: IJitsiMeetApi,
-  id: string
+  id: string,
 ) => {
   const info = (await jitsi.getRoomsInfo()).rooms;
   const room = info.filter((r: any) => r.isMainRoom)[0];

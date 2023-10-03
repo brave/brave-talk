@@ -22,7 +22,7 @@ export type AllowedERC20Tokens = keyof typeof tokenContractAddresses;
 export const sendCrypto = async (
   amount: string,
   token: AllowedERC20Tokens,
-  toAddress: string
+  toAddress: string,
 ) => {
   const prov = new BrowserProvider(window.ethereum);
   const signer = await prov.getSigner();

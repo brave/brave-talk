@@ -287,7 +287,7 @@ export const onEndpointTextMessageForCryptoSendHandler = {
     const info = (await jitsi.getRoomsInfo()).rooms;
     const room = info.filter((r: any) => r.isMainRoom)[0];
     const name = room.participants.filter(
-      (p: any) => p.id === params.data.senderInfo.id
+      (p: any) => p.id === params.data.senderInfo.id,
     )[0].displayName;
 
     switch (type) {

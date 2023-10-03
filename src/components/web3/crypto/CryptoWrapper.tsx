@@ -30,10 +30,10 @@ export const cryptoAction = {
 
 export const CryptoWrapper: React.FC<CryptoWrapperProps> = ({ jitsi }) => {
   const [outstandingRequests, setOutstandingRequests] = useState(
-    [] as CryptoTransactionParams[]
+    [] as CryptoTransactionParams[],
   );
   const [incomingRequests, setIncomingRequests] = useState(
-    [] as CryptoTransactionParams[]
+    [] as CryptoTransactionParams[],
   );
   const [web3Address, setWeb3Address] = useState("");
   const [currentPendingOutgoingRequest, setCurrentPendingOutgoingRequest] =
@@ -64,10 +64,10 @@ export const CryptoWrapper: React.FC<CryptoWrapperProps> = ({ jitsi }) => {
       setOutstandingRequests(outstandingRequests.concat(params));
     };
     cryptoAction.resolveOutstandingRequest = (
-      params: CryptoTransactionParams
+      params: CryptoTransactionParams,
     ) => {
       setOutstandingRequests(
-        outstandingRequests.filter((p) => p.nonce !== params.nonce)
+        outstandingRequests.filter((p) => p.nonce !== params.nonce),
       );
     };
     cryptoAction.addIncomingRequest = (params: CryptoTransactionParams) => {
@@ -75,21 +75,21 @@ export const CryptoWrapper: React.FC<CryptoWrapperProps> = ({ jitsi }) => {
     };
     cryptoAction.resolveIncomingRequest = (params: CryptoTransactionParams) => {
       setIncomingRequests(
-        incomingRequests.filter((p) => p.nonce !== params.nonce)
+        incomingRequests.filter((p) => p.nonce !== params.nonce),
       );
     };
     cryptoAction.sendOutstandingRequest = (id: string) => {
       setCurrentPendingOutgoingRequest(id);
     };
     cryptoAction.attemptResolveOutstandingRequest = (
-      tx: TransactionPendingResolution
+      tx: TransactionPendingResolution,
     ) => {
       setCurrentAttemptedResolution(tx);
     };
     cryptoAction.rejectOutstandingRequest = (nonce: string) => {
       console.log("!!! rejectOutstandingRequest", nonce);
       setOutstandingRequests(
-        outstandingRequests.filter((r) => r.nonce !== nonce)
+        outstandingRequests.filter((r) => r.nonce !== nonce),
       );
     };
     cryptoAction.isInit = true;
