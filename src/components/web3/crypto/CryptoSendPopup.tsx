@@ -124,7 +124,7 @@ export const CryptoSendPopup: React.FC<CryptoSendPopupProps> = ({
     } else {
       setShowing(false);
     }
-  }, [pending]);
+  }, [pending, jitsi]);
 
   return (
     <div>

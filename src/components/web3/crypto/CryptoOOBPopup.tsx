@@ -116,7 +116,12 @@ export const CryptoOOBPopup: React.FC<CryptoOOBPopupProps> = ({
     } else {
       setShowing(false);
     }
-  }, [currentResolution]);
+  }, [
+    currentResolution,
+    outstandingRequests,
+    setShowing,
+    setCurrentResolution,
+  ]);
 
   return (
     <div>

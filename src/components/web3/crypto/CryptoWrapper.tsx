@@ -61,9 +61,9 @@ export const CryptoWrapper: React.FC<CryptoWrapperProps> = ({
   };
   useEffect(() => {
     fetchCurrentAddress();
-  }, []);
+  }, [fetchCurrentAddress]);
 
-  const initializeCryptoAction = () => {
+  const initializeCryptoAction = useCallback(() => {
     cryptoAction.addOutstandingRequest = (params: CryptoTransactionParams) => {
       setOutstandingRequests(outstandingRequests.concat(params));
     };
@@ -97,11 +97,11 @@ export const CryptoWrapper: React.FC<CryptoWrapperProps> = ({
       );
     };
     cryptoAction.isInit = true;
-  };
+  }, [incomingRequests, outstandingRequests]);
   initializeCryptoAction();
   useEffect(() => {
     initializeCryptoAction();
-  }, []);
+  }, [initializeCryptoAction]);
   return (
     <div>
       <CryptoRecievePopup
