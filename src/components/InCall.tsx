@@ -30,7 +30,6 @@ interface Props {
   isCallReady: boolean;
   isWeb3Call: boolean;
   jitsiContext: JitsiContext;
-  web3Account: "ETH" | "SOL" | null;
 }
 
 export const InCall = ({
@@ -40,7 +39,6 @@ export const InCall = ({
   isCallReady,
   isWeb3Call,
   jitsiContext: context,
-  web3Account,
 }: Props) => {
   const divRef = useRef(null);
   const [jitsiMeet, setJitsiMeet] = useState<IJitsiMeetApi>();

@@ -9,11 +9,6 @@ import {
   askOnUnload,
   updateSubject,
 } from "./lib";
-import {
-  EIP4361Message,
-  createEIP4361Message,
-} from "../components/web3/EIP4361";
-import { getNonce } from "../components/web3/api";
 import { cryptoAction } from "../components/web3/crypto/CryptoWrapper";
 import {
   SIWEReturnParams,
@@ -312,11 +307,13 @@ export const onEndpointTextMessageForCryptoSendHandler = {
           jitsiId: params.data.senderInfo.id,
           siwe: siwe,
         });
+        break;
       }
 
       case "REJECT": {
         const nonce = msg.payload;
         cryptoAction.rejectOutstandingRequest(nonce);
+        break;
       }
     }
   },

@@ -63,7 +63,6 @@ export const App = () => {
           isCallReady={isCallReady}
           isWeb3Call={isWeb3Call}
           jitsiContext={jitsiContext}
-          web3Account={web3Account}
         />
         {!isCallReady &&
           (isWeb3Call && hasInitialRoom ? (
