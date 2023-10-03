@@ -266,7 +266,7 @@ export const videoConferenceJoinedHandler = {
 
 export const sendCryptoButtonPressedHandler = {
   name: "participantMenuButtonClick",
-  fn: (jitsi: IJitsiMeetApi, context: JitsiContext) => async (params: any) => {
+  fn: () => async (params: any) => {
     if (params.key != "send-crypto") return;
 
     // add to outstanding messages
@@ -278,7 +278,7 @@ export const sendCryptoButtonPressedHandler = {
 
 export const onEndpointTextMessageForCryptoSendHandler = {
   name: "endpointTextMessageReceived",
-  fn: (jitsi: IJitsiMeetApi, context: JitsiContext) => async (params: any) => {
+  fn: (jitsi: IJitsiMeetApi) => async (params: any) => {
     const msg = JSON.parse(params.data.eventData.text);
     console.log("!!! msg", msg);
     if (msg.type !== "crypto") return;

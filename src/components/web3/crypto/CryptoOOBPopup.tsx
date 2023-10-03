@@ -41,8 +41,8 @@ export const CryptoOOBPopup: React.FC<CryptoOOBPopupProps> = ({
   setCurrentResolution,
   outstandingRequests,
   setOutstandingRequests,
-}) => {
-  const [showing, setShowing] = useState(false);
+}: CryptoOOBPopupProps) => {
+  const [setShowing] = useState(false);
   const [currentPendingParams, setCurrentPendingParams] =
     useState<CryptoTransactionParams | null>();
 
@@ -50,16 +50,15 @@ export const CryptoOOBPopup: React.FC<CryptoOOBPopupProps> = ({
   const resolvePending = async () => {
     if (!currentResolution) return console.log("!!! currentResolution not set");
     const { proof } = currentResolution.siwe;
-    const { signer, signature, payload } = proof;
+    const { payload } = proof;
     const payloadStr = Buffer.from(payload.slice(2), "hex").toString("utf8");
     const msg = new SiweMessage(payloadStr);
     const currentRequest = outstandingRequests.filter(
       (r) => r.nonce === msg.nonce,
     )[0];
     // check nonce exists
-    let tx;
     try {
-      tx = await sendCrypto(
+      await sendCrypto(
         currentRequest.amount,
         currentRequest.token,
         proof.signer,
@@ -76,7 +75,7 @@ export const CryptoOOBPopup: React.FC<CryptoOOBPopupProps> = ({
   const removePending = () => {
     if (!currentResolution) return console.log("!!! currentResolution not set");
     const { proof } = currentResolution.siwe;
-    const { signer, signature, payload } = proof;
+    const { payload } = proof;
     const payloadStr = Buffer.from(payload.slice(2), "hex").toString("utf8");
     const msg = new SiweMessage(payloadStr);
 

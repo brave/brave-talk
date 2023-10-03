@@ -4,7 +4,7 @@ import { IJitsiMeetApi } from "../../../jitsi/types";
 import { getNonce } from "../api";
 import { parseUnits } from "ethers";
 import { getDisplayNameFromParticipantId } from "../../../jitsi/utils";
-import { CryptoTransactionParams, CryptoSendMessage } from "./common";
+import { CryptoTransactionParams } from "./common";
 import {
   popupBaseCSS,
   popupHeaderCSS,
@@ -56,7 +56,6 @@ interface CryptoSendPopupProps {
   setOutgoingRequests: React.Dispatch<
     React.SetStateAction<CryptoTransactionParams[]>
   >;
-  web3Address: string;
   jitsi: IJitsiMeetApi;
   pending: string;
   setPending: React.Dispatch<React.SetStateAction<string>>;
@@ -65,11 +64,10 @@ interface CryptoSendPopupProps {
 export const CryptoSendPopup: React.FC<CryptoSendPopupProps> = ({
   outgoingRequests,
   setOutgoingRequests,
-  web3Address,
   jitsi,
   pending,
   setPending,
-}) => {
+}: CryptoSendPopupProps) => {
   const [showing, setShowing] = useState(false);
   const [value, setValue] = useState("0");
   const [pendingName, setPendingName] = useState("");
@@ -101,11 +99,6 @@ export const CryptoSendPopup: React.FC<CryptoSendPopupProps> = ({
       nonce,
       recipient: pending,
       recipientDisplayName,
-    };
-    const msg: CryptoSendMessage = {
-      type: "crypto",
-      msgType: "REQ",
-      payload: sendParams,
     };
     setOutgoingRequests([...outgoingRequests, sendParams]);
 

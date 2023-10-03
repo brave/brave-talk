@@ -7,6 +7,7 @@ export interface CryptoTransactionParams {
   recipientDisplayName: string;
   amount: string;
   token: AllowedERC20Tokens;
+  // although not sequential, this is used as an iterator... cf., CryptoWrapper.tsx
   nonce: string;
 }
 

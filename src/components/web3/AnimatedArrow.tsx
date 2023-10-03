@@ -1,5 +1,4 @@
 import { css, keyframes } from "@emotion/react";
-import { useEffect, useRef, useState } from "react";
 
 const arrowAnimation = keyframes`
   0% {

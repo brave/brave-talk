@@ -1,3 +1,4 @@
+import { isProduction } from "../environment";
 import { css } from "@emotion/react";
 import { useEffect, useState } from "react";
 import { IJitsiMeetApi } from "../../../jitsi/types";
@@ -28,7 +29,9 @@ export const cryptoAction = {
   isInit: false,
 };
 
-export const CryptoWrapper: React.FC<CryptoWrapperProps> = ({ jitsi }) => {
+export const CryptoWrapper: React.FC<CryptoWrapperProps> = ({
+  jitsi,
+}: CryptoWrapperProps) => {
   const [outstandingRequests, setOutstandingRequests] = useState(
     [] as CryptoTransactionParams[],
   );
@@ -42,8 +45,9 @@ export const CryptoWrapper: React.FC<CryptoWrapperProps> = ({ jitsi }) => {
     useState<null | TransactionPendingResolution>(null);
 
   window.ethereum?.on("accountsChanged", (accounts: string[]) => {
-    // console.log("!!! ETH accountsChanged", accounts);
-    // if (accounts) setWeb3Address(accounts[0]);
+    if (!isProduction) {
+      console.log("!!! ETH accountsChanged", accounts);
+    }
     fetchCurrentAddress();
   });
 
@@ -134,12 +138,16 @@ export const CryptoWrapper: React.FC<CryptoWrapperProps> = ({ jitsi }) => {
             <div css={{ margin: "10px" }}>Your address: {web3Address}</div>
             <div>
               {outstandingRequests.map((request) => (
-                <div>{`ME -> ${request.recipientDisplayName}: ${request.amount}`}</div>
+                <div
+                  key={request.nonce}
+                >{`ME -> ${request.recipientDisplayName}: ${request.amount}`}</div>
               ))}
             </div>
             <div>
               {incomingRequests.map((request) => (
-                <div>{`${request.senderDisplayName} -> ME: ${request.amount}`}</div>
+                <div
+                  key={request.nonce}
+                >{`${request.senderDisplayName} -> ME: ${request.amount}`}</div>
               ))}
             </div>
           </div>

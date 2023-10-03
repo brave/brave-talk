@@ -37,7 +37,7 @@ export const CryptoRecievePopup: React.FC<CryptoPopupProps> = ({
   setIncomingRequests,
   web3Address,
   jitsi,
-}) => {
+}: CryptoPopupProps) => {
   const [showing, setShowing] = useState(false);
   const [params, setParams] = useState({} as any);
 
