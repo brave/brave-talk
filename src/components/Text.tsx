@@ -43,7 +43,7 @@ interface Props {
   className?: string;
 }
 
-export const Text: React.FC<Props> = ({ variant, children, className }) => {
+export const Text = ({ variant, children, className }: Props) => {
   return (
     <span className={className} css={styles[variant]}>
       {children}

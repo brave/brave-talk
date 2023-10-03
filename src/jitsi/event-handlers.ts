@@ -106,7 +106,7 @@ export const readyToCloseHandler = {
       window.open(
         window.location.protocol + "//" + window.location.host,
         "_self",
-        "noopener"
+        "noopener",
       );
     },
 };
@@ -208,14 +208,14 @@ export const endpointTextMessageReceivedHandler = {
           sender,
           JSON.stringify({
             web3: { type: "unicast", payload: context.web3Authentication },
-          })
+          }),
         );
       }
 
       if (payload.method !== "EIP-4361-json") {
         console.log("!!! payload", payload);
         throw new Error(
-          `unsupported method in payload: ${context.web3Authentication?.method}`
+          `unsupported method in payload: ${context.web3Authentication?.method}`,
         );
       }
 
@@ -258,7 +258,7 @@ export const dataChannelOpenedHandler = {
       "",
       JSON.stringify({
         web3: { type: "broadcast", payload: context.web3Authentication },
-      })
+      }),
     );
   },
 };

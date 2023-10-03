@@ -153,7 +153,7 @@ export function splitAddresses(addr: string): string[] {
 }
 
 export const web3NFTcollections = async (
-  address: string
+  address: string,
 ): Promise<NFTcollection[]> => {
   const getNFTs = async (url: string): Promise<NFTcollection[]> => {
     const response = await fetchWithTimeout(url, {
@@ -195,7 +195,7 @@ export const web3NFTcollections = async (
 
         return collections;
       },
-      {}
+      {},
     );
 
     return Object.values(collections);
@@ -227,7 +227,7 @@ export const getNonce = async (): Promise<string> => {
 };
 
 export const web3Prove = async (
-  web3Address: string
+  web3Address: string,
 ): Promise<Web3Authentication> => {
   if (!web3Address) {
     throw new Error("not logged into Web3");
@@ -317,7 +317,7 @@ export const generateSIWEForCrypto = async (
 };
 
 export const web3SolProve = async (
-  web3Address: string
+  web3Address: string,
 ): Promise<Web3Authentication> => {
   if (!web3Address) {
     throw new Error("not logged into Web3");
@@ -343,9 +343,8 @@ export const web3SolProve = async (
   const { hexlify } = await import("ethers");
   const hexPayload = hexlify(payloadBytes);
   try {
-    const { publicKey, signature } = await window.braveSolana.signMessage(
-      payloadBytes
-    );
+    const { publicKey, signature } =
+      await window.braveSolana.signMessage(payloadBytes);
     const result = {
       method: "CAIP-122-json",
       proof: {
@@ -356,9 +355,8 @@ export const web3SolProve = async (
     };
     return result;
   } catch {
-    const { publicKey, signature } = await window.phantom.solana.signMessage(
-      payloadBytes
-    );
+    const { publicKey, signature } =
+      await window.phantom.solana.signMessage(payloadBytes);
     const result = {
       method: "CAIP-122-json",
       proof: {
@@ -378,7 +376,7 @@ const poapContractChain = "gnosis";
 export const web3POAPs = async (address: string): Promise<POAP[]> => {
   try {
     const getPOAPsURL = `${SIMPLEHASH_PROXY_ROOT_URL}/api/v0/nfts/owners?chains=${poapContractChain}&wallet_addresses=${encodeURIComponent(
-      address
+      address,
     )}&contract_addresses=${poapContractAddress}`;
     console.log(`>>> GET ${getPOAPsURL}`);
     const response = await fetchWithTimeout(getPOAPsURL, {
@@ -418,7 +416,7 @@ export const web3POAPs = async (address: string): Promise<POAP[]> => {
 export const web3POAPevent = async (eventID: number): Promise<boolean> => {
   try {
     const getPOAPsURL = `${SIMPLEHASH_PROXY_ROOT_URL}/api/v0/nfts/${poapContractChain}/${poapContractAddress}/${encodeURIComponent(
-      eventID
+      eventID,
     )}`;
     console.log(`>>> GET ${getPOAPsURL}`);
     const response = await fetchWithTimeout(getPOAPsURL, {
@@ -446,11 +444,11 @@ export const web3POAPevent = async (eventID: number): Promise<boolean> => {
 };
 
 export const web3NFTcollection = async (
-  collectionID: string
+  collectionID: string,
 ): Promise<boolean> => {
   try {
     const getNFTcollectionsURL = `${SIMPLEHASH_PROXY_ROOT_URL}/api/v0/nfts/collections/ids?collection_ids=${encodeURIComponent(
-      collectionID
+      collectionID,
     )}`;
     console.log(`>>> GET ${getNFTcollectionsURL}`);
     const response = await fetchWithTimeout(getNFTcollectionsURL, {

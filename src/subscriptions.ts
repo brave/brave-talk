@@ -15,7 +15,7 @@ const loadRewardsSdk = async (): Promise<Rewards.JSSDK> => {
   const sdk = await Rewards.initialize(
     isDevelopment ? "development" : env,
     false,
-    isProduction ? "error" : "info"
+    isProduction ? "error" : "info",
   );
   sdkref = sdk;
   return sdk;

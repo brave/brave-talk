@@ -20,7 +20,7 @@ export type JitsiEventHandler = {
   fn: (
     JitsiMeetJS: IJitsiMeetApi,
     context: JitsiContext,
-    options: JitsiOptions
+    options: JitsiOptions,
   ) => (params: any) => void;
 };
 

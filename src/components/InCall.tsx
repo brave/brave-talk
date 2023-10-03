@@ -33,7 +33,7 @@ interface Props {
   web3Account: "ETH" | "SOL" | null;
 }
 
-export const InCall: React.FC<Props> = ({
+export const InCall = ({
   roomName,
   jwt,
   isMobile,
@@ -41,7 +41,7 @@ export const InCall: React.FC<Props> = ({
   isWeb3Call,
   jitsiContext: context,
   web3Account,
-}) => {
+}: Props) => {
   const divRef = useRef(null);
   const [jitsiMeet, setJitsiMeet] = useState<IJitsiMeetApi>();
 
@@ -74,7 +74,7 @@ export const InCall: React.FC<Props> = ({
       const options = jitsiOptions(roomName, divRef.current, jwt, isMobile);
 
       renderConferencePage(jitsiEventHandlers, options, context).then(
-        setJitsiMeet
+        setJitsiMeet,
       );
     }
   }, [

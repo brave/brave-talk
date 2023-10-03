@@ -1,4 +1,3 @@
-import React from "react";
 import { css } from "@emotion/react";
 import { useTranslation } from "react-i18next";
 import { Web3PermissionType } from "./api";
@@ -37,11 +36,11 @@ const disabledButton = css({
   opacity: 0.5,
 });
 
-export const PermissionTypeSelector: React.FC<Props> = ({
+export const PermissionTypeSelector = ({
   setPermissionType,
   permissionType,
   web3Account,
-}) => {
+}: Props) => {
   const { t } = useTranslation();
   return (
     <div css={{ display: "flex" }}>
@@ -66,8 +65,11 @@ export const PermissionTypeSelector: React.FC<Props> = ({
       </button>
       <button
         onClick={() => setPermissionType("balance")}
-        css={[styles.base, permissionType === "balance" && styles.selected,
-             web3Account === "SOL" && disabledButton]}
+        css={[
+          styles.base,
+          permissionType === "balance" && styles.selected,
+          web3Account === "SOL" && disabledButton,
+        ]}
       >
         {"BAT Gating"}
       </button>

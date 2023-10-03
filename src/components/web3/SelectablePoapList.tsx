@@ -8,11 +8,11 @@ interface Props {
   onSelectionChange: Dispatch<POAP[]>;
 }
 
-export const SelectablePoapList: React.FC<Props> = ({
+export const SelectablePoapList = ({
   poaps,
   selected,
   onSelectionChange,
-}) => {
+}: Props) => {
   const poapItems = poaps.map((p) => ({
     imageUrl: p.event.image_url,
     name: p.event.name,

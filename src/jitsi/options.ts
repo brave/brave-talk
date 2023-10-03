@@ -7,7 +7,7 @@ export const jitsiOptions = (
   roomName: string,
   el: Element | null,
   jwt: string,
-  isMobile?: boolean
+  isMobile?: boolean,
 ): JitsiOptions => {
   const options = {
     roomName: config.vpaas + "/" + roomName,
@@ -198,7 +198,7 @@ export const jitsiOptions = (
       options.interfaceConfigOverwrite.TOOLBAR_BUTTONS.push(feature);
       if (feature === "recording") {
         options.configOverwrite.conferenceInfo.autoHide.push(
-          "highlight-moment"
+          "highlight-moment",
         );
       }
     }

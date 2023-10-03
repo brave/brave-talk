@@ -42,7 +42,7 @@ const fetchOrCreateJWT = async (
   createP: boolean,
   waitForSubscriptionBeforeCreating: boolean,
   notice: (message: TranslationKeys) => void,
-  web3?: Web3RequestBody
+  web3?: Web3RequestBody,
 ): Promise<JoinConferenceRoomResult> => {
   reportMethod("joinConferenceRoom", { roomName, createP });
 
@@ -98,10 +98,10 @@ interface CallSetup {
 }
 
 export function useCallSetupStatus(
-  waitForSubscriptionBeforeCreating: boolean
+  waitForSubscriptionBeforeCreating: boolean,
 ): CallSetup {
   const [roomName, setRoomName] = useState(() =>
-    calculateInitialRoomNameFromUrl(window.location.pathname)
+    calculateInitialRoomNameFromUrl(window.location.pathname),
   );
 
   // why is this important? Because we don't want to show any
@@ -135,7 +135,7 @@ export function useCallSetupStatus(
       roomName,
       hasInitialRoom,
       waitForSubscriptionBeforeCreating,
-      isWeb3Call
+      isWeb3Call,
     ) {
       if (roomName) {
         try {
@@ -149,7 +149,7 @@ export function useCallSetupStatus(
             false,
             waitForSubscriptionBeforeCreating,
             setNotice,
-            undefined
+            undefined,
           );
 
           if (result.jwt) {
@@ -173,8 +173,8 @@ export function useCallSetupStatus(
                   roomName,
                   false,
                   waitForSubscriptionBeforeCreating,
-                  isWeb3Call
-                )
+                  isWeb3Call,
+                ),
               );
             }
           }
