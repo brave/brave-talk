@@ -42,7 +42,6 @@ export const CryptoOOBPopup: React.FC<CryptoOOBPopupProps> = ({
   outstandingRequests,
   setOutstandingRequests,
 }: CryptoOOBPopupProps) => {
-  const [setShowing] = useState(false);
   const [currentPendingParams, setCurrentPendingParams] =
     useState<CryptoTransactionParams | null>();
 
@@ -111,17 +110,9 @@ export const CryptoOOBPopup: React.FC<CryptoOOBPopupProps> = ({
       const currentPendingParams = outstandingRequests.filter(
         (r) => r.nonce === nonce && r.recipient === currentResolution.jitsiId,
       )[0];
-      setShowing(true);
       setCurrentPendingParams(currentPendingParams);
-    } else {
-      setShowing(false);
     }
-  }, [
-    currentResolution,
-    outstandingRequests,
-    setShowing,
-    setCurrentResolution,
-  ]);
+  }, [currentResolution, outstandingRequests, setCurrentResolution]);
 
   return (
     <div>

@@ -1,6 +1,6 @@
-import { isProduction } from "../environment";
+import { isProduction } from "../../../environment";
 import { css } from "@emotion/react";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { IJitsiMeetApi } from "../../../jitsi/types";
 import {
   CryptoTransactionParams,
@@ -29,6 +29,15 @@ export const cryptoAction = {
   isInit: false,
 };
 
+async function fetchCurrentAddress(): Promise<string> {
+  const { ethers } = await import("ethers");
+  const provider = new ethers.BrowserProvider(window.ethereum);
+  const signer = await provider.getSigner();
+  const address = await signer.getAddress();
+  console.log("!!! ETH address set for crypto popup", address);
+  return address;
+}
+
 export const CryptoWrapper: React.FC<CryptoWrapperProps> = ({
   jitsi,
 }: CryptoWrapperProps) => {
@@ -48,20 +57,14 @@ export const CryptoWrapper: React.FC<CryptoWrapperProps> = ({
     if (!isProduction) {
       console.log("!!! ETH accountsChanged", accounts);
     }
-    fetchCurrentAddress();
+    fetchCurrentAddress().then(setWeb3Address);
   });
 
-  const fetchCurrentAddress = async () => {
-    const { ethers } = await import("ethers");
-    const provider = new ethers.BrowserProvider(window.ethereum);
-    const signer = await provider.getSigner();
-    const address = await signer.getAddress();
-    setWeb3Address(address);
-    console.log("!!! ETH address set for crypto popup", web3Address);
-  };
+  // the empty dependency array here means to run
+  // only on first render
   useEffect(() => {
-    fetchCurrentAddress();
-  }, [fetchCurrentAddress]);
+    fetchCurrentAddress().then(setWeb3Address);
+  }, []);
 
   const initializeCryptoAction = useCallback(() => {
     cryptoAction.addOutstandingRequest = (params: CryptoTransactionParams) => {
@@ -116,7 +119,6 @@ export const CryptoWrapper: React.FC<CryptoWrapperProps> = ({
         pending={currentPendingOutgoingRequest}
         setPending={setCurrentPendingOutgoingRequest}
         jitsi={jitsi}
-        web3Address={web3Address}
       />
       <CryptoOOBPopup
         currentResolution={currentAttemptedResolution}
