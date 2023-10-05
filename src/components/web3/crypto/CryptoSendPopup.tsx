@@ -79,7 +79,7 @@ export const CryptoSendPopup: React.FC<CryptoSendPopupProps> = ({
       parseUnits(value, 18);
     } catch (e) {
       // warn the user that the amount is not valid
-      setWarningText("You enetered in invalid amount input.");
+      setWarningText("You entered in invalid amount input.");
       return;
     }
 
