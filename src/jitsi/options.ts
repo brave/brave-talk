@@ -7,7 +7,7 @@ export const jitsiOptions = (
   roomName: string,
   el: Element | null,
   jwt: string,
-  isMobile?: boolean
+  isMobile?: boolean,
 ): JitsiOptions => {
   const options = {
     roomName: config.vpaas + "/" + roomName,
@@ -68,6 +68,7 @@ export const jitsiOptions = (
       localSubject: "Brave Talk",
       prejoinPageEnabled: true,
       resolution: isMobile ? 360 : undefined,
+      roomPasswordNumberOfDigits: false,
       startWithAudioMuted: true,
       startWithVideoMuted: true,
       toolbarConfig: {
@@ -190,7 +191,7 @@ export const jitsiOptions = (
       options.interfaceConfigOverwrite.TOOLBAR_BUTTONS.push(feature);
       if (feature === "recording") {
         options.configOverwrite.conferenceInfo.autoHide.push(
-          "highlight-moment"
+          "highlight-moment",
         );
       }
     }

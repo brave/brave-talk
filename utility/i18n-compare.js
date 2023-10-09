@@ -18,7 +18,7 @@ const l10n = (lang) => {
     return console.error(
       `unable to open file for "${lang}":`,
       ex.path,
-      ex.code
+      ex.code,
     );
   }
 
@@ -37,7 +37,7 @@ const usage = (followupP) => {
   if (followupP) console.log("");
   console.error(`usage: ${myname} [code ...] (e.g., "jp")`);
   console.error(
-    `       if only one code is given, it is compared against ${base}`
+    `       if only one code is given, it is compared against ${base}`,
   );
 
   glob.sync(`${locales}/*`).forEach((entry) => {

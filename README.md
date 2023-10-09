@@ -15,6 +15,11 @@ Currently the page uses a html template [`index.html`](./src/index.html) styled 
 
 By convention, the javsascript this interacts with elements in the html template by id and the css relies solely on class names.
 
+Before you commit, you most likely want to ensure the continuous integration build will not
+fail. To run the most likely-to-fail checks, use:
+
+    $ npm run check
+
 To build for production:
 
     $ npm ci

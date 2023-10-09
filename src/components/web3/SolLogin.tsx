@@ -8,10 +8,7 @@ interface Props {
   onAddressSelected: (address: string, event: string) => void;
 }
 
-export const SolLogin: React.FC<Props> = ({
-  web3address,
-  onAddressSelected,
-}) => {
+export const SolLogin = ({ web3address, onAddressSelected }: Props) => {
   const [notice, setNotice] = useState<JSX.Element | undefined>();
   const { t } = useTranslation();
 
@@ -24,7 +21,7 @@ export const SolLogin: React.FC<Props> = ({
 
     try {
       window.phantom?.solana.on("!!! accountChanged", () =>
-        setNotice(undefined)
+        setNotice(undefined),
       );
     } catch {
       console.warn("!!! Phantom Wallet does not exist");
@@ -55,7 +52,7 @@ export const SolLogin: React.FC<Props> = ({
                   Help with Brave Wallet
                 </a>
               </div>
-            </Trans>
+            </Trans>,
           );
         });
     } else {

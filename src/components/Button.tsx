@@ -48,13 +48,13 @@ const styles = {
   }),
 };
 
-export const Button: React.FC<Props> = ({
+export const Button = ({
   hollow,
   children,
   onClick,
   disabled,
   className,
-}) => {
+}: Props) => {
   return (
     <button
       css={[styles.base, hollow ? styles.hollow : styles.solid]}

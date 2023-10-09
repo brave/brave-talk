@@ -97,7 +97,7 @@ module.exports = {
           new MiniCssExtractPlugin({
             filename: "static/[name].[contenthash].css",
           }),
-        ]
+        ],
   ),
   devServer: {
     client: {

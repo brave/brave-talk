@@ -55,22 +55,22 @@ test.only("jwt expiry works as expected", () => {
 
   const nonExpiredJwt = createDummyJWTWithExpiry(
     "nonExpiredJwt",
-    new Date("2021-04-01T03:00:00Z")
+    new Date("2021-04-01T03:00:00Z"),
   );
 
   const nonExpiredRefresh = createDummyJWTWithExpiry(
     "nonExpiredRefresh",
-    new Date("2021-04-02T00:00:00Z")
+    new Date("2021-04-02T00:00:00Z"),
   );
 
   const expiredJwt = createDummyJWTWithExpiry(
     "expiredJwt",
-    new Date("2021-03-01T00:00:00Z")
+    new Date("2021-03-01T00:00:00Z"),
   );
 
   const expiredRefresh = createDummyJWTWithExpiry(
     "expiredRefresh",
-    new Date("2021-03-02T00:00:00Z")
+    new Date("2021-03-02T00:00:00Z"),
   );
 
   s.storeJwtForRoom("ok", nonExpiredJwt, nonExpiredRefresh);

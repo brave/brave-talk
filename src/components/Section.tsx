@@ -4,7 +4,7 @@ interface Props {
   children: ReactNode;
   className?: string;
 }
-export const Section: React.FC<Props> = ({ children, className }) => (
+export const Section = ({ children, className }: Props) => (
   <div
     css={{
       width: "812px",

@@ -6,7 +6,6 @@ import { Footer } from "./Footer";
 import { Header } from "./Header";
 import { JoinCallSection } from "./JoinCallSection";
 import { SubscriptionCTA } from "./SubscriptionCTA";
-import { DownloadBrave } from "./DownloadBrave";
 import { Recordings } from "./Recordings";
 import { SectionWithLogo } from "./SectionWithLogo";
 import { BrowserProperties } from "../hooks/use-browser-properties";
@@ -34,7 +33,7 @@ interface Props {
   setJitsiContext: (context: JitsiContext) => void;
 }
 
-export const WelcomeScreen: React.FC<Props> = ({
+export const WelcomeScreen = ({
   onStartCall,
   notice,
   disabled,
@@ -48,7 +47,7 @@ export const WelcomeScreen: React.FC<Props> = ({
   setJwt,
   setRoomName,
   setJitsiContext,
-}) => {
+}: Props) => {
   const subscribed = useSubscribedStatus();
   const { t } = useTranslation();
   const onClickWeb3CTA = () => {
@@ -59,7 +58,7 @@ export const WelcomeScreen: React.FC<Props> = ({
       window.open(
         `${accountUrl}/plans/?intent=checkout&product=talk`,
         "_self",
-        "noopener"
+        "noopener",
       );
     }
   };
@@ -73,13 +72,13 @@ export const WelcomeScreen: React.FC<Props> = ({
     setWeb3Account("ETH");
     return;
   };
-  const Body: React.FC = () => {
+  const Body = () => {
     if (!browser.supportsWebRTC) {
       return (
         <SectionWithLogo
           heading={t("talk_title")}
           subhead={t(
-            "Your iOS device appears to have Lockdown Mode enabled, which prevents Brave Talk from working."
+            "Your iOS device appears to have Lockdown Mode enabled, which prevents Brave Talk from working.",
           )}
         />
       );
@@ -146,11 +145,9 @@ export const WelcomeScreen: React.FC<Props> = ({
             <Text css={{ color: "black", display: "block" }} variant="header">
               Web3 Account
             </Text>
-            <Text
-              css={{ color: "black", display: "block" }}
-              variant="body"
-              children={t("web3_account_body")}
-            />
+            <Text css={{ color: "black", display: "block" }} variant="body">
+              {t("web3_account_body")}
+            </Text>
             <div css={buttonContainerStyle}>
               <div css={buttonWrapperStyle}>
                 <button css={buttonStyle} onClick={onClickEthAccount}>
