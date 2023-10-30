@@ -70,6 +70,7 @@ export type JitsiOptions = {
     localSubject: string;
     prejoinPageEnabled: boolean;
     resolution?: number;
+    roomPasswordNumberOfDigits: boolean;
     startWithAudioMuted: boolean;
     startWithVideoMuted: boolean;
     toolbarConfig: {
