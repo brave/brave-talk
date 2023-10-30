@@ -61,6 +61,7 @@ export type JitsiOptions = {
       enableFaceExpressionsDetection: boolean;
       enableDisplayFaceExpressions: boolean;
     };
+    forceTurnRelay?: boolean;
     giphy: {
       enabled: boolean;
     };
@@ -80,6 +81,12 @@ export type JitsiOptions = {
     videoQuality: {
       persist: boolean;
     };
+  };
+  iceServers?: {
+    replace: {
+      targetType: string;
+      urls: string | null;
+    }[];
   };
   interfaceConfigOverwrite: {
     APP_NAME: string;
