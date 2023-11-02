@@ -15,7 +15,7 @@ jobs:
       - name: Build
         uses: ./.github/actions/build
         with:
-          environment: temp-production
+          environment: production
 
   deploy:
     runs-on: ubuntu-latest
