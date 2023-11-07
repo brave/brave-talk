@@ -114,7 +114,7 @@ export const jitsiOptions = (
         "videoquality",
         "whiteboard",
       ],
-      transcribingEnabled: false,
+      transcribingEnabled: true,
       useHostPageLocalStorage: true,
       videoQuality: {
         persist: true,
@@ -128,7 +128,7 @@ export const jitsiOptions = (
       // a no-op
       DEFAULT_LOGO_URL: "https://talk.brave.com/images/brave_logo_dark.svg",
       DEFAULT_REMOTE_DISPLAY_NAME: "User",
-      DISABLE_TRANSCRIPTION_SUBTITLES: true,
+      DISABLE_TRANSCRIPTION_SUBTITLES: false,
 
       //          DISABLE_FOCUS_INDICATOR: true,
       //          DISABLE_DOMINANT_SPEAKER_INDICATOR: true,
