@@ -189,7 +189,7 @@ export const jitsiOptions = (
     replace: [
       {
         targetType: "turn",
-        urls: null,
+        urls: "turn:invisv-turnrelay.jitsi.net:443",
       },
       {
         targetType: "turns",
