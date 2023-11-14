@@ -187,8 +187,8 @@ export const web3NFTcollections = async (
             image_url: nft.previews?.image_small_url
               ? nft.previews.image_small_url
               : nft.image_url
-              ? nft.image_url
-              : nft.collection?.image_url,
+                ? nft.image_url
+                : nft.collection?.image_url,
           };
         }
 
