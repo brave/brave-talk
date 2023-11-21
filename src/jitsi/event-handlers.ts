@@ -258,3 +258,10 @@ export const videoConferenceJoinedHandler = {
   name: "videoConferenceJoined",
   fn: () => () => acquireWakeLock(),
 };
+
+export const transcriptionChunkReceivedHander = {
+  name: "transcriptionChunkReceived",
+  fn: () => (params: any) => {
+    reportAction("transcriptionChunkReceived", params);
+  },
+};

@@ -15,6 +15,7 @@ import {
   recordingLinkAvailableHandler,
   recordingStatusChangedHandler,
   subjectChangeHandler,
+  transcriptionChunkReceivedHander,
   videoQualityChangeHandler,
   videoConferenceJoinedHandler,
 } from "../jitsi/event-handlers";
@@ -56,6 +57,7 @@ export const InCall = ({
         dataChannelOpenedHandler,
         endpointTextMessageReceivedHandler,
         videoConferenceJoinedHandler,
+        transcriptionChunkReceivedHander,
       ];
 
       const options = jitsiOptions(roomName, divRef.current, jwt, isMobile);
