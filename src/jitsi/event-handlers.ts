@@ -259,9 +259,32 @@ export const videoConferenceJoinedHandler = {
   fn: () => () => acquireWakeLock(),
 };
 
+// TODO: check for "final" and maintain a stable head and an updated tail...
+const data = {};
+const snippets = [];
+
 export const transcriptionChunkReceivedHander = {
   name: "transcriptionChunkReceived",
   fn: () => (params: any) => {
     reportAction("transcriptionChunkReceived", params);
+
+    const event = params.data;
+    const messageID = event.messageID;
+
+    if (!data[messageID]) {
+      snippets.push(messageID);
+    }
+    data[messageID] = event;
+
+    let transcript = "";
+    let participantName = "";
+    for (const snippet of snippets) {
+      if (participantName !== snippet.participantName) {
+        participantName = snippet.participantName;
+        transcript += `\n\n${participantName}: `;
+      }
+      transcript += snippet.final || snippet.stable || snippet.unstable;
+    }
+    console.log(`transcript: ${transcript}`);
   },
 };
