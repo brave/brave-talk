@@ -98,3 +98,12 @@ export type JitsiOptions = {
   };
   onload: () => void;
 };
+
+export type JitsiTranscriptionChunk = {
+  clearTimeOut: number;
+  messageID: string;
+  participantName: string;
+  unstable?: string;
+  stable?: string;
+  final?: string;
+};

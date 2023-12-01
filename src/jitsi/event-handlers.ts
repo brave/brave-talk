@@ -1,6 +1,11 @@
 import { isProduction } from "../environment";
 import { reportAction } from "../lib";
-import { IJitsiMeetApi, JitsiContext, JitsiOptions } from "./types";
+import {
+  IJitsiMeetApi,
+  JitsiContext,
+  JitsiOptions,
+  JitsiTranscriptionChunk,
+} from "./types";
 import { availableRecordings } from "../recordings-store";
 import { acquireWakeLock, releaseWakeLock } from "../wakelock";
 import {
@@ -260,30 +265,31 @@ export const videoConferenceJoinedHandler = {
 };
 
 // TODO: check for "final" and maintain a stable head and an updated tail...
-const data = {};
-const snippets = [];
+const messageIDs: string[] = [];
+const data: { [key: string]: JitsiTranscriptionChunk } = {};
 
 export const transcriptionChunkReceivedHander = {
   name: "transcriptionChunkReceived",
   fn: () => (params: any) => {
-    reportAction("transcriptionChunkReceived", params);
+    const chunk: JitsiTranscriptionChunk = params.data;
+    reportAction("transcriptionChunkReceived", chunk);
 
-    const event = params.data;
-    const messageID = event.messageID;
+    const messageID = chunk.messageID;
 
     if (!data[messageID]) {
-      snippets.push(messageID);
+      messageIDs.push(messageID);
     }
-    data[messageID] = event;
+    data[messageID] = chunk;
 
     let transcript = "";
     let participantName = "";
-    for (const snippet of snippets) {
-      if (participantName !== snippet.participantName) {
-        participantName = snippet.participantName;
+    for (const messageID of messageIDs) {
+      const chunk = data[messageID];
+      if (participantName !== chunk.participantName) {
+        participantName = chunk.participantName;
         transcript += `\n\n${participantName}: `;
       }
-      transcript += snippet.final || snippet.stable || snippet.unstable;
+      transcript += chunk.final || chunk.stable || chunk.unstable;
     }
     console.log(`transcript: ${transcript}`);
   },
