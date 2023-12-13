@@ -264,11 +264,12 @@ export const videoConferenceJoinedHandler = {
   fn: () => () => acquireWakeLock(),
 };
 
-// TODO: check for "final" and maintain a stable head and an updated tail...
 const messageIDs: string[] = [];
 const data: { [key: string]: JitsiTranscriptionChunk } = {};
 
-export const transcriptionChunkReceivedHander = {
+export const transcriptionChunkReceivedHander = (
+  onTranscriptChange: (transcript: string) => void,
+) => ({
   name: "transcriptionChunkReceived",
   fn: () => (params: any) => {
     const chunk: JitsiTranscriptionChunk = params.data;
@@ -291,13 +292,8 @@ export const transcriptionChunkReceivedHander = {
       }
       transcript += chunk.final || chunk.stable || chunk.unstable;
     }
-    console.log(`transcript: ${transcript}`);
+    console.log(`!!! transcript: ${transcript}`);
 
-    const mainNode = document.getElementById("main");
-    if (mainNode) {
-      mainNode.innerHTML = `<pre>${transcript
-        .replace(/</g, "&lt;")
-        .replace(/&/g, "&amp;")}</pre>`;
-    }
+    onTranscriptChange(transcript);
   },
-};
+});
