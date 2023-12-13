@@ -292,5 +292,12 @@ export const transcriptionChunkReceivedHander = {
       transcript += chunk.final || chunk.stable || chunk.unstable;
     }
     console.log(`transcript: ${transcript}`);
+
+    const mainNode = document.getElementById("main");
+    if (mainNode) {
+      mainNode.innerHTML = `<pre>${transcript
+        .replace(/</g, "&lt;")
+        .replace(/&/g, "&amp;")}</pre>`;
+    }
   },
 };
