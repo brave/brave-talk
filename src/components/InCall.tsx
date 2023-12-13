@@ -39,6 +39,7 @@ export const InCall = ({
 }: Props) => {
   const divRef = useRef(null);
   const [jitsiMeet, setJitsiMeet] = useState<IJitsiMeetApi>();
+  const [transcript, setTranscript] = useState<string>("hello world.");
 
   useEffect(() => {
     if (!jitsiMeet && divRef.current && isCallReady) {
@@ -57,7 +58,7 @@ export const InCall = ({
         dataChannelOpenedHandler,
         endpointTextMessageReceivedHandler,
         videoConferenceJoinedHandler,
-        transcriptionChunkReceivedHander,
+        transcriptionChunkReceivedHander(setTranscript),
       ];
 
       const options = jitsiOptions(roomName, divRef.current, jwt, isMobile);
@@ -81,5 +82,10 @@ export const InCall = ({
     return null;
   }
 
-  return <div ref={divRef} css={{ height: "100%" }} />;
+  return (
+    <>
+      <div ref={divRef} css={{ height: "100%" }} />{" "}
+      <main style={{ visibility: "hidden" }}>{transcript}</main>{" "}
+    </>
+  );
 };
