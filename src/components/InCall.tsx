@@ -82,10 +82,20 @@ export const InCall = ({
     return null;
   }
 
+  const role = "article";
+  const hidden = {
+    opacity: "0",
+    pointerEvents: "none" as const,
+    position: "absolute" as const,
+    zIndex: -1,
+  };
+
   return (
     <>
       <div ref={divRef} css={{ height: "100%" }} />{" "}
-      <main style={{ visibility: "hidden" }}>{transcript}</main>{" "}
+      <div role={role} style={hidden}>
+        {transcript}
+      </div>{" "}
     </>
   );
 };
