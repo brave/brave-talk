@@ -102,7 +102,11 @@ export type JitsiOptions = {
 export type JitsiTranscriptionChunk = {
   clearTimeOut: number;
   messageID: string;
-  participantName: string;
+  participant: {
+    avatarUrl: string;
+    id: string;
+    name: string;
+  };
   unstable?: string;
   stable?: string;
   final?: string;
