@@ -82,7 +82,6 @@ export const InCall = ({
     return null;
   }
 
-  const role = "article";
   const hidden = {
     opacity: "0",
     pointerEvents: "none" as const,
@@ -93,9 +92,7 @@ export const InCall = ({
   return (
     <>
       <div ref={divRef} css={{ height: "100%" }} />{" "}
-      <div role={role} style={hidden}>
-        {transcript}
-      </div>{" "}
+      <main style={hidden}>{transcript}</main>{" "}
     </>
   );
 };
