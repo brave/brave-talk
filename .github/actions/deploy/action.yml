@@ -1,28 +1,38 @@
-name: Deploy
-description: Deploy by uploading to the S3 bucket
+name: Build, Test, Audit
+description: |
+  Builds using webpack, and publishes an artifact named "build-output"
 inputs:
-  cloudfront-distribution-id:
+  environment:
     required: true
-    description: cloudfront distribution id
-  s3-bucket:
-    required: true
-    description: target s3 bucket
+    description: the name of the environment to build for
 
 runs:
   using: composite
   steps:
-    - uses: actions/download-artifact@7a1cd3216ca9260cd8022db641d960b1db4d1be4 # v4.0.0
+    - name: Use Node.js
+      uses: actions/setup-node@8f152de45cc393bb48ce5d89d36b731f54556e65 # v4.0.0
+      with:
+        node-version-file: ".node-version"
+        cache: npm
+    - run: npm ci
+      shell: bash
+    # check includes audit, tsc, lint, prettier
+    - run: npm run check
+      shell: bash
+    - run: npm test
+      shell: bash
+    - run: npm run build
+      env:
+        ENVIRONMENT: ${{ inputs.environment }}
+      shell: bash
+    - name: eval check
+      shell: bash
+      run: |
+        # fail the build if any generated javascript contains 'eval' to help mitigate the need for script-src unsafe-eval CSP
+        if find html -name "*.js" | xargs grep -El "\beval\("; then echo '"eval" found'; exit 99; else echo '"eval" not found'; fi
+    - name: Upload built outputs
+      uses: actions/upload-artifact@c7d193f32edcb7bfad88892161225aeda64e9392 # v4.0.0
       with:
         name: build-output
         path: ./html
-    - name: Deploy static files
-      shell: bash
-      run: |
-        cd html
-        aws s3 sync ./static/ "s3://${{ inputs.s3-bucket }}/static/" --cache-control "max-age=31536000, public"
-        aws s3 sync . "s3://${{ inputs.s3-bucket }}/" --exclude "static/*" --cache-control "max-age=60, public"
-    - name: Invalidate CDN
-      shell: bash
-      run: |
-        INVALIDATION_ID=$(aws cloudfront create-invalidation --distribution-id ${{ inputs.cloudfront-distribution-id }} --paths "/*" | jq -r '.Invalidation.Id')
-        aws cloudfront wait invalidation-completed --distribution-id ${{ inputs.cloudfront-distribution-id }} --id $INVALIDATION_ID
+        if-no-files-found: error
