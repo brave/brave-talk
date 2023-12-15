@@ -39,7 +39,7 @@ export const InCall = ({
 }: Props) => {
   const divRef = useRef(null);
   const [jitsiMeet, setJitsiMeet] = useState<IJitsiMeetApi>();
-  const [transcript, setTranscript] = useState<string>("hello world.");
+  const [transcript, setTranscript] = useState<string>("");
 
   useEffect(() => {
     if (!jitsiMeet && divRef.current && isCallReady) {
