@@ -286,7 +286,7 @@ export const transcriptionChunkReceivedHander = (
     let participantName = "";
     for (const messageID of messageIDs) {
       const chunk = data[messageID];
-      if (participantName !== chunk.participantName) {
+      if (participantName !== chunk.participant?.name) {
         participantName = chunk.participantName;
         transcript += `\n\n${participantName}: `;
       }
