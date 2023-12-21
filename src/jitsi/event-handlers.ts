@@ -267,13 +267,20 @@ export const videoConferenceJoinedHandler = {
 const messageIDs: string[] = [];
 const data: { [key: string]: JitsiTranscriptionChunk } = {};
 
+let didP = false;
+
 export const transcriptionChunkReceivedHander = (
   onTranscriptChange: (transcript: string) => void,
 ) => ({
   name: "transcriptionChunkReceived",
-  fn: () => (params: any) => {
+  fn: (jitsi: IJitsiMeetApi) => (params: any) => {
     const chunk: JitsiTranscriptionChunk = params.data;
     reportAction("transcriptionChunkReceived", chunk);
+
+    if (!didP) {
+      didP = true;
+      jitsi.executeCommand("setSubTitles", true, false);
+    }
 
     const messageID = chunk.messageID;
 
