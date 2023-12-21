@@ -279,7 +279,7 @@ export const transcriptionChunkReceivedHander = (
 
     if (!didP) {
       didP = true;
-      jitsi.executeCommand("setSubTitles", true, false);
+      jitsi.executeCommand("setSubtitles", true, false);
     }
 
     const messageID = chunk.messageID;
