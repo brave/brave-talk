@@ -58,10 +58,10 @@
     "webpack-dev-server": "4.15.1"
   },
   "dependencies": {
-    "@emotion/react": "11.11.1",
+    "@emotion/react": "11.11.3",
     "@types/dom-screen-wake-lock": "1.0.3",
     "buffer": "6.0.3",
-    "ethers": "6.9.0",
+    "ethers": "6.9.1",
     "i18next": "23.7.11",
     "jest-environment-jsdom": "29.7.0",
     "react": "18.2.0",
