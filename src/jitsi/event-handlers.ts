@@ -310,6 +310,8 @@ export const transcriptionChunkReceivedHander = (
       delta -= minutes * oneMinute;
       chunk.elapsed += `${minutes > 9 ? minutes : "0" + minutes}:`;
       chunk.elapsed += `${delta > 9 ? delta : "0" + delta})`;
+    } else {
+      chunk.elapsed = data[messageID].elapsed;
     }
     data[messageID] = chunk;
 
