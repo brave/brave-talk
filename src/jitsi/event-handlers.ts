@@ -268,6 +268,7 @@ const messageIDs: string[] = [];
 const data: { [key: string]: JitsiTranscriptionChunk } = {};
 
 let didP = false;
+let start = 0;
 
 export const transcriptionChunkReceivedHander = (
   onTranscriptChange: (transcript: string) => void,
@@ -279,6 +280,7 @@ export const transcriptionChunkReceivedHander = (
 
     if (!didP) {
       didP = true;
+      start = new Date().getTime();
       jitsi.executeCommand("setSubtitles", true, false);
     }
 
@@ -286,6 +288,28 @@ export const transcriptionChunkReceivedHander = (
 
     if (!data[messageID]) {
       messageIDs.push(messageID);
+
+      // i could not find a small JS package to do this....
+      const oneMinute = 60;
+      const oneHour = 60 * oneMinute;
+      const oneDay = 24 * oneHour;
+      let delta = Math.ceil((new Date().getTime() - start) / 1000);
+
+      chunk.elapsed = "(";
+      const days = Math.floor(delta / oneDay);
+      if (days > 0) {
+        delta -= days * oneDay;
+        chunk.elapsed += `${days}d `;
+      }
+
+      const hours = Math.floor(delta / oneHour);
+      delta -= hours * oneHour;
+      chunk.elapsed += `${hours > 9 ? hours : "0" + hours}:`;
+
+      const minutes = Math.floor(delta / oneMinute);
+      delta -= minutes * oneMinute;
+      chunk.elapsed += `${minutes > 9 ? minutes : "0" + minutes}:`;
+      chunk.elapsed += `${delta > 9 ? delta : "0" + delta})`;
     }
     data[messageID] = chunk;
 
@@ -295,7 +319,7 @@ export const transcriptionChunkReceivedHander = (
       const chunk = data[messageID];
       if (participantName !== chunk.participant?.name) {
         participantName = chunk.participant?.name;
-        transcript += `\n\n${participantName}: `;
+        transcript += `\n\n${chunk.elapsed} ${participantName}: `;
       }
       transcript += chunk.final || chunk.stable || chunk.unstable;
     }
