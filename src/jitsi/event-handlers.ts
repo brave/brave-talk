@@ -452,6 +452,7 @@ const participants: { [key: string]: string } = {};
 const initParticipants = (jitsi: IJitsiMeetApi) => {
   reportAction("initParticipants", {});
   jitsi.getRoomsInfo().then((rooms: JitsiRoom[]) => {
+    reportAction("rooms", rooms);
     rooms.forEach((room: JitsiRoom) => {
       room.participants.forEach((participant: JitsiParticipant) => {
         participants[participant.id] = participant.displayName;
