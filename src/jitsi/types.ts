@@ -115,6 +115,10 @@ export type JitsiTranscriptionChunk = {
   elapsed: string;
 };
 
+export type JitsiRoomResult = {
+  rooms: JitsiRoom[];
+};
+
 export type JitsiRoom = {
   isMainRoom: boolean;
   id: string;

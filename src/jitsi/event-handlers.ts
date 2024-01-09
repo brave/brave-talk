@@ -5,6 +5,7 @@ import {
   JitsiContext,
   JitsiOptions,
   JitsiTranscriptionChunk,
+  JitsiRoomResult,
   JitsiRoom,
   JitsiParticipant,
 } from "./types";
@@ -451,9 +452,9 @@ const participants: { [key: string]: string } = {};
 
 const initParticipants = (jitsi: IJitsiMeetApi) => {
   reportAction("initParticipants", {});
-  jitsi.getRoomsInfo().then((rooms: JitsiRoom[]) => {
-    reportAction("rooms", rooms);
-    rooms.forEach((room: JitsiRoom) => {
+  jitsi.getRoomsInfo().then((result: JitsiRoomResult) => {
+    reportAction("result", result);
+    result.rooms.forEach((room: JitsiRoom) => {
       room.participants.forEach((participant: JitsiParticipant) => {
         participants[participant.id] = participant.displayName;
       });
