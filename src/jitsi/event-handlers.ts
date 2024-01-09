@@ -438,7 +438,7 @@ const addEventForTranscript = (
         return "";
       }
 
-      const participant = participants[params.from] || params.from;
+      const participant = participants[jitsi._myUserID] || jitsi._myUserID;
       return `Participant ${participant} wrote ${params.message}`;
     },
   }[event];
