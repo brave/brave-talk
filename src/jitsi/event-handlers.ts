@@ -197,6 +197,14 @@ export const incomingMessageHandler = {
   },
 };
 
+export const outgoingMessageHandler = {
+  name: "outgoingMessage",
+  fn: (jitsi: IJitsiMeetApi, context: JitsiContext) => (params: any) => {
+    nowActive(jitsi, context, "outgoingMessage", params);
+    addEventForTranscript(jitsi, "outgoingMessage", params);
+  },
+};
+
 export const passwordRequiredHandler = {
   name: "passwordRequired",
   fn: (jitsi: IJitsiMeetApi, context: JitsiContext) => (_: any) => {
@@ -412,6 +420,11 @@ const addEventForTranscript = (
         params.handRaised ? "raised" : "lowered"
       } a hand`;
     },
+    displayNameChange: () => {
+      const participant = participants[params.id] || params.id;
+      participants[params.id] = params.displayName;
+      return `Participant ${participant} is now known as ${params.displayName}`;
+    },
     incomingMessage: () => {
       if (params.privateMessage) {
         return "";
@@ -420,10 +433,13 @@ const addEventForTranscript = (
       const participant = participants[params.from] || params.from;
       return `Participant ${participant} wrote ${params.message}`;
     },
-    displayNameChange: () => {
-      const participant = participants[params.id] || params.id;
-      participants[params.id] = params.displayName;
-      return `Participant ${participant} is now known as ${params.displayName}`;
+    outgoingMessage: () => {
+      if (params.privateMessage) {
+        return "";
+      }
+
+      const participant = participants[params.from] || params.from;
+      return `Participant ${participant} wrote ${params.message}`;
     },
   }[event];
   let final = "";
@@ -451,15 +467,13 @@ const addEventForTranscript = (
 const participants: { [key: string]: string } = {};
 
 const initParticipants = (jitsi: IJitsiMeetApi) => {
-  reportAction("initParticipants", {});
+  reportAction("initParticipants", jitsi);
   jitsi.getRoomsInfo().then((result: JitsiRoomResult) => {
-    reportAction("result", result);
     result.rooms.forEach((room: JitsiRoom) => {
       room.participants.forEach((participant: JitsiParticipant) => {
         participants[participant.id] = participant.displayName;
       });
     });
-    console.log(`!!! participants`, participants);
   });
 };
 
