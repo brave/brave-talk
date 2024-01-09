@@ -102,15 +102,29 @@ export type JitsiOptions = {
 export type JitsiTranscriptionChunk = {
   language: string;
   messageID: string;
-  participant: {
-    avatarUrl: string;
+  participant?: {
+    avatarUrl?: string;
     id: string;
     name: string;
   };
   final?: string;
   stable?: string;
   unstable?: string;
-  clearTimeOut: number;
+  clearTimeOut?: number;
   delta: number;
   elapsed: string;
+};
+
+export type JitsiRoom = {
+  isMainRoom: boolean;
+  id: string;
+  jid: string;
+  participants: JitsiParticipant[];
+};
+
+export type JitsiParticipant = {
+  jid: string;
+  role: string;
+  displayName: string;
+  id: string;
 };
