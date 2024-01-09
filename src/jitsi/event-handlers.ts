@@ -370,6 +370,7 @@ const addEventForTranscript = (
   event: string,
   params: any,
 ) => {
+  reportAction(`addEventForTranscript: ${event}`, params);
   initParticipants(jitsi);
 
   serialNo++;
