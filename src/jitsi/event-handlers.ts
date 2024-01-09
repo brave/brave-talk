@@ -295,6 +295,7 @@ export const transcriptionChunkReceivedHander = (
       const oneDay = 24 * oneHour;
       let delta = Math.ceil((new Date().getTime() - start) / 1000);
 
+      chunk.delta = delta;
       chunk.elapsed = "(";
       const days = Math.floor(delta / oneDay);
       if (days > 0) {
@@ -311,15 +312,21 @@ export const transcriptionChunkReceivedHander = (
       chunk.elapsed += `${minutes > 9 ? minutes : "0" + minutes}:`;
       chunk.elapsed += `${delta > 9 ? delta : "0" + delta})`;
     } else {
+      chunk.delta = data[messageID].delta;
       chunk.elapsed = data[messageID].elapsed;
     }
     data[messageID] = chunk;
 
     let transcript = "";
     let participantName = "";
+    let delta = -1;
     for (const messageID of messageIDs) {
       const chunk = data[messageID];
-      if (participantName !== chunk.participant?.name) {
+      if (
+        delta < chunk.delta + 20 ||
+        participantName !== chunk.participant?.name
+      ) {
+        delta = chunk.delta;
         participantName = chunk.participant?.name;
         transcript += `\n\n${chunk.elapsed} ${participantName}: `;
       }

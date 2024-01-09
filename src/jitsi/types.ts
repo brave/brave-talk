@@ -111,5 +111,6 @@ export type JitsiTranscriptionChunk = {
   stable?: string;
   unstable?: string;
   clearTimeOut: number;
+  delta: number;
   elapsed: string;
 };
