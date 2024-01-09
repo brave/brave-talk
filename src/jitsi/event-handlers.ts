@@ -450,6 +450,7 @@ const addEventForTranscript = (
 const participants: { [key: string]: string } = {};
 
 const initParticipants = (jitsi: IJitsiMeetApi) => {
+  reportAction("initParticipants");
   jitsi.getRoomsInfo().then((rooms: JitsiRoom[]) => {
     rooms.forEach((room: JitsiRoom) => {
       room.participants.forEach((participant: JitsiParticipant) => {
