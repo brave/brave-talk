@@ -188,6 +188,14 @@ export const displayNameChangeHandler = {
   },
 };
 
+export const incomingMessageHandler = {
+  name: "incomingMessage",
+  fn: (jitsi: IJitsiMeetApi, context: JitsiContext) => (params: any) => {
+    nowActive(jitsi, context, "incomingMessage", params);
+    addEventForTranscript(jitsi, "incomingMessage", params);
+  },
+};
+
 export const passwordRequiredHandler = {
   name: "passwordRequired",
   fn: (jitsi: IJitsiMeetApi, context: JitsiContext) => (_: any) => {
@@ -327,6 +335,7 @@ export const transcriptionChunkReceivedHander = (
       chunk.delta = data[messageID].delta;
       chunk.elapsed = data[messageID].elapsed;
     }
+
     data[messageID] = chunk;
 
     let transcript = "";
@@ -390,7 +399,7 @@ const addEventForTranscript = (
     },
     participantLeft: () => {
       const participant = participants[params.id] || params.id;
-      return `Participant ${participant} has joined`;
+      return `Participant ${participant} has left`;
     },
     knockingParticipant: () => {
       return `Participant ${params.participant.name} is asking to join`;
@@ -400,6 +409,14 @@ const addEventForTranscript = (
       return `Participant ${participant} has ${
         params.handRaised ? "raised" : "lowered"
       } a hand`;
+    },
+    incomingMessage: () => {
+      if (params.privateMessage) {
+        return "";
+      }
+
+      const participant = participants[params.from] || params.from;
+      return `Participant ${participant} wrote ${params.message}`;
     },
     displayNameChange: () => {
       const participant = participants[params.id] || params.id;
@@ -425,7 +442,21 @@ const addEventForTranscript = (
   };
 
   data[messageID] = chunk;
+
   reportAction("eventForTranscript", chunk);
+};
+
+const participants: { [key: string]: string } = {};
+
+const initParticipants = (jitsi: IJitsiMeetApi) => {
+  jitsi.getRoomsInfo().then((rooms: JitsiRoom[]) => {
+    rooms.forEach((room: JitsiRoom) => {
+      room.participants.forEach((participant: JitsiParticipant) => {
+        participants[participant.id] = participant.displayName;
+      });
+    });
+    console.log(`!!! participants`, participants);
+  });
 };
 
 const delta2elapsed = (delta: number) => {
@@ -453,17 +484,4 @@ const delta2elapsed = (delta: number) => {
   elapsed += `${delta > 9 ? delta : "0" + delta})`;
 
   return elapsed;
-};
-
-const participants: { [key: string]: string } = {};
-
-const initParticipants = (jitsi: IJitsiMeetApi) => {
-  jitsi.getRoomsInfo().then((rooms: JitsiRoom[]) => {
-    console.log(`!!! getRoomsInfo`, rooms);
-    rooms.forEach((room: JitsiRoom) => {
-      room.participants.forEach((participant: JitsiParticipant) => {
-        participants[participant.id] = participant.displayName;
-      });
-    });
-  });
 };
