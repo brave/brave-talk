@@ -5,6 +5,8 @@ import {
   JitsiContext,
   JitsiOptions,
   JitsiTranscriptionChunk,
+  JitsiRoom,
+  JitsiParticipant,
 } from "./types";
 import { availableRecordings } from "../recordings-store";
 import { acquireWakeLock, releaseWakeLock } from "../wakelock";
@@ -21,6 +23,7 @@ export const subjectChangeHandler = {
     (jitsi: IJitsiMeetApi, _context: JitsiContext, options: JitsiOptions) =>
     (params: any) => {
       reportAction("subjectChange", params);
+      addEventForTranscript(jitsi, "subjectChange", params);
 
       if (options.configOverwrite.disableBeforeUnloadHandlers) {
         // window.addEventListener("onpagehide", (e) => { ... }) appears to be a no-op on iOS
@@ -131,6 +134,7 @@ export const participantJoinedHandler = {
   name: "participantJoined",
   fn: (jitsi: IJitsiMeetApi, context: JitsiContext) => (params: any) => {
     nowActive(jitsi, context, "participantJoined", params);
+    addEventForTranscript(jitsi, "participantJoined", params);
   },
 };
 
@@ -138,6 +142,7 @@ export const participantKickedOutHandler = {
   name: "participantKickedOut",
   fn: (jitsi: IJitsiMeetApi, context: JitsiContext) => (params: any) => {
     nowActive(jitsi, context, "participantKickedOut", params);
+    addEventForTranscript(jitsi, "participantKickedOut", params);
 
     if (context.web3Participants) {
       delete context.web3Participants[params.id];
@@ -150,11 +155,36 @@ export const participantLeftHandler = {
   name: "participantLeft",
   fn: (jitsi: IJitsiMeetApi, context: JitsiContext) => (params: any) => {
     nowActive(jitsi, context, "participantLeft", params);
+    addEventForTranscript(jitsi, "participantLeft", params);
 
     if (context.web3Participants) {
       delete context.web3Participants[params.id];
       reportAction("web3 participants", context.web3Participants);
     }
+  },
+};
+
+export const knockingParticipantHandler = {
+  name: "knockingParticipant",
+  fn: (jitsi: IJitsiMeetApi, context: JitsiContext) => (params: any) => {
+    nowActive(jitsi, context, "knockingParticipant", params);
+    addEventForTranscript(jitsi, "knockingParticipant", params);
+  },
+};
+
+export const raiseHandUpdatedHandler = {
+  name: "raiseHandUpdated",
+  fn: (jitsi: IJitsiMeetApi, context: JitsiContext) => (params: any) => {
+    nowActive(jitsi, context, "raiseHandUpdated", params);
+    addEventForTranscript(jitsi, "raiseHandUpdated", params);
+  },
+};
+
+export const displayNameChangeHandler = {
+  name: "displayNameChange",
+  fn: (jitsi: IJitsiMeetApi, context: JitsiContext) => (params: any) => {
+    nowActive(jitsi, context, "displayNameChange", params);
+    addEventForTranscript(jitsi, "displayNameChange", params);
   },
 };
 
@@ -282,6 +312,7 @@ export const transcriptionChunkReceivedHander = (
       didP = true;
       start = new Date().getTime();
       jitsi.executeCommand("setSubtitles", true, false);
+      initParticipants(jitsi);
     }
 
     const messageID = chunk.messageID;
@@ -289,28 +320,9 @@ export const transcriptionChunkReceivedHander = (
     if (!data[messageID]) {
       messageIDs.push(messageID);
 
-      // i could not find a small JS package to do this....
-      const oneMinute = 60;
-      const oneHour = 60 * oneMinute;
-      const oneDay = 24 * oneHour;
-      let delta = Math.ceil((new Date().getTime() - start) / 1000);
-
+      const delta = Math.ceil((new Date().getTime() - start) / 1000);
       chunk.delta = delta;
-      chunk.elapsed = "(";
-      const days = Math.floor(delta / oneDay);
-      if (days > 0) {
-        delta -= days * oneDay;
-        chunk.elapsed += `${days}d `;
-      }
-
-      const hours = Math.floor(delta / oneHour);
-      delta -= hours * oneHour;
-      chunk.elapsed += `${hours > 9 ? hours : "0" + hours}:`;
-
-      const minutes = Math.floor(delta / oneMinute);
-      delta -= minutes * oneMinute;
-      chunk.elapsed += `${minutes > 9 ? minutes : "0" + minutes}:`;
-      chunk.elapsed += `${delta > 9 ? delta : "0" + delta})`;
+      chunk.elapsed = delta2elapsed(delta);
     } else {
       chunk.delta = data[messageID].delta;
       chunk.elapsed = data[messageID].elapsed;
@@ -327,8 +339,11 @@ export const transcriptionChunkReceivedHander = (
         participantName !== chunk.participant?.name
       ) {
         delta = chunk.delta;
-        participantName = chunk.participant?.name;
-        transcript += `\n\n${chunk.elapsed} ${participantName}: `;
+        transcript += `\n\n${chunk.elapsed} `;
+        participantName = chunk.participant?.name || "";
+        if (participantName) {
+          transcript += `${participantName}: `;
+        }
       }
       transcript += chunk.final || chunk.stable || chunk.unstable;
     }
@@ -337,3 +352,118 @@ export const transcriptionChunkReceivedHander = (
     onTranscriptChange(transcript);
   },
 });
+
+let didS = false;
+let serialNo = 0;
+
+const addEventForTranscript = (
+  jitsi: IJitsiMeetApi,
+  event: string,
+  params: any,
+) => {
+  initParticipants(jitsi);
+
+  serialNo++;
+  const messageID = serialNo.toString();
+  const delta = Math.ceil((new Date().getTime() - start) / 1000);
+
+  const text = {
+    subjectChange: () => {
+      if (params.subject !== "" && params.subject !== "Brave Talk") {
+        didS = true;
+        return `The conference subject is now ${params.subject}`;
+      }
+      if (!didS) {
+        return "";
+      }
+      didS = false;
+      return "The conference no longer has a subject";
+    },
+    participantJoined: () => {
+      participants[params.id] = params.displayName;
+      return `Participant ${params.displayName} has joined`;
+    },
+    participantKickedOut: () => {
+      const kicked = participants[params.kicked.id] || params.kicked.id;
+      const kicker = participants[params.kicker.id] || params.kicker.id;
+      return `Participant ${kicked} has been kicked out by ${kicker}`;
+    },
+    participantLeft: () => {
+      const participant = participants[params.id] || params.id;
+      return `Participant ${participant} has joined`;
+    },
+    knockingParticipant: () => {
+      return `Participant ${params.participant.name} is asking to join`;
+    },
+    raiseHandUpdated: () => {
+      const participant = participants[params.id] || params.id;
+      return `Participant ${participant} has ${
+        params.handRaised ? "raised" : "lowered"
+      } a hand`;
+    },
+    displayNameChange: () => {
+      const participant = participants[params.id] || params.id;
+      participants[params.id] = params.displayName;
+      return `Participant ${participant} is now known as ${params.displayName}`;
+    },
+  }[event];
+  let final = "";
+  if (text) {
+    final = text();
+  }
+  if (!final) {
+    return;
+  }
+
+  messageIDs.push(messageID);
+  const chunk = {
+    language: "en",
+    messageID: messageID,
+    final: final,
+    delta: delta,
+    elapsed: delta2elapsed(delta),
+  };
+
+  data[messageID] = chunk;
+  reportAction("eventForTranscript", chunk);
+};
+
+const delta2elapsed = (delta: number) => {
+  // i could not find a small JS package to do this....
+  const oneMinute = 60;
+  const oneHour = 60 * oneMinute;
+  const oneDay = 24 * oneHour;
+
+  let elapsed = "(";
+
+  const days = Math.floor(delta / oneDay);
+  if (days > 0) {
+    delta -= days * oneDay;
+    elapsed += `${days}d `;
+  }
+
+  const hours = Math.floor(delta / oneHour);
+  delta -= hours * oneHour;
+  elapsed += `${hours > 9 ? hours : "0" + hours}:`;
+
+  const minutes = Math.floor(delta / oneMinute);
+  delta -= minutes * oneMinute;
+  elapsed += `${minutes > 9 ? minutes : "0" + minutes}:`;
+
+  elapsed += `${delta > 9 ? delta : "0" + delta})`;
+
+  return elapsed;
+};
+
+const participants: { [key: string]: string } = {};
+
+const initParticipants = (jitsi: IJitsiMeetApi) => {
+  jitsi.getRoomsInfo().then((rooms: JitsiRoom[]) => {
+    console.log(`!!! getRoomsInfo`, rooms);
+    rooms.forEach((room: JitsiRoom) => {
+      room.participants.forEach((participant: JitsiParticipant) => {
+        participants[participant.id] = participant.displayName;
+      });
+    });
+  });
+};
