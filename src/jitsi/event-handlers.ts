@@ -342,7 +342,6 @@ export const dataChannelOpenedHandler = {
   },
 };
 
-// Prevent the screen from turning off while in the video conference
 let myUserID = "";
 export const videoConferenceJoinedHandler = (
   transcriptManager: TranscriptManager,
@@ -353,6 +352,7 @@ export const videoConferenceJoinedHandler = (
 
     myUserID = params.id;
 
+    // Prevent the screen from turning off while in the video conference
     acquireWakeLock();
 
     transcriptManager.reset();
@@ -471,7 +471,7 @@ const addEventForTranscript = (
 
   transcriptManager.data[messageID] = chunk;
 
-  reportAction("eventForTranscript", chunk);
+  transcriptManager.updateTranscript();
 };
 
 const participants: { [key: string]: string } = {};
