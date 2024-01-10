@@ -93,6 +93,7 @@ export class TranscriptManager {
 
   constructor(public onTranscriptChange: (transcript: string) => void) {}
 
+  /* never reset the state
   reset() {
     this.didT = false;
     this.start = 0;
@@ -100,6 +101,7 @@ export class TranscriptManager {
     this.messageIDs = [];
     this.data = {};
   }
+ */
 
   async initPreviousTranscript(roomName: string) {
     if (!this.jwt) {

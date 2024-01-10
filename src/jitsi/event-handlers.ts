@@ -363,7 +363,9 @@ export const videoConferenceJoinedHandler = (
     // Prevent the screen from turning off while in the video conference
     acquireWakeLock();
 
+    /* never reset the state
     transcriptManager.reset();
+ */
     // Delay transcript retrieval to give server a chance
     // recognize new participant.
     setTimeout(async () => {
@@ -488,7 +490,11 @@ const addEventForTranscript = (
     return;
   }
 
-  transcriptManager.messageIDs.push(messageID);
+  if (event !== "getRoomsInfo") {
+    transcriptManager.messageIDs.push(messageID);
+  } else {
+    transcriptManager.messageIDs.unshift(messageID);
+  }
   const chunk = {
     language: "en",
     messageID: messageID,
