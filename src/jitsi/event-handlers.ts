@@ -17,14 +17,15 @@ import {
   askOnUnload,
   updateSubject,
 } from "./lib";
+import { TranscriptManager, delta2elapsed } from "../transcripts";
 
-export const subjectChangeHandler = {
+export const subjectChangeHandler = (transcriptManager: TranscriptManager) => ({
   name: "subjectChange",
   fn:
     (jitsi: IJitsiMeetApi, _context: JitsiContext, options: JitsiOptions) =>
     (params: any) => {
       reportAction("subjectChange", params);
-      addEventForTranscript(jitsi, "subjectChange", params);
+      addEventForTranscript(jitsi, "subjectChange", params, transcriptManager);
 
       if (options.configOverwrite.disableBeforeUnloadHandlers) {
         // window.addEventListener("onpagehide", (e) => { ... }) appears to be a no-op on iOS
@@ -41,7 +42,7 @@ export const subjectChangeHandler = {
         updateSubject(jitsi, options);
       }
     },
-};
+});
 
 export const videoQualityChangeHandler = {
   name: "videoQualityChanged",
@@ -131,79 +132,115 @@ export const breakoutRoomsUpdatedHandler = {
   },
 };
 
-export const participantJoinedHandler = {
+export const participantJoinedHandler = (
+  transcriptManager: TranscriptManager,
+) => ({
   name: "participantJoined",
   fn: (jitsi: IJitsiMeetApi, context: JitsiContext) => (params: any) => {
     nowActive(jitsi, context, "participantJoined", params);
-    addEventForTranscript(jitsi, "participantJoined", params);
+    addEventForTranscript(
+      jitsi,
+      "participantJoined",
+      params,
+      transcriptManager,
+    );
   },
-};
+});
 
-export const participantKickedOutHandler = {
+export const participantKickedOutHandler = (
+  transcriptManager: TranscriptManager,
+) => ({
   name: "participantKickedOut",
   fn: (jitsi: IJitsiMeetApi, context: JitsiContext) => (params: any) => {
     nowActive(jitsi, context, "participantKickedOut", params);
-    addEventForTranscript(jitsi, "participantKickedOut", params);
+    addEventForTranscript(
+      jitsi,
+      "participantKickedOut",
+      params,
+      transcriptManager,
+    );
 
     if (context.web3Participants) {
       delete context.web3Participants[params.id];
       reportAction("web3 participants", context.web3Participants);
     }
   },
-};
+});
 
-export const participantLeftHandler = {
+export const participantLeftHandler = (
+  transcriptManager: TranscriptManager,
+) => ({
   name: "participantLeft",
   fn: (jitsi: IJitsiMeetApi, context: JitsiContext) => (params: any) => {
     nowActive(jitsi, context, "participantLeft", params);
-    addEventForTranscript(jitsi, "participantLeft", params);
+    addEventForTranscript(jitsi, "participantLeft", params, transcriptManager);
 
     if (context.web3Participants) {
       delete context.web3Participants[params.id];
       reportAction("web3 participants", context.web3Participants);
     }
   },
-};
+});
 
-export const knockingParticipantHandler = {
+export const knockingParticipantHandler = (
+  transcriptManager: TranscriptManager,
+) => ({
   name: "knockingParticipant",
   fn: (jitsi: IJitsiMeetApi, context: JitsiContext) => (params: any) => {
     nowActive(jitsi, context, "knockingParticipant", params);
-    addEventForTranscript(jitsi, "knockingParticipant", params);
+    addEventForTranscript(
+      jitsi,
+      "knockingParticipant",
+      params,
+      transcriptManager,
+    );
   },
-};
+});
 
-export const raiseHandUpdatedHandler = {
+export const raiseHandUpdatedHandler = (
+  transcriptManager: TranscriptManager,
+) => ({
   name: "raiseHandUpdated",
   fn: (jitsi: IJitsiMeetApi, context: JitsiContext) => (params: any) => {
     nowActive(jitsi, context, "raiseHandUpdated", params);
-    addEventForTranscript(jitsi, "raiseHandUpdated", params);
+    addEventForTranscript(jitsi, "raiseHandUpdated", params, transcriptManager);
   },
-};
+});
 
-export const displayNameChangeHandler = {
+export const displayNameChangeHandler = (
+  transcriptManager: TranscriptManager,
+) => ({
   name: "displayNameChange",
   fn: (jitsi: IJitsiMeetApi, context: JitsiContext) => (params: any) => {
     nowActive(jitsi, context, "displayNameChange", params);
-    addEventForTranscript(jitsi, "displayNameChange", params);
+    addEventForTranscript(
+      jitsi,
+      "displayNameChange",
+      params,
+      transcriptManager,
+    );
   },
-};
+});
 
-export const incomingMessageHandler = {
+export const incomingMessageHandler = (
+  transcriptManager: TranscriptManager,
+) => ({
   name: "incomingMessage",
   fn: (jitsi: IJitsiMeetApi, context: JitsiContext) => (params: any) => {
     nowActive(jitsi, context, "incomingMessage", params);
-    addEventForTranscript(jitsi, "incomingMessage", params);
+    addEventForTranscript(jitsi, "incomingMessage", params, transcriptManager);
   },
-};
+});
 
-export const outgoingMessageHandler = {
+export const outgoingMessageHandler = (
+  transcriptManager: TranscriptManager,
+) => ({
   name: "outgoingMessage",
   fn: (jitsi: IJitsiMeetApi, context: JitsiContext) => (params: any) => {
     nowActive(jitsi, context, "outgoingMessage", params);
-    addEventForTranscript(jitsi, "outgoingMessage", params);
+    addEventForTranscript(jitsi, "outgoingMessage", params, transcriptManager);
   },
-};
+});
 
 export const passwordRequiredHandler = {
   name: "passwordRequired",
@@ -306,9 +343,10 @@ export const dataChannelOpenedHandler = {
 };
 
 // Prevent the screen from turning off while in the video conference
-
 let myUserID = "";
-export const videoConferenceJoinedHandler = {
+export const videoConferenceJoinedHandler = (
+  transcriptManager: TranscriptManager,
+) => ({
   name: "videoConferenceJoined",
   fn: () => (params: any) => {
     reportAction("videoConferenceJoined", params);
@@ -316,66 +354,27 @@ export const videoConferenceJoinedHandler = {
     myUserID = params.id;
 
     acquireWakeLock();
+
+    transcriptManager.reset();
+    // Delay transcript retrieval to give server a chance
+    // recognize new participant.
+    setTimeout(async () => {
+      await transcriptManager.initPreviousTranscript(params.roomName);
+    }, 7500);
   },
-};
-
-const messageIDs: string[] = [];
-const data: { [key: string]: JitsiTranscriptionChunk } = {};
-
-let didT = false;
-let start = 0;
+});
 
 export const transcriptionChunkReceivedHander = (
-  onTranscriptChange: (transcript: string) => void,
+  transcriptManager: TranscriptManager,
 ) => ({
   name: "transcriptionChunkReceived",
   fn: (jitsi: IJitsiMeetApi) => (params: any) => {
     const chunk: JitsiTranscriptionChunk = params.data;
     reportAction("transcriptionChunkReceived", chunk);
 
-    if (!didT) {
-      didT = true;
-      start = new Date().getTime();
-      jitsi.executeCommand("setSubtitles", true, false);
-      initParticipants(jitsi);
-    }
-
-    const messageID = chunk.messageID;
-
-    if (!data[messageID]) {
-      messageIDs.push(messageID);
-
-      const delta = Math.ceil((new Date().getTime() - start) / 1000);
-      chunk.delta = delta;
-      chunk.elapsed = delta2elapsed(delta);
-    } else {
-      chunk.delta = data[messageID].delta;
-      chunk.elapsed = data[messageID].elapsed;
-    }
-
-    data[messageID] = chunk;
-
-    let transcript = "";
-    let participantName = "";
-    let delta = -1;
-    for (const messageID of messageIDs) {
-      const chunk = data[messageID];
-      if (
-        delta < chunk.delta + 20 ||
-        participantName !== chunk.participant?.name
-      ) {
-        delta = chunk.delta;
-        transcript += `\n\n${chunk.elapsed} `;
-        participantName = chunk.participant?.name || "";
-        if (participantName) {
-          transcript += `${participantName}: `;
-        }
-      }
-      transcript += chunk.final || chunk.stable || chunk.unstable;
-    }
-    console.log(`!!! transcript: ${transcript}`);
-
-    onTranscriptChange(transcript);
+    transcriptManager.doT(jitsi);
+    transcriptManager.processChunk(chunk);
+    transcriptManager.updateTranscript();
   },
 });
 
@@ -386,13 +385,16 @@ const addEventForTranscript = (
   jitsi: IJitsiMeetApi,
   event: string,
   params: any,
+  transcriptManager: TranscriptManager,
 ) => {
   reportAction(`addEventForTranscript: ${event}`, params);
   initParticipants(jitsi);
 
   serialNo++;
   const messageID = serialNo.toString();
-  const delta = Math.ceil((new Date().getTime() - start) / 1000);
+  const delta = Math.ceil(
+    (new Date().getTime() - transcriptManager.start) / 1000,
+  );
 
   const text = {
     subjectChange: () => {
@@ -454,11 +456,11 @@ const addEventForTranscript = (
   if (text) {
     final = text();
   }
-  if (!final || !didT) {
+  if (!final || !transcriptManager.didT) {
     return;
   }
 
-  messageIDs.push(messageID);
+  transcriptManager.messageIDs.push(messageID);
   const chunk = {
     language: "en",
     messageID: messageID,
@@ -467,7 +469,7 @@ const addEventForTranscript = (
     elapsed: delta2elapsed(delta),
   };
 
-  data[messageID] = chunk;
+  transcriptManager.data[messageID] = chunk;
 
   reportAction("eventForTranscript", chunk);
 };
@@ -475,7 +477,7 @@ const addEventForTranscript = (
 const participants: { [key: string]: string } = {};
 let didP = false;
 
-const initParticipants = (jitsi: IJitsiMeetApi) => {
+export const initParticipants = (jitsi: IJitsiMeetApi) => {
   if (didP) {
     return;
   }
@@ -489,31 +491,4 @@ const initParticipants = (jitsi: IJitsiMeetApi) => {
       });
     });
   });
-};
-
-const delta2elapsed = (delta: number) => {
-  // i could not find a small JS package to do this....
-  const oneMinute = 60;
-  const oneHour = 60 * oneMinute;
-  const oneDay = 24 * oneHour;
-
-  let elapsed = "(";
-
-  const days = Math.floor(delta / oneDay);
-  if (days > 0) {
-    delta -= days * oneDay;
-    elapsed += `${days}d `;
-  }
-
-  const hours = Math.floor(delta / oneHour);
-  delta -= hours * oneHour;
-  elapsed += `${hours > 9 ? hours : "0" + hours}:`;
-
-  const minutes = Math.floor(delta / oneMinute);
-  delta -= minutes * oneMinute;
-  elapsed += `${minutes > 9 ? minutes : "0" + minutes}:`;
-
-  elapsed += `${delta > 9 ? delta : "0" + delta})`;
-
-  return elapsed;
 };
