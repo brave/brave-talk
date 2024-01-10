@@ -454,7 +454,7 @@ const addEventForTranscript = (
   if (text) {
     final = text();
   }
-  if (!final) {
+  if (!final || !didT) {
     return;
   }
 
@@ -473,8 +473,13 @@ const addEventForTranscript = (
 };
 
 const participants: { [key: string]: string } = {};
+let didP = false;
 
 const initParticipants = (jitsi: IJitsiMeetApi) => {
+  if (didP) {
+    return;
+  }
+  didP = true;
   reportAction("initParticipants", {});
 
   jitsi.getRoomsInfo().then((result: JitsiRoomResult) => {
