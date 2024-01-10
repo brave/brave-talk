@@ -227,6 +227,11 @@ export const incomingMessageHandler = (
 ) => ({
   name: "incomingMessage",
   fn: (jitsi: IJitsiMeetApi, context: JitsiContext) => (params: any) => {
+    if (params.privateMessage) {
+      params.from = "";
+      params.nick = "";
+      params.message = "";
+    }
     nowActive(jitsi, context, "incomingMessage", params);
     addEventForTranscript(jitsi, "incomingMessage", params, transcriptManager);
   },
@@ -237,6 +242,9 @@ export const outgoingMessageHandler = (
 ) => ({
   name: "outgoingMessage",
   fn: (jitsi: IJitsiMeetApi, context: JitsiContext) => (params: any) => {
+    if (params.privateMessage) {
+      params.message = "";
+    }
     nowActive(jitsi, context, "outgoingMessage", params);
     addEventForTranscript(jitsi, "outgoingMessage", params, transcriptManager);
   },
@@ -433,7 +441,7 @@ const addEventForTranscript = (
     },
     displayNameChange: () => {
       const participant = participants[params.id] || params.id;
-      participants[params.id] = params.displayName;
+      participants[params.id] = params.displayName || params.displayname;
       return `Participant ${participant} is now known as ${params.displayName}`;
     },
     incomingMessage: () => {
