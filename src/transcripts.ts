@@ -1,4 +1,4 @@
-import { initParticipants } from "./jitsi/event-handlers";
+import { getParticipants } from "./jitsi/event-handlers";
 import { IJitsiMeetApi, JitsiTranscriptionChunk } from "./jitsi/types";
 import { fetchWithTimeout } from "./lib";
 
@@ -129,7 +129,7 @@ export class TranscriptManager {
         this.start = new Date().getTime();
       }
       jitsi.executeCommand("setSubtitles", true, false);
-      initParticipants(jitsi);
+      getParticipants(jitsi, this);
     }
   }
 
