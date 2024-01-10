@@ -388,10 +388,9 @@ const addEventForTranscript = (
   transcriptManager: TranscriptManager,
 ) => {
   reportAction(`addEventForTranscript: ${event}`, params);
-  initParticipants(jitsi);
 
   serialNo++;
-  const messageID = serialNo.toString();
+  const messageID = `event.${serialNo}`;
   const delta = Math.ceil(
     (new Date().getTime() - transcriptManager.start) / 1000,
   );
@@ -415,10 +414,12 @@ const addEventForTranscript = (
     participantKickedOut: () => {
       const kicked = participants[params.kicked.id] || params.kicked.id;
       const kicker = participants[params.kicker.id] || params.kicker.id;
+      delete participants[params.kicked.id];
       return `Participant ${kicked} has been kicked out by ${kicker}`;
     },
     participantLeft: () => {
       const participant = participants[params.id] || params.id;
+      delete participants[params.id];
       return `Participant ${participant} has left`;
     },
     knockingParticipant: () => {
@@ -451,6 +452,24 @@ const addEventForTranscript = (
       const participant = participants[myUserID] || myUserID;
       return `Participant ${participant} wrote: ${params.message}`;
     },
+
+    getRoomsInfo: () => {
+      let present = "Participants present:";
+      let s = " ";
+
+      params.rooms.forEach((room: JitsiRoom) => {
+        if (!room.isMainRoom) {
+          return;
+        }
+
+        room.participants.forEach((participant: JitsiParticipant) => {
+          participants[participant.id] = participant.displayName;
+          present += `${s}${participant.displayName || participant.id}`;
+          s = ", ";
+        });
+      });
+      return present;
+    },
   }[event];
   let final = "";
   if (text) {
@@ -474,21 +493,15 @@ const addEventForTranscript = (
   transcriptManager.updateTranscript();
 };
 
-const participants: { [key: string]: string } = {};
-let didP = false;
+let participants: { [key: string]: string } = {};
 
-export const initParticipants = (jitsi: IJitsiMeetApi) => {
-  if (didP) {
-    return;
-  }
-  didP = true;
-  reportAction("initParticipants", {});
+export const getParticipants = (
+  jitsi: IJitsiMeetApi,
+  transcriptManager: TranscriptManager,
+) => {
+  participants = {};
 
   jitsi.getRoomsInfo().then((result: JitsiRoomResult) => {
-    result.rooms.forEach((room: JitsiRoom) => {
-      room.participants.forEach((participant: JitsiParticipant) => {
-        participants[participant.id] = participant.displayName;
-      });
-    });
+    addEventForTranscript(jitsi, "getRoomsInfo", result, transcriptManager);
   });
 };
