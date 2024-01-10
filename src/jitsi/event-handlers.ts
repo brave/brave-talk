@@ -306,15 +306,23 @@ export const dataChannelOpenedHandler = {
 };
 
 // Prevent the screen from turning off while in the video conference
+
+let myUserID = "";
 export const videoConferenceJoinedHandler = {
   name: "videoConferenceJoined",
-  fn: () => () => acquireWakeLock(),
+  fn: () => (params: any) => {
+    reportAction("videoConferenceJoined", params);
+
+    myUserID = params.id;
+
+    acquireWakeLock();
+  },
 };
 
 const messageIDs: string[] = [];
 const data: { [key: string]: JitsiTranscriptionChunk } = {};
 
-let didP = false;
+let didT = false;
 let start = 0;
 
 export const transcriptionChunkReceivedHander = (
@@ -325,8 +333,8 @@ export const transcriptionChunkReceivedHander = (
     const chunk: JitsiTranscriptionChunk = params.data;
     reportAction("transcriptionChunkReceived", chunk);
 
-    if (!didP) {
-      didP = true;
+    if (!didT) {
+      didT = true;
       start = new Date().getTime();
       jitsi.executeCommand("setSubtitles", true, false);
       initParticipants(jitsi);
@@ -431,15 +439,15 @@ const addEventForTranscript = (
       }
 
       const participant = participants[params.from] || params.from;
-      return `Participant ${participant} wrote ${params.message}`;
+      return `Participant ${participant} wrote: ${params.message}`;
     },
     outgoingMessage: () => {
       if (params.privateMessage) {
         return "";
       }
 
-      const participant = participants[jitsi._myUserID] || jitsi._myUserID;
-      return `Participant ${participant} wrote ${params.message}`;
+      const participant = participants[myUserID] || myUserID;
+      return `Participant ${participant} wrote: ${params.message}`;
     },
   }[event];
   let final = "";
@@ -467,7 +475,8 @@ const addEventForTranscript = (
 const participants: { [key: string]: string } = {};
 
 const initParticipants = (jitsi: IJitsiMeetApi) => {
-  reportAction("initParticipants", jitsi);
+  reportAction("initParticipants", {});
+
   jitsi.getRoomsInfo().then((result: JitsiRoomResult) => {
     result.rooms.forEach((room: JitsiRoom) => {
       room.participants.forEach((participant: JitsiParticipant) => {
