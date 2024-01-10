@@ -443,9 +443,8 @@ const addEventForTranscript = (
     },
     displayNameChange: () => {
       const participant = participants[params.id] || params.id;
-      const participantName = params.displayName || params.displayname;
-      participants[params.id] = participantName;
-      return `Participant ${participant} is now known as ${participantName}`;
+      participants[params.id] = params.displayname;
+      return `Participant ${participant} is now known as ${params.displayname}`;
     },
     incomingMessage: () => {
       if (params.privateMessage) {
