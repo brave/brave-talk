@@ -436,6 +436,10 @@ const addEventForTranscript = (
       return `Participant ${params.participant.name} is asking to join`;
     },
     raiseHandUpdated: () => {
+      if (params.id === "local") {
+        return "";
+      }
+
       const participant = participants[params.id] || params.id;
       return `Participant ${participant} has ${
         params.handRaised ? "raised" : "lowered"
