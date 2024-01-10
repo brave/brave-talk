@@ -24,6 +24,7 @@ import {
   videoConferenceJoinedHandler,
   videoQualityChangeHandler,
 } from "../jitsi/event-handlers";
+import { TranscriptManager } from "../transcripts";
 
 interface Props {
   roomName: string;
@@ -45,31 +46,34 @@ export const InCall = ({
   const divRef = useRef(null);
   const [jitsiMeet, setJitsiMeet] = useState<IJitsiMeetApi>();
   const [transcript, setTranscript] = useState<string>("");
+  const transcriptManager = useRef(new TranscriptManager(setTranscript));
 
   useEffect(() => {
     if (!jitsiMeet && divRef.current && isCallReady) {
       const jitsiEventHandlers = [
-        subjectChangeHandler,
+        subjectChangeHandler(transcriptManager.current),
         videoQualityChangeHandler,
         recordingLinkAvailableHandler,
         recordingStatusChangedHandler,
         readyToCloseHandler,
         breakoutRoomsUpdatedHandler,
-        participantJoinedHandler,
-        participantKickedOutHandler,
-        participantLeftHandler,
-        knockingParticipantHandler,
-        raiseHandUpdatedHandler,
-        displayNameChangeHandler,
-        incomingMessageHandler,
-        outgoingMessageHandler,
+        participantJoinedHandler(transcriptManager.current),
+        participantKickedOutHandler(transcriptManager.current),
+        participantLeftHandler(transcriptManager.current),
+        knockingParticipantHandler(transcriptManager.current),
+        raiseHandUpdatedHandler(transcriptManager.current),
+        displayNameChangeHandler(transcriptManager.current),
+        incomingMessageHandler(transcriptManager.current),
+        outgoingMessageHandler(transcriptManager.current),
         passwordRequiredHandler,
         errorOccurredHandler,
         dataChannelOpenedHandler,
         endpointTextMessageReceivedHandler,
-        videoConferenceJoinedHandler,
-        transcriptionChunkReceivedHander(setTranscript),
+        videoConferenceJoinedHandler(transcriptManager.current),
+        transcriptionChunkReceivedHander(transcriptManager.current),
       ];
+
+      transcriptManager.current.jwt = jwt;
 
       const options = jitsiOptions(roomName, divRef.current, jwt, isMobile);
 
