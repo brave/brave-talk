@@ -468,7 +468,8 @@ const addEventForTranscript = (
     },
 
     getRoomsInfo: () => {
-      let present = "Participants present:";
+      let present =
+        "This is a transcript of a Brave Talk meeting. Participants present:";
       let s = " ";
 
       params.rooms.forEach((room: JitsiRoom) => {
