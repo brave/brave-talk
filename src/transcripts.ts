@@ -84,6 +84,7 @@ export const delta2elapsed = (delta: number) => {
 };
 
 export class TranscriptManager {
+  elapsedP = false;
   didT = false;
   start = 0;
   preTranscript: string = "";
@@ -163,7 +164,7 @@ export class TranscriptManager {
         participantName !== chunk.participant?.name
       ) {
         delta = chunk.delta;
-        transcript += `\n\n${chunk.elapsed} `;
+        transcript += this.elapsedP ? `\n\n${chunk.elapsed} ` : "\n";
         participantName = chunk.participant?.name || "";
         if (participantName) {
           transcript += `${participantName}: `;
