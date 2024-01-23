@@ -391,7 +391,7 @@ export const transcribingStatusChangedHandler = (
 ) => ({
   name: "transcribingStatusChanged",
   fn: (jitsi: IJitsiMeetApi) => async (params: any) => {
-    const event: JitsiTranscriptionStatusEvent = params.data;
+    const event: JitsiTranscriptionStatusEvent = params;
     reportAction("transcribingStatusChanged", event);
 
     if (event.on) {
