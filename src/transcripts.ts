@@ -1,3 +1,4 @@
+import i18next from "i18next";
 import { getParticipants } from "./jitsi/event-handlers";
 import { IJitsiMeetApi, JitsiTranscriptionChunk } from "./jitsi/types";
 import { fetchWithTimeout } from "./lib";
@@ -7,9 +8,10 @@ interface TranscriptDetailsResponse {
   startTime: string | null;
 }
 
-export const fetchTranscriptDetails = async (
+export const fetchOrCreateTranscriptDetails = async (
   roomName: string,
   jwt: string,
+  create: boolean,
 ): Promise<TranscriptDetailsResponse | null> => {
   try {
     const url = `/api/v1/rooms/${encodeURIComponent(roomName)}/transcript`;
@@ -18,6 +20,7 @@ export const fetchTranscriptDetails = async (
       headers: {
         Authorization: `Bearer ${jwt}`,
       },
+      method: create ? "POST" : "GET",
     };
 
     const response = await fetchWithTimeout(url, reqParams);
@@ -88,28 +91,25 @@ export class TranscriptManager {
   didT = false;
   start = 0;
   preTranscript: string = "";
+  roomName: string | null = null;
   jwt: string | null = null;
   messageIDs: string[] = [];
   data: { [key: string]: JitsiTranscriptionChunk } = {};
 
   constructor(public onTranscriptChange: (transcript: string) => void) {}
 
-  /* never reset the state
-  reset() {
-    this.didT = false;
-    this.start = 0;
-    this.preTranscript = "";
-    this.messageIDs = [];
-    this.data = {};
-  }
- */
-
-  async initPreviousTranscript(roomName: string) {
-    if (!this.jwt) {
-      throw new Error("Could not fetch transcript due to missing JWT");
+  async initTranscript(create: boolean) {
+    if (!this.jwt || !this.roomName) {
+      throw new Error(
+        "Could not init transcript due to missing JWT and/or roomName",
+      );
     }
 
-    const transcriptDetails = await fetchTranscriptDetails(roomName, this.jwt);
+    const transcriptDetails = await fetchOrCreateTranscriptDetails(
+      this.roomName,
+      this.jwt,
+      create,
+    );
 
     if (!transcriptDetails) {
       // No transcript available, ignore
@@ -122,6 +122,8 @@ export class TranscriptManager {
 
     this.preTranscript = await fetchTranscript(transcriptDetails.url);
     this.updateTranscript();
+
+    return transcriptDetails.url;
   }
 
   // TODO(djandries): find a better name for this method, and for 'didT'
@@ -134,6 +136,27 @@ export class TranscriptManager {
       jitsi.executeCommand("setSubtitles", true, false);
       getParticipants(jitsi, this);
     }
+  }
+
+  async handleTranscriptionEnabledEvent(jitsi: IJitsiMeetApi) {
+    if (!this.jwt) {
+      throw new Error(
+        "Could not process transcription enabled event due to missing JWT",
+      );
+    }
+    const parsedJwt = jwt_decode(this.jwt);
+    if (parsedJwt.context.user.moderator !== "true") {
+      return;
+    }
+    const transcriptUrl = await this.initTranscript(true);
+    jitsi.executeCommand("showNotification", {
+      title: i18next.t("transcription_link_available_title"),
+      description: i18next.t("transcription_link_available_description", {
+        transcriptUrl,
+      }),
+      type: "info",
+      timeout: "medium",
+    });
   }
 
   processChunk(chunk: JitsiTranscriptionChunk) {

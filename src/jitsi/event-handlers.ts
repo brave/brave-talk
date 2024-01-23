@@ -8,6 +8,7 @@ import {
   JitsiRoomResult,
   JitsiRoom,
   JitsiParticipant,
+  JitsiTranscriptionStatusEvent,
 } from "./types";
 import { availableRecordings } from "../recordings-store";
 import { acquireWakeLock, releaseWakeLock } from "../wakelock";
@@ -363,18 +364,15 @@ export const videoConferenceJoinedHandler = (
     // Prevent the screen from turning off while in the video conference
     acquireWakeLock();
 
-    /* never reset the state
-    transcriptManager.reset();
- */
     // Delay transcript retrieval to give server a chance
     // recognize new participant.
     setTimeout(async () => {
-      await transcriptManager.initPreviousTranscript(params.roomName);
+      await transcriptManager.initTranscript(false);
     }, 7500);
   },
 });
 
-export const transcriptionChunkReceivedHander = (
+export const transcriptionChunkReceivedHandler = (
   transcriptManager: TranscriptManager,
 ) => ({
   name: "transcriptionChunkReceived",
@@ -385,6 +383,20 @@ export const transcriptionChunkReceivedHander = (
     transcriptManager.doT(jitsi);
     transcriptManager.processChunk(chunk);
     transcriptManager.updateTranscript();
+  },
+});
+
+export const transcribingStatusChangedHandler = (
+  transcriptManager: TranscriptManager,
+) => ({
+  name: "transcribingStatusChanged",
+  fn: (jitsi: IJitsiMeetApi) => async (params: any) => {
+    const event: JitsiTranscriptionStatusEvent = params.data;
+    reportAction("transcribingStatusChanged", event);
+
+    if (event.on) {
+      await transcriptManager.handleTranscriptionEnabledEvent(jitsi);
+    }
   },
 });
 
