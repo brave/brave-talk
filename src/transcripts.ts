@@ -16,15 +16,18 @@ export const fetchOrCreateTranscriptDetails = async (
   try {
     const url = `/api/v1/rooms/${encodeURIComponent(roomName)}/transcript`;
 
+    const method = create ? "POST" : "GET";
     const reqParams: RequestInit = {
       headers: {
         Authorization: `Bearer ${jwt}`,
       },
-      method: create ? "POST" : "GET",
+      method: method,
     };
 
+    console.log(`>>> ${method} ${url}`);
     const response = await fetchWithTimeout(url, reqParams);
     const { status } = response;
+    console.log(`<<< ${method} ${url} ${status}`);
 
     if (status === 404) {
       // No transcript exists, return null
@@ -45,8 +48,10 @@ export const fetchTranscript = async (
   transcriptUrl: string,
 ): Promise<string> => {
   try {
+    console.log(`>>> GET ${transcriptUrl}`);
     const response = await fetchWithTimeout(transcriptUrl, {});
     const { status } = response;
+    console.log(`<<< GET ${transcriptUrl} ${status}`);
 
     if (status !== 200) {
       throw new Error(`Bad status code: ${status}`);
