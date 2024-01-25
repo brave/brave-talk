@@ -133,7 +133,6 @@ export class TranscriptManager {
       if (!this.start) {
         this.start = new Date().getTime();
       }
-      jitsi.executeCommand("setSubtitles", true, false);
       getParticipants(jitsi, this);
     }
   }

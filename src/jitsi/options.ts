@@ -78,7 +78,6 @@ export const jitsiOptions = (
       toolbarButtons: [
         "camera",
         "chat",
-        "closedcaptions",
         "desktop",
         "download",
         "embedmeeting",
