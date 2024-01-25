@@ -71,6 +71,9 @@ export const jitsiOptions = (
       roomPasswordNumberOfDigits: false,
       startWithAudioMuted: true,
       startWithVideoMuted: true,
+      localRecording: {
+        disable: true,
+      },
       toolbarConfig: {
         autoHideWhileChatIsOpen: true,
       },
