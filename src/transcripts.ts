@@ -167,7 +167,7 @@ export class TranscriptManager {
       description: i18next.t("transcription_link_available_description", {
         transcriptUrl,
       }),
-      type: "info",
+      type: "normal",
       timeout: "medium",
     });
   }
