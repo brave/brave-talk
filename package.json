@@ -9,7 +9,7 @@
     "lint": "eslint src/",
     "start": "webpack serve --config webpack.config.js --mode development",
     "test": "jest",
-    "prepare": "husky install",
+    "prepare": "husky",
     "check": "run-p -l check:*",
     "check:build": "tsc",
     "check:audit": "npm audit",
