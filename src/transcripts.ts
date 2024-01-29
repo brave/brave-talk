@@ -2,6 +2,7 @@ import i18next from "i18next";
 import { getParticipants } from "./jitsi/event-handlers";
 import { IJitsiMeetApi, JitsiTranscriptionChunk } from "./jitsi/types";
 import { fetchWithTimeout } from "./lib";
+import { getRoomCsrfToken, getRoomUrl } from "./rooms";
 
 interface TranscriptDetailsResponse {
   url: string;
@@ -14,20 +15,30 @@ export const fetchOrCreateTranscriptDetails = async (
   create: boolean,
 ): Promise<TranscriptDetailsResponse | null> => {
   try {
-    const url = `/api/v1/rooms/${encodeURIComponent(roomName)}/transcript`;
+    const url = `${getRoomUrl(roomName)}/transcript`;
 
     const method = create ? "POST" : "GET";
-    const reqParams: RequestInit = {
-      headers: {
+    let headers: HeadersInit;
+
+    if (create) {
+      const csrfToken = await getRoomCsrfToken(roomName);
+      headers = {
         Authorization: `Bearer ${jwt}`,
-      },
+        "x-csrf-token": csrfToken,
+      };
+    } else {
+      headers = {
+        Authorization: `Bearer ${jwt}`,
+      };
+    }
+
+    const reqParams: RequestInit = {
+      headers,
       method: method,
     };
 
-    console.log(`>>> ${method} ${url}`);
     const response = await fetchWithTimeout(url, reqParams);
     const { status } = response;
-    console.log(`<<< ${method} ${url} ${status}`);
 
     if (status === 404) {
       // No transcript exists, return null
@@ -48,10 +59,8 @@ export const fetchTranscript = async (
   transcriptUrl: string,
 ): Promise<string> => {
   try {
-    console.log(`>>> GET ${transcriptUrl}`);
     const response = await fetchWithTimeout(transcriptUrl, {});
     const { status } = response;
-    console.log(`<<< GET ${transcriptUrl} ${status}`);
 
     if (status !== 200) {
       throw new Error(`Bad status code: ${status}`);
