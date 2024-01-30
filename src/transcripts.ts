@@ -10,7 +10,7 @@ interface TranscriptDetailsResponse {
 }
 
 enum TimeStampStyle {
-  None,
+  None = 0,
   Short,
   Long,
 }
