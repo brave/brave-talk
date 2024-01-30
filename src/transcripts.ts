@@ -15,7 +15,7 @@ enum TimeStampStyle {
   Long,
 }
 
-export const fetchOrCreateTranscriptDetails = async (
+const fetchOrCreateTranscriptDetails = async (
   roomName: string,
   jwt: string,
   create: boolean,
@@ -63,9 +63,7 @@ export const fetchOrCreateTranscriptDetails = async (
   }
 };
 
-export const fetchTranscript = async (
-  transcriptUrl: string,
-): Promise<string> => {
+const fetchTranscript = async (transcriptUrl: string): Promise<string> => {
   try {
     console.log(`>>> GET ${transcriptUrl}`);
     const response = await fetchWithTimeout(transcriptUrl, {});
