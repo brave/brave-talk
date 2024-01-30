@@ -18,7 +18,7 @@ import {
   askOnUnload,
   updateSubject,
 } from "./lib";
-import { TranscriptManager, delta2elapsed } from "../transcripts";
+import { TranscriptManager } from "../transcripts";
 
 export const subjectChangeHandler = (transcriptManager: TranscriptManager) => ({
   name: "subjectChange",
@@ -516,7 +516,7 @@ const addEventForTranscript = (
     messageID: messageID,
     final: final,
     delta: delta,
-    elapsed: delta2elapsed(delta),
+    elapsed: transcriptManager.delta2elapsed(delta),
   };
 
   transcriptManager.data[messageID] = chunk;
