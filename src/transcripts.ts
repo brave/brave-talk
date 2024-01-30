@@ -9,6 +9,12 @@ interface TranscriptDetailsResponse {
   startTime: string | null;
 }
 
+enum TimeStampStyle {
+  None,
+  Short,
+  Long,
+}
+
 export const fetchOrCreateTranscriptDetails = async (
   roomName: string,
   jwt: string,
@@ -73,35 +79,8 @@ export const fetchTranscript = async (
   }
 };
 
-export const delta2elapsed = (delta: number) => {
-  // i could not find a small JS package to do this....
-  const oneMinute = 60;
-  const oneHour = 60 * oneMinute;
-  const oneDay = 24 * oneHour;
-
-  let elapsed = "(";
-
-  const days = Math.floor(delta / oneDay);
-  if (days > 0) {
-    delta -= days * oneDay;
-    elapsed += `${days}d `;
-  }
-
-  const hours = Math.floor(delta / oneHour);
-  delta -= hours * oneHour;
-  elapsed += `${hours > 9 ? hours : "0" + hours}:`;
-
-  const minutes = Math.floor(delta / oneMinute);
-  delta -= minutes * oneMinute;
-  elapsed += `${minutes > 9 ? minutes : "0" + minutes}:`;
-
-  elapsed += `${delta > 9 ? delta : "0" + delta})`;
-
-  return elapsed;
-};
-
 export class TranscriptManager {
-  elapsedP = false;
+  timeStampStyle: TimeStampStyle = TimeStampStyle.None;
   didT = false;
   start = 0;
   preTranscript: string = "";
@@ -172,6 +151,35 @@ export class TranscriptManager {
     });
   }
 
+  delta2elapsed = (delta: number) => {
+    // i could not find a small JS package to do this....
+    const oneMinute = 60;
+    const oneHour = 60 * oneMinute;
+    const oneDay = 24 * oneHour;
+
+    let elapsed = this.timeStampStyle === TimeStampStyle.Long ? "(" : "";
+
+    if (this.timeStampStyle === TimeStampStyle.Long) {
+      const days = Math.floor(delta / oneDay);
+      if (days > 0) {
+        delta -= days * oneDay;
+        elapsed += `${days}d `;
+      }
+
+      const hours = Math.floor(delta / oneHour);
+      delta -= hours * oneHour;
+      elapsed += `${hours > 9 ? hours : "0" + hours}:`;
+    }
+
+    const minutes = Math.floor(delta / oneMinute);
+    delta -= minutes * oneMinute;
+    elapsed += `${minutes > 9 ? minutes : "0" + minutes}${this.timeStampStyle === TimeStampStyle.Long ? ":" : "m"}`;
+
+    elapsed += `${delta > 9 ? delta : "0" + delta}${this.timeStampStyle === TimeStampStyle.Long ? ")" : "s"}`;
+
+    return elapsed;
+  };
+
   processChunk(chunk: JitsiTranscriptionChunk) {
     const messageID = chunk.messageID;
 
@@ -180,7 +188,7 @@ export class TranscriptManager {
 
       const delta = Math.ceil((new Date().getTime() - this.start) / 1000);
       chunk.delta = delta;
-      chunk.elapsed = delta2elapsed(delta);
+      chunk.elapsed = this.delta2elapsed(delta);
     } else {
       chunk.delta = this.data[messageID].delta;
       chunk.elapsed = this.data[messageID].elapsed;
@@ -200,7 +208,10 @@ export class TranscriptManager {
         participantName !== chunk.participant?.name
       ) {
         delta = chunk.delta;
-        transcript += this.elapsedP ? `\n\n${chunk.elapsed} ` : "\n";
+        transcript +=
+          this.timeStampStyle !== TimeStampStyle.None
+            ? `\n\n${chunk.elapsed} `
+            : "\n";
         participantName = chunk.participant?.name || "";
         if (participantName) {
           transcript += `${participantName}: `;
