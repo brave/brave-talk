@@ -43,8 +43,10 @@ export const fetchOrCreateTranscriptDetails = async (
       method: method,
     };
 
+    console.log(`>>> ${method} ${url}`);
     const response = await fetchWithTimeout(url, reqParams);
     const { status } = response;
+    console.log(`<<< ${method} ${url} ${status}`);
 
     if (status === 404) {
       // No transcript exists, return null
@@ -65,8 +67,10 @@ export const fetchTranscript = async (
   transcriptUrl: string,
 ): Promise<string> => {
   try {
+    console.log(`>>> GET ${transcriptUrl}`);
     const response = await fetchWithTimeout(transcriptUrl, {});
     const { status } = response;
+    console.log(`<<< GET ${transcriptUrl} ${status}`);
 
     if (status !== 200) {
       throw new Error(`Bad status code: ${status}`);
@@ -80,7 +84,7 @@ export const fetchTranscript = async (
 };
 
 export class TranscriptManager {
-  timeStampStyle: TimeStampStyle = TimeStampStyle.None;
+  timeStampStyle: TimeStampStyle = TimeStampStyle.Short;
   didT = false;
   start = 0;
   preTranscript: string = "";
