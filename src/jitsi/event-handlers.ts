@@ -20,6 +20,8 @@ import {
 } from "./lib";
 import { TranscriptManager } from "../transcripts";
 
+const isBrave = true;
+
 export const subjectChangeHandler = (transcriptManager: TranscriptManager) => ({
   name: "subjectChange",
   fn:
@@ -364,6 +366,9 @@ export const videoConferenceJoinedHandler = (
     // Prevent the screen from turning off while in the video conference
     acquireWakeLock();
 
+    if (!isBrave) {
+      return;
+    }
     // Delay transcript retrieval to give server a chance
     // recognize new participant.
     setTimeout(async () => {
@@ -377,6 +382,9 @@ export const transcriptionChunkReceivedHandler = (
 ) => ({
   name: "transcriptionChunkReceived",
   fn: (jitsi: IJitsiMeetApi) => (params: any) => {
+    if (!isBrave) {
+      return;
+    }
     const chunk: JitsiTranscriptionChunk = params.data;
     reportAction("transcriptionChunkReceived", chunk);
 
@@ -391,6 +399,10 @@ export const transcribingStatusChangedHandler = (
 ) => ({
   name: "transcribingStatusChanged",
   fn: (jitsi: IJitsiMeetApi) => async (params: any) => {
+    if (!isBrave) {
+      return;
+    }
+
     const event: JitsiTranscriptionStatusEvent = params;
     reportAction("transcribingStatusChanged", event);
 
@@ -409,11 +421,14 @@ const addEventForTranscript = (
   params: any,
   transcriptManager: TranscriptManager,
 ) => {
+  if (!isBrave) {
+    return;
+  }
   reportAction(`addEventForTranscript: ${event}`, params);
 
   serialNo++;
   const messageID = `event.${serialNo}`;
-  const delta = Math.ceil(
+  let delta = Math.ceil(
     (new Date().getTime() - transcriptManager.start) / 1000,
   );
 
@@ -489,6 +504,7 @@ const addEventForTranscript = (
           return;
         }
 
+        delta = 0;
         room.participants.forEach((participant: JitsiParticipant) => {
           participants[participant.id] = participant.displayName;
           present += `${s}${participant.displayName || participant.id}`;
