@@ -177,7 +177,11 @@ export class TranscriptManager {
 
     const minutes = Math.floor(delta / oneMinute);
     delta -= minutes * oneMinute;
-    elapsed += `${minutes > 9 ? minutes : "0" + minutes}${this.timeStampStyle === TimeStampStyle.Long ? ":" : "m"}`;
+    if (this.timeStampStyle === TimeStampStyle.Long) {
+      elapsed += `${minutes > 9 ? minutes : "0" + minutes}:`;
+    } else {
+      elapsed += `${minutes}m`;
+    }
 
     elapsed += `${delta > 9 ? delta : "0" + delta}${this.timeStampStyle === TimeStampStyle.Long ? ")" : "s"}`;
 
