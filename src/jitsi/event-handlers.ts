@@ -20,7 +20,7 @@ import {
 } from "./lib";
 import { TranscriptManager } from "../transcripts";
 
-const isBrave = false;
+const isBrave = true;
 
 export const subjectChangeHandler = (transcriptManager: TranscriptManager) => ({
   name: "subjectChange",
