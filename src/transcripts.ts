@@ -204,7 +204,7 @@ export class TranscriptManager {
     for (const messageID of this.messageIDs) {
       const chunk = this.data[messageID];
       if (
-        delta < chunk.delta + 20 ||
+        delta < chunk.delta + 30 ||
         participantName !== chunk.participant?.name
       ) {
         delta = chunk.delta;
