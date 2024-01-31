@@ -90,6 +90,7 @@ export class TranscriptManager {
   jwt: string | null = null;
   messageIDs: string[] = [];
   data: { [key: string]: JitsiTranscriptionChunk } = {};
+  prompt: string = "";
 
   constructor(public onTranscriptChange: (transcript: string) => void) {}
 
@@ -149,7 +150,7 @@ export class TranscriptManager {
         transcriptUrl,
       }),
       type: "normal",
-      timeout: "medium",
+      timeout: "sticky",
     });
   }
 
@@ -204,7 +205,7 @@ export class TranscriptManager {
   }
 
   updateTranscript() {
-    let transcript = this.preTranscript.slice();
+    let transcript = this.prompt.concat(this.preTranscript);
     let participantName = "";
     let delta = -1;
     for (const messageID of this.messageIDs) {
