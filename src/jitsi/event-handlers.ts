@@ -523,7 +523,7 @@ const addEventForTranscript = (
   }
 
   if (event !== "getRoomsInfo") {
-    transcriptManager.messageIDs.push(messageID);
+    transcriptManager.prompt = final;
   } else {
     transcriptManager.messageIDs.unshift(messageID);
   }
