@@ -525,7 +525,7 @@ const addEventForTranscript = (
   if (event !== "getRoomsInfo") {
     transcriptManager.messageIDs.push(messageID);
   } else {
-    transcriptManager.messageIDs.unshift(messageID);
+    transcriptManager.prompt = final;
   }
   const chunk = {
     language: "en",
