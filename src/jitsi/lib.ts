@@ -18,6 +18,7 @@ export const updateRecTimestamp = (
 
     upsertRecordingForRoom(
       context.recordingLink,
+      null,
       options.roomName,
       context.recordingTTL,
     );

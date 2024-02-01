@@ -3,6 +3,7 @@ import { getParticipants } from "./jitsi/event-handlers";
 import { IJitsiMeetApi, JitsiTranscriptionChunk } from "./jitsi/types";
 import { fetchWithTimeout } from "./lib";
 import { getRoomCsrfToken, getRoomUrl } from "./rooms";
+import { upsertRecordingForRoom } from "./recordings-store";
 
 interface TranscriptDetailsResponse {
   url: string;
@@ -144,14 +145,17 @@ export class TranscriptManager {
       return;
     }
     const transcriptUrl = await this.initTranscript(true);
-    jitsi.executeCommand("showNotification", {
-      title: i18next.t("transcription_link_available_title"),
-      description: i18next.t("transcription_link_available_description", {
-        transcriptUrl,
-      }),
-      type: "normal",
-      timeout: "sticky",
-    });
+    if (transcriptUrl && this.roomName) {
+      upsertRecordingForRoom(null, transcriptUrl, this.roomName, undefined);
+      jitsi.executeCommand("showNotification", {
+        title: i18next.t("transcription_link_available_title"),
+        description: i18next.t("transcription_link_available_description", {
+          transcriptUrl,
+        }),
+        type: "normal",
+        timeout: "sticky",
+      });
+    }
   }
 
   delta2elapsed = (delta: number) => {
@@ -205,7 +209,7 @@ export class TranscriptManager {
   }
 
   updateTranscript() {
-    let transcript = this.prompt.concat(this.preTranscript);
+    let transcript = `${this.prompt}\n${this.preTranscript}`;
     let participantName = "";
     let delta = -1;
     for (const messageID of this.messageIDs) {
