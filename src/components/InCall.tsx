@@ -26,6 +26,7 @@ import {
   videoQualityChangeHandler,
 } from "../jitsi/event-handlers";
 import { TranscriptManager } from "../transcripts";
+import { resetCurrentRecordingState } from "../recordings-store";
 
 interface Props {
   roomName: string;
@@ -77,6 +78,8 @@ export const InCall = ({
 
       transcriptManager.current.roomName = roomName;
       transcriptManager.current.jwt = jwt;
+
+      resetCurrentRecordingState();
 
       const options = jitsiOptions(roomName, divRef.current, jwt, isMobile);
 

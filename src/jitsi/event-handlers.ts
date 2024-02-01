@@ -10,7 +10,10 @@ import {
   JitsiParticipant,
   JitsiTranscriptionStatusEvent,
 } from "./types";
-import { availableRecordings } from "../recordings-store";
+import {
+  availableRecordings,
+  resetCurrentRecordingState,
+} from "../recordings-store";
 import { acquireWakeLock, releaseWakeLock } from "../wakelock";
 import {
   nowActive,
@@ -89,6 +92,7 @@ export const recordingStatusChangedHandler = {
       updateRecTimestamp(context, options);
       if (!params.on) {
         context.recordingLink = undefined;
+        resetCurrentRecordingState();
       }
     },
 };
