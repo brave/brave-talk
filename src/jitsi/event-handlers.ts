@@ -23,7 +23,19 @@ import {
 } from "./lib";
 import { TranscriptManager } from "../transcripts";
 
-const isBrave = true;
+let isBrave = true; // fail soft
+
+function detectBrave() {
+  try {
+    (navigator as any).brave.isBrave().then((result: boolean) => {
+      isBrave = result;
+    });
+  } catch (error) {
+    isBrave = false;
+  }
+}
+
+detectBrave();
 
 export const subjectChangeHandler = (transcriptManager: TranscriptManager) => ({
   name: "subjectChange",
@@ -425,7 +437,7 @@ const addEventForTranscript = (
   params: any,
   transcriptManager: TranscriptManager,
 ) => {
-  if (!isBrave) {
+  if (!isBrave || !transcriptManager.didT) {
     return;
   }
   reportAction(`addEventForTranscript: ${event}`, params);
