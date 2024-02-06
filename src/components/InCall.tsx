@@ -105,7 +105,7 @@ export const InCall = ({
   const hidden = {
     opacity: "0",
     pointerEvents: "none" as const,
-    position: "absolute" as const,
+    position: "fixed" as const,
     zIndex: -1,
   };
 
