@@ -11,16 +11,11 @@ import {
   JitsiTranscriptionStatusEvent,
 } from "./types";
 import {
-  availableRecordings,
   resetCurrentRecordingState,
+  upsertRecordingForRoom,
 } from "../recordings-store";
 import { acquireWakeLock, releaseWakeLock } from "../wakelock";
-import {
-  nowActive,
-  updateRecTimestamp,
-  askOnUnload,
-  updateSubject,
-} from "./lib";
+import { nowActive, askOnUnload, updateSubject } from "./lib";
 import { TranscriptManager } from "../transcripts";
 
 let isBrave = true; // fail soft
@@ -72,39 +67,23 @@ export const videoQualityChangeHandler = {
 export const recordingLinkAvailableHandler = {
   name: "recordingLinkAvailable",
   fn:
-    (_jitsi: IJitsiMeetApi, context: JitsiContext, options: JitsiOptions) =>
+    (_jitsi: IJitsiMeetApi, _context: JitsiContext, options: JitsiOptions) =>
     (params: any) => {
       reportAction("recordingLinkAvailable", params);
-      context.recordingLink = params.link;
 
-      const ttl = Math.floor(params.ttl / 1000) || 0;
-
-      if (ttl > 0) context.recordingTTL = ttl;
-      updateRecTimestamp(context, options);
+      upsertRecordingForRoom(params.link, null, options.roomName);
     },
 };
 
 export const recordingStatusChangedHandler = {
   name: "recordingStatusChanged",
   fn:
-    (_: IJitsiMeetApi, context: JitsiContext, options: JitsiOptions) =>
+    (_: IJitsiMeetApi, _context: JitsiContext, options: JitsiOptions) =>
     (params: any) => {
       reportAction("recordingStatusChanged", params);
-      if (params.on && !context.recordingLink) {
-        const recordings = availableRecordings();
-        const record = recordings.find((r) => r.roomName === options.roomName);
 
-        if (record) {
-          console.log("!!! resuming recording", record);
-          context.recordingLink = record.url;
-        } else {
-          console.log("!!! unable to find recording for this room");
-        }
-      }
-      updateRecTimestamp(context, options);
       if (!params.on) {
-        context.recordingLink = undefined;
-        resetCurrentRecordingState();
+        resetCurrentRecordingState(options.roomName);
       }
     },
 };
@@ -116,7 +95,7 @@ export const readyToCloseHandler = {
     (params: any) => {
       reportAction("readyToClose", params);
       window.removeEventListener("beforeunload", askOnUnload);
-      updateRecTimestamp(context, options);
+      resetCurrentRecordingState(options.roomName);
       if (context.inactiveTimer) {
         clearTimeout(context.inactiveTimer);
       }
@@ -422,9 +401,7 @@ export const transcribingStatusChangedHandler = (
     const event: JitsiTranscriptionStatusEvent = params;
     reportAction("transcribingStatusChanged", event);
 
-    if (event.on) {
-      await transcriptManager.handleTranscriptionEnabledEvent(jitsi);
-    }
+    await transcriptManager.handleTranscriptionEnabledEvent(jitsi, event.on);
   },
 });
 

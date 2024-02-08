@@ -79,7 +79,7 @@ export const InCall = ({
       transcriptManager.current.roomName = roomName;
       transcriptManager.current.jwt = jwt;
 
-      resetCurrentRecordingState();
+      resetCurrentRecordingState(roomName);
 
       const options = jitsiOptions(roomName, divRef.current, jwt, isMobile);
 

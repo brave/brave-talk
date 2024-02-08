@@ -1,5 +1,5 @@
 import { useRecordings } from "../hooks/use-recordings";
-import { Recording } from "../recordings-store";
+import { RECORDING_TTL, Recording } from "../recordings-store";
 import { formatDuration, formatRelativeDay } from "../recordings-utils";
 
 import DownloadImage from "../images/download.svg";
@@ -33,7 +33,7 @@ const RecordingDisplay = ({ recording: r }: Props) => {
           {", "}
           {recordingDate.toLocaleTimeString()}
           {", "}
-          {formatDuration(r.expiresAt - r.ttl - r.createdAt)}
+          {formatDuration(r.expiresAt - RECORDING_TTL - r.createdAt)}
         </Text>
       </div>
       <div>
@@ -99,9 +99,11 @@ export const Recordings = () => {
           recording time
         </Text>
       </p>
-      {recordings.map((r, idx) => (
-        <RecordingDisplay key={idx} recording={r} />
-      ))}
+      {recordings
+        .filter((r) => r.transcriptUrl || r.url)
+        .map((r, idx) => (
+          <RecordingDisplay key={idx} recording={r} />
+        ))}
     </Section>
   );
 };
