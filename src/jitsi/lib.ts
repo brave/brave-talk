@@ -1,30 +1,5 @@
 import { IJitsiMeetApi, JitsiContext, JitsiOptions } from "./types";
-import { upsertRecordingForRoom } from "../recordings-store";
 import { reportAction } from "../lib";
-
-/**
- * Creates a new recording or updates the expiration time for an existing recording
- * @param {JitsiContext} context - Context for the conference room
- * @returns {void}
- */
-export const updateRecTimestamp = (
-  context: JitsiContext,
-  options: JitsiOptions,
-) => {
-  (function _updateRecTimestamp() {
-    if (!context.recordingLink) {
-      return;
-    }
-
-    upsertRecordingForRoom(
-      context.recordingLink,
-      null,
-      options.roomName,
-      context.recordingTTL,
-    );
-    setTimeout(_updateRecTimestamp, 5 * 60 * 1000);
-  })();
-};
 
 /**
  * Tracks number of attendees and hangs up the call if none over a given threshold

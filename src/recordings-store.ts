@@ -3,9 +3,10 @@ export interface Recording {
   transcriptUrl?: string;
   roomName: string;
   createdAt: number;
-  ttl: number;
   expiresAt: number;
 }
+
+export const RECORDING_TTL = 86400;
 
 export const availableRecordings = (): Readonly<Recording[]> => {
   const now = Math.ceil(new Date().getTime() / 1000);
@@ -22,8 +23,13 @@ export const availableRecordings = (): Readonly<Recording[]> => {
 
 let lastRecordedCreationTime: number | null = null;
 
-export const resetCurrentRecordingState = () => {
+export const resetCurrentRecordingState = (roomName: string) => {
   console.log("!!! resetCurrentRecordingState");
+  if (!lastRecordedCreationTime) {
+    return;
+  }
+  // update expiry for last recording before clearing last creation time
+  upsertRecordingForRoom(null, null, roomName);
   lastRecordedCreationTime = null;
 };
 
@@ -31,7 +37,6 @@ export const upsertRecordingForRoom = (
   recordingUrl: string | null,
   transcriptUrl: string | null,
   roomName: string,
-  ttl: number | undefined,
 ): void => {
   const recordings = loadFromStorage();
   const now = Math.ceil(new Date().getTime() / 1000);
@@ -46,18 +51,14 @@ export const upsertRecordingForRoom = (
   });
 
   console.log(
-    `!!! upsertRecording ${recordingUrl} and ${transcriptUrl} for room ${roomName} ttl=${ttl} createP=${!existingEntryForUrl}`,
+    `!!! upsertRecording ${recordingUrl} and ${transcriptUrl} for room ${roomName} createP=${!existingEntryForUrl}`,
   );
 
-  if (ttl === undefined) {
-    ttl = 24 * 60 * 60;
-  }
-  const expiresAt = now + ttl;
+  const expiresAt = now + RECORDING_TTL;
 
   const entry: Recording = existingEntryForUrl || {
     roomName,
     createdAt: now,
-    ttl,
     expiresAt,
   };
   if (!existingEntryForUrl) {

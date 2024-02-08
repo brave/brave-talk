@@ -114,8 +114,6 @@ export function useCallSetupStatus(
   const [notice, setNotice] = useState<TranslationKeys>();
   const [isEstablishingCall, setIsEstablishingCall] = useState(false);
   const [jitsiContext, setJitsiContext] = useState<JitsiContext>({
-    recordingLink: undefined,
-    recordingTTL: undefined,
     firstTime: true,
     // check every 30 seconds (disable by setting to 0)
     inactiveInterval: 30 * 1000,

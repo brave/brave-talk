@@ -3,8 +3,6 @@ import { Web3Authentication } from "../components/web3/api";
 export type IJitsiMeetApi = any;
 
 export type JitsiContext = {
-  recordingLink: string | undefined;
-  recordingTTL: number | undefined;
   firstTime: boolean;
   inactiveInterval: number;
   inactiveTotal: number;

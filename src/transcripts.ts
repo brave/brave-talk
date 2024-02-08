@@ -3,7 +3,10 @@ import { getParticipants } from "./jitsi/event-handlers";
 import { IJitsiMeetApi, JitsiTranscriptionChunk } from "./jitsi/types";
 import { fetchWithTimeout } from "./lib";
 import { getRoomCsrfToken, getRoomUrl } from "./rooms";
-import { upsertRecordingForRoom } from "./recordings-store";
+import {
+  resetCurrentRecordingState,
+  upsertRecordingForRoom,
+} from "./recordings-store";
 
 interface TranscriptDetailsResponse {
   url: string;
@@ -66,6 +69,7 @@ const fetchOrCreateTranscriptDetails = async (
 
 const fetchTranscript = async (transcriptUrl: string): Promise<string> => {
   try {
+    transcriptUrl += "?internal=1";
     console.log(`>>> GET ${transcriptUrl}`);
     const response = await fetchWithTimeout(transcriptUrl, {});
     const { status } = response;
@@ -134,19 +138,27 @@ export class TranscriptManager {
     }
   }
 
-  async handleTranscriptionEnabledEvent(jitsi: IJitsiMeetApi) {
+  async handleTranscriptionEnabledEvent(jitsi: IJitsiMeetApi, status: boolean) {
     if (!this.jwt) {
       throw new Error(
         "Could not process transcription enabled event due to missing JWT",
       );
     }
     const parsedJwt = jwt_decode(this.jwt);
-    if (parsedJwt.context.user.moderator !== "true") {
+    if (parsedJwt.context.user.moderator !== "true" || !this.roomName) {
+      return;
+    }
+    if (!status) {
+      // update expiration time if transcription
+      // was turned off
+      if (this.roomName) {
+        resetCurrentRecordingState(this.roomName);
+      }
       return;
     }
     const transcriptUrl = await this.initTranscript(true);
-    if (transcriptUrl && this.roomName) {
-      upsertRecordingForRoom(null, transcriptUrl, this.roomName, undefined);
+    if (transcriptUrl) {
+      upsertRecordingForRoom(null, transcriptUrl, this.roomName);
       jitsi.executeCommand("showNotification", {
         title: i18next.t("transcription_link_available_title"),
         description: i18next.t("transcription_link_available_description", {
