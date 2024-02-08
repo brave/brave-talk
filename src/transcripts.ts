@@ -19,18 +19,30 @@ enum TimeStampStyle {
   Long,
 }
 
-const fetchOrCreateTranscriptDetails = async (
+enum TranscriptDetailsOperation {
+  Fetch,
+  Create,
+  Finalize,
+}
+
+const operateOnTranscriptDetails = async (
   roomName: string,
   jwt: string,
-  create: boolean,
+  operation: TranscriptDetailsOperation,
 ): Promise<TranscriptDetailsResponse | null> => {
   try {
-    const url = `${getRoomUrl(roomName)}/transcript`;
+    let url;
+    if (operation === TranscriptDetailsOperation.Finalize) {
+      url = `${getRoomUrl(roomName)}/finalize_transcript`;
+    } else {
+      url = `${getRoomUrl(roomName)}/transcript`;
+    }
 
-    const method = create ? "POST" : "GET";
+    const method =
+      operation !== TranscriptDetailsOperation.Fetch ? "POST" : "GET";
     let headers: HeadersInit;
 
-    if (create) {
+    if (operation !== TranscriptDetailsOperation.Fetch) {
       const csrfToken = await getRoomCsrfToken(roomName);
       headers = {
         Authorization: `Bearer ${jwt}`,
@@ -106,10 +118,12 @@ export class TranscriptManager {
       );
     }
 
-    const transcriptDetails = await fetchOrCreateTranscriptDetails(
+    const transcriptDetails = await operateOnTranscriptDetails(
       this.roomName,
       this.jwt,
-      create,
+      create
+        ? TranscriptDetailsOperation.Create
+        : TranscriptDetailsOperation.Fetch,
     );
 
     if (!transcriptDetails) {
@@ -149,6 +163,11 @@ export class TranscriptManager {
       return;
     }
     if (!status) {
+      await operateOnTranscriptDetails(
+        this.roomName,
+        this.jwt,
+        TranscriptDetailsOperation.Finalize,
+      );
       // update expiration time if transcription
       // was turned off
       if (this.roomName) {
