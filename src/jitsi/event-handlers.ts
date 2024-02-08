@@ -489,7 +489,7 @@ const addEventForTranscript = (
 
     getRoomsInfo: () => {
       let present =
-        "This is a transcript of a Brave Talk meeting. Participants present:";
+        "This is a transcript of a Brave Talk meeting. Participants present at start of transcription:";
       let s = " ";
 
       params.rooms.forEach((room: JitsiRoom) => {
