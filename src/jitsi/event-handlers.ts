@@ -1,21 +1,44 @@
 import { isProduction } from "../environment";
 import { reportAction } from "../lib";
-import { IJitsiMeetApi, JitsiContext, JitsiOptions } from "./types";
-import { availableRecordings } from "../recordings-store";
-import { acquireWakeLock, releaseWakeLock } from "../wakelock";
 import {
-  nowActive,
-  updateRecTimestamp,
-  askOnUnload,
-  updateSubject,
-} from "./lib";
+  IJitsiMeetApi,
+  JitsiContext,
+  JitsiOptions,
+  JitsiTranscriptionChunk,
+  JitsiRoomResult,
+  JitsiRoom,
+  JitsiParticipant,
+  JitsiTranscriptionStatusEvent,
+} from "./types";
+import {
+  resetCurrentRecordingState,
+  upsertRecordingForRoom,
+} from "../recordings-store";
+import { acquireWakeLock, releaseWakeLock } from "../wakelock";
+import { nowActive, askOnUnload, updateSubject } from "./lib";
+import { TranscriptManager } from "../transcripts";
 
-export const subjectChangeHandler = {
+let isBrave = true; // fail soft
+
+function detectBrave() {
+  try {
+    (navigator as any).brave.isBrave().then((result: boolean) => {
+      isBrave = result;
+    });
+  } catch (error) {
+    isBrave = false;
+  }
+}
+
+detectBrave();
+
+export const subjectChangeHandler = (transcriptManager: TranscriptManager) => ({
   name: "subjectChange",
   fn:
     (jitsi: IJitsiMeetApi, _context: JitsiContext, options: JitsiOptions) =>
     (params: any) => {
       reportAction("subjectChange", params);
+      addEventForTranscript(jitsi, "subjectChange", params, transcriptManager);
 
       if (options.configOverwrite.disableBeforeUnloadHandlers) {
         // window.addEventListener("onpagehide", (e) => { ... }) appears to be a no-op on iOS
@@ -32,7 +55,7 @@ export const subjectChangeHandler = {
         updateSubject(jitsi, options);
       }
     },
-};
+});
 
 export const videoQualityChangeHandler = {
   name: "videoQualityChanged",
@@ -44,38 +67,23 @@ export const videoQualityChangeHandler = {
 export const recordingLinkAvailableHandler = {
   name: "recordingLinkAvailable",
   fn:
-    (_jitsi: IJitsiMeetApi, context: JitsiContext, options: JitsiOptions) =>
+    (_jitsi: IJitsiMeetApi, _context: JitsiContext, options: JitsiOptions) =>
     (params: any) => {
       reportAction("recordingLinkAvailable", params);
-      context.recordingLink = params.link;
 
-      const ttl = Math.floor(params.ttl / 1000) || 0;
-
-      if (ttl > 0) context.recordingTTL = ttl;
-      updateRecTimestamp(context, options);
+      upsertRecordingForRoom(params.link, null, options.roomName);
     },
 };
 
 export const recordingStatusChangedHandler = {
   name: "recordingStatusChanged",
   fn:
-    (_: IJitsiMeetApi, context: JitsiContext, options: JitsiOptions) =>
+    (_: IJitsiMeetApi, _context: JitsiContext, options: JitsiOptions) =>
     (params: any) => {
       reportAction("recordingStatusChanged", params);
-      if (params.on && !context.recordingLink) {
-        const recordings = availableRecordings();
-        const record = recordings.find((r) => r.roomName === options.roomName);
 
-        if (record) {
-          console.log("!!! resuming recording", record);
-          context.recordingLink = record.url;
-        } else {
-          console.log("!!! unable to find recording for this room");
-        }
-      }
-      updateRecTimestamp(context, options);
       if (!params.on) {
-        context.recordingLink = undefined;
+        resetCurrentRecordingState(options.roomName);
       }
     },
 };
@@ -87,7 +95,7 @@ export const readyToCloseHandler = {
     (params: any) => {
       reportAction("readyToClose", params);
       window.removeEventListener("beforeunload", askOnUnload);
-      updateRecTimestamp(context, options);
+      resetCurrentRecordingState(options.roomName);
       if (context.inactiveTimer) {
         clearTimeout(context.inactiveTimer);
       }
@@ -122,36 +130,123 @@ export const breakoutRoomsUpdatedHandler = {
   },
 };
 
-export const participantJoinedHandler = {
+export const participantJoinedHandler = (
+  transcriptManager: TranscriptManager,
+) => ({
   name: "participantJoined",
   fn: (jitsi: IJitsiMeetApi, context: JitsiContext) => (params: any) => {
     nowActive(jitsi, context, "participantJoined", params);
+    addEventForTranscript(
+      jitsi,
+      "participantJoined",
+      params,
+      transcriptManager,
+    );
   },
-};
+});
 
-export const participantKickedOutHandler = {
+export const participantKickedOutHandler = (
+  transcriptManager: TranscriptManager,
+) => ({
   name: "participantKickedOut",
   fn: (jitsi: IJitsiMeetApi, context: JitsiContext) => (params: any) => {
     nowActive(jitsi, context, "participantKickedOut", params);
+    addEventForTranscript(
+      jitsi,
+      "participantKickedOut",
+      params,
+      transcriptManager,
+    );
 
     if (context.web3Participants) {
       delete context.web3Participants[params.id];
       reportAction("web3 participants", context.web3Participants);
     }
   },
-};
+});
 
-export const participantLeftHandler = {
+export const participantLeftHandler = (
+  transcriptManager: TranscriptManager,
+) => ({
   name: "participantLeft",
   fn: (jitsi: IJitsiMeetApi, context: JitsiContext) => (params: any) => {
     nowActive(jitsi, context, "participantLeft", params);
+    addEventForTranscript(jitsi, "participantLeft", params, transcriptManager);
 
     if (context.web3Participants) {
       delete context.web3Participants[params.id];
       reportAction("web3 participants", context.web3Participants);
     }
   },
-};
+});
+
+export const knockingParticipantHandler = (
+  transcriptManager: TranscriptManager,
+) => ({
+  name: "knockingParticipant",
+  fn: (jitsi: IJitsiMeetApi, context: JitsiContext) => (params: any) => {
+    nowActive(jitsi, context, "knockingParticipant", params);
+    addEventForTranscript(
+      jitsi,
+      "knockingParticipant",
+      params,
+      transcriptManager,
+    );
+  },
+});
+
+export const raiseHandUpdatedHandler = (
+  transcriptManager: TranscriptManager,
+) => ({
+  name: "raiseHandUpdated",
+  fn: (jitsi: IJitsiMeetApi, context: JitsiContext) => (params: any) => {
+    nowActive(jitsi, context, "raiseHandUpdated", params);
+    addEventForTranscript(jitsi, "raiseHandUpdated", params, transcriptManager);
+  },
+});
+
+export const displayNameChangeHandler = (
+  transcriptManager: TranscriptManager,
+) => ({
+  name: "displayNameChange",
+  fn: (jitsi: IJitsiMeetApi, context: JitsiContext) => (params: any) => {
+    nowActive(jitsi, context, "displayNameChange", params);
+    addEventForTranscript(
+      jitsi,
+      "displayNameChange",
+      params,
+      transcriptManager,
+    );
+  },
+});
+
+export const incomingMessageHandler = (
+  transcriptManager: TranscriptManager,
+) => ({
+  name: "incomingMessage",
+  fn: (jitsi: IJitsiMeetApi, context: JitsiContext) => (params: any) => {
+    if (params.privateMessage) {
+      params.from = "";
+      params.nick = "";
+      params.message = "";
+    }
+    nowActive(jitsi, context, "incomingMessage", params);
+    addEventForTranscript(jitsi, "incomingMessage", params, transcriptManager);
+  },
+});
+
+export const outgoingMessageHandler = (
+  transcriptManager: TranscriptManager,
+) => ({
+  name: "outgoingMessage",
+  fn: (jitsi: IJitsiMeetApi, context: JitsiContext) => (params: any) => {
+    if (params.privateMessage) {
+      params.message = "";
+    }
+    nowActive(jitsi, context, "outgoingMessage", params);
+    addEventForTranscript(jitsi, "outgoingMessage", params, transcriptManager);
+  },
+});
 
 export const passwordRequiredHandler = {
   name: "passwordRequired",
@@ -253,8 +348,200 @@ export const dataChannelOpenedHandler = {
   },
 };
 
-// Prevent the screen from turning off while in the video conference
-export const videoConferenceJoinedHandler = {
+let myUserID = "";
+export const videoConferenceJoinedHandler = (
+  transcriptManager: TranscriptManager,
+) => ({
   name: "videoConferenceJoined",
-  fn: () => () => acquireWakeLock(),
+  fn: () => (params: any) => {
+    reportAction("videoConferenceJoined", params);
+
+    myUserID = params.id;
+
+    // Prevent the screen from turning off while in the video conference
+    acquireWakeLock();
+
+    if (!isBrave) {
+      return;
+    }
+    // Delay transcript retrieval to give server a chance
+    // recognize new participant.
+    setTimeout(async () => {
+      await transcriptManager.initTranscript(false);
+    }, 7500);
+  },
+});
+
+export const transcriptionChunkReceivedHandler = (
+  transcriptManager: TranscriptManager,
+) => ({
+  name: "transcriptionChunkReceived",
+  fn: (jitsi: IJitsiMeetApi) => (params: any) => {
+    if (!isBrave) {
+      return;
+    }
+    const chunk: JitsiTranscriptionChunk = params.data;
+    reportAction("transcriptionChunkReceived", chunk);
+
+    transcriptManager.doT(jitsi);
+    transcriptManager.processChunk(chunk);
+    transcriptManager.updateTranscript();
+  },
+});
+
+export const transcribingStatusChangedHandler = (
+  transcriptManager: TranscriptManager,
+) => ({
+  name: "transcribingStatusChanged",
+  fn: (jitsi: IJitsiMeetApi) => async (params: any) => {
+    if (!isBrave) {
+      return;
+    }
+
+    const event: JitsiTranscriptionStatusEvent = params;
+    reportAction("transcribingStatusChanged", event);
+
+    await transcriptManager.handleTranscriptionEnabledEvent(jitsi, event.on);
+  },
+});
+
+let didS = false;
+let serialNo = 0;
+
+const addEventForTranscript = (
+  jitsi: IJitsiMeetApi,
+  event: string,
+  params: any,
+  transcriptManager: TranscriptManager,
+) => {
+  if (!isBrave || !transcriptManager.didT) {
+    return;
+  }
+  reportAction(`addEventForTranscript: ${event}`, params);
+
+  serialNo++;
+  const messageID = `event.${serialNo}`;
+  let delta = Math.ceil(
+    (new Date().getTime() - transcriptManager.start) / 1000,
+  );
+
+  const text = {
+    subjectChange: () => {
+      if (params.subject !== "" && params.subject !== "Brave Talk") {
+        didS = true;
+        return `The conference subject is now ${params.subject}`;
+      }
+      if (!didS) {
+        return "";
+      }
+      didS = false;
+      return "The conference no longer has a subject";
+    },
+    participantJoined: () => {
+      participants[params.id] = params.displayName;
+      return `Participant ${params.displayName} has joined`;
+    },
+    participantKickedOut: () => {
+      const kicked = participants[params.kicked.id] || params.kicked.id;
+      const kicker = participants[params.kicker.id] || params.kicker.id;
+      delete participants[params.kicked.id];
+      return `Participant ${kicked} has been kicked out by ${kicker}`;
+    },
+    participantLeft: () => {
+      const participant = participants[params.id] || params.id;
+      delete participants[params.id];
+      return `Participant ${participant} has left`;
+    },
+    knockingParticipant: () => {
+      return `Participant ${params.participant.name} is asking to join`;
+    },
+    raiseHandUpdated: () => {
+      if (params.id === "local") {
+        return "";
+      }
+
+      const participant = participants[params.id] || params.id;
+      return `Participant ${participant} has ${
+        params.handRaised ? "raised" : "lowered"
+      } a hand`;
+    },
+    displayNameChange: () => {
+      const participant = participants[params.id] || params.id;
+      participants[params.id] = params.displayname;
+      return `Participant ${participant} is now known as ${params.displayname}`;
+    },
+    incomingMessage: () => {
+      if (params.privateMessage) {
+        return "";
+      }
+
+      const participant = participants[params.from] || params.from;
+      return `Participant ${participant} wrote: ${params.message}`;
+    },
+    outgoingMessage: () => {
+      if (params.privateMessage) {
+        return "";
+      }
+
+      const participant = participants[myUserID] || myUserID;
+      return `Participant ${participant} wrote: ${params.message}`;
+    },
+
+    getRoomsInfo: () => {
+      let present =
+        "This is a transcript of a Brave Talk meeting. Participants present at start of transcription:";
+      let s = " ";
+
+      params.rooms.forEach((room: JitsiRoom) => {
+        if (!room.isMainRoom) {
+          return;
+        }
+
+        delta = 0;
+        room.participants.forEach((participant: JitsiParticipant) => {
+          participants[participant.id] = participant.displayName;
+          present += `${s}${participant.displayName || participant.id}`;
+          s = ", ";
+        });
+      });
+      return present;
+    },
+  }[event];
+  let final = "";
+  if (text) {
+    final = text();
+  }
+  if (!final || !transcriptManager.didT) {
+    return;
+  }
+
+  if (event !== "getRoomsInfo") {
+    transcriptManager.messageIDs.push(messageID);
+  } else {
+    transcriptManager.prompt = final;
+  }
+  const chunk = {
+    language: "en",
+    messageID: messageID,
+    final: final,
+    delta: delta,
+    elapsed: transcriptManager.delta2elapsed(delta),
+  };
+
+  transcriptManager.data[messageID] = chunk;
+
+  transcriptManager.updateTranscript();
+};
+
+let participants: { [key: string]: string } = {};
+
+export const getParticipants = (
+  jitsi: IJitsiMeetApi,
+  transcriptManager: TranscriptManager,
+) => {
+  participants = {};
+
+  jitsi.getRoomsInfo().then((result: JitsiRoomResult) => {
+    addEventForTranscript(jitsi, "getRoomsInfo", result, transcriptManager);
+  });
 };

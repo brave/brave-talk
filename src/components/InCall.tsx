@@ -5,19 +5,28 @@ import { jitsiOptions } from "../jitsi/options";
 import {
   breakoutRoomsUpdatedHandler,
   dataChannelOpenedHandler,
+  displayNameChangeHandler,
   endpointTextMessageReceivedHandler,
   errorOccurredHandler,
+  incomingMessageHandler,
+  knockingParticipantHandler,
+  outgoingMessageHandler,
   participantJoinedHandler,
   participantKickedOutHandler,
   participantLeftHandler,
   passwordRequiredHandler,
+  raiseHandUpdatedHandler,
   readyToCloseHandler,
   recordingLinkAvailableHandler,
   recordingStatusChangedHandler,
   subjectChangeHandler,
-  videoQualityChangeHandler,
+  transcribingStatusChangedHandler,
+  transcriptionChunkReceivedHandler,
   videoConferenceJoinedHandler,
+  videoQualityChangeHandler,
 } from "../jitsi/event-handlers";
+import { TranscriptManager } from "../transcripts";
+import { resetCurrentRecordingState } from "../recordings-store";
 
 interface Props {
   roomName: string;
@@ -38,25 +47,39 @@ export const InCall = ({
 }: Props) => {
   const divRef = useRef(null);
   const [jitsiMeet, setJitsiMeet] = useState<IJitsiMeetApi>();
+  const [transcript, setTranscript] = useState<string>("");
+  const transcriptManager = useRef(new TranscriptManager(setTranscript));
 
   useEffect(() => {
     if (!jitsiMeet && divRef.current && isCallReady) {
       const jitsiEventHandlers = [
-        subjectChangeHandler,
+        subjectChangeHandler(transcriptManager.current),
         videoQualityChangeHandler,
         recordingLinkAvailableHandler,
         recordingStatusChangedHandler,
         readyToCloseHandler,
         breakoutRoomsUpdatedHandler,
-        participantJoinedHandler,
-        participantKickedOutHandler,
-        participantLeftHandler,
+        participantJoinedHandler(transcriptManager.current),
+        participantKickedOutHandler(transcriptManager.current),
+        participantLeftHandler(transcriptManager.current),
+        knockingParticipantHandler(transcriptManager.current),
+        raiseHandUpdatedHandler(transcriptManager.current),
+        displayNameChangeHandler(transcriptManager.current),
+        incomingMessageHandler(transcriptManager.current),
+        outgoingMessageHandler(transcriptManager.current),
         passwordRequiredHandler,
         errorOccurredHandler,
         dataChannelOpenedHandler,
         endpointTextMessageReceivedHandler,
-        videoConferenceJoinedHandler,
+        videoConferenceJoinedHandler(transcriptManager.current),
+        transcriptionChunkReceivedHandler(transcriptManager.current),
+        transcribingStatusChangedHandler(transcriptManager.current),
       ];
+
+      transcriptManager.current.roomName = roomName;
+      transcriptManager.current.jwt = jwt;
+
+      resetCurrentRecordingState(roomName);
 
       const options = jitsiOptions(roomName, divRef.current, jwt, isMobile);
 
@@ -79,5 +102,17 @@ export const InCall = ({
     return null;
   }
 
-  return <div ref={divRef} css={{ height: "100%" }} />;
+  const hidden = {
+    opacity: "0",
+    pointerEvents: "none" as const,
+    position: "fixed" as const,
+    zIndex: -1,
+  };
+
+  return (
+    <>
+      <div ref={divRef} css={{ height: "100%" }} />{" "}
+      <main style={hidden}>{transcript}</main>{" "}
+    </>
+  );
 };

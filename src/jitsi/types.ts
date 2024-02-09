@@ -3,8 +3,6 @@ import { Web3Authentication } from "../components/web3/api";
 export type IJitsiMeetApi = any;
 
 export type JitsiContext = {
-  recordingLink: string | undefined;
-  recordingTTL: number | undefined;
   firstTime: boolean;
   inactiveInterval: number;
   inactiveTotal: number;
@@ -97,4 +95,42 @@ export type JitsiOptions = {
     TOOLBAR_BUTTONS: string[];
   };
   onload: () => void;
+};
+
+export type JitsiTranscriptionChunk = {
+  language: string;
+  messageID: string;
+  participant?: {
+    avatarUrl?: string;
+    id: string;
+    name: string;
+  };
+  final?: string;
+  stable?: string;
+  unstable?: string;
+  clearTimeOut?: number;
+  delta: number;
+  elapsed: string;
+};
+
+export type JitsiTranscriptionStatusEvent = {
+  on: boolean;
+};
+
+export type JitsiRoomResult = {
+  rooms: JitsiRoom[];
+};
+
+export type JitsiRoom = {
+  isMainRoom: boolean;
+  id: string;
+  jid: string;
+  participants: JitsiParticipant[];
+};
+
+export type JitsiParticipant = {
+  jid: string;
+  role: string;
+  displayName: string;
+  id: string;
 };

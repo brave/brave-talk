@@ -1,10 +1,12 @@
 export interface Recording {
-  url: string;
+  url?: string;
+  transcriptUrl?: string;
   roomName: string;
   createdAt: number;
-  ttl: number;
   expiresAt: number;
 }
+
+export const RECORDING_TTL = 86400;
 
 export const availableRecordings = (): Readonly<Recording[]> => {
   const now = Math.ceil(new Date().getTime() / 1000);
@@ -19,35 +21,57 @@ export const availableRecordings = (): Readonly<Recording[]> => {
   return recordings;
 };
 
+let lastRecordedCreationTime: number | null = null;
+
+export const resetCurrentRecordingState = (roomName: string) => {
+  console.log("!!! resetCurrentRecordingState");
+  if (!lastRecordedCreationTime) {
+    return;
+  }
+  // update expiry for last recording before clearing last creation time
+  upsertRecordingForRoom(null, null, roomName);
+  lastRecordedCreationTime = null;
+};
+
 export const upsertRecordingForRoom = (
-  url: string,
+  recordingUrl: string | null,
+  transcriptUrl: string | null,
   roomName: string,
-  ttl: number | undefined,
 ): void => {
   const recordings = loadFromStorage();
+  const now = Math.ceil(new Date().getTime() / 1000);
 
-  const existingEntryForUrl = recordings.find((r) => r.url === url);
+  // Remove vpaas-magic-cookie prefix, if need be
+  if (roomName.includes("/")) {
+    roomName = roomName.split("/")[1];
+  }
+
+  const existingEntryForUrl = recordings.find((r) => {
+    return r.roomName === roomName && r.createdAt === lastRecordedCreationTime;
+  });
 
   console.log(
-    `!!! upsertRecording ${url} for room ${roomName} ttl=${ttl} createP=${!existingEntryForUrl}`,
+    `!!! upsertRecording ${recordingUrl} and ${transcriptUrl} for room ${roomName} createP=${!existingEntryForUrl}`,
   );
 
-  const now = Math.ceil(new Date().getTime() / 1000);
-  if (typeof ttl === "undefined") {
-    ttl = 24 * 60 * 60;
-  }
-  const expiresAt = now + ttl;
+  const expiresAt = now + RECORDING_TTL;
 
-  if (existingEntryForUrl) {
-    existingEntryForUrl.expiresAt = now + ttl;
+  const entry: Recording = existingEntryForUrl || {
+    roomName,
+    createdAt: now,
+    expiresAt,
+  };
+  if (!existingEntryForUrl) {
+    recordings.push(entry);
+    lastRecordedCreationTime = now;
   } else {
-    recordings.push({
-      roomName,
-      url,
-      createdAt: now,
-      ttl,
-      expiresAt,
-    });
+    entry.expiresAt = expiresAt;
+  }
+  if (recordingUrl) {
+    entry.url = recordingUrl;
+  }
+  if (transcriptUrl) {
+    entry.transcriptUrl = transcriptUrl;
   }
   writeToStorage(recordings);
 };

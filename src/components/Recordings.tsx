@@ -1,9 +1,10 @@
 import { useRecordings } from "../hooks/use-recordings";
-import { Recording } from "../recordings-store";
+import { RECORDING_TTL, Recording } from "../recordings-store";
 import { formatDuration, formatRelativeDay } from "../recordings-utils";
 
 import DownloadImage from "../images/download.svg";
 import MediaPlayerImage from "../images/media_player.svg";
+import TranscriptImage from "../images/transcript.svg";
 import { Section } from "./Section";
 import { Text } from "./Text";
 
@@ -15,32 +16,60 @@ const RecordingDisplay = ({ recording: r }: Props) => {
   const recordingDate = new Date(r.createdAt * 1000);
 
   return (
-    <a href={r.url} css={{ textDecoration: "none", color: "inherit" }}>
-      <div
-        css={{
-          display: "flex",
-          justifyContent: "space-between",
-          background: "rgba(255, 255, 255, 0.08)",
-          borderRadius: "24px",
-          margin: "21px auto 0",
-          padding: "16px 27px",
-          maxWidth: "377px",
-        }}
-      >
-        <div>
-          <Text variant="body">
-            <strong>{formatRelativeDay(recordingDate)}</strong>
-            {", "}
-            {recordingDate.toLocaleTimeString()}
-            {", "}
-            {formatDuration(r.expiresAt - r.ttl - r.createdAt)}
-          </Text>
-        </div>
-        <div>
-          <img src={DownloadImage} height="16" width="18" alt="download" />
-        </div>
+    <div
+      css={{
+        display: "flex",
+        justifyContent: "space-between",
+        background: "rgba(255, 255, 255, 0.08)",
+        borderRadius: "24px",
+        margin: "21px auto 0",
+        padding: "16px 27px",
+        maxWidth: "377px",
+      }}
+    >
+      <div>
+        <Text variant="body">
+          <strong>{formatRelativeDay(recordingDate)}</strong>
+          {", "}
+          {recordingDate.toLocaleTimeString()}
+          {", "}
+          {formatDuration(r.expiresAt - RECORDING_TTL - r.createdAt)}
+        </Text>
       </div>
-    </a>
+      <div>
+        {r.url && (
+          <a
+            href={r.url}
+            css={{ textDecoration: "none", color: "inherit" }}
+            target="_blank"
+            rel="noreferrer"
+          >
+            <img
+              src={DownloadImage}
+              height="16"
+              width="18"
+              alt="recording download"
+            />
+          </a>
+        )}
+        {r.transcriptUrl && (
+          <a
+            href={r.transcriptUrl}
+            css={{ textDecoration: "none", color: "inherit" }}
+            target="_blank"
+            rel="noreferrer"
+          >
+            <img
+              src={TranscriptImage}
+              height="16"
+              width="18"
+              alt="transcript download"
+              css={{ marginLeft: "1em" }}
+            />
+          </a>
+        )}
+      </div>
+    </div>
   );
 };
 
@@ -70,9 +99,11 @@ export const Recordings = () => {
           recording time
         </Text>
       </p>
-      {recordings.map((r, idx) => (
-        <RecordingDisplay key={idx} recording={r} />
-      ))}
+      {recordings
+        .filter((r) => r.transcriptUrl || r.url)
+        .map((r, idx) => (
+          <RecordingDisplay key={idx} recording={r} />
+        ))}
     </Section>
   );
 };
