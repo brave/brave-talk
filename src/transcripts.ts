@@ -163,11 +163,21 @@ export class TranscriptManager {
       return;
     }
     if (!status) {
-      await operateOnTranscriptDetails(
-        this.roomName,
-        this.jwt,
-        TranscriptDetailsOperation.Finalize,
-      );
+      // Delay transcript finalization. Transcription can be turned off mid-call
+      // by moderators who will finalize the transcript. If a moderator destroys
+      // the room (thus turning off transcription, and navigating away from the call page),
+      // the transcript won't be explicitly finalized to prevent omitting
+      // "participant left" events due to premature finalization.
+      setTimeout(async () => {
+        if (!this.roomName || !this.jwt) {
+          return;
+        }
+        await operateOnTranscriptDetails(
+          this.roomName,
+          this.jwt,
+          TranscriptDetailsOperation.Finalize,
+        );
+      }, 5000);
       // update expiration time if transcription
       // was turned off
       if (this.roomName) {
