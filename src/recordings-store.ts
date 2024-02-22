@@ -6,7 +6,7 @@ export interface Recording {
   expiresAt: number;
 }
 
-export const RECORDING_TTL = 86400;
+export const RECORDING_TTL_SECS = 24 * 60 * 60;
 
 export const availableRecordings = (): Readonly<Recording[]> => {
   const now = Math.ceil(new Date().getTime() / 1000);
@@ -54,7 +54,7 @@ export const upsertRecordingForRoom = (
     `!!! upsertRecording ${recordingUrl} and ${transcriptUrl} for room ${roomName} createP=${!existingEntryForUrl}`,
   );
 
-  const expiresAt = now + RECORDING_TTL;
+  const expiresAt = now + RECORDING_TTL_SECS;
 
   const entry: Recording = existingEntryForUrl || {
     roomName,

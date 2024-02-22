@@ -1,7 +1,7 @@
 import i18next from "i18next";
 import { getParticipants } from "./jitsi/event-handlers";
 import { IJitsiMeetApi, JitsiTranscriptionChunk } from "./jitsi/types";
-import { fetchWithTimeout } from "./lib";
+import { fetchWithTimeout, TimeStampStyle, delta2elapsed } from "./lib";
 import { getRoomCsrfToken, getRoomUrl } from "./rooms";
 import {
   resetCurrentRecordingState,
@@ -11,12 +11,6 @@ import {
 interface TranscriptDetailsResponse {
   url: string;
   startTime: string | null;
-}
-
-enum TimeStampStyle {
-  None = 0,
-  Short,
-  Long,
 }
 
 enum TranscriptDetailsOperation {
@@ -100,7 +94,7 @@ const fetchTranscript = async (transcriptUrl: string): Promise<string> => {
 
 export class TranscriptManager {
   timeStampStyle: TimeStampStyle = TimeStampStyle.Short;
-  didT = false;
+  initializedP = false;
   start = 0;
   preTranscript: string = "";
   roomName: string | null = null;
@@ -141,10 +135,9 @@ export class TranscriptManager {
     return transcriptDetails.url;
   }
 
-  // TODO(djandries): find a better name for this method, and for 'didT'
-  doT(jitsi?: IJitsiMeetApi) {
-    if (!this.didT && !!jitsi) {
-      this.didT = true;
+  initialize(jitsi?: IJitsiMeetApi) {
+    if (!this.initializedP && !!jitsi) {
+      this.initializedP = true;
       if (!this.start) {
         this.start = new Date().getTime();
       }
@@ -199,39 +192,6 @@ export class TranscriptManager {
     }
   }
 
-  delta2elapsed = (delta: number) => {
-    // i could not find a small JS package to do this....
-    const oneMinute = 60;
-    const oneHour = 60 * oneMinute;
-    const oneDay = 24 * oneHour;
-
-    let elapsed = this.timeStampStyle === TimeStampStyle.Long ? "(" : "";
-
-    if (this.timeStampStyle === TimeStampStyle.Long) {
-      const days = Math.floor(delta / oneDay);
-      if (days > 0) {
-        delta -= days * oneDay;
-        elapsed += `${days}d `;
-      }
-
-      const hours = Math.floor(delta / oneHour);
-      delta -= hours * oneHour;
-      elapsed += `${hours > 9 ? hours : "0" + hours}:`;
-    }
-
-    const minutes = Math.floor(delta / oneMinute);
-    delta -= minutes * oneMinute;
-    if (this.timeStampStyle === TimeStampStyle.Long) {
-      elapsed += `${minutes > 9 ? minutes : "0" + minutes}:`;
-    } else {
-      elapsed += `${minutes}m`;
-    }
-
-    elapsed += `${delta > 9 ? delta : "0" + delta}${this.timeStampStyle === TimeStampStyle.Long ? ")" : "s"}`;
-
-    return elapsed;
-  };
-
   processChunk(chunk: JitsiTranscriptionChunk) {
     const messageID = chunk.messageID;
 
@@ -240,7 +200,7 @@ export class TranscriptManager {
 
       const delta = Math.ceil((new Date().getTime() - this.start) / 1000);
       chunk.delta = delta;
-      chunk.elapsed = this.delta2elapsed(delta);
+      chunk.elapsed = delta2elapsed(this.timeStampStyle, delta);
     } else {
       chunk.delta = this.data[messageID].delta;
       chunk.elapsed = this.data[messageID].elapsed;

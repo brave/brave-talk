@@ -1,5 +1,5 @@
 import { useRecordings } from "../hooks/use-recordings";
-import { RECORDING_TTL, Recording } from "../recordings-store";
+import { RECORDING_TTL_SECS, Recording } from "../recordings-store";
 import { formatDuration, formatRelativeDay } from "../recordings-utils";
 
 import DownloadImage from "../images/download.svg";
@@ -33,7 +33,7 @@ const RecordingDisplay = ({ recording: r }: Props) => {
           {", "}
           {recordingDate.toLocaleTimeString()}
           {", "}
-          {formatDuration(r.expiresAt - RECORDING_TTL - r.createdAt)}
+          {formatDuration(r.expiresAt - RECORDING_TTL_SECS - r.createdAt)}
         </Text>
       </div>
       <div>

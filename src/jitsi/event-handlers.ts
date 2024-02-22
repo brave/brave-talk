@@ -1,5 +1,5 @@
 import { isProduction } from "../environment";
-import { reportAction } from "../lib";
+import { reportAction, delta2elapsed } from "../lib";
 import {
   IJitsiMeetApi,
   JitsiContext,
@@ -383,7 +383,7 @@ export const transcriptionChunkReceivedHandler = (
     const chunk: JitsiTranscriptionChunk = params.data;
     reportAction("transcriptionChunkReceived", chunk);
 
-    transcriptManager.doT(jitsi);
+    transcriptManager.initialize(jitsi);
     transcriptManager.processChunk(chunk);
     transcriptManager.updateTranscript();
   },
@@ -414,7 +414,7 @@ const addEventForTranscript = (
   params: any,
   transcriptManager: TranscriptManager,
 ) => {
-  if (!isBrave || !transcriptManager.didT) {
+  if (!isBrave || !transcriptManager.initializedP) {
     return;
   }
   reportAction(`addEventForTranscript: ${event}`, params);
@@ -511,7 +511,7 @@ const addEventForTranscript = (
   if (text) {
     final = text();
   }
-  if (!final || !transcriptManager.didT) {
+  if (!final || !transcriptManager.initializedP) {
     return;
   }
 
@@ -525,7 +525,7 @@ const addEventForTranscript = (
     messageID: messageID,
     final: final,
     delta: delta,
-    elapsed: transcriptManager.delta2elapsed(delta),
+    elapsed: delta2elapsed(transcriptManager.timeStampStyle, delta),
   };
 
   transcriptManager.data[messageID] = chunk;
