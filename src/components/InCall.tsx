@@ -104,6 +104,7 @@ export const InCall = ({
   }
 
   const hiddenStyle = css`
+    display: "none",
     opacity: "0",
     pointerEvents: "none" as const,
     position: "fixed" as const,
