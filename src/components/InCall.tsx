@@ -103,12 +103,12 @@ export const InCall = ({
     return null;
   }
 
-  const hiddenStyle = css`
+  const hiddenStyle = css({
     opacity: "0",
     pointerEvents: "none" as const,
     position: "fixed" as const,
     zIndex: -1,
-`;
+  });
 
   return (
     <>
