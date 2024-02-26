@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from "react";
+import { css } from "@emotion/react";
 import { IJitsiMeetApi, JitsiContext } from "../jitsi/types";
 import { renderConferencePage } from "../jitsi/conference-page";
 import { jitsiOptions } from "../jitsi/options";
@@ -102,17 +103,17 @@ export const InCall = ({
     return null;
   }
 
-  const hidden = {
+  const hiddenStyle = css`
     opacity: "0",
     pointerEvents: "none" as const,
     position: "fixed" as const,
     zIndex: -1,
-  };
+`;
 
   return (
     <>
       <div ref={divRef} css={{ height: "100%" }} />{" "}
-      <main style={hidden}>{transcript}</main>{" "}
+      <main css={hiddenStyle}>{transcript}</main>{" "}
     </>
   );
 };
