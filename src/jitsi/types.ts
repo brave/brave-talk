@@ -66,6 +66,9 @@ export type JitsiOptions = {
     inviteAppName: string;
     localSubject: string;
     prejoinPageEnabled: boolean;
+    recordings: {
+      recordAudioAndVideo: boolean;
+    };
     resolution?: number;
     startWithAudioMuted: boolean;
     startWithVideoMuted: boolean;

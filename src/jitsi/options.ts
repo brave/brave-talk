@@ -67,6 +67,9 @@ export const jitsiOptions = (
       inviteAppName: "Brave Talk",
       localSubject: "Brave Talk",
       prejoinPageEnabled: true,
+      recordings: {
+        recordAudioAndVideo: false,
+      },
       resolution: isMobile ? 360 : undefined,
       roomPasswordNumberOfDigits: false,
       startWithAudioMuted: true,
