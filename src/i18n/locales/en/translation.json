@@ -52,6 +52,8 @@
   "subscribe_text": "Host video calls with hundreds of people, get moderator controls, and more.",
   "talk_title": "Brave Talk",
   "talk_title_premium": "Brave Talk Premium",
+  "transcription_link_available_title": "Transcription started",
+  "transcription_link_available_description": "We have generated a link to your transcript: \n\n{{transcriptUrl}}",
   "wallet_address": "Your wallet address:",
   "wallet_connect_failed": "<0><p>Failed to connect to wallet. Please reload the page and try again.</p> <1>Help with Brave Wallet</1></0>",
   "wallet_connect_request": "Requesting wallet access...",
