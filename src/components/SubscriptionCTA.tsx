@@ -46,11 +46,12 @@ export const SubscriptionCTA = ({ subscribed }: Props) => {
       <Section>
         <h2 css={{ paddingTop: 34 }}>{t("premium_card_title")}</h2>
         <p css={{ marginBottom: 18 }}>{t("subscribe_text")}</p>
-        <Button hollow>
-          <a href={`${subsUrl}/plans/?intent=checkout&product=talk`}>
-            {t("welcome_page_button_hollow")}
-          </a>
-        </Button>
+        <a
+          href={`${subsUrl}/plans/?intent=checkout&product=talk`}
+          css={{ textDecoration: "none" }}
+        >
+          <Button hollow>{t("welcome_page_button_hollow")}</Button>
+        </a>
         <div css={{ marginTop: 16 }}>{t("subscribe_login_text")}</div>
         <div css={{ marginTop: 16 }}>
           {t("subscribe_login_premium")}{" "}
