@@ -102,6 +102,7 @@ export class TranscriptManager {
   messageIDs: string[] = [];
   data: { [key: string]: JitsiTranscriptionChunk } = {};
   prompt: string = "";
+  transcriptionUsed: boolean = false;
 
   constructor(public onTranscriptChange: (transcript: string) => void) {}
 
@@ -162,7 +163,7 @@ export class TranscriptManager {
       // the transcript won't be explicitly finalized to prevent omitting
       // "participant left" events due to premature finalization.
       setTimeout(async () => {
-        if (!this.roomName || !this.jwt) {
+        if (!this.roomName || !this.jwt || !this.transcriptionUsed) {
           return;
         }
         await operateOnTranscriptDetails(
@@ -178,6 +179,9 @@ export class TranscriptManager {
       }
       return;
     }
+
+    this.transcriptionUsed = true;
+
     const transcriptUrl = await this.initTranscript(true);
     if (transcriptUrl) {
       upsertRecordingForRoom(null, transcriptUrl, this.roomName);
