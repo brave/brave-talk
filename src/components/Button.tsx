@@ -20,6 +20,7 @@ const styles = {
     fontSize: "16px",
     lineHeight: "20px",
     color: "#ffffff",
+    textDecoration: "none",
     "@media only screen and (max-width: 600px)": {
       width: "100%",
     },
