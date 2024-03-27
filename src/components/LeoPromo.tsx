@@ -51,7 +51,13 @@ export default function LeoPromo() {
       </h2>
       <p>
         {t("leo_promo_description")}&nbsp;
-        <a href="#">{t("leo_promo_link_text")}</a>
+        <a
+          href="https://support.brave.com/hc/en-us/articles/25728936518285"
+          target="_blank"
+          rel="noreferrer"
+        >
+          {t("leo_promo_link_text")}
+        </a>
       </p>
     </div>
   );
