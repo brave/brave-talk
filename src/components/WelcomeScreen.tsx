@@ -16,6 +16,7 @@ import { StartCall } from "./web3/StartCall";
 import { JitsiContext } from "../jitsi/types";
 import { resolveService } from "../services";
 import { Text } from "./Text";
+import LeoPromo from "./LeoPromo";
 
 interface Props {
   onStartCall: DispatchWithoutAction;
@@ -200,6 +201,8 @@ export const WelcomeScreen = ({
           disabled={disabled}
           hideButtons={hasInitialRoomName}
         />
+
+        <LeoPromo />
 
         <Recordings />
 
