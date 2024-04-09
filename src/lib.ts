@@ -89,3 +89,42 @@ export async function fetchWithTimeout(
 
   return response;
 }
+
+export enum TimeStampStyle {
+  None = 0,
+  Short,
+  Long,
+}
+
+export const delta2elapsed = (style: TimeStampStyle, delta_ms: number) => {
+  // i could not find a small JS package to do this....
+  const oneMinute = 60;
+  const oneHour = 60 * oneMinute;
+  const oneDay = 24 * oneHour;
+
+  let elapsed = style === TimeStampStyle.Long ? "(" : "";
+
+  if (style === TimeStampStyle.Long) {
+    const days = Math.floor(delta_ms / oneDay);
+    if (days > 0) {
+      delta_ms -= days * oneDay;
+      elapsed += `${days}d `;
+    }
+
+    const hours = Math.floor(delta_ms / oneHour);
+    delta_ms -= hours * oneHour;
+    elapsed += `${hours > 9 ? hours : "0" + hours}:`;
+  }
+
+  const minutes = Math.floor(delta_ms / oneMinute);
+  delta_ms -= minutes * oneMinute;
+  if (style === TimeStampStyle.Long) {
+    elapsed += `${minutes > 9 ? minutes : "0" + minutes}:`;
+  } else {
+    elapsed += `${minutes}m`;
+  }
+
+  elapsed += `${delta_ms > 9 ? delta_ms : "0" + delta_ms}${style === TimeStampStyle.Long ? ")" : "s"}`;
+
+  return elapsed;
+};
