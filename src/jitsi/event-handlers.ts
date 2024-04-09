@@ -386,6 +386,15 @@ export const transcriptionChunkReceivedHandler = (
     const chunk: JitsiTranscriptionChunk = params.data;
     reportAction("transcriptionChunkReceived", chunk);
 
+    if (!transcriptManager.initializedP) {
+      jitsi.executeCommand("showNotification", {
+        title: "Leo Title",
+        description: "ROAR this is your first transcription chunk",
+        type: "normal",
+        timeout: "medium",
+      });
+    }
+
     transcriptManager.initialize(jitsi);
     transcriptManager.processChunk(chunk);
     transcriptManager.updateTranscript();
