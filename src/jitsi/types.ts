@@ -22,6 +22,13 @@ export type JitsiEventHandler = {
   ) => (params: any) => void;
 };
 
+export type CustomToolbarButton = {
+  backgroundColor?: string;
+  icon: string;
+  id: string;
+  text: string;
+};
+
 export type JitsiOptions = {
   roomName: string;
   jwt: string;
@@ -32,12 +39,14 @@ export type JitsiOptions = {
       disabled: boolean;
       rtcstatsEnabled: boolean;
     };
+    buttonsWithNotifyClick: string[];
     brandingRoomAlias: string;
     callStatsID: boolean;
     callStatsSecret: boolean;
     conferenceInfo: {
       autoHide: string[];
     };
+    customToolbarButtons: CustomToolbarButton[];
     disabledSounds: string[];
     disableGTM: boolean;
     doNotStoreRoom: boolean;

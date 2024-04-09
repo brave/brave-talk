@@ -557,3 +557,16 @@ export const getParticipants = (
     addEventForTranscript(jitsi, "getRoomsInfo", result, transcriptManager);
   });
 };
+
+export const buttonHandler = {
+  name: "toolbarButtonClicked",
+  fn:
+    (_jitsi: IJitsiMeetApi, _context: JitsiContext) => async (params: any) => {
+      switch (params.key) {
+        case "leo": {
+          alert("LEO! TODO: en/disable transcription now");
+          break;
+        }
+      }
+    },
+};
