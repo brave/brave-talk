@@ -38,6 +38,8 @@ interface Props {
   jitsiContext: JitsiContext;
 }
 
+const DEFAULT_TRANSCRIPT = `Transcripts are not enabled for this call. You can ask the host to enable transcripts by going to "More options" and selecting "Start recording".`;
+
 export const InCall = ({
   roomName,
   jwt,
@@ -48,7 +50,7 @@ export const InCall = ({
 }: Props) => {
   const divRef = useRef(null);
   const [jitsiMeet, setJitsiMeet] = useState<IJitsiMeetApi>();
-  const [transcript, setTranscript] = useState<string>("");
+  const [transcript, setTranscript] = useState<string>(DEFAULT_TRANSCRIPT);
   const transcriptManager = useRef(new TranscriptManager(setTranscript));
 
   useEffect(() => {
