@@ -353,7 +353,7 @@ export const videoConferenceJoinedHandler = (
   transcriptManager: TranscriptManager,
 ) => ({
   name: "videoConferenceJoined",
-  fn: () => (params: any) => {
+  fn: (jitsi: IJitsiMeetApi) => (params: any) => {
     reportAction("videoConferenceJoined", params);
 
     myUserID = params.id;
@@ -369,6 +369,9 @@ export const videoConferenceJoinedHandler = (
     setTimeout(async () => {
       await transcriptManager.initTranscript(false);
     }, 7500);
+
+    const iframe: HTMLIFrameElement = jitsi.getIFrame();
+    console.log(`!!! 8x8 url: ${iframe.src.split("?")[0]}`);
   },
 });
 
