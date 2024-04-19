@@ -17,6 +17,12 @@ export const SelectableNFTCollectionList = ({
     imageUrl: p.image_url,
     name: p.name,
     chain: p.chain,
+    collection: {
+      collection_id: p.id,
+      name: p.name,
+      image_url: p.image_url,
+      spam_score: p.spam_score,
+    },
   }));
 
   const selectedIdxs = nftCollections.flatMap((p, idx) => {
