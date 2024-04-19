@@ -81,6 +81,7 @@ export const jitsiOptions = (
         autoHideWhileChatIsOpen: true,
       },
       // taken from https://github.com/jitsi/jitsi-meet/blob/master/react/features/base/config/constants.ts#L16
+      // DO NOT ADD "subtitles" without first talking with the JAAS folks first, or else!
       toolbarButtons: [
         "camera",
         "chat",
