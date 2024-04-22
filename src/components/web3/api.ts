@@ -189,6 +189,7 @@ export const web3NFTcollections = async (
               : nft.image_url
                 ? nft.image_url
                 : nft.collection?.image_url,
+            spam_score: nft.collection.spam_score || 0,
           };
         }
 
