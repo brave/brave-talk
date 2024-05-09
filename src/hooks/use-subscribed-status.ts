@@ -28,6 +28,15 @@ async function parseOrderFromQueryParams(): Promise<void> {
   let orderId: string | null | undefined;
 
   if (order) {
+    // Strip order from URL
+    params.delete("intent");
+    params.delete("order");
+    const paramString = params.size ? `?${params}` : "";
+    window.history.replaceState(
+      null,
+      "",
+      `${window.location.pathname}${paramString}${window.location.hash}`,
+    );
     try {
       const o = JSON.parse(atob(order));
       const exp = o?.recovery_expiration;
