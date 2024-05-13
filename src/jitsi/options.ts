@@ -68,7 +68,6 @@ export const jitsiOptions = (
       localSubject: "Brave Talk",
       prejoinPageEnabled: true,
       recordings: {
-        recordTranscription: false,
         recordAudioAndVideo: false,
       },
       resolution: isMobile ? 360 : undefined,
@@ -122,6 +121,9 @@ export const jitsiOptions = (
         "whiteboard",
       ],
       transcribingEnabled: true,
+      transcriptions: {
+        autoTranscribeOnRecord: false,
+      },
       useHostPageLocalStorage: true,
       videoQuality: {
         persist: true,

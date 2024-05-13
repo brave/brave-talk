@@ -67,7 +67,6 @@ export type JitsiOptions = {
     localSubject: string;
     prejoinPageEnabled: boolean;
     recordings: {
-      recordTranscription: boolean;
       recordAudioAndVideo: boolean;
     };
     resolution?: number;
@@ -78,6 +77,9 @@ export type JitsiOptions = {
     };
     toolbarButtons: string[];
     transcribingEnabled: boolean;
+    transcriptions: {
+      autoTranscribeOnRecord: boolean;
+    };
     useHostPageLocalStorage: boolean;
     videoQuality: {
       persist: boolean;
