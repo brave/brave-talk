@@ -121,7 +121,7 @@ export const jitsiOptions = (
         "whiteboard",
       ],
       transcribingEnabled: true,
-      transcriptions: {
+      transcription: {
         autoTranscribeOnRecord: false,
       },
       useHostPageLocalStorage: true,

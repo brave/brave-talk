@@ -77,7 +77,7 @@ export type JitsiOptions = {
     };
     toolbarButtons: string[];
     transcribingEnabled: boolean;
-    transcriptions: {
+    transcription: {
       autoTranscribeOnRecord: boolean;
     };
     useHostPageLocalStorage: boolean;
