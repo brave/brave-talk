@@ -121,6 +121,9 @@ export const jitsiOptions = (
         "whiteboard",
       ],
       transcribingEnabled: true,
+      transcription: {
+        autoTranscribeOnRecord: false,
+      },
       useHostPageLocalStorage: true,
       videoQuality: {
         persist: true,
