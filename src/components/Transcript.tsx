@@ -1,5 +1,6 @@
 import {
   DownloadedTranscript,
+  TranscriptAction,
   parseTranscriptLines,
 } from "../downloaded-transcript";
 import { createRef, useEffect, useState } from "react";
@@ -11,6 +12,7 @@ import { formatRelativeDay } from "../recordings-utils";
 import "@brave/leo/tokens/css/variables.css";
 import Button from "@brave/leo/react/button";
 import Input from "@brave/leo/react/input";
+import { useTranslation } from "react-i18next";
 
 interface MeetingTranscriptProps {
   transcript: DownloadedTranscript;
@@ -22,7 +24,25 @@ interface MeetingTranscriptDisplayProps {
 }
 
 const styles = {
-  row: css`
+  outer: css`
+    margin: 93px auto;
+    max-width: 860px;
+    text-align: left;
+    display: flex;
+    padding: var(--leo-spacing-7xl);
+    flex-direction: column;
+    align-items: center;
+    gap: var(--leo-spacing-4xl);
+    align-self: stretch;
+    border-radius: var(--leo-radius-xl);
+    background: var(--leo-color-container-background);
+    box-shadow:
+      0px var(--Elevation-xxs, 1px) 0px 0px
+        var(--Semantic-Elevation-Primary, rgba(0, 0, 0, 0.05)),
+      0px var(--Elevation-xxs, 1px) var(--Elevation-xs, 4px) 0px
+        var(--Semantic-Elevation-Secondary, rgba(0, 0, 0, 0.1));
+  `,
+  transcriptEventRow: css`
     display: flex;
     padding: var(--leo-spacing-m, 0px);
     align-items: flex-start;
@@ -32,26 +52,104 @@ const styles = {
     font-size: var(--Size-Large, 16px);
     font-family: var(--Family-Default, "Inter Variable"), Inter;
   `,
-  cell: css``,
+  cell: css`
+    letter-spacing: -0.2px;
+  `,
   actor: css`
     width: 128px;
     font-style: normal;
     font-weight: 600;
-    letter-spacing: -0.2px;
+  `,
+  messageOrAction: css`
+    flex: 1 0 0;
+    font-weight: 400;
   `,
   action: css`
     font-style: italic;
     color: var(--leo-color-systemfeedback-error-text);
-    flex: 1 0 0;
-    font-weight: 400;
-    letter-spacing: -0.2px;
   `,
   message: css`
-    flex: 1 0 0;
     color: var(--leo-color-text-primary);
     font-style: normal;
-    font-weight: 400;
-    letter-spacing: -0.2px;
+  `,
+  searchBoxAndDateTimeContainer: css`
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: --leo-spacing-xl;
+    align-self: stretch;
+  `,
+  transcriptMessagesContainer: css`
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--Spacing-None, 0px);
+    align-self: stretch;
+
+    ::highlight(search-results) {
+      background-color: #ffe08d;
+    }
+    @media (prefers-color-scheme: dark) {
+      ::highlight(search-results) {
+        color: #e4c780;
+        background-color: #110f0b;
+      }
+    }
+  `,
+  searchBoxImage: css`
+    margin-bottom: -6px;
+    @media (prefers-color-scheme: dark) {
+      filter: invert(1);
+    }
+  `,
+  dateTime: css`
+    color: var(--leo-color-text-primary);
+    font-family: var(--Family-Headings, Poppins);
+    font-size: var(--Size-H4, 16px);
+    font-style: normal;
+    font-weight: 600;
+    line-height: var(--Line-height-H4, 26px); /* 162.5% */
+  `,
+  dateTimeContainer: css`
+    display: flex;
+    align-items: center;
+    gap: --leo-spacing-xl;
+    align-self: stretch;
+  `,
+  downloadButtonImage: css`
+    margin-bottom: -2px;
+  `,
+  downloadButton: css`
+    display: flex;
+    min-height: 44px;
+    padding: var(--leo-spacing-l) var(--leo-spacing-xl);
+    justify-content: center;
+    align-items: center;
+    max-width: fit-content;
+  `,
+  h1: css`
+    color: var(--leo-color-text-primary);
+    font-family: var(--Family-Headings, Poppins);
+    font-size: var(--Size-H2, 28px);
+    font-style: normal;
+    font-weight: 600;
+    line-height: var(--Line-height-H2, 36px);
+    letter-spacing: var(--Letter-spacing-Headings, -0.5px);
+    text-wrap: nowrap;
+  `,
+  searchBoxContainer: css`
+    width: 100%;
+  `,
+  headerTitle: css`
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    flex: 1 0 0;
+  `,
+  headerAndDownloadButton: css`
+    display: flex;
+    align-items: center;
+    align-self: stretch;
   `,
 };
 
@@ -65,6 +163,7 @@ const COLORS = [
 ];
 
 export const MeetingTranscript = ({ transcript }: MeetingTranscriptProps) => {
+  const { t } = useTranslation();
   const participantColorMap = new Map<string, string>();
   let participantCounter = 0;
   const { events, startDateTime } = transcript;
@@ -109,73 +208,31 @@ export const MeetingTranscript = ({ transcript }: MeetingTranscriptProps) => {
         index = content.indexOf(str, index + 1);
       }
     }
-    console.log(ranges);
     const highlight = new Highlight(...ranges);
     CSS.highlights.set("search-results", highlight);
-  }, [searchTerm]);
+  }, [searchTerm, transcript]);
+
+  const ACTION_MESSAGE: Record<TranscriptAction, string> = {
+    [TranscriptAction.Join]: t("PARTICIPANT: joined the call"),
+    [TranscriptAction.Leave]: t("PARTICIPANT: left the call"),
+  };
 
   return (
-    <div
-      css={css`
-        margin: 93px auto;
-        max-width: 860px;
-        text-align: left;
-        display: flex;
-        padding: var(--leo-spacing-7xl);
-        flex-direction: column;
-        align-items: center;
-        gap: var(--leo-spacing-4xl);
-        align-self: stretch;
-        border-radius: var(--leo-radius-xl);
-        background: var(--leo-color-container-background);
-        box-shadow:
-          0px var(--Elevation-xxs, 1px) 0px 0px
-            var(--Semantic-Elevation-Primary, rgba(0, 0, 0, 0.05)),
-          0px var(--Elevation-xxs, 1px) var(--Elevation-xs, 4px) 0px
-            var(--Semantic-Elevation-Secondary, rgba(0, 0, 0, 0.1));
-      `}
-    >
-      <div
-        css={css`
-          display: flex;
-          align-items: center;
-          align-self: stretch;
-        `}
-      >
-        <div
-          css={css`
-            display: flex;
-            align-items: center;
-            gap: 16px;
-            flex: 1 0 0;
-          `}
-        >
-          <img src={TranscriptImage} height="28" width="28" alt="transcript" />{" "}
-          <h1
-            css={css`
-              color: var(--leo-color-text-primary);
-              font-family: var(--Family-Headings, Poppins);
-              font-size: var(--Size-H2, 28px);
-              font-style: normal;
-              font-weight: 600;
-              line-height: var(--Line-height-H2, 36px);
-              letter-spacing: var(--Letter-spacing-Headings, -0.5px);
-              text-wrap: nowrap;
-            `}
-          >
-            Meeting Transcript
-          </h1>
+    <div css={styles.outer}>
+      <div css={styles.headerAndDownloadButton}>
+        <div css={styles.headerTitle}>
+          <img
+            src={TranscriptImage}
+            height="28"
+            width="28"
+            alt={t("Meeting Transcript")}
+          />{" "}
+          <h1 css={styles.h1}>{t("Meeting Transcript")}</h1>
         </div>
         <Button
-          css={css`
-            display: flex;
-            min-height: 44px;
-            padding: var(--leo-spacing-l) var(--leo-spacing-xl);
-            justify-content: center;
-            align-items: center;
-            max-width: fit-content;
-          `}
+          css={styles.downloadButton}
           kind="outline"
+          title={t("download_transcript_button")}
           onClick={() => {
             const link = document.createElement("a");
             link.href = transcript.blobUrl;
@@ -189,63 +246,28 @@ export const MeetingTranscript = ({ transcript }: MeetingTranscriptProps) => {
               height="16"
               width="18"
               alt="download"
-              css={css`
-                margin-bottom: -2px;
-              `}
+              css={styles.downloadButtonImage}
             />
           </span>
-          Download
+          {t("download_transcript_button")}
         </Button>
       </div>
-      <div
-        css={css`
-          display: flex;
-          flex-direction: column;
-          align-items: center;
-          gap: --leo-spacing-xl;
-          align-self: stretch;
-        `}
-      >
+      <div css={styles.searchBoxAndDateTimeContainer}>
         {startDateTime && (
-          <div
-            css={css`
-              display: flex;
-              align-items: center;
-              gap: --leo-spacing-xl;
-              align-self: stretch;
-            `}
-          >
-            <p
-              css={css`
-                color: var(--leo-color-text-primary);
-                font-family: var(--Family-Headings, Poppins);
-                font-size: var(--Size-H4, 16px);
-                font-style: normal;
-                font-weight: 600;
-                line-height: var(--Line-height-H4, 26px); /* 162.5% */
-              `}
-            >
+          <div css={styles.dateTimeContainer}>
+            <p css={styles.dateTime}>
               <strong>{formatRelativeDay(startDateTime)}</strong>
               {", "}
               {startDateTime.toLocaleTimeString()}{" "}
             </p>
           </div>
         )}
-        <div
-          css={css`
-            width: 100%;
-          `}
-        >
+        <div css={styles.searchBoxContainer}>
           <Input size="normal" onInput={(e) => setSearchTerm(e.value)}>
             <span slot="left-icon">
               <img
                 src={SearchImage}
-                css={css`
-                  margin-bottom: -6px;
-                  @media (prefers-color-scheme: dark) {
-                    filter: invert(1);
-                  }
-                `}
+                css={styles.searchBoxImage}
                 height="20"
                 width="20"
                 alt="search"
@@ -254,29 +276,10 @@ export const MeetingTranscript = ({ transcript }: MeetingTranscriptProps) => {
           </Input>
         </div>
       </div>
-      <div
-        ref={textRef}
-        css={css`
-          display: flex;
-          flex-direction: column;
-          align-items: center;
-          gap: var(--Spacing-None, 0px);
-          align-self: stretch;
-
-          ::highlight(search-results) {
-            background-color: #ffe08d;
-          }
-          @media (prefers-color-scheme: dark) {
-            ::highlight(search-results) {
-              color: #e4c780;
-              background-color: #110f0b;
-            }
-          }
-        `}
-      >
+      <div ref={textRef} css={styles.transcriptMessagesContainer}>
         {events.map((event, i) =>
-          event.action ? (
-            <div css={styles.row} key={i}>
+          typeof event.messageOrAction !== "string" ? (
+            <div css={styles.transcriptEventRow} key={i}>
               <div
                 css={[
                   styles.cell,
@@ -286,10 +289,12 @@ export const MeetingTranscript = ({ transcript }: MeetingTranscriptProps) => {
               >
                 {event.participant}
               </div>
-              <div css={[styles.cell, styles.action]}>{event.message}</div>
+              <div css={[styles.cell, styles.messageOrAction, styles.action]}>
+                {ACTION_MESSAGE[event.messageOrAction]}
+              </div>
             </div>
           ) : (
-            <div css={styles.row} key={i}>
+            <div css={styles.transcriptEventRow} key={i}>
               <div
                 css={[
                   styles.cell,
@@ -299,7 +304,9 @@ export const MeetingTranscript = ({ transcript }: MeetingTranscriptProps) => {
               >
                 {event.participant}
               </div>
-              <div css={[styles.cell, styles.message]}>{event.message}</div>
+              <div css={[styles.cell, styles.messageOrAction, styles.message]}>
+                {event.messageOrAction}
+              </div>
             </div>
           ),
         )}
