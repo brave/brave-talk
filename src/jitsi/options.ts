@@ -82,6 +82,40 @@ export const jitsiOptions = (
       toolbarConfig: {
         autoHideWhileChatIsOpen: true,
       },
+      // Default if not moderator
+      mainToolbarButtons: [
+        [
+          "microphone",
+          "camera",
+          "desktop",
+          "chat",
+          "raisehand",
+          "reactions",
+          "participants-pane",
+          "tileview",
+        ],
+        [
+          "microphone",
+          "camera",
+          "desktop",
+          "chat",
+          "raisehand",
+          "participants-pane",
+          "tileview",
+        ],
+        [
+          "microphone",
+          "camera",
+          "desktop",
+          "chat",
+          "raisehand",
+          "participants-pane",
+        ],
+        ["microphone", "camera", "desktop", "chat", "participants-pane"],
+        ["microphone", "camera", "chat", "participants-pane"],
+        ["microphone", "camera", "chat"],
+        ["microphone", "camera"],
+      ],
       // taken from https://github.com/jitsi/jitsi-meet/blob/master/react/features/base/config/constants.ts#L16
       // DO NOT ADD "subtitles"/"closedcaptions" without first talking with the JAAS folks first, or else!
       toolbarButtons: [
@@ -214,6 +248,32 @@ export const jitsiOptions = (
           text: "AI assistant",
         });
         options.configOverwrite.buttonsWithNotifyClick.push("leo");
+        options.configOverwrite.mainToolbarButtons = [
+          [
+            "microphone",
+            "camera",
+            "desktop",
+            "chat",
+            "raisehand",
+            "reactions",
+            "participants-pane",
+            "leo",
+          ],
+          [
+            "microphone",
+            "camera",
+            "desktop",
+            "chat",
+            "raisehand",
+            "participants-pane",
+            "leo",
+          ],
+          ["microphone", "camera", "desktop", "chat", "raisehand", "leo"],
+          ["microphone", "camera", "desktop", "chat", "leo"],
+          ["microphone", "camera", "chat", "leo"],
+          ["microphone", "camera", "leo"],
+          ["microphone", "camera"],
+        ];
       }
     }
   });
