@@ -19,6 +19,17 @@ enum TranscriptDetailsOperation {
   Finalize,
 }
 
+export function getTranscriptDisplayPath(
+  originalTranscriptUrl: string,
+): string {
+  const match = originalTranscriptUrl.match(/\/([a-z0-9]{50})\/?$/);
+  if (!match) {
+    throw new Error("No transcript id found in URL");
+  }
+  const transcriptId: string = match[1];
+  return `/transcript-${transcriptId}`;
+}
+
 const operateOnTranscriptDetails = async (
   roomName: string,
   jwt: string,
@@ -188,7 +199,7 @@ export class TranscriptManager {
       jitsi.executeCommand("showNotification", {
         title: i18next.t("transcription_link_available_title"),
         description: i18next.t("transcription_link_available_description", {
-          transcriptUrl,
+          transcriptUrl: `${window.location.origin}${getTranscriptDisplayPath(transcriptUrl)}`,
         }),
         type: "normal",
         timeout: "sticky",
