@@ -8,6 +8,7 @@ import TranscriptImage from "../images/transcript.svg";
 import { Section } from "./Section";
 import { Text } from "./Text";
 import { MouseEventHandler } from "react";
+import { getTranscriptDisplayPath } from "../transcripts";
 
 interface Props {
   onRouterStatePushed: () => void;
@@ -24,11 +25,7 @@ const RecordingDisplay = ({
   const recordingDate = new Date(r.createdAt * 1000);
 
   const getTranscriptOnClick = (transcriptUrl: string, startDateTime: Date) => {
-    const match = transcriptUrl.match(/\/([a-z0-9]{50})\/?$/);
-    if (!match) {
-      return;
-    }
-    const transcriptId: string = match[1];
+    const transcriptPath = getTranscriptDisplayPath(transcriptUrl);
     const handler: MouseEventHandler<HTMLAnchorElement> = (e) => {
       // hopefully sufficient magical incantations to prevent the popup
       e.preventDefault();
@@ -37,7 +34,7 @@ const RecordingDisplay = ({
       window.history.pushState(
         { startDateTime: startDateTime.getTime() },
         "",
-        `/transcript-${transcriptId}`,
+        transcriptPath,
       );
       onRouterStatePushed();
       return false;
