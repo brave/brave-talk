@@ -13,7 +13,7 @@ const loadRewardsSdk = async (): Promise<Rewards.JSSDK> => {
 
   log(`calling initialize(${env}, false)...`);
   const sdk = await Rewards.initialize(
-    isDevelopment ? "development" : env,
+    isDevelopment ? "staging" : env,
     false,
     isProduction ? "error" : "info",
   );
