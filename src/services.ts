@@ -1,7 +1,12 @@
+export const env = process.env.ENVIRONMENT ?? "local";
+
 export function resolveService(
   servicePrefix: string,
   baseHost: string = window.location.host,
 ): string {
+  if (env.startsWith("development") && servicePrefix === "account") {
+    return "https://account.bravesoftware.com";
+  }
   return `https://${servicePrefix}.${secondLevelDomain(baseHost)}`;
 }
 
