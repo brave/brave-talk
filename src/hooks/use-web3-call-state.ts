@@ -96,7 +96,7 @@ export function useWeb3CallState(
         );
       };
     }
-  });
+  }, [web3Account]);
 
   useEffect(() => {
     if (window.braveSolana) {
@@ -118,10 +118,10 @@ export function useWeb3CallState(
         );
       };
     }
-  });
+  }, []);
 
   useEffect(() => {
-    if (window.phantom && window.phantom.solana) {
+    if (window.phantom?.solana) {
       const handleAccountChanged = (account: any) => {
         setWeb3Account("SOL");
         console.log(account);
@@ -141,7 +141,7 @@ export function useWeb3CallState(
         );
       };
     }
-  });
+  }, []);
 
   const joinCall = async (
     roomName: string,

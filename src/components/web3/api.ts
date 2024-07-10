@@ -97,6 +97,7 @@ const onceAndSharePromise = (f: (...args: any[]) => Promise<string>) => {
   };
 };
 
+// Wrapped to prevent multiple calls causing the wallet to close and reopen
 export const web3Login = onceAndSharePromise(async (): Promise<string> => {
   const allAddresses: string[] = await window.ethereum.request({
     method: "eth_requestAccounts",
