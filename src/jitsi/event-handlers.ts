@@ -558,15 +558,24 @@ export const getParticipants = (
   });
 };
 
-export const buttonHandler = {
+export const buttonHandler = (transcriptManager: TranscriptManager) => ({
   name: "toolbarButtonClicked",
-  fn:
-    (_jitsi: IJitsiMeetApi, _context: JitsiContext) => async (params: any) => {
-      switch (params.key) {
-        case "leo": {
-          alert("LEO! TODO: en/disable transcription now");
-          break;
+  fn: (jitsi: IJitsiMeetApi, _context: JitsiContext) => async (params: any) => {
+    switch (params.key) {
+      case "leo": {
+        if (!transcriptManager.transcriptionEnabledAccordingToJitsiEvents) {
+          jitsi.executeCommand("startRecording", {
+            mode: "file",
+            transcription: true,
+          });
+        } else {
+          jitsi.executeCommand("stopRecording", {
+            mode: "file",
+            transcription: true,
+          });
         }
+        break;
       }
-    },
-};
+    }
+  },
+});

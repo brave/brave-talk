@@ -78,7 +78,7 @@ export const InCall = ({
         videoConferenceJoinedHandler(transcriptManager.current),
         transcriptionChunkReceivedHandler(transcriptManager.current),
         transcribingStatusChangedHandler(transcriptManager.current),
-        buttonHandler,
+        buttonHandler(transcriptManager.current),
       ];
 
       transcriptManager.current.roomName = roomName;
