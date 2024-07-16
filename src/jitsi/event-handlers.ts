@@ -386,15 +386,6 @@ export const transcriptionChunkReceivedHandler = (
     const chunk: JitsiTranscriptionChunk = params.data;
     reportAction("transcriptionChunkReceived", chunk);
 
-    if (!transcriptManager.initializedP) {
-      jitsi.executeCommand("showNotification", {
-        title: "Leo Title",
-        description: "ROAR this is your first transcription chunk",
-        type: "normal",
-        timeout: "medium",
-      });
-    }
-
     transcriptManager.initialize(jitsi);
     transcriptManager.processChunk(chunk);
     transcriptManager.updateTranscript();
@@ -564,15 +555,11 @@ export const buttonHandler = (transcriptManager: TranscriptManager) => ({
     switch (params.key) {
       case "leo": {
         if (!transcriptManager.transcriptionEnabledAccordingToJitsiEvents) {
-          jitsi.executeCommand("startRecording", {
-            mode: "file",
+          jitsi.startRecording({
             transcription: true,
           });
         } else {
-          jitsi.executeCommand("stopRecording", {
-            mode: "file",
-            transcription: true,
-          });
+          jitsi.stopRecording(undefined, true);
         }
         break;
       }
