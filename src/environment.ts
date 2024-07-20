@@ -21,3 +21,6 @@ export const config = {
 };
 
 export const isProduction = env === "production";
+
+export const shouldForcePaymentsStaging =
+  env.startsWith("development") && env !== "development";
