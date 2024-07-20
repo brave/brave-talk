@@ -1,5 +1,5 @@
 import * as Rewards from "@brave-intl/skus-sdk";
-import { isDevelopment, isProduction } from "./environment";
+import { isProduction, shouldForcePaymentsStaging } from "./environment";
 
 let sdkref: Rewards.JSSDK | undefined;
 
@@ -13,7 +13,7 @@ const loadRewardsSdk = async (): Promise<Rewards.JSSDK> => {
 
   log(`calling initialize(${env}, false)...`);
   const sdk = await Rewards.initialize(
-    isDevelopment ? "staging" : env,
+    shouldForcePaymentsStaging ? "staging" : env,
     false,
     isProduction ? "error" : "info",
   );
@@ -69,7 +69,7 @@ export async function recoverCredsIfRequired(orderId: string): Promise<void> {
 }
 
 function getCredentialHostname(): string | undefined {
-  return isDevelopment ? "talk.bravesoftware.com" : undefined;
+  return shouldForcePaymentsStaging ? "talk.bravesoftware.com" : undefined;
 }
 
 export async function checkSubscribedUsingSDK(): Promise<boolean> {
