@@ -394,6 +394,7 @@ export const transcriptionChunkReceivedHandler = (
 
 export const transcribingStatusChangedHandler = (
   transcriptManager: TranscriptManager,
+  resetLeoButton: (jitsi: IJitsiMeetApi, transcriptionIsOn: boolean) => void,
 ) => ({
   name: "transcribingStatusChanged",
   fn: (jitsi: IJitsiMeetApi) => async (params: any) => {
@@ -403,6 +404,8 @@ export const transcribingStatusChangedHandler = (
 
     const event: JitsiTranscriptionStatusEvent = params;
     reportAction("transcribingStatusChanged", event);
+
+    resetLeoButton(jitsi, event.on);
 
     await transcriptManager.handleTranscriptionEnabledEvent(jitsi, event.on);
   },

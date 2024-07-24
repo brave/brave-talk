@@ -56,6 +56,43 @@ export const InCall = ({
 
   useEffect(() => {
     if (!jitsiMeet && divRef.current && isCallReady) {
+      transcriptManager.current.roomName = roomName;
+      transcriptManager.current.jwt = jwt;
+
+      resetCurrentRecordingState(roomName);
+
+      const options = jitsiOptions(roomName, divRef.current, jwt, isMobile);
+
+      const resetLeoButton = !options.configOverwrite.customToolbarButtons.find(
+        (button) => button.id === "leo",
+      )
+        ? () => {}
+        : (jitsi: IJitsiMeetApi, transcriptionIsOn: boolean) => {
+            const buttons = options.configOverwrite.customToolbarButtons;
+            if (buttons.find((button) => button.id === "leo")) {
+              // remove button
+              jitsi.executeCommand("overwriteConfig", {
+                customToolbarButtons: buttons.filter(
+                  (button) => button.id !== "leo",
+                ),
+              });
+              // re-add button with new text
+              jitsi.executeCommand("overwriteConfig", {
+                customToolbarButtons: buttons.map((button) => {
+                  if (button.id === "leo") {
+                    return {
+                      id: button.id,
+                      icon: button.icon,
+                      text: transcriptionIsOn
+                        ? "Disable Transcript"
+                        : "Enable Transcript",
+                    };
+                  }
+                }),
+              });
+            }
+          };
+
       const jitsiEventHandlers = [
         subjectChangeHandler(transcriptManager.current),
         videoQualityChangeHandler,
@@ -77,16 +114,12 @@ export const InCall = ({
         endpointTextMessageReceivedHandler,
         videoConferenceJoinedHandler(transcriptManager.current),
         transcriptionChunkReceivedHandler(transcriptManager.current),
-        transcribingStatusChangedHandler(transcriptManager.current),
+        transcribingStatusChangedHandler(
+          transcriptManager.current,
+          resetLeoButton,
+        ),
         buttonHandler(transcriptManager.current),
       ];
-
-      transcriptManager.current.roomName = roomName;
-      transcriptManager.current.jwt = jwt;
-
-      resetCurrentRecordingState(roomName);
-
-      const options = jitsiOptions(roomName, divRef.current, jwt, isMobile);
 
       renderConferencePage(jitsiEventHandlers, options, context).then(
         setJitsiMeet,
