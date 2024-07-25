@@ -2,7 +2,11 @@ import { useEffect, useRef, useState } from "react";
 import { css } from "@emotion/react";
 import { IJitsiMeetApi, JitsiContext } from "../jitsi/types";
 import { renderConferencePage } from "../jitsi/conference-page";
-import { jitsiOptions } from "../jitsi/options";
+import {
+  jitsiOptions,
+  leoButtonTranscriptionOff,
+  leoButtonTranscriptionOn,
+} from "../jitsi/options";
 import {
   breakoutRoomsUpdatedHandler,
   buttonHandler,
@@ -76,18 +80,15 @@ export const InCall = ({
                   (button) => button.id !== "leo",
                 ),
               });
-              // re-add button with new text
+              // re-add button with new text and icon
               jitsi.executeCommand("overwriteConfig", {
                 customToolbarButtons: buttons.map((button) => {
                   if (button.id === "leo") {
-                    return {
-                      id: button.id,
-                      icon: button.icon,
-                      text: transcriptionIsOn
-                        ? "Disable Transcript"
-                        : "Enable Transcript",
-                    };
+                    return transcriptionIsOn
+                      ? leoButtonTranscriptionOn
+                      : leoButtonTranscriptionOff;
                   }
+                  return button;
                 }),
               });
             }
