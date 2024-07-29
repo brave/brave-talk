@@ -108,7 +108,7 @@ export const web3Login = onceAndSharePromise(async (): Promise<string> => {
   return allAddresses[0];
 });
 
-export const web3LoginSol = async (): Promise<string> => {
+export const web3LoginSol = onceAndSharePromise(async (): Promise<string> => {
   try {
     const result = await window.braveSolana.connect();
     console.log("!!! allAddresses", result);
@@ -118,7 +118,7 @@ export const web3LoginSol = async (): Promise<string> => {
     console.log("!!! allAddresses", result);
     return result.publicKey.toBase58();
   }
-};
+});
 
 export const web3NFTs = async (address: string): Promise<NFT[]> => {
   try {
