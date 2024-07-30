@@ -17,6 +17,7 @@ import { JitsiContext } from "../jitsi/types";
 import { resolveService } from "../services";
 import { Text } from "./Text";
 import LeoPromo from "./LeoPromo";
+import { MeetingTranscriptDisplay } from "./Transcript";
 
 interface Props {
   onStartCall: DispatchWithoutAction;
@@ -32,6 +33,8 @@ interface Props {
   setJwt: (jwt: string) => void;
   setRoomName: (roomName: string) => void;
   setJitsiContext: (context: JitsiContext) => void;
+  onRouterStatePushed: () => void;
+  displayTranscriptId: string | undefined;
 }
 
 export const WelcomeScreen = ({
@@ -48,6 +51,8 @@ export const WelcomeScreen = ({
   setJwt,
   setRoomName,
   setJitsiContext,
+  onRouterStatePushed,
+  displayTranscriptId,
 }: Props) => {
   const subscribed = useSubscribedStatus();
   const { t } = useTranslation();
@@ -74,6 +79,10 @@ export const WelcomeScreen = ({
     return;
   };
   const Body = () => {
+    if (displayTranscriptId) {
+      return <MeetingTranscriptDisplay transcriptId={displayTranscriptId} />;
+    }
+
     if (!browser.supportsWebRTC) {
       return (
         <SectionWithLogo
@@ -204,7 +213,7 @@ export const WelcomeScreen = ({
 
         <LeoPromo />
 
-        <Recordings />
+        <Recordings onRouterStatePushed={onRouterStatePushed} />
 
         {!hasInitialRoomName && <SubscriptionCTA subscribed={subscribed} />}
         <Web3CTA onClick={onClickWeb3CTA} isSubscribed={subscribed === "yes"} />

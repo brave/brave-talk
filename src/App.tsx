@@ -12,6 +12,7 @@ import { useParams } from "./hooks/use-params";
 import { reportAction } from "./lib";
 
 import "./i18n/i18next";
+import { useEffect } from "react";
 
 const styles = {
   container: css({
@@ -53,18 +54,42 @@ export const App = () => {
     window.close();
   }
 
+  const initRouteTranscriptId = () => {
+    const match = window.location.pathname.match(
+      /^\/transcript-([a-z0-9]{50})$/,
+    );
+    if (match) {
+      return match[1];
+    }
+  };
+  const [routeTranscriptId, setRouteTranscriptId] = React.useState<
+    string | undefined
+  >(initRouteTranscriptId);
+  const onRouterStatePushed = () => {
+    setRouteTranscriptId(initRouteTranscriptId());
+  };
+  useEffect(() => {
+    const onPopstate = onRouterStatePushed;
+    window.addEventListener("popstate", onPopstate);
+    return () => {
+      window.removeEventListener("popstate", onPopstate);
+    };
+  });
+
   return (
     <React.Fragment>
       <GlobalStyles />
       <div css={styles.container}>
-        <InCall
-          roomName={roomName ?? ""}
-          jwt={jwt ?? ""}
-          isMobile={browserProps.isMobile}
-          isCallReady={isCallReady}
-          isWeb3Call={isWeb3Call}
-          jitsiContext={jitsiContext}
-        />
+        {!routeTranscriptId && isCallReady && (
+          <InCall
+            roomName={roomName ?? ""}
+            jwt={jwt ?? ""}
+            isMobile={browserProps.isMobile}
+            isCallReady={isCallReady}
+            isWeb3Call={isWeb3Call}
+            jitsiContext={jitsiContext}
+          />
+        )}
         {!isCallReady &&
           (isWeb3Call && hasInitialRoom ? (
             <JoinWeb3Call
@@ -90,6 +115,8 @@ export const App = () => {
               setRoomName={setRoomName}
               jitsiContext={jitsiContext}
               setJitsiContext={setJitsiContext}
+              onRouterStatePushed={onRouterStatePushed}
+              displayTranscriptId={routeTranscriptId}
             />
           ))}
       </div>

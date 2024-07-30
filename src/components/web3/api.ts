@@ -77,7 +77,28 @@ export interface Web3SolRequestBody {
   avatarURL: string | null;
 }
 
-export const web3Login = async (): Promise<string> => {
+const onceAndSharePromise = (f: (...args: any[]) => Promise<string>) => {
+  let promise: undefined | Promise<any>;
+  return (...args: any[]) => {
+    if (promise !== undefined) {
+      return promise;
+    } else {
+      promise = f(...args)
+        .then((value: any) => {
+          promise = undefined;
+          return value;
+        })
+        .catch((err) => {
+          promise = undefined;
+          throw err;
+        });
+      return promise;
+    }
+  };
+};
+
+// Wrapped to prevent multiple calls causing the wallet to close and reopen
+export const web3Login = onceAndSharePromise(async (): Promise<string> => {
   const allAddresses: string[] = await window.ethereum.request({
     method: "eth_requestAccounts",
   });
@@ -85,9 +106,9 @@ export const web3Login = async (): Promise<string> => {
   console.log(`!!! allAddresses`, allAddresses);
 
   return allAddresses[0];
-};
+});
 
-export const web3LoginSol = async (): Promise<string> => {
+export const web3LoginSol = onceAndSharePromise(async (): Promise<string> => {
   try {
     const result = await window.braveSolana.connect();
     console.log("!!! allAddresses", result);
@@ -97,7 +118,7 @@ export const web3LoginSol = async (): Promise<string> => {
     console.log("!!! allAddresses", result);
     return result.publicKey.toBase58();
   }
-};
+});
 
 export const web3NFTs = async (address: string): Promise<NFT[]> => {
   try {
