@@ -1,5 +1,5 @@
 import * as Rewards from "@brave-intl/skus-sdk";
-import { isDevelopment, isProduction } from "./environment";
+import { isProduction, shouldForcePaymentsStaging } from "./environment";
 
 let sdkref: Rewards.JSSDK | undefined;
 
@@ -13,7 +13,7 @@ const loadRewardsSdk = async (): Promise<Rewards.JSSDK> => {
 
   log(`calling initialize(${env}, false)...`);
   const sdk = await Rewards.initialize(
-    isDevelopment ? "development" : env,
+    shouldForcePaymentsStaging ? "staging" : env,
     false,
     isProduction ? "error" : "info",
   );
@@ -68,12 +68,16 @@ export async function recoverCredsIfRequired(orderId: string): Promise<void> {
   }
 }
 
+function getCredentialHostname(): string | undefined {
+  return shouldForcePaymentsStaging ? "talk.bravesoftware.com" : undefined;
+}
+
 export async function checkSubscribedUsingSDK(): Promise<boolean> {
   try {
     const sdk = await loadRewardsSdk();
     log(`calling credential_summary...`);
 
-    const result = await sdk.credential_summary();
+    const result = await sdk.credential_summary(getCredentialHostname());
     log("credential_summary returns", result);
     if (result && result.active) {
       return true;
@@ -91,7 +95,7 @@ export async function setTemporaryCredentialCookie(): Promise<boolean> {
 
     log(`calling present_credentials...`);
 
-    const result = await sdk.present_credentials();
+    const result = await sdk.present_credentials(getCredentialHostname());
     log("present_credentials returns", result);
     if (result) {
       return true;

@@ -54,7 +54,7 @@ export const App = () => {
     window.close();
   }
 
-  const initialiseRouteTranscript = () => {
+  const initRouteTranscriptId = () => {
     const match = window.location.pathname.match(
       /^\/transcript-([a-z0-9]{50})$/,
     );
@@ -62,11 +62,11 @@ export const App = () => {
       return match[1];
     }
   };
-  const [routeTranscript, setRouteTranscript] = React.useState<
+  const [routeTranscriptId, setRouteTranscriptId] = React.useState<
     string | undefined
-  >(initialiseRouteTranscript);
+  >(initRouteTranscriptId);
   const onRouterStatePushed = () => {
-    setRouteTranscript(initialiseRouteTranscript());
+    setRouteTranscriptId(initRouteTranscriptId());
   };
   useEffect(() => {
     const onPopstate = onRouterStatePushed;
@@ -80,7 +80,7 @@ export const App = () => {
     <React.Fragment>
       <GlobalStyles />
       <div css={styles.container}>
-        {!routeTranscript && isCallReady && (
+        {!routeTranscriptId && isCallReady && (
           <InCall
             roomName={roomName ?? ""}
             jwt={jwt ?? ""}
@@ -116,7 +116,7 @@ export const App = () => {
               jitsiContext={jitsiContext}
               setJitsiContext={setJitsiContext}
               onRouterStatePushed={onRouterStatePushed}
-              displayTranscriptId={routeTranscript}
+              displayTranscriptId={routeTranscriptId}
             />
           ))}
       </div>

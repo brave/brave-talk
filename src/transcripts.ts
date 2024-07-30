@@ -19,6 +19,17 @@ enum TranscriptDetailsOperation {
   Finalize,
 }
 
+export function getTranscriptDisplayPath(
+  originalTranscriptUrl: string,
+): string {
+  const match = originalTranscriptUrl.match(/\/([a-z0-9]{50})\/?$/);
+  if (!match) {
+    throw new Error("No transcript id found in URL");
+  }
+  const transcriptId: string = match[1];
+  return `/transcript-${transcriptId}`;
+}
+
 const operateOnTranscriptDetails = async (
   roomName: string,
   jwt: string,
@@ -103,6 +114,7 @@ export class TranscriptManager {
   data: { [key: string]: JitsiTranscriptionChunk } = {};
   prompt: string = "";
   transcriptionUsed: boolean = false;
+  transcriptionEnabledAccordingToJitsiEvents: boolean = false;
 
   constructor(public onTranscriptChange: (transcript: string) => void) {}
 
@@ -147,6 +159,7 @@ export class TranscriptManager {
   }
 
   async handleTranscriptionEnabledEvent(jitsi: IJitsiMeetApi, status: boolean) {
+    this.transcriptionEnabledAccordingToJitsiEvents = status;
     if (!this.jwt) {
       throw new Error(
         "Could not process transcription enabled event due to missing JWT",
@@ -188,7 +201,7 @@ export class TranscriptManager {
       jitsi.executeCommand("showNotification", {
         title: i18next.t("transcription_link_available_title"),
         description: i18next.t("transcription_link_available_description", {
-          transcriptUrl,
+          transcriptUrl: `${window.location.origin}${getTranscriptDisplayPath(transcriptUrl)}`,
         }),
         type: "normal",
         timeout: "sticky",

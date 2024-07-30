@@ -1,5 +1,4 @@
-enum TranscriptAction {
-  CallStart,
+export enum TranscriptAction {
   Join,
   Leave,
 }
@@ -7,12 +6,13 @@ enum TranscriptAction {
 export interface TranscriptionEvent {
   timeOffset: string;
   participant: string;
-  message: string;
-  action?: TranscriptAction;
+  messageOrAction: string | TranscriptAction;
 }
 
 export interface DownloadedTranscript {
+  id: string;
   url: string;
+  blobUrl: string;
   events: TranscriptionEvent[];
   startDateTime: Date | undefined;
 }
@@ -22,8 +22,14 @@ const ACTION_NAMES: Record<string, TranscriptAction> = {
   " left the call.": TranscriptAction.Leave,
 };
 
-export function parseTranscriptLines(transcript: string): TranscriptionEvent[] {
-  return [...generateTranscriptLines(transcript)];
+export function parseTranscriptLines(transcript: string): {
+  events: TranscriptionEvent[];
+  text: string;
+} {
+  return {
+    events: [...generateTranscriptLines(transcript)],
+    text: transcript,
+  };
 }
 
 export function* generateTranscriptLines(transcript: string) {
@@ -36,8 +42,7 @@ export function* generateTranscriptLines(transcript: string) {
         const result: TranscriptionEvent = {
           timeOffset,
           participant: remainder.substring(0, remainder.length - s.length),
-          message: s,
-          action: ACTION_NAMES[s],
+          messageOrAction: ACTION_NAMES[s],
         };
         yield result;
       }
@@ -50,7 +55,7 @@ export function* generateTranscriptLines(transcript: string) {
     const result: TranscriptionEvent = {
       timeOffset,
       participant: match.participant,
-      message: match.message,
+      messageOrAction: match.message,
     };
     yield result;
   }
