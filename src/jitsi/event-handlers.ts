@@ -375,7 +375,9 @@ export const videoConferenceJoinedHandler = (
     console.log(`!!! 8x8 url: ${iframe.src.split("?")[0]}`);
 
     jitsi.getDeploymentInfo().then((result: JitsiDeployment) => {
-      console.log(`!!! deployment: ${result.environment} ${result.releaseNumber}`);
+      console.log(
+        `!!! deployment: ${result.environment} ${result.releaseNumber}`,
+      );
     });
   },
 });
