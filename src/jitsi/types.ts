@@ -149,3 +149,12 @@ export type JitsiParticipant = {
   displayName: string;
   id: string;
 };
+
+export type JitsiDeployment = {
+  environment: string;
+  envType: string;
+  releaseNumber: string;
+  shard: string;
+  region: string;
+  userRegion: string;
+};
