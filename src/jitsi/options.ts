@@ -1,6 +1,6 @@
 import { config } from "../environment";
 import { getLangPref } from "../get-language-detector";
-import { JitsiOptions } from "./types";
+import { CustomToolbarButton, JitsiOptions } from "./types";
 import { reportAction } from "../lib";
 
 export const jitsiOptions = (
@@ -21,6 +21,7 @@ export const jitsiOptions = (
         rtcstatsEnabled: false,
       },
       brandingRoomAlias: roomName,
+      buttonsWithNotifyClick: <string[]>[],
       callStatsID: false,
       callStatsSecret: false,
       conferenceInfo: {
@@ -36,13 +37,7 @@ export const jitsiOptions = (
           "top-panel-toggle",
         ],
       },
-      customParticipantMenuButtons: [
-        {
-          icon: "data:image/svg+xml,%3Csvg width='24' height='24' viewBox='0 0 24 24' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath fill-rule='evenodd' clip-rule='evenodd' d='M10.1 4C7.06241 4 4.59998 6.46243 4.59998 9.5C4.59998 11.4177 5.58061 13.1068 7.07245 14.0926C7.94034 14.6661 8.97964 15 10.1 15C10.5562 15 10.9981 14.9447 11.4199 14.8408C13.8205 14.2499 15.6 12.0815 15.6 9.5C15.6 8.99636 15.5325 8.51005 15.4068 8.04887C14.7703 5.71468 12.6341 4 10.1 4ZM2.59998 9.5C2.59998 5.35786 5.95784 2 10.1 2C13.3975 2 16.1958 4.12726 17.2016 7.08279L20.4472 8.70558C20.7083 8.83613 20.8993 9.07426 20.9701 9.35747L21.9701 13.3575C22.0432 13.6496 21.9807 13.9591 21.8 14.2L18.8 18.2C18.6111 18.4518 18.3148 18.6 18 18.6H14.7386C13.9452 20.3118 12.2124 21.5 10.2 21.5C7.43853 21.5 5.19995 19.2614 5.19995 16.5C5.19995 16.0872 5.25018 15.6852 5.34506 15.3003C3.67061 13.926 2.59998 11.8382 2.59998 9.5ZM7.20102 16.4189C7.20031 16.4458 7.19995 16.4729 7.19995 16.5C7.19995 18.1569 8.5431 19.5 10.2 19.5C11.1104 19.5 11.9271 19.0941 12.4777 18.4528C12.3714 18.3876 12.2768 18.3024 12.2 18.2L11.2358 16.9144C10.865 16.9708 10.4856 17 10.1 17C9.07323 17 8.09341 16.7932 7.20102 16.4189ZM13.273 16.2974L13.5 16.6H17.5L19.9144 13.3808L19.1414 10.2887L17.6 9.51802C17.5929 12.5192 15.8237 15.1047 13.273 16.2974ZM10 5.8C10.3632 5.8 10.6978 5.99689 10.8742 6.31436L13.3742 10.8144C13.5462 11.1241 13.5416 11.5018 13.3619 11.8071C13.1822 12.1125 12.8543 12.3 12.5 12.3H7.5C7.14568 12.3 6.81781 12.1125 6.63813 11.8071C6.45844 11.5018 6.45377 11.1241 6.62584 10.8144L9.12584 6.31436C9.30221 5.99689 9.63683 5.8 10 5.8ZM9.19951 10.3H10.8005L10 8.85913L9.19951 10.3Z' fill='white'/%3E%3C/svg%3E%0A",
-          id: "send-crypto",
-          text: "Send Crypto",
-        },
-      ],
+      customToolbarButtons: <CustomToolbarButton[]>[],
       disabledSounds: ["E2EE_OFF_SOUND", "E2EE_ON_SOUND"],
       disableGTM: true,
       doNotStoreRoom: true,
@@ -74,18 +69,58 @@ export const jitsiOptions = (
       inviteAppName: "Brave Talk",
       localSubject: "Brave Talk",
       prejoinPageEnabled: true,
+      recordings: {
+        recordAudioAndVideo: false,
+      },
       resolution: isMobile ? 360 : undefined,
       roomPasswordNumberOfDigits: false,
       startWithAudioMuted: true,
       startWithVideoMuted: true,
+      localRecording: {
+        disable: true,
+      },
       toolbarConfig: {
         autoHideWhileChatIsOpen: true,
       },
+      // Default if not moderator
+      mainToolbarButtons: [
+        [
+          "microphone",
+          "camera",
+          "desktop",
+          "chat",
+          "raisehand",
+          "reactions",
+          "participants-pane",
+          "tileview",
+        ],
+        [
+          "microphone",
+          "camera",
+          "desktop",
+          "chat",
+          "raisehand",
+          "participants-pane",
+          "tileview",
+        ],
+        [
+          "microphone",
+          "camera",
+          "desktop",
+          "chat",
+          "raisehand",
+          "participants-pane",
+        ],
+        ["microphone", "camera", "desktop", "chat", "participants-pane"],
+        ["microphone", "camera", "chat", "participants-pane"],
+        ["microphone", "camera", "chat"],
+        ["microphone", "camera"],
+      ],
       // taken from https://github.com/jitsi/jitsi-meet/blob/master/react/features/base/config/constants.ts#L16
+      // DO NOT ADD "subtitles"/"closedcaptions" without first talking with the JAAS folks first, or else!
       toolbarButtons: [
         "camera",
         "chat",
-        "closedcaptions",
         "desktop",
         "download",
         "embedmeeting",
@@ -121,7 +156,10 @@ export const jitsiOptions = (
         "videoquality",
         "whiteboard",
       ],
-      transcribingEnabled: false,
+      transcribingEnabled: true,
+      transcription: {
+        autoTranscribeOnRecord: false,
+      },
       useHostPageLocalStorage: true,
       videoQuality: {
         persist: true,
@@ -135,7 +173,7 @@ export const jitsiOptions = (
       // a no-op
       DEFAULT_LOGO_URL: "https://talk.brave.com/images/brave_logo_dark.svg",
       DEFAULT_REMOTE_DISPLAY_NAME: "User",
-      DISABLE_TRANSCRIPTION_SUBTITLES: true,
+      DISABLE_TRANSCRIPTION_SUBTITLES: false,
 
       //          DISABLE_FOCUS_INDICATOR: true,
       //          DISABLE_DOMINANT_SPEAKER_INDICATOR: true,
@@ -189,7 +227,9 @@ export const jitsiOptions = (
     },
   };
 
-  const features = jwt_decode(jwt)?.context?.features;
+  const jwtContext = jwt_decode(jwt)?.context;
+  const features = jwtContext?.features;
+  const isModerator = jwtContext?.user?.moderator === "true";
 
   reportAction("features", { features });
 
@@ -201,8 +241,52 @@ export const jitsiOptions = (
           "highlight-moment",
         );
       }
+      if (feature === "transcription" && isModerator) {
+        options.configOverwrite.customToolbarButtons.push(
+          leoButtonTranscriptionOff,
+        );
+        options.configOverwrite.buttonsWithNotifyClick.push("leo");
+        options.configOverwrite.mainToolbarButtons = [
+          [
+            "microphone",
+            "camera",
+            "desktop",
+            "chat",
+            "raisehand",
+            "reactions",
+            "participants-pane",
+            "leo",
+          ],
+          [
+            "microphone",
+            "camera",
+            "desktop",
+            "chat",
+            "raisehand",
+            "participants-pane",
+            "leo",
+          ],
+          ["microphone", "camera", "desktop", "chat", "raisehand", "leo"],
+          ["microphone", "camera", "desktop", "chat", "leo"],
+          ["microphone", "camera", "chat", "leo"],
+          ["microphone", "camera", "leo"],
+          ["microphone", "camera"],
+        ];
+      }
     }
   });
 
   return options;
+};
+
+export const leoButtonTranscriptionOn: CustomToolbarButton = {
+  id: "leo",
+  text: "Disable Transcript",
+  icon: "data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAiIGhlaWdodD0iMjAiIHZpZXdCb3g9IjAgMCAyMCAyMCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHBhdGggZmlsbC1ydWxlPSJldmVub2RkIiBjbGlwLXJ1bGU9ImV2ZW5vZGQiIGQ9Ik05LjM1MTc1IDAuMDA1MjQ5MDJDOC4zMjY1MSAwLjAwNTI0OTAyIDcuNDMyODMgMC43MDMwMSA3LjE4NDE3IDEuNjk3NjRMNi42OTMyMSAzLjY2MTQ5QzYuMzE5OTkgNS4xNTQzNiA1LjE1NDM2IDYuMzE5OTkgMy42NjE0OSA2LjY5MzIxTDEuNjk3NjQgNy4xODQxN0MwLjcwMzAxMyA3LjQzMjgzIDAuMDA1MjQ5MDIgOC4zMjY1IDAuMDA1MjQ5MDIgOS4zNTE3NUMwLjAwNTI0OTAyIDEwLjM3NyAwLjcwMzAxMiAxMS4yNzA3IDEuNjk3NjQgMTEuNTE5M0wzLjY2MTQ5IDEyLjAxMDNDNS4xNTQzNiAxMi4zODM1IDYuMzE5OTkgMTMuNTQ5MSA2LjY5MzIxIDE1LjA0Mkw3LjE4NDE3IDE3LjAwNTlDNy40MzI4MyAxOC4wMDA1IDguMzI2NTEgMTguNjk4MiA5LjM1MTc1IDE4LjY5ODJDMTAuMzc3IDE4LjY5ODIgMTEuMjcwNyAxOC4wMDA1IDExLjUxOTMgMTcuMDA1OUwxMi4wMTAzIDE1LjA0MkMxMi4zODM1IDEzLjU0OTEgMTMuNTQ5MSAxMi4zODM1IDE1LjA0MiAxMi4wMTAzTDE3LjAwNTggMTEuNTE5M0MxOC4wMDA1IDExLjI3MDcgMTguNjk4MiAxMC4zNzcgMTguNjk4MiA5LjM1MTc1QzE4LjY5ODIgOC4zMjY1IDE4LjAwMDUgNy40MzI4MyAxNy4wMDU4IDcuMTg0MTdMMTUuMDQyIDYuNjkzMjFDMTMuNTQ5MSA2LjMxOTk5IDEyLjM4MzUgNS4xNTQzNiAxMi4wMTAzIDMuNjYxNDlMMTEuNTE5MyAxLjY5NzY0QzExLjI3MDcgMC43MDMwMDkgMTAuMzc3IDAuMDA1MjQ5MDIgOS4zNTE3NSAwLjAwNTI0OTAyWk04Ljc1OTM4IDIuMDkxNDRDOC44MjczMyAxLjgxOTYyIDkuMDcxNTYgMS42Mjg5MyA5LjM1MTc1IDEuNjI4OTNDOS42MzE5MyAxLjYyODkzIDkuODc2MTYgMS44MTk2MiA5Ljk0NDEyIDIuMDkxNDRMMTAuNDM1MSA0LjA1NTI5QzEwLjk1MzcgNi4xMjk5IDEyLjU3MzYgNy43NDk3NiAxNC42NDgyIDguMjY4NDFMMTYuNjEyIDguNzU5MzhDMTYuODgzOSA4LjgyNzMzIDE3LjA3NDYgOS4wNzE1NiAxNy4wNzQ2IDkuMzUxNzVDMTcuMDc0NiA5LjYzMTkzIDE2Ljg4MzkgOS44NzYxNiAxNi42MTIgOS45NDQxMkwxNC42NDgyIDEwLjQzNTFDMTIuNTczNiAxMC45NTM3IDEwLjk1MzcgMTIuNTczNiAxMC40MzUxIDE0LjY0ODJMOS45NDQxMiAxNi42MTIxQzkuODc2MTYgMTYuODgzOSA5LjYzMTkzIDE3LjA3NDYgOS4zNTE3NSAxNy4wNzQ2QzkuMDcxNTYgMTcuMDc0NiA4LjgyNzMzIDE2Ljg4MzkgOC43NTkzOCAxNi42MTIxTDguMjY4NDIgMTQuNjQ4MkM3Ljc0OTc2IDEyLjU3MzYgNi4xMjk5IDEwLjk1MzcgNC4wNTUyOSAxMC40MzUxTDIuMDkxNDQgOS45NDQxMkMxLjgxOTYyIDkuODc2MTYgMS42Mjg5MyA5LjYzMTkzIDEuNjI4OTMgOS4zNTE3NUMxLjYyODkzIDkuMDcxNTYgMS44MTk2MiA4LjgyNzMzIDIuMDkxNDQgOC43NTkzOEw0LjA1NTI5IDguMjY4NDJDNi4xMjk5IDcuNzQ5NzYgNy43NDk3NiA2LjEyOTkgOC4yNjg0MiA0LjA1NTI5TDguNzU5MzggMi4wOTE0NFpNMTcuMDY1OSAxMy40NDE5QzE3LjAwMSAxMy4xODIyIDE2Ljc2NzcgMTMgMTYuNSAxM0MxNi4yMzIzIDEzIDE1Ljk5OSAxMy4xODIyIDE1LjkzNDEgMTMuNDQxOUwxNS43MzI3IDE0LjI0NzJDMTUuNTQ5OSAxNC45Nzg3IDE0Ljk3ODcgMTUuNTQ5OSAxNC4yNDcyIDE1LjczMjdMMTMuNDQxOSAxNS45MzQxQzEzLjE4MjIgMTUuOTk5IDEzIDE2LjIzMjMgMTMgMTYuNUMxMyAxNi43Njc3IDEzLjE4MjIgMTcuMDAxIDEzLjQ0MTkgMTcuMDY1OUwxNC4yNDcyIDE3LjI2NzNDMTQuOTc4NyAxNy40NTAxIDE1LjU0OTkgMTguMDIxMyAxNS43MzI3IDE4Ljc1MjhMMTUuOTM0MSAxOS41NTgxQzE1Ljk5OSAxOS44MTc4IDE2LjIzMjMgMjAgMTYuNSAyMEMxNi43Njc3IDIwIDE3LjAwMSAxOS44MTc4IDE3LjA2NTkgMTkuNTU4MUwxNy4yNjczIDE4Ljc1MjhDMTcuNDUwMSAxOC4wMjEzIDE4LjAyMTMgMTcuNDUwMSAxOC43NTI4IDE3LjI2NzNMMTkuNTU4MSAxNy4wNjU5QzE5LjgxNzggMTcuMDAxIDIwIDE2Ljc2NzcgMjAgMTYuNUMyMCAxNi4yMzIzIDE5LjgxNzggMTUuOTk5IDE5LjU1ODEgMTUuOTM0MUwxOC43NTI4IDE1LjczMjdDMTguMDIxMyAxNS41NDk5IDE3LjQ1MDEgMTQuOTc4NyAxNy4yNjczIDE0LjI0NzJMMTcuMDY1OSAxMy40NDE5WiIgZmlsbD0idXJsKCNwYWludDBfbGluZWFyXzI4MF81OTQ5KSIvPgo8ZGVmcz4KPGxpbmVhckdyYWRpZW50IGlkPSJwYWludDBfbGluZWFyXzI4MF81OTQ5IiB4MT0iMTguOTYxMyIgeTE9IjE4LjYxODIiIHgyPSItMC4wMTMyNzg0IiB5Mj0iMC4wMjQxMzc0IiBncmFkaWVudFVuaXRzPSJ1c2VyU3BhY2VPblVzZSI+CjxzdG9wIG9mZnNldD0iMC4wMjYwNDE3IiBzdG9wLWNvbG9yPSIjRkE3MjUwIi8+CjxzdG9wIG9mZnNldD0iMC40MDEwNDIiIHN0b3AtY29sb3I9IiNGRjE4OTMiLz4KPHN0b3Agb2Zmc2V0PSIwLjk5NDc5MiIgc3RvcC1jb2xvcj0iI0E3OEFGRiIvPgo8L2xpbmVhckdyYWRpZW50Pgo8L2RlZnM+Cjwvc3ZnPiAg",
+};
+
+export const leoButtonTranscriptionOff: CustomToolbarButton = {
+  id: "leo",
+  text: "Enable Transcript",
+  icon: "data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjQiIGhlaWdodD0iMjQiIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPGcgY2xpcC1wYXRoPSJ1cmwoI2NsaXAwXzExOV8xOTcyMykiPgo8cGF0aCBmaWxsLXJ1bGU9ImV2ZW5vZGQiIGNsaXAtcnVsZT0iZXZlbm9kZCIgZD0iTTExLjM1MTkgMi4wMDUzN0MxMC4zMjY2IDIuMDA1MzcgOS40MzI5NSAyLjcwMzEzIDkuMTg0MjkgMy42OTc3Nkw4LjY5MzMzIDUuNjYxNjFDOC4zMjAxMiA3LjE1NDQ4IDcuMTU0NDggOC4zMjAxMiA1LjY2MTYxIDguNjkzMzNMMy42OTc3NiA5LjE4NDI5QzIuNzAzMTMgOS40MzI5NSAyLjAwNTM3IDEwLjMyNjYgMi4wMDUzNyAxMS4zNTE5QzIuMDA1MzcgMTIuMzc3MSAyLjcwMzEzIDEzLjI3MDggMy42OTc3NiAxMy41MTk0TDUuNjYxNjEgMTQuMDEwNEM3LjE1NDQ4IDE0LjM4MzYgOC4zMjAxMiAxNS41NDkzIDguNjkzMzMgMTcuMDQyMUw5LjE4NDI5IDE5LjAwNkM5LjQzMjk1IDIwLjAwMDYgMTAuMzI2NiAyMC42OTg0IDExLjM1MTkgMjAuNjk4NEMxMi4zNzcxIDIwLjY5ODQgMTMuMjcwOCAyMC4wMDA2IDEzLjUxOTQgMTkuMDA2TDE0LjAxMDQgMTcuMDQyMUMxNC4zODM2IDE1LjU0OTMgMTUuNTQ5MyAxNC4zODM2IDE3LjA0MjEgMTQuMDEwNEwxOS4wMDYgMTMuNTE5NEMyMC4wMDA2IDEzLjI3MDggMjAuNjk4NCAxMi4zNzcxIDIwLjY5ODQgMTEuMzUxOUMyMC42OTg0IDEwLjMyNjYgMjAuMDAwNiA5LjQzMjk1IDE5LjAwNiA5LjE4NDI5TDE3LjA0MjEgOC42OTMzM0MxNS41NDkzIDguMzIwMTEgMTQuMzgzNiA3LjE1NDQ4IDE0LjAxMDQgNS42NjE2MUwxMy41MTk0IDMuNjk3NzZDMTMuMjcwOCAyLjcwMzEzIDEyLjM3NzEgMi4wMDUzNyAxMS4zNTE5IDIuMDA1MzdaTTEwLjc1OTUgNC4wOTE1NkMxMC44Mjc1IDMuODE5NzQgMTEuMDcxNyAzLjYyOTA2IDExLjM1MTkgMy42MjkwNkMxMS42MzIxIDMuNjI5MDYgMTEuODc2MyAzLjgxOTc1IDExLjk0NDIgNC4wOTE1NkwxMi40MzUyIDYuMDU1NDFDMTIuOTUzOSA4LjEzMDAyIDE0LjU3MzcgOS43NDk4OCAxNi42NDgzIDEwLjI2ODVMMTguNjEyMiAxMC43NTk1QzE4Ljg4NCAxMC44Mjc1IDE5LjA3NDcgMTEuMDcxNyAxOS4wNzQ3IDExLjM1MTlDMTkuMDc0NyAxMS42MzIxIDE4Ljg4NCAxMS44NzYzIDE4LjYxMjIgMTEuOTQ0MkwxNi42NDgzIDEyLjQzNTJDMTQuNTczNyAxMi45NTM5IDEyLjk1MzkgMTQuNTczNyAxMi40MzUyIDE2LjY0ODNMMTEuOTQ0MiAxOC42MTIyQzExLjg3NjMgMTguODg0IDExLjYzMjEgMTkuMDc0NyAxMS4zNTE5IDE5LjA3NDdDMTEuMDcxNyAxOS4wNzQ3IDEwLjgyNzUgMTguODg0IDEwLjc1OTUgMTguNjEyMkwxMC4yNjg1IDE2LjY0ODNDOS43NDk4OSAxNC41NzM3IDguMTMwMDIgMTIuOTUzOSA2LjA1NTQxIDEyLjQzNTJMNC4wOTE1NiAxMS45NDQyQzMuODE5NzQgMTEuODc2MyAzLjYyOTA2IDExLjYzMjEgMy42MjkwNiAxMS4zNTE5QzMuNjI5MDYgMTEuMDcxNyAzLjgxOTc1IDEwLjgyNzUgNC4wOTE1NiAxMC43NTk1TDYuMDU1NDEgMTAuMjY4NUM4LjEzMDAyIDkuNzQ5ODggOS43NDk4OCA4LjEzMDAyIDEwLjI2ODUgNi4wNTU0MUwxMC43NTk1IDQuMDkxNTZaTTE5LjA2NiAxNS40NDJDMTkuMDAxMSAxNS4xODIzIDE4Ljc2NzggMTUuMDAwMSAxOC41MDAxIDE1LjAwMDFDMTguMjMyNCAxNS4wMDAxIDE3Ljk5OTEgMTUuMTgyMyAxNy45MzQyIDE1LjQ0MkwxNy43MzI5IDE2LjI0NzNDMTcuNTUgMTYuOTc4OCAxNi45Nzg4IDE3LjU1IDE2LjI0NzMgMTcuNzMyOUwxNS40NDIgMTcuOTM0MkMxNS4xODIzIDE3Ljk5OTEgMTUuMDAwMSAxOC4yMzI0IDE1LjAwMDEgMTguNTAwMUMxNS4wMDAxIDE4Ljc2NzggMTUuMTgyMyAxOS4wMDExIDE1LjQ0MiAxOS4wNjZMMTYuMjQ3MyAxOS4yNjc0QzE2Ljk3ODggMTkuNDUwMyAxNy41NSAyMC4wMjE0IDE3LjczMjkgMjAuNzUyOUwxNy45MzQyIDIxLjU1ODNDMTcuOTk5MSAyMS44MTc5IDE4LjIzMjQgMjIuMDAwMSAxOC41MDAxIDIyLjAwMDFDMTguNzY3OCAyMi4wMDAxIDE5LjAwMTEgMjEuODE3OSAxOS4wNjYgMjEuNTU4M0wxOS4yNjc0IDIwLjc1MjlDMTkuNDUwMyAyMC4wMjE0IDIwLjAyMTQgMTkuNDUwMyAyMC43NTI5IDE5LjI2NzRMMjEuNTU4MyAxOS4wNjZDMjEuODE3OSAxOS4wMDExIDIyLjAwMDEgMTguNzY3OCAyMi4wMDAxIDE4LjUwMDFDMjIuMDAwMSAxOC4yMzI0IDIxLjgxNzkgMTcuOTk5MSAyMS41NTgzIDE3LjkzNDJMMjAuNzUyOSAxNy43MzI5QzIwLjAyMTQgMTcuNTUgMTkuNDUwMyAxNi45Nzg4IDE5LjI2NzQgMTYuMjQ3M0wxOS4wNjYgMTUuNDQyWiIgZmlsbD0iI2ZmZmZmZiIvPgo8L2c+CjxkZWZzPgo8Y2xpcFBhdGggaWQ9ImNsaXAwXzExOV8xOTcyMyI+CjxwYXRoIGQ9Ik0wIDYuNDRDMCA0LjE2MjA0IDAgMy4wMjMwNiAwLjQ1MDM0NiAyLjE1NjFDMC44Mjk4NDggMS40MjU1MyAxLjQyNTUzIDAuODI5ODQ4IDIuMTU2MSAwLjQ1MDM0NkMzLjAyMzA2IDAgNC4xNjIwNCAwIDYuNDQgMEgxNy41NkMxOS44MzggMCAyMC45NzY5IDAgMjEuODQzOSAwLjQ1MDM0NkMyMi41NzQ1IDAuODI5ODQ4IDIzLjE3MDIgMS40MjU1MyAyMy41NDk3IDIuMTU2MUMyNCAzLjAyMzA2IDI0IDQuMTYyMDQgMjQgNi40NFYxNy41NkMyNCAxOS44MzggMjQgMjAuOTc2OSAyMy41NDk3IDIxLjg0MzlDMjMuMTcwMiAyMi41NzQ1IDIyLjU3NDUgMjMuMTcwMiAyMS44NDM5IDIzLjU0OTdDMjAuOTc2OSAyNCAxOS44MzggMjQgMTcuNTYgMjRINi40NEM0LjE2MjA0IDI0IDMuMDIzMDYgMjQgMi4xNTYxIDIzLjU0OTdDMS40MjU1MyAyMy4xNzAyIDAuODI5ODQ4IDIyLjU3NDUgMC40NTAzNDYgMjEuODQzOUMwIDIwLjk3NjkgMCAxOS44MzggMCAxNy41NlY2LjQ0WiIgZmlsbD0id2hpdGUiLz4KPC9jbGlwUGF0aD4KPC9kZWZzPgo8L3N2Zz4K",
 };

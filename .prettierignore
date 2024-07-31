@@ -7,3 +7,6 @@ tsbuild/
 # let npm maintain the formatting of its files
 package-lock.json
 package.json
+
+# get past the tsconfig nonsense
+tsconfig.json

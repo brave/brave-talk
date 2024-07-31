@@ -11,10 +11,6 @@ To work with it locally:
 
 Source code is all in [`src`](./src). Contents of [`public`](./public) are deployed to target without further modification.
 
-Currently the page uses a html template [`index.html`](./src/index.html) styled using global class names in [`css/welcome.css`](./src/css/welcome/css). Logic is contained within [`index.ts`](./src/index.ts).
-
-By convention, the javsascript this interacts with elements in the html template by id and the css relies solely on class names.
-
 Before you commit, you most likely want to ensure the continuous integration build will not
 fail. To run the most likely-to-fail checks, use:
 

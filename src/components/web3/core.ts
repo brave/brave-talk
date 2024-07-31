@@ -15,6 +15,7 @@ export interface NFTcollection {
   name: string;
   image_url: string;
   chain: string;
+  spam_score: number;
 }
 
 export interface NFT {

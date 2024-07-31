@@ -3,7 +3,6 @@ import { fetchWithTimeout } from "../../lib";
 import { NFTcollection, POAP, NFT } from "./core";
 import { EIP4361Message, createEIP4361Message } from "./EIP4361";
 import { Buffer } from "buffer";
-import { CryptoTransactionParams } from "./crypto/common";
 
 declare let window: any;
 
@@ -78,7 +77,28 @@ export interface Web3SolRequestBody {
   avatarURL: string | null;
 }
 
-export const web3Login = async (): Promise<string> => {
+const onceAndSharePromise = (f: (...args: any[]) => Promise<string>) => {
+  let promise: undefined | Promise<any>;
+  return (...args: any[]) => {
+    if (promise !== undefined) {
+      return promise;
+    } else {
+      promise = f(...args)
+        .then((value: any) => {
+          promise = undefined;
+          return value;
+        })
+        .catch((err) => {
+          promise = undefined;
+          throw err;
+        });
+      return promise;
+    }
+  };
+};
+
+// Wrapped to prevent multiple calls causing the wallet to close and reopen
+export const web3Login = onceAndSharePromise(async (): Promise<string> => {
   const allAddresses: string[] = await window.ethereum.request({
     method: "eth_requestAccounts",
   });
@@ -86,9 +106,9 @@ export const web3Login = async (): Promise<string> => {
   console.log(`!!! allAddresses`, allAddresses);
 
   return allAddresses[0];
-};
+});
 
-export const web3LoginSol = async (): Promise<string> => {
+export const web3LoginSol = onceAndSharePromise(async (): Promise<string> => {
   try {
     const result = await window.braveSolana.connect();
     console.log("!!! allAddresses", result);
@@ -98,7 +118,7 @@ export const web3LoginSol = async (): Promise<string> => {
     console.log("!!! allAddresses", result);
     return result.publicKey.toBase58();
   }
-};
+});
 
 export const web3NFTs = async (address: string): Promise<NFT[]> => {
   try {
@@ -188,8 +208,9 @@ export const web3NFTcollections = async (
             image_url: nft.previews?.image_small_url
               ? nft.previews.image_small_url
               : nft.image_url
-              ? nft.image_url
-              : nft.collection?.image_url,
+                ? nft.image_url
+                : nft.collection?.image_url,
+            spam_score: nft.collection.spam_score || 0,
           };
         }
 
@@ -213,7 +234,7 @@ export const web3NFTcollections = async (
   }
 };
 
-export const getNonce = async (): Promise<string> => {
+const getNonce = async (): Promise<string> => {
   const getNonceURL = "/api/v1/nonce";
   const response = await fetchWithTimeout(getNonceURL, {
     method: "GET",
@@ -271,48 +292,6 @@ export const web3Prove = async (
     },
   };
 
-  return result;
-};
-
-export const generateSIWEForCrypto = async (
-  web3Address: string,
-  params: CryptoTransactionParams,
-  msg: string,
-) => {
-  const message: EIP4361Message = {
-    domain: window.location.host,
-    address: web3Address,
-    statement: msg,
-    uri: window.location.toString(),
-    version: "1",
-    chainId: 1,
-    // HT:https://stackoverflow.com/questions/40031688/javascript-arraybuffer-to-hex/40031979
-    // btoa has some characters not allowed by the EIP-4361 ABNF
-    nonce: params.nonce,
-    issuedAt: new Date().toISOString(),
-  };
-  const { ethers } = await require("ethers");
-  window.web3 = new ethers.BrowserProvider(window.ethereum);
-  if (!window.web3) {
-    throw new Error("unable to create ethers.BrowserProvider object");
-  }
-  const payload = createEIP4361Message(message, "Ethereum");
-  const payloadBytes = new TextEncoder().encode(payload);
-  const { hexlify } = await import("ethers");
-  const hexPayload = hexlify(payloadBytes);
-  const signer = await window.web3.getSigner(web3Address);
-  const signature = await signer.signMessage(payload);
-  console.log(`!!! web3 signature=${signature}`);
-
-  const result = {
-    method: "EIP-4361-json",
-    proof: {
-      signer: web3Address,
-      signature: signature,
-      payload: hexPayload,
-    },
-  };
-  console.log("!!! result of SIWE", result);
   return result;
 };
 

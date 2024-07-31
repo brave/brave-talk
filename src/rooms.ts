@@ -39,6 +39,25 @@ interface RoomsRequestParams {
 const GENERIC_ERROR_MESSAGE =
   "Oops! We were unable to connect to your meeting room. Please try again.";
 
+export const getRoomUrl = (roomName: string): string => {
+  return `${SUBSCRIPTIONS_ROOT_URL}/v1/rooms/${encodeURIComponent(roomName)}`;
+};
+
+export const getRoomCsrfToken = async (roomName: string): Promise<string> => {
+  const optionsResponse = await fetchWithTimeout(getRoomUrl(roomName), {
+    method: "OPTIONS",
+    credentials: "include",
+  });
+  const csrfToken = optionsResponse.headers.get("x-csrf-token");
+  if (!csrfToken) {
+    console.warn(
+      "!!! OPTIONS request failed to return x-csrf-token, which is likely due to incorrectly configured CORS policy",
+    );
+    throw new Error(GENERIC_ERROR_MESSAGE);
+  }
+  return csrfToken;
+};
+
 const roomsRequest = async ({
   roomName,
   urlSuffix = "",
@@ -48,27 +67,9 @@ const roomsRequest = async ({
   successCodes,
   failureMessages,
 }: RoomsRequestParams): Promise<RoomResponse> => {
-  const optionsUrl = `${SUBSCRIPTIONS_ROOT_URL}/v1/rooms/${encodeURIComponent(
-    roomName,
-  )}`;
-  const url = `${optionsUrl}${urlSuffix}`;
+  const url = `${getRoomUrl(roomName)}${urlSuffix}`;
   try {
-    console.log(`>>> OPTIONS ${optionsUrl}`);
-    const optionsResponse = await fetchWithTimeout(optionsUrl, {
-      method: "OPTIONS",
-      credentials: "include",
-    });
-
-    console.log(`<<< OPTIONS ${optionsUrl} ${optionsResponse.status}`);
-
-    const csrfToken = optionsResponse.headers.get("x-csrf-token");
-    if (!csrfToken) {
-      console.warn(
-        "!!! OPTIONS request failed to return x-csrf-token, which is likely due to incorrectly configured CORS policy",
-      );
-      throw new Error(GENERIC_ERROR_MESSAGE);
-    }
-
+    const csrfToken = await getRoomCsrfToken(roomName);
     const reqParams: RequestInit = {
       method,
       headers: {

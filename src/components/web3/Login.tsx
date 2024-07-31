@@ -13,7 +13,16 @@ export const Login = ({ web3address, onAddressSelected }: Props) => {
   const { t } = useTranslation();
 
   useEffect(() => {
-    window.ethereum?.on("accountsChanged", () => setNotice(undefined));
+    if (window.ethereum) {
+      const handleAccountsChanged = () => setNotice(undefined);
+      window.ethereum.on("accountsChanged", handleAccountsChanged);
+      return () => {
+        window.ethereum.removeListener(
+          "accountsChanged",
+          handleAccountsChanged,
+        );
+      };
+    }
   }, []);
 
   useEffect(() => {
