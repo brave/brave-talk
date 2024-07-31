@@ -1,7 +1,13 @@
+import { shouldForcePaymentsStaging } from "./environment";
+
 export function resolveService(
   servicePrefix: string,
   baseHost: string = window.location.host,
 ): string {
+  if (shouldForcePaymentsStaging && servicePrefix === "account") {
+    // Only use payments staging in dev2, dev3 and staging
+    return "https://account.bravesoftware.com";
+  }
   return `https://${servicePrefix}.${secondLevelDomain(baseHost)}`;
 }
 

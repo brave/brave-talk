@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { TranslationKeys } from "../i18n/i18next";
 import {
   Web3RequestBody,
@@ -79,44 +79,69 @@ export function useWeb3CallState(
     });
   };
 
-  if (web3Account === "ETH") {
-    window.ethereum?.on("accountsChanged", (accounts: string[]) => {
-      console.log("!!! ETH accountsChanged", accounts);
-      setWeb3Account("ETH");
-      setWeb3Address(accounts[0], "accountsChanged");
-    });
-  }
+  useEffect(() => {
+    if (window.ethereum && web3Account === "ETH") {
+      const handleAccountsChanged = (accounts: string[]) => {
+        console.log("!!! ETH accountsChanged", accounts);
+        if (!(web3Account === "ETH" && web3Address === accounts[0])) {
+          setWeb3Account("ETH");
+          setWeb3Address(accounts[0], "accountsChanged");
+        }
+      };
+      window.ethereum.on("accountsChanged", handleAccountsChanged);
+      return () => {
+        window.ethereum.removeListener(
+          "accountsChanged",
+          handleAccountsChanged,
+        );
+      };
+    }
+  }, [web3Account]);
 
-  try {
-    window.braveSolana?.on("accountChanged", (account: any) => {
-      setWeb3Account("SOL");
-      if (account) {
-        console.log("!!! SOL accountChanged", account.toBase58());
-        setWeb3Address(account.toBase58(), "accountsChanged");
-      } else {
-        console.log("!!! SOL accountChanged", account);
-        setWeb3Address(account, "accountsChanged");
-      }
-    });
-  } catch {
-    console.warn("!!! Brave Wallet does not exists");
-  }
+  useEffect(() => {
+    if (window.braveSolana) {
+      const handleAccountChanged = (account: any) => {
+        setWeb3Account("SOL");
+        if (account) {
+          console.log("!!! SOL accountChanged", account.toBase58());
+          setWeb3Address(account.toBase58(), "accountsChanged");
+        } else {
+          console.log("!!! SOL accountChanged", account);
+          setWeb3Address(account, "accountsChanged");
+        }
+      };
+      window.braveSolana.on("accountChanged", handleAccountChanged);
+      return () => {
+        window.braveSolana.removeListener(
+          "accountChanged",
+          handleAccountChanged,
+        );
+      };
+    }
+  }, []);
 
-  try {
-    window.phantom?.solana.on("accountChanged", (account: any) => {
-      setWeb3Account("SOL");
-      console.log(account);
-      if (account) {
-        console.log("!!! SOL accountChanged", account.toBase58());
-        setWeb3Address(account.toBase58(), "accountsChanged");
-      } else {
-        console.log("!!! SOL accountChanged", account);
-        setWeb3Address(account, "accountsChanged");
-      }
-    });
-  } catch {
-    console.warn("!!! Phantom Wallet does not exists");
-  }
+  useEffect(() => {
+    if (window.phantom?.solana) {
+      const handleAccountChanged = (account: any) => {
+        setWeb3Account("SOL");
+        console.log(account);
+        if (account) {
+          console.log("!!! SOL accountChanged", account.toBase58());
+          setWeb3Address(account.toBase58(), "accountsChanged");
+        } else {
+          console.log("!!! SOL accountChanged", account);
+          setWeb3Address(account, "accountsChanged");
+        }
+      };
+      window.phantom.solana.on("accountChanged", handleAccountChanged);
+      return () => {
+        window.phantom.solana.removeListener(
+          "accountChanged",
+          handleAccountChanged,
+        );
+      };
+    }
+  }, []);
 
   const joinCall = async (
     roomName: string,

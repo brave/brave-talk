@@ -114,6 +114,7 @@ export class TranscriptManager {
   data: { [key: string]: JitsiTranscriptionChunk } = {};
   prompt: string = "";
   transcriptionUsed: boolean = false;
+  transcriptionEnabledAccordingToJitsiEvents: boolean = false;
 
   constructor(public onTranscriptChange: (transcript: string) => void) {}
 
@@ -158,6 +159,7 @@ export class TranscriptManager {
   }
 
   async handleTranscriptionEnabledEvent(jitsi: IJitsiMeetApi, status: boolean) {
+    this.transcriptionEnabledAccordingToJitsiEvents = status;
     if (!this.jwt) {
       throw new Error(
         "Could not process transcription enabled event due to missing JWT",
