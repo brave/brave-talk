@@ -9,6 +9,7 @@ import {
   JitsiRoom,
   JitsiParticipant,
   JitsiTranscriptionStatusEvent,
+  JitsiDeployment,
 } from "./types";
 import {
   resetCurrentRecordingState,
@@ -372,6 +373,10 @@ export const videoConferenceJoinedHandler = (
 
     const iframe: HTMLIFrameElement = jitsi.getIFrame();
     console.log(`!!! 8x8 url: ${iframe.src.split("?")[0]}`);
+
+    jitsi.getDeploymentInfo().then((result: JitsiDeployment) => {
+      console.log(`!!! deployment: ${result.environment} ${result.releaseNumber}`);
+    });
   },
 });
 
