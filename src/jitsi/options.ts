@@ -40,10 +40,12 @@ export const jitsiOptions = (
       customToolbarButtons: <CustomToolbarButton[]>[],
       disabledSounds: ["E2EE_OFF_SOUND", "E2EE_ON_SOUND"],
       disableGTM: true,
-      doNotStoreRoom: true,
       disableBeforeUnloadHandlers: true,
       disableInviteFunctions: false,
+      // turn off all third-party requests, e.g., for avatars
+      disableThirdPartyRequests: true,
       disableTileEnlargement: true,
+      doNotStoreRoom: true,
       dropbox: {
         appKey: null,
       },
