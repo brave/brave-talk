@@ -53,12 +53,12 @@
     "ts-jest": "29.2.5",
     "ts-loader": "9.5.1",
     "typescript": "5.5.4",
-    "webpack": "^5.94.0",
+    "webpack": "5.94.0",
     "webpack-cli": "5.1.4",
     "webpack-dev-server": "4.15.2"
   },
   "dependencies": {
-    "@brave/leo": "github:brave/leo#140cf08aa03bdf0d45455c0237ee3a00963e6093",
+    "@brave/leo": "github:brave/leo#4596893bbc1f7bbf1ef4d2e0ddca63b570cb997f",
     "@emotion/react": "11.13.3",
     "@types/dom-screen-wake-lock": "1.0.3",
     "buffer": "6.0.3",
