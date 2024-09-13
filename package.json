@@ -29,7 +29,7 @@
   "devDependencies": {
     "@brave-intl/skus-sdk": "0.1.3",
     "@types/jest": "29.5.12",
-    "@types/react": "18.3.3",
+    "@types/react": "18.3.5",
     "@types/react-dom": "18.3.0",
     "@typescript-eslint/eslint-plugin": "6.21.0",
     "@typescript-eslint/parser": "6.21.0",
@@ -58,7 +58,7 @@
     "webpack-dev-server": "4.15.2"
   },
   "dependencies": {
-    "@brave/leo": "github:brave/leo#8026f2eb134316da6d1f74a6b8a4cb5c3a046807",
+    "@brave/leo": "github:brave/leo#814c26dbbaa6a0ef4fc3fb9ff358cdd7333341c4",
     "@emotion/react": "11.13.3",
     "@types/dom-screen-wake-lock": "1.0.3",
     "buffer": "6.0.3",
