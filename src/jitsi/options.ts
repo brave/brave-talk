@@ -43,7 +43,8 @@ export const jitsiOptions = (
       disableBeforeUnloadHandlers: true,
       disableInviteFunctions: false,
       // turn off all third-party requests, e.g., for avatars
-      disableThirdPartyRequests: true,
+      // not yet (waiting on iOS update)
+      //    disableThirdPartyRequests: true,
       disableTileEnlargement: true,
       doNotStoreRoom: true,
       dropbox: {

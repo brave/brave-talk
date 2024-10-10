@@ -27,7 +27,6 @@ const styles = {
   }),
   solid: css({
     background: "rgba(255, 255, 255, 0.24)",
-    backdropFilter: "blur(16px)",
     "&:hover": { background: "rgba(255, 255, 255, 0.42)" },
     "&:active": { background: "rgba(255, 255, 255, 0.32)" },
     "&:disabled": { background: "rgba(255, 255, 255, 0.32)" },
