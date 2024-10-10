@@ -106,13 +106,14 @@ module.exports = {
     },
     open: ["/"],
     historyApiFallback: true,
-    proxy: {
-      "/api": {
+    proxy: [
+      {
+        context: ["/api"],
         target: "https://brave-talk-server.bsg.brave.software",
         pathRewrite: { "^/api": "" },
         changeOrigin: true,
       },
-    },
+    ],
   },
   optimization: {
     minimizer: [`...`, new CssMinimizerPlugin()],
