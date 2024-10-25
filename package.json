@@ -59,7 +59,7 @@
     "webpack-dev-server": "5.1.0"
   },
   "dependencies": {
-    "@brave/leo": "github:brave/leo#24fc7856282b10fd7e826e02db98ab56dd02fb2a",
+    "@brave/leo": "github:brave/leo#a429f5d866953f5b9ab56013e2584879cfea3021",
     "@emotion/react": "11.13.3",
     "@types/dom-screen-wake-lock": "1.0.3",
     "buffer": "6.0.3",
