@@ -52,14 +52,14 @@
     "style-loader": "3.3.4",
     "svgo-loader": "4.0.0",
     "ts-jest": "29.2.5",
-    "ts-loader": "9.5.1",
+    "ts-loader": "9.5.2",
     "typescript": "5.7.3",
     "webpack": "5.97.1",
     "webpack-cli": "5.1.4",
     "webpack-dev-server": "5.2.0"
   },
   "dependencies": {
-    "@brave/leo": "github:brave/leo#17d95906805e9485ba52ae4d8b34cc63c124dfc6",
+    "@brave/leo": "github:brave/leo#68c587f25300ca48e5fc87a5611a1a8a52f057b0",
     "@emotion/react": "11.14.0",
     "@types/dom-screen-wake-lock": "1.0.3",
     "buffer": "6.0.3",
