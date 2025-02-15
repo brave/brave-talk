@@ -38,7 +38,7 @@ export const Footer = ({ browser }: Props) => {
           <a href="https://brave.com/privacy/browser/#brave-talk-learn">
             {t("footer_pst_text")}
           </a>
-          . <a href="https://status.brave.com/">{t("footer_status_text")}</a>.
+          . <a href="https://status.brave.app/">{t("footer_status_text")}</a>.
         </div>
       </Text>
     </div>
