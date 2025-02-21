@@ -52,7 +52,7 @@ export default function LeoPromo() {
       <p>
         {t("leo_promo_description")}&nbsp;
         <a
-          href="https://brave.com/blog/talk-with-leo/"
+          href="https://support.brave.com/hc/en-us/articles/25728936518285-How-to-use-Leo-with-Brave-Talk"
           target="_blank"
           rel="noreferrer"
         >
