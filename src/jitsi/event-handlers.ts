@@ -1,4 +1,3 @@
-import { isProduction } from "../environment";
 import { reportAction, delta2elapsed } from "../lib";
 import {
   IJitsiMeetApi,
@@ -158,11 +157,6 @@ export const participantKickedOutHandler = (
       params,
       transcriptManager,
     );
-
-    if (context.web3Participants) {
-      delete context.web3Participants[params.id];
-      reportAction("web3 participants", context.web3Participants);
-    }
   },
 });
 
@@ -173,11 +167,6 @@ export const participantLeftHandler = (
   fn: (jitsi: IJitsiMeetApi, context: JitsiContext) => (params: any) => {
     nowActive(jitsi, context, "participantLeft", params);
     addEventForTranscript(jitsi, "participantLeft", params, transcriptManager);
-
-    if (context.web3Participants) {
-      delete context.web3Participants[params.id];
-      reportAction("web3 participants", context.web3Participants);
-    }
   },
 });
 
@@ -262,90 +251,6 @@ export const errorOccurredHandler = {
   name: "errorOccurred",
   fn: () => (params: any) => {
     reportAction("errorOccurred", params);
-  },
-};
-
-export const endpointTextMessageReceivedHandler = {
-  name: "endpointTextMessageReceived",
-  fn: (jitsi: IJitsiMeetApi, context: JitsiContext) => async (params: any) => {
-    reportAction("endpointTextMessageReceived", params);
-
-    if (isProduction) {
-      return;
-    }
-
-    if (!context.web3Participants) {
-      return;
-    }
-
-    try {
-      const sender = params.data.senderInfo.id;
-      const message = JSON.parse(params.data.eventData.text);
-      if (!message.web3) {
-        return;
-      }
-
-      const type = message.web3.type;
-      const payload = message.web3.payload;
-
-      if (type === "broadcast") {
-        jitsi.executeCommand(
-          "sendEndpointTextMessage",
-          sender,
-          JSON.stringify({
-            web3: { type: "unicast", payload: context.web3Authentication },
-          }),
-        );
-      }
-
-      if (payload.method !== "EIP-4361-json") {
-        console.log("!!! payload", payload);
-        throw new Error(
-          `unsupported method in payload: ${context.web3Authentication?.method}`,
-        );
-      }
-
-      const proof = payload.proof;
-      const hexOctets = proof.payload
-        .match(/[\da-f]{2}/gi)
-        .map((h: any) => parseInt(h, 16));
-      const hexArray = new Uint8Array(hexOctets);
-      const payloadBytes = new TextDecoder().decode(hexArray.buffer);
-      const { ethers } = await import("ethers");
-      const signer = ethers.verifyMessage(payloadBytes, proof.signature);
-      if (signer.toLowerCase() !== proof.signer.toLowerCase()) {
-        console.log("!!! payload", payload);
-        throw new Error(`address mismatch in payload, got ${signer}`);
-      }
-
-      context.web3Participants[sender] = proof.signer;
-      reportAction("web3 participants", context.web3Participants);
-    } catch (error: any) {
-      console.error("!!! web3 " + error.message);
-    }
-  },
-};
-
-export const dataChannelOpenedHandler = {
-  name: "dataChannelOpened",
-  fn: (jitsi: IJitsiMeetApi, context: JitsiContext) => (params: any) => {
-    reportAction("dataChannelOpened", params);
-
-    if (isProduction) {
-      return;
-    }
-
-    if (!context.web3Authentication) {
-      return;
-    }
-
-    jitsi.executeCommand(
-      "sendEndpointTextMessage",
-      "",
-      JSON.stringify({
-        web3: { type: "broadcast", payload: context.web3Authentication },
-      }),
-    );
   },
 };
 
