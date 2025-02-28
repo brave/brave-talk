@@ -21,6 +21,27 @@ export const Web3CTA = ({ onClick, isSubscribed }: Props) => {
     >
       <Text variant="body">
         <h2>{t("web3_card_title")}</h2>
+        <div css={{ display: "inline-block" }}>
+          <div
+            css={{
+              backgroundColor: "#f8d7da",
+              color: "#721c24",
+              padding: "12px 32px",
+              marginBottom: "16px",
+              borderRadius: "16px",
+              fontWeight: "bold",
+              textAlign: "center",
+              opacity: 0.8,
+            }}
+          >
+            <p css={{ margin: "0 0 8px 0", fontSize: "16px" }}>
+              {t("web3_sunset_title")}
+            </p>
+            <p css={{ margin: "0", fontSize: "14px" }}>
+              {t("web3_sunset_description")}
+            </p>
+          </div>
+        </div>
         <p css={{ margin: "8px auto 18px", maxWidth: "500px" }}>
           {t("host_web3_call_body")}
         </p>
@@ -39,6 +60,7 @@ export const Web3CTA = ({ onClick, isSubscribed }: Props) => {
             </p>
           </Trans>
         )}
+
         <p>
           <a
             href="https://brave.com/web3-talk-calls"
