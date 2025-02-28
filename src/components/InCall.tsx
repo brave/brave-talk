@@ -10,9 +10,7 @@ import {
 import {
   breakoutRoomsUpdatedHandler,
   buttonHandler,
-  dataChannelOpenedHandler,
   displayNameChangeHandler,
-  endpointTextMessageReceivedHandler,
   errorOccurredHandler,
   incomingMessageHandler,
   knockingParticipantHandler,
@@ -39,7 +37,6 @@ interface Props {
   jwt: string;
   isMobile: boolean;
   isCallReady: boolean;
-  isWeb3Call: boolean;
   jitsiContext: JitsiContext;
 }
 
@@ -50,7 +47,6 @@ export const InCall = ({
   jwt,
   isMobile,
   isCallReady,
-  isWeb3Call,
   jitsiContext: context,
 }: Props) => {
   const divRef = useRef(null);
@@ -111,8 +107,6 @@ export const InCall = ({
         outgoingMessageHandler(transcriptManager.current),
         passwordRequiredHandler,
         errorOccurredHandler,
-        dataChannelOpenedHandler,
-        endpointTextMessageReceivedHandler,
         videoConferenceJoinedHandler(transcriptManager.current),
         transcriptionChunkReceivedHandler(transcriptManager.current),
         transcribingStatusChangedHandler(
@@ -126,16 +120,7 @@ export const InCall = ({
         setJitsiMeet,
       );
     }
-  }, [
-    divRef,
-    jitsiMeet,
-    roomName,
-    jwt,
-    isMobile,
-    isCallReady,
-    isWeb3Call,
-    context,
-  ]);
+  }, [divRef, jitsiMeet, roomName, jwt, isMobile, isCallReady, context]);
 
   if (!isCallReady) {
     return null;
