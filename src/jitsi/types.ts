@@ -1,5 +1,3 @@
-import { Web3Authentication } from "../components/web3/api";
-
 export type IJitsiMeetApi = any;
 
 export type JitsiContext = {
@@ -9,8 +7,6 @@ export type JitsiContext = {
   inactiveCount: number;
   inactiveTimer: any;
   passcode: string | undefined;
-  web3Authentication?: Web3Authentication;
-  web3Participants?: { [key: string]: string };
 };
 
 export type JitsiEventHandler = {
