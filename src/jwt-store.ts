@@ -208,7 +208,11 @@ const expiredP = (roomName: string, jwt: string): boolean => {
 
   try {
     const payload = jwt_decode(jwt);
-    return payload.exp < now;
+    const isWeb3 =
+      payload.context &&
+      payload.context["x-brave-features"] &&
+      payload.context["x-brave-features"].web3 === "true";
+    return payload.exp < now || isWeb3;
   } catch (error) {
     console.warn(`!!! unable to parse JWT for ${roomName}: `, error);
     return false;

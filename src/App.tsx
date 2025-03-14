@@ -2,7 +2,6 @@ import { css } from "@emotion/react";
 import React from "react";
 import { GlobalStyles } from "./components/GlobalStyles";
 import { InCall } from "./components/InCall";
-import { JoinCall as JoinWeb3Call } from "./components/web3/JoinCall";
 import { WelcomeScreen } from "./components/WelcomeScreen";
 import "./css/poppins.css";
 import "./css/inter.css";
@@ -38,10 +37,6 @@ export const App = () => {
     hasInitialRoom,
     jitsiContext,
     isCallReady,
-    isWeb3Call,
-    setIsWeb3Call,
-    web3Account,
-    setWeb3Account,
     setJwt,
     setRoomName,
     setJitsiContext,
@@ -86,39 +81,24 @@ export const App = () => {
             jwt={jwt ?? ""}
             isMobile={browserProps.isMobile}
             isCallReady={isCallReady}
-            isWeb3Call={isWeb3Call}
             jitsiContext={jitsiContext}
           />
         )}
-        {!isCallReady &&
-          (isWeb3Call && hasInitialRoom ? (
-            <JoinWeb3Call
-              roomName={roomName as string}
-              setJwt={setJwt}
-              jitsiContext={jitsiContext}
-              setJitsiContext={setJitsiContext}
-              web3Account={web3Account}
-              setWeb3Account={setWeb3Account}
-            />
-          ) : (
-            <WelcomeScreen
-              onStartCall={onStartCall}
-              notice={notice}
-              disabled={isEstablishingCall}
-              hasInitialRoomName={hasInitialRoom}
-              browser={browserProps}
-              isWeb3Call={isWeb3Call}
-              setIsWeb3Call={setIsWeb3Call}
-              web3Account={params.isSolana ? web3Account : "ETH"}
-              setWeb3Account={setWeb3Account}
-              setJwt={setJwt}
-              setRoomName={setRoomName}
-              jitsiContext={jitsiContext}
-              setJitsiContext={setJitsiContext}
-              onRouterStatePushed={onRouterStatePushed}
-              displayTranscriptId={routeTranscriptId}
-            />
-          ))}
+        {!isCallReady && (
+          <WelcomeScreen
+            onStartCall={onStartCall}
+            notice={notice}
+            disabled={isEstablishingCall}
+            hasInitialRoomName={hasInitialRoom}
+            browser={browserProps}
+            setJwt={setJwt}
+            setRoomName={setRoomName}
+            jitsiContext={jitsiContext}
+            setJitsiContext={setJitsiContext}
+            onRouterStatePushed={onRouterStatePushed}
+            displayTranscriptId={routeTranscriptId}
+          />
+        )}
       </div>
     </React.Fragment>
   );
