@@ -2,21 +2,16 @@
   "extends": [
     "local>brave/renovate-config",
     "config:js-app",
-    ":semanticCommitsDisabled"
+    ":semanticCommitsDisabled",
+    "group:allNonMajor"
   ],
   "labels": ["dependencies"],
   "postUpdateOptions": ["npmDedupe"],
   "packageRules": [
     {
-      "matchDatasources": ["npm"],
-      "minimumReleaseAge": "4 days"
-    },
-    {
-      "groupName": "all non-major dependencies",
-      "groupSlug": "all-minor-patch",
-      "matchUpdateTypes": ["minor", "patch"],
-      "matchDatasources": ["npm"],
-      "matchPackageNames": ["*"]
+      "matchUpdateTypes": ["major"],
+      "enabled": true,
+      "dependencyDashboardApproval": true
     }
   ]
 }
