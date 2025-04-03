@@ -263,7 +263,7 @@ export const MeetingTranscript = ({ transcript }: MeetingTranscriptProps) => {
           </div>
         )}
         <div css={styles.searchBoxContainer}>
-          <Input size="normal" onInput={(e) => setSearchTerm(e.value)}>
+          <Input size="normal" onInput={(e: any) => setSearchTerm(e.value)}>
             <span slot="left-icon">
               <img
                 src={SearchImage}
