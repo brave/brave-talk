@@ -73,6 +73,10 @@ const operateOnTranscriptDetails = async (
       // No transcript exists, return null
       return null;
     }
+    if (status === 403) {
+      // This occurs on localhost, but even in production, should this be a "hard" error?
+      return null;
+    }
     if (status !== 200) {
       throw new Error(`Bad status code: ${status}`);
     }
