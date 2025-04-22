@@ -73,6 +73,9 @@ const operateOnTranscriptDetails = async (
       // No transcript exists, return null
       return null;
     }
+    if (status === 403 && process.env.ENVIRONMENT === "local") {
+      return null;
+    }
     if (status !== 200) {
       throw new Error(`Bad status code: ${status}`);
     }
