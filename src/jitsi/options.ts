@@ -257,6 +257,17 @@ export const jitsiOptions = (
             "reactions",
             "participants-pane",
             "leo",
+            "tileview",
+          ],
+          [
+            "microphone",
+            "camera",
+            "desktop",
+            "chat",
+            "raisehand",
+            "reactions",
+            "participants-pane",
+            "leo",
           ],
           [
             "microphone",
