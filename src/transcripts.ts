@@ -163,52 +163,64 @@ export class TranscriptManager {
 
   async handleTranscriptionEnabledEvent(jitsi: IJitsiMeetApi, status: boolean) {
     this.transcriptionEnabledAccordingToJitsiEvents = status;
-    if (!this.jwt) {
-      throw new Error(
-        "Could not process transcription enabled event due to missing JWT",
-      );
-    }
-    const parsedJwt = jwt_decode(this.jwt);
-    if (parsedJwt.context.user.moderator !== "true" || !this.roomName) {
-      return;
-    }
-    if (!status) {
-      // Delay transcript finalization. Transcription can be turned off mid-call
-      // by moderators who will finalize the transcript. If a moderator destroys
-      // the room (thus turning off transcription, and navigating away from the call page),
-      // the transcript won't be explicitly finalized to prevent omitting
-      // "participant left" events due to premature finalization.
-      setTimeout(async () => {
-        if (!this.roomName || !this.jwt || !this.transcriptionUsed) {
-          return;
-        }
-        await operateOnTranscriptDetails(
-          this.roomName,
-          this.jwt,
-          TranscriptDetailsOperation.Finalize,
+    try {
+      if (!this.jwt) {
+        throw new Error(
+          "Could not process transcription enabled event due to missing JWT",
         );
-      }, 5000);
-      // update expiration time if transcription
-      // was turned off
-      if (this.roomName) {
-        resetCurrentRecordingState(this.roomName);
       }
-      return;
-    }
+      const parsedJwt = jwt_decode(this.jwt);
+      if (parsedJwt.context.user.moderator !== "true" || !this.roomName) {
+        return;
+      }
+      if (!status) {
+        // Delay transcript finalization. Transcription can be turned off mid-call
+        // by moderators who will finalize the transcript. If a moderator destroys
+        // the room (thus turning off transcription, and navigating away from the call page),
+        // the transcript won't be explicitly finalized to prevent omitting
+        // "participant left" events due to premature finalization.
+        setTimeout(async () => {
+          if (!this.roomName || !this.jwt || !this.transcriptionUsed) {
+            return;
+          }
+          await operateOnTranscriptDetails(
+            this.roomName,
+            this.jwt,
+            TranscriptDetailsOperation.Finalize,
+          );
+        }, 5000);
+        // update expiration time if transcription
+        // was turned off
+        if (this.roomName) {
+          resetCurrentRecordingState(this.roomName);
+        }
+        return;
+      }
 
-    this.transcriptionUsed = true;
+      this.transcriptionUsed = true;
 
-    const transcriptUrl = await this.initTranscript(true);
-    if (transcriptUrl) {
-      upsertRecordingForRoom(null, transcriptUrl, this.roomName);
+      const transcriptUrl = await this.initTranscript(true);
+      if (transcriptUrl) {
+        upsertRecordingForRoom(null, transcriptUrl, this.roomName);
+        jitsi.executeCommand("showNotification", {
+          title: i18next.t("transcription_link_available_title"),
+          description: i18next.t("transcription_link_available_description", {
+            transcriptUrl: `${window.location.origin}${getTranscriptDisplayPath(transcriptUrl)}`,
+          }),
+          type: "normal",
+          timeout: "sticky",
+        });
+      }
+    } catch (e: any) {
+      this.transcriptionUsed = false;
       jitsi.executeCommand("showNotification", {
-        title: i18next.t("transcription_link_available_title"),
-        description: i18next.t("transcription_link_available_description", {
-          transcriptUrl: `${window.location.origin}${getTranscriptDisplayPath(transcriptUrl)}`,
-        }),
-        type: "normal",
+        title: i18next.t("transcription_link_failed_title"),
+        description: i18next.t("transcription_link_failed_description"),
+        type: "error",
         timeout: "sticky",
       });
+      jitsi.stopRecording(undefined, true);
+      throw e;
     }
   }
 

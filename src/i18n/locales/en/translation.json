@@ -48,6 +48,8 @@
   "subscribe_text": "Host video calls with hundreds of people, get moderator controls, and more.",
   "talk_title": "Brave Talk",
   "talk_title_premium": "Brave Talk Premium",
+  "transcription_link_failed_title": "Transcription failed",
+  "transcription_link_failed_description": "Failed to enable transcription. Please try re-enabling transcription.",
   "transcription_link_available_title": "Transcription started",
   "transcription_link_available_description": "We have generated a link to your transcript: \n\n{{transcriptUrl}}",
   "wallet_address": "Your wallet address:",
