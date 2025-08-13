@@ -188,7 +188,7 @@ export const jitsiOptions = (
       // remove 'dial-in'
       SHARING_FEATURES: ["email", "url", "embed"],
       SHOW_CHROME_EXTENSION_BANNER: false,
-      SUPPORT_URL: "https://community.brave.com/",
+      SUPPORT_URL: "https://community.brave.app/",
       TOOLBAR_BUTTONS: [
         "microphone",
         "camera",
