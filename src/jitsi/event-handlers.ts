@@ -267,6 +267,22 @@ export const videoConferenceJoinedHandler = (
     // Prevent the screen from turning off while in the video conference
     acquireWakeLock();
 
+    // Add picture-in-picture functionality
+    const video = document.querySelector("video");
+    if (video) {
+      try {
+        // Request video to automatically enter picture-in-picture when eligible.
+        navigator.mediaSession.setActionHandler(
+          "enterpictureinpicture" as MediaSessionAction,
+          async () => {
+            await video.requestPictureInPicture();
+          },
+        );
+      } catch (error) {
+        console.log("The enterpictureinpicture action is not yet supported.");
+      }
+    }
+
     if (!isBrave) {
       return;
     }
