@@ -81,7 +81,6 @@ export const jitsiOptions = (
         disable: true,
       },
       toolbarConfig: {
-        alwaysVisible: true,
         autoHideWhileChatIsOpen: true,
       },
       // Default if not moderator
