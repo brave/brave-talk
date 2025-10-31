@@ -1,4 +1,4 @@
-import * as Rewards from "@brave-intl/skus-sdk";
+import * as Rewards from "@evq/skus-sdk";
 import { isProduction, shouldForcePaymentsStaging } from "./environment";
 
 let sdkref: Rewards.JSSDK | undefined;
