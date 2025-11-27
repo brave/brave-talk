@@ -67,6 +67,9 @@ export type JitsiOptions = {
     giphy: {
       enabled: boolean;
     };
+    fileSharing: {
+      enabled: boolean;
+    };
     hideEmailInSettings: boolean;
     inviteAppName: string;
     localSubject: string;
