@@ -63,6 +63,9 @@ export const jitsiOptions = (
         enableFaceExpressionsDetection: false,
         enableDisplayFaceExpressions: false,
       },
+      fileSharing: {
+        enabled: false,
+      },
       giphy: {
         enabled: false,
       },
@@ -160,6 +163,7 @@ export const jitsiOptions = (
       transcribingEnabled: true,
       transcription: {
         autoTranscribeOnRecord: false,
+        translationLanguages: [],
       },
       useHostPageLocalStorage: true,
       videoQuality: {
