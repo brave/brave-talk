@@ -163,7 +163,7 @@ export const jitsiOptions = (
       transcribingEnabled: true,
       transcription: {
         autoTranscribeOnRecord: false,
-        //        translationLanguages: ['en'],
+        translationLanguages: [],
       },
       useHostPageLocalStorage: true,
       videoQuality: {
