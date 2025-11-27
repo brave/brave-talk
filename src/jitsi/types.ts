@@ -87,6 +87,7 @@ export type JitsiOptions = {
     transcribingEnabled: boolean;
     transcription: {
       autoTranscribeOnRecord: boolean;
+      translationLanguages: string[];
     };
     useHostPageLocalStorage: boolean;
     videoQuality: {
