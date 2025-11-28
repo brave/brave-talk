@@ -67,6 +67,9 @@ export type JitsiOptions = {
     giphy: {
       enabled: boolean;
     };
+    fileSharing: {
+      enabled: boolean;
+    };
     hideEmailInSettings: boolean;
     inviteAppName: string;
     localSubject: string;
@@ -84,6 +87,7 @@ export type JitsiOptions = {
     transcribingEnabled: boolean;
     transcription: {
       autoTranscribeOnRecord: boolean;
+      translationLanguages: string[];
     };
     useHostPageLocalStorage: boolean;
     videoQuality: {
