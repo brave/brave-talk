@@ -81,6 +81,7 @@ export type JitsiOptions = {
     startWithAudioMuted: boolean;
     startWithVideoMuted: boolean;
     toolbarConfig: {
+      alwaysVisible: boolean;
       autoHideWhileChatIsOpen: boolean;
     };
     toolbarButtons: string[];
