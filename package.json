@@ -50,7 +50,7 @@
     "mini-css-extract-plugin": "2.9.4",
     "node-forge": "1.3.3",
     "npm-run-all2": "6.2.6",
-    "prettier": "3.7.4",
+    "prettier": "3.8.0",
     "style-loader": "3.3.4",
     "svgo-loader": "4.0.0",
     "ts-jest": "29.4.6",
@@ -58,7 +58,7 @@
     "typescript": "5.9.3",
     "webpack": "5.104.1",
     "webpack-cli": "5.1.4",
-    "webpack-dev-server": "5.2.2"
+    "webpack-dev-server": "5.2.3"
   },
   "dependencies": {
     "@brave/leo": "github:brave/leo#b0d5f184aee1862a37c3bd4dfe854fae5c784daa",
