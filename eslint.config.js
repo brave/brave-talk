@@ -1,7 +1,6 @@
 const { defineConfig, globalIgnores } = require("eslint/config");
 
 const tsParser = require("@typescript-eslint/parser");
-const typescriptEslint = require("@typescript-eslint/eslint-plugin");
 
 const { fixupConfigRules } = require("@eslint/compat");
 
@@ -32,10 +31,6 @@ module.exports = defineConfig([
       },
     },
 
-    plugins: {
-      "@typescript-eslint": typescriptEslint,
-    },
-
     extends: fixupConfigRules(
       compat.extends(
         "eslint:recommended",
@@ -49,6 +44,8 @@ module.exports = defineConfig([
 
     rules: {
       "@typescript-eslint/no-explicit-any": "off",
+      "@typescript-eslint/no-require-imports": "off",
+      "react-hooks/static-components": "off",
 
       "react/no-unknown-property": [
         "error",
@@ -61,6 +58,7 @@ module.exports = defineConfig([
         "error",
         {
           argsIgnorePattern: "^_",
+          caughtErrors: "none",
         },
       ],
     },
