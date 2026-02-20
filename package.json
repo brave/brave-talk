@@ -22,7 +22,7 @@
   },
   "overrides": {
     "yaml": "2.8.2",
-    "semver": "7.7.3",
+    "semver": "7.7.4",
     "optionator": "0.9.4",
     "cookie": "0.7.2",
     "js-yaml": "4.1.1",
@@ -35,7 +35,7 @@
     "@eslint/eslintrc": "^3.3.3",
     "@eslint/js": "^9.39.2",
     "@types/jest": "29.5.14",
-    "@types/react": "18.3.27",
+    "@types/react": "18.3.28",
     "@types/react-dom": "18.3.7",
     "@typescript-eslint/eslint-plugin": "^8.54.0",
     "@typescript-eslint/parser": "^8.54.0",
@@ -60,7 +60,7 @@
     "ts-jest": "29.4.6",
     "ts-loader": "9.5.4",
     "typescript": "5.9.3",
-    "webpack": "5.104.1",
+    "webpack": "5.105.2",
     "webpack-cli": "5.1.4",
     "webpack-dev-server": "5.2.3"
   },
