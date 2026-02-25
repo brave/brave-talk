@@ -2,6 +2,7 @@
   "name": "brave-talk-app",
   "version": "0.1.0",
   "description": "private and unlimited video calling by Brave",
+  "private": true,
   "main": "index.js",
   "scripts": {
     "build": "NODE_ENV=production webpack --config webpack.config.js --mode production",
