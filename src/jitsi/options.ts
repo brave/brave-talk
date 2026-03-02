@@ -64,7 +64,7 @@ export const jitsiOptions = (
         enableDisplayFaceExpressions: false,
       },
       fileSharing: {
-        enabled: true,
+        enabled: false,
       },
       giphy: {
         enabled: false,
