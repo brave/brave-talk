@@ -100,6 +100,7 @@ module.exports = {
         ],
   ),
   devServer: {
+    port: 8080,
     client: {
       // display compilation error messages on the screen
       overlay: true,
