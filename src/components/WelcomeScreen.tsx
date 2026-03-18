@@ -1,4 +1,4 @@
-import React, { DispatchWithoutAction } from "react";
+import React, { DispatchWithoutAction, lazy, Suspense } from "react";
 import { useSubscribedStatus } from "../hooks/use-subscribed-status";
 import { Background } from "./Background";
 import { Footer } from "./Footer";
@@ -12,7 +12,8 @@ import { useTranslation } from "react-i18next";
 import { TranslationKeys } from "../i18n/i18next";
 import { JitsiContext } from "../jitsi/types";
 import LeoPromo from "./LeoPromo";
-import { MeetingTranscriptDisplay } from "./Transcript";
+
+const MeetingTranscriptDisplay = lazy(() => import("./Transcript"));
 
 interface Props {
   onStartCall: DispatchWithoutAction;
@@ -42,7 +43,11 @@ export const WelcomeScreen = ({
 
   const Body = () => {
     if (displayTranscriptId) {
-      return <MeetingTranscriptDisplay transcriptId={displayTranscriptId} />;
+      return (
+        <Suspense>
+          <MeetingTranscriptDisplay transcriptId={displayTranscriptId} />
+        </Suspense>
+      );
     }
 
     if (!browser.supportsWebRTC) {
