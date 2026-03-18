@@ -5,22 +5,30 @@
   "private": true,
   "main": "index.js",
   "scripts": {
-    "preinstall": "npx only-allow pnpm",
     "build": "NODE_ENV=production webpack --config webpack.config.js --mode production",
     "format": "prettier --write .",
     "lint": "eslint src/",
     "start": "webpack serve --config webpack.config.js --mode development",
     "test": "jest",
     "prepare": "husky",
-    "check": "pnpm run /^check:.*/",
+    "check": "run-p -l check:*",
     "check:build": "tsc",
-    "check:audit": "pnpm audit",
+    "check:audit": "npm audit --audit-level high",
     "check:lint": "eslint src/",
     "check:format": "prettier --check ."
   },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/brave/brave-talk.git"
+  },
+  "overrides": {
+    "yaml": "2.8.2",
+    "semver": "7.7.4",
+    "optionator": "0.9.4",
+    "cookie": "0.7.2",
+    "js-yaml": "4.1.1",
+    "glob": "11.1.0",
+    "serialize-javascript": "7.0.4"
   },
   "homepage": "https://github.com/brave/brave-talk#readme",
   "devDependencies": {
@@ -29,7 +37,6 @@
     "@eslint/eslintrc": "^3.3.3",
     "@eslint/js": "^9.39.2",
     "@types/jest": "29.5.14",
-    "@types/node": "^24.12.0",
     "@types/react": "18.3.28",
     "@types/react-dom": "18.3.7",
     "@typescript-eslint/eslint-plugin": "^8.54.0",
@@ -74,5 +81,7 @@
     "*": "prettier --ignore-unknown --write",
     "*.ts?(x)": "eslint"
   },
-  "packageManager": "pnpm@10.31.0+sha512.e3927388bfaa8078ceb79b748ffc1e8274e84d75163e67bc22e06c0d3aed43dd153151cbf11d7f8301ff4acb98c68bdc5cadf6989532801ffafe3b3e4a63c268"
+  "resolutions": {
+    "svelte": "4.2.20"
+  }
 }

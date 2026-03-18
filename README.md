@@ -4,22 +4,22 @@
 
 The website is built using [webpack 5](https://webpack.js.org).
 
-To work with it locally, first install pnpm following instructions at https://pnpm.io/installation. Then:
+To work with it locally:
 
-    $ pnpm install
-    $ pnpm start
+    $ npm install
+    $ npm start
 
 Source code is all in [`src`](./src). Contents of [`public`](./public) are deployed to target without further modification.
 
 Before you commit, you most likely want to ensure the continuous integration build will not
 fail. To run the most likely-to-fail checks, use:
 
-    $ pnpm check
+    $ npm run check
 
 To build for production:
 
-    $ pnpm install
-    $ pnpm build
+    $ npm ci
+    $ npm run build
 
 which creates a `./html` directory containing compiled assets.
 
@@ -53,4 +53,4 @@ Japanese language support is available for brave-talk. So whenever we are adding
 
 This codebase uses [prettier](https://prettier.io/) to keep the code formatted nicely and avoid needless changes in diff. It's recommended
 that you [configure your editor](https://prettier.io/docs/en/editors.html) to reformat as you go. There's also a pre-commit hook configured that should
-reformat on commit, or you can run `pnpm format`.
+reformat on commit, or you can run `npm run format`.
