@@ -4,9 +4,10 @@ node_modules/
 src/js
 tsbuild/
 
-# let npm maintain the formatting of its files
+# let pnpm maintain the formatting of its files
 package-lock.json
 package.json
+pnpm-*.yaml
 
 # get past the tsconfig nonsense
 tsconfig.json
