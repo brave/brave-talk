@@ -162,7 +162,7 @@ const COLORS = [
   "purple",
 ];
 
-export const MeetingTranscript = ({ transcript }: MeetingTranscriptProps) => {
+const MeetingTranscript = ({ transcript }: MeetingTranscriptProps) => {
   const { t } = useTranslation();
   const participantColorMap = new Map<string, string>();
   let participantCounter = 0;
@@ -210,7 +210,7 @@ export const MeetingTranscript = ({ transcript }: MeetingTranscriptProps) => {
     }
     const highlight = new Highlight(...ranges);
     CSS.highlights.set("search-results", highlight);
-  }, [searchTerm, transcript]);
+  }, [searchTerm, transcript, textRef]);
 
   const ACTION_MESSAGE: Record<TranscriptAction, string> = {
     [TranscriptAction.Join]: t("PARTICIPANT: joined the call"),
@@ -351,4 +351,4 @@ export const MeetingTranscriptDisplay = ({
   );
 };
 
-export default MeetingTranscript;
+export default MeetingTranscriptDisplay;
