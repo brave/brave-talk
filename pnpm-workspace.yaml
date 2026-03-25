@@ -5,6 +5,7 @@ allowBuilds:
   "@brave/leo": true
   esbuild: true
   svelte-preprocess: true
+  unrs-resolver: true
 
 auditConfig:
   ignoreGhsas:
