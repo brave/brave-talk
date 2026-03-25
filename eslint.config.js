@@ -1,59 +1,43 @@
-const { defineConfig, globalIgnores } = require("eslint/config");
+import eslint from "@eslint/js";
+import { defineConfig, globalIgnores } from "eslint/config";
+import esLintConfigPrettier from "eslint-config-prettier";
+import react from "eslint-plugin-react";
+import reactHooks from "eslint-plugin-react-hooks";
+import tseslint from "typescript-eslint";
 
-const tsParser = require("@typescript-eslint/parser");
-
-const { fixupConfigRules } = require("@eslint/compat");
-
-const globals = require("globals");
-const js = require("@eslint/js");
-
-const { FlatCompat } = require("@eslint/eslintrc");
-
-const compat = new FlatCompat({
-  baseDirectory: __dirname,
-  recommendedConfig: js.configs.recommended,
-  allConfig: js.configs.all,
-});
-
-module.exports = defineConfig([
+export default defineConfig(
+  eslint.configs.recommended,
+  tseslint.configs.recommended,
+  react.configs.flat.recommended,
+  react.configs.flat["jsx-runtime"],
+  globalIgnores(["src/js/jwt-decode.js", "**/webpack.config.js"]),
   {
-    languageOptions: {
-      parser: tsParser,
-
-      parserOptions: {
-        tsconfigRootDir: __dirname,
-        project: ["./tsconfig.json"],
-      },
-
-      globals: {
-        ...globals.browser,
-        ...globals.node,
+    plugins: {
+      "react-hooks": reactHooks,
+    },
+    rules: {
+      ...reactHooks.configs.recommended.rules,
+    },
+  },
+  {
+    settings: {
+      react: {
+        version: "detect",
       },
     },
-
-    extends: fixupConfigRules(
-      compat.extends(
-        "eslint:recommended",
-        "plugin:@typescript-eslint/recommended",
-        "plugin:react/recommended",
-        "plugin:react/jsx-runtime",
-        "plugin:react-hooks/recommended",
-        "prettier",
-      ),
-    ),
-
+  },
+  {
+    name: "our specific rules",
     rules: {
       "@typescript-eslint/no-explicit-any": "off",
       "@typescript-eslint/no-require-imports": "off",
       "react-hooks/static-components": "off",
-
       "react/no-unknown-property": [
         "error",
         {
           ignore: ["css"],
         },
       ],
-
       "@typescript-eslint/no-unused-vars": [
         "error",
         {
@@ -61,13 +45,8 @@ module.exports = defineConfig([
           caughtErrors: "none",
         },
       ],
-    },
-
-    settings: {
-      react: {
-        version: "detect",
-      },
+      eqeqeq: "error",
     },
   },
-  globalIgnores(["src/js/jwt-decode.js", "**/webpack.config.js"]),
-]);
+  esLintConfigPrettier,
+);
