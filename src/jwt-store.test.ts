@@ -47,7 +47,7 @@ function createDummyJWTWithExpiry(name: string, exp: Date): string {
   return `header.${btoa(JSON.stringify(dummyJwtValue))}.(${name})`;
 }
 
-test.only("jwt expiry works as expected", () => {
+test("jwt expiry works as expected", () => {
   jest.useFakeTimers();
 
   jest.setSystemTime(new Date("2021-04-01T00:00:00Z"));
@@ -81,7 +81,7 @@ test.only("jwt expiry works as expected", () => {
 
   let confabs;
   const confabsStr = window.localStorage.getItem("confabs");
-  if (confabsStr != null) {
+  if (confabsStr !== null) {
     confabs = JSON.parse(confabsStr);
   }
 
@@ -108,7 +108,7 @@ test.only("jwt expiry works as expected", () => {
 
   let confabs2;
   const confabs2Str = window.localStorage.getItem("confabs");
-  if (confabs2Str != null) {
+  if (confabs2Str !== null) {
     confabs2 = JSON.parse(confabs2Str);
   }
 
