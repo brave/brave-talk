@@ -9,19 +9,21 @@ inputs:
 runs:
   using: composite
   steps:
+    - name: Install pnpm
+      uses: pnpm/action-setup@fc06bc1257f339d1d5d8b3a19a8cae5388b55320 # v4.4.0
     - name: Use Node.js
-      uses: actions/setup-node@6044e13b5dc448c55e2357c09f80417699197238 # v6.2.0
+      uses: actions/setup-node@53b83947a5a98c8d113130e565377fae1a50d02f # v6.3.0
       with:
         node-version-file: ".node-version"
-        cache: npm
-    - run: npm ci
+        cache: pnpm
+    - run: pnpm install --frozen-lockfile
       shell: bash
     # check includes audit, tsc, lint, prettier
-    - run: npm run check
+    - run: pnpm run check
       shell: bash
-    - run: npm test
+    - run: pnpm test
       shell: bash
-    - run: npm run build
+    - run: pnpm run build
       env:
         ENVIRONMENT: ${{ inputs.environment }}
       shell: bash

@@ -1,0 +1,29 @@
+packages:
+  - .
+
+allowBuilds:
+  "@brave/leo": true
+  esbuild: true
+  svelte-preprocess: true
+  unrs-resolver: true
+
+auditConfig:
+  ignoreGhsas:
+    - GHSA-f7gr-6p89-r883
+    - GHSA-phwv-c562-gvmh
+    - GHSA-m56q-vw4c-c2cp
+    - GHSA-crpf-4hrx-3jrp
+
+overrides:
+  brace-expansion@<1.1.13: '^1.1.13'
+  brace-expansion@>=4.0.0 <5.0.5: '^5.0.5'
+  flatted@<3.4.0: "^3.4.0"
+  handlebars@<=4.7.8: "^4.7.9"
+  path-to-regexp@<0.1.13: '^0.1.13'
+  picomatch@<2.3.2: '^2.3.2'
+  picomatch@>=4.0.0 <4.0.4: '^4.0.4'
+  serialize-javascript@<7.0.5: '>=7.0.5'
+  yaml@>=1.0.0 <1.10.3: '^1.10.3'
+  yaml@>=2.0.0 <2.8.3: '^2.8.3'
+
+verifyDepsBeforeRun: install
