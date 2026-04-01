@@ -62,6 +62,10 @@
   "leo_promo_headline": "Introducing Leo AI for meetings",
   "leo_promo_description": "Never take meeting notes again. Leo brings AI to your meetings with AI summaries. Get transcripts and use AI chat to get answers from your meetings, and more.",
   "leo_promo_link_text": "Learn more.",
+  "recovery_token_title": "Meeting recovery token",
+  "recovery_token_description": "If you're the moderator of a recurring meeting, you should export your call's unique token each time you set up a new call, and keep this token in a safe place. You'll need this token to retain moderator privileges in cases where you need to reinstall the browser or install on a new device.",
+  "recovery_token_learn_more": "Learn more",
+  "recovery_token_manage_button": "Manage tokens",
 
   "Bad gateway": "Bad gateway",
   "Checking moderator status...": "Checking moderator status...",
