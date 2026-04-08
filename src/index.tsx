@@ -4,6 +4,7 @@ import { env, isProduction, config } from "./environment";
 import { miniLoadExternalApi } from "./jitsi/init";
 
 import "./js/jwt-decode";
+import "@brave/leo/tokens/css/variables.css";
 
 // these envvars are set by the EnvironmentPlugin in webpack.config.js
 console.log(
