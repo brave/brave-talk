@@ -69,6 +69,18 @@ export const extractValueFromFragment = (key: string): string | undefined => {
 
 const FETCH_TIMEOUT_MS = 5_000;
 
+export async function getCsrfToken(url: string): Promise<string> {
+  const response = await fetchWithTimeout(url, {
+    method: "OPTIONS",
+    credentials: "include",
+  });
+  const csrfToken = response.headers.get("x-csrf-token");
+  if (!csrfToken) {
+    throw new Error("Failed to retrieve CSRF token");
+  }
+  return csrfToken;
+}
+
 // HT: https://dmitripavlutin.com/timeout-fetch-request/
 export async function fetchWithTimeout(
   input: RequestInfo,
