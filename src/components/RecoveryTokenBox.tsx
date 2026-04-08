@@ -1,20 +1,22 @@
 import { css } from "@emotion/react";
+import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Button } from "./Button";
 import { Section } from "./Section";
 import { Text } from "./Text";
+import RecoveryTokenDialog from "./RecoveryTokenDialog";
 
 const innerStyles = css`
   display: flex;
   flex-direction: row;
   align-items: center;
-  gap: 24px;
-  padding: 18px 8px 16px 8px;
-  margin-bottom: -24px;
+  gap: var(--leo-spacing-2xl);
+  padding: var(--leo-spacing-xl) var(--leo-spacing-m);
+  margin-bottom: calc(-1 * var(--leo-spacing-2xl));
   h2 {
     text-align: left;
     font-size: 1.5em;
-    margin-bottom: 8px;
+    margin-bottom: var(--leo-spacing-m);
   }
   p {
     text-align: left;
@@ -33,11 +35,13 @@ const textStyles = css`
   flex: 1;
   display: flex;
   flex-direction: column;
-  gap: 2px;
+  gap: var(--leo-spacing-s);
 `;
 
 export default function RecoveryTokenBox() {
   const { t } = useTranslation();
+  const [isOpen, setIsOpen] = useState(false);
+
   return (
     <Text variant="body">
       <Section>
@@ -52,9 +56,16 @@ export default function RecoveryTokenBox() {
               .
             </p>
           </div>
-          <Button>{t("recovery_token_manage_button")}</Button>
+          <Button onClick={() => setIsOpen(true)}>
+            {t("recovery_token_manage_button")}
+          </Button>
         </div>
       </Section>
+      <RecoveryTokenDialog
+        key={String(isOpen)}
+        isOpen={isOpen}
+        onClose={() => setIsOpen(false)}
+      />
     </Text>
   );
 }
