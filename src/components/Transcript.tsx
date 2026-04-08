@@ -9,7 +9,6 @@ import TranscriptImage from "../images/papyrus.svg";
 import DownloadImage from "../images/download_color.svg";
 import SearchImage from "../images/search.svg";
 import { formatRelativeDay } from "../recordings-utils";
-import "@brave/leo/tokens/css/variables.css";
 import Button from "@brave/leo/react/button";
 import Input from "@brave/leo/react/input";
 import { useTranslation } from "react-i18next";
