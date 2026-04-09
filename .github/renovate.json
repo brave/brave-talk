@@ -1,4 +1,5 @@
 {
+  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
   "extends": [
     "local>brave/renovate-config",
     "config:js-app",
@@ -6,12 +7,15 @@
     "group:allNonMajor"
   ],
   "labels": ["dependencies"],
-  "postUpdateOptions": ["npmDedupe"],
   "packageRules": [
     {
       "matchUpdateTypes": ["major"],
       "enabled": true,
       "dependencyDashboardApproval": true
+    },
+    {
+      "matchDepTypes": ["pnpm.overrides", "pnpm-workspace.overrides"],
+      "enabled": false
     }
   ]
 }
