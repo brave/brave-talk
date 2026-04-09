@@ -111,11 +111,11 @@ importers:
         specifier: 4.0.0
         version: 4.0.0
       ts-jest:
-        specifier: 29.4.6
-        version: 29.4.6(@babel/core@7.29.0)(@jest/transform@30.3.0)(@jest/types@30.3.0)(babel-jest@30.3.0(@babel/core@7.29.0))(esbuild@0.25.12)(jest-util@30.3.0)(jest@30.3.0(@types/node@24.12.0)(babel-plugin-macros@3.1.0)(esbuild-register@3.6.0(esbuild@0.25.12)))(typescript@5.9.3)
+        specifier: 29.4.9
+        version: 29.4.9(@babel/core@7.29.0)(@jest/transform@30.3.0)(@jest/types@30.3.0)(babel-jest@30.3.0(@babel/core@7.29.0))(esbuild@0.25.12)(jest-util@30.3.0)(jest@30.3.0(@types/node@24.12.0)(babel-plugin-macros@3.1.0)(esbuild-register@3.6.0(esbuild@0.25.12)))(typescript@5.9.3)
       ts-loader:
-        specifier: 9.5.4
-        version: 9.5.4(typescript@5.9.3)(webpack@5.105.4)
+        specifier: 9.5.7
+        version: 9.5.7(typescript@5.9.3)(webpack@5.105.4)
       typescript:
         specifier: 5.9.3
         version: 5.9.3
@@ -4417,8 +4417,8 @@ packages:
   ts-interface-checker@0.1.13:
     resolution: {integrity: sha512-Y/arvbn+rrz3JCKl9C4kVNfTfSm2/mEp5FSz5EsZSANGPSlQrpRI5M4PKF+mJnE52jOO90PnPSc3Ur3bTQw0gA==}
 
-  ts-jest@29.4.6:
-    resolution: {integrity: sha512-fSpWtOO/1AjSNQguk43hb/JCo16oJDnMJf3CdEGNkqsEX3t0KX96xvyX1D7PfLCpVoKu4MfVrqUkFyblYoY4lA==}
+  ts-jest@29.4.9:
+    resolution: {integrity: sha512-LTb9496gYPMCqjeDLdPrKuXtncudeV1yRZnF4Wo5l3SFi0RYEnYRNgMrFIdg+FHvfzjCyQk1cLncWVqiSX+EvQ==}
     engines: {node: ^14.15.0 || ^16.10.0 || ^18.0.0 || >=20.0.0}
     hasBin: true
     peerDependencies:
@@ -4429,7 +4429,7 @@ packages:
       esbuild: '*'
       jest: ^29.0.0 || ^30.0.0
       jest-util: ^29.0.0 || ^30.0.0
-      typescript: '>=4.3 <6'
+      typescript: '>=4.3 <7'
     peerDependenciesMeta:
       '@babel/core':
         optional: true
@@ -4444,8 +4444,8 @@ packages:
       jest-util:
         optional: true
 
-  ts-loader@9.5.4:
-    resolution: {integrity: sha512-nCz0rEwunlTZiy6rXFByQU1kVVpCIgUpc/psFiKVrUwrizdnIbRFu8w7bxhUF0X613DYwT4XzrZHpVyMe758hQ==}
+  ts-loader@9.5.7:
+    resolution: {integrity: sha512-/ZNrKgA3K3PtpMYOC71EeMWIloGw3IYEa5/t1cyz2r5/PyUwTXGzYJvcD3kfUvmhlfpz1rhV8B2O6IVTQ0avsg==}
     engines: {node: '>=12.0.0'}
     peerDependencies:
       typescript: '*'
@@ -9719,7 +9719,7 @@ snapshots:
 
   ts-interface-checker@0.1.13: {}
 
-  ts-jest@29.4.6(@babel/core@7.29.0)(@jest/transform@30.3.0)(@jest/types@30.3.0)(babel-jest@30.3.0(@babel/core@7.29.0))(esbuild@0.25.12)(jest-util@30.3.0)(jest@30.3.0(@types/node@24.12.0)(babel-plugin-macros@3.1.0)(esbuild-register@3.6.0(esbuild@0.25.12)))(typescript@5.9.3):
+  ts-jest@29.4.9(@babel/core@7.29.0)(@jest/transform@30.3.0)(@jest/types@30.3.0)(babel-jest@30.3.0(@babel/core@7.29.0))(esbuild@0.25.12)(jest-util@30.3.0)(jest@30.3.0(@types/node@24.12.0)(babel-plugin-macros@3.1.0)(esbuild-register@3.6.0(esbuild@0.25.12)))(typescript@5.9.3):
     dependencies:
       bs-logger: 0.2.6
       fast-json-stable-stringify: 2.1.0
@@ -9740,7 +9740,7 @@ snapshots:
       esbuild: 0.25.12
       jest-util: 30.3.0
 
-  ts-loader@9.5.4(typescript@5.9.3)(webpack@5.105.4):
+  ts-loader@9.5.7(typescript@5.9.3)(webpack@5.105.4):
     dependencies:
       chalk: 4.1.2
       enhanced-resolve: 5.20.0
