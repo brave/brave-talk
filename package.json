@@ -14,7 +14,7 @@
     "prepare": "husky",
     "check": "pnpm run /^check:.*/",
     "check:build": "tsc",
-    "check:audit": "pnpm audit",
+    "check:audit": "pnpm audit --ignore-registry-errors",
     "check:lint": "eslint src/",
     "check:format": "prettier --check ."
   },
