@@ -42,7 +42,7 @@
     "jest": "30.3.0",
     "lint-staged": "15.5.2",
     "mini-css-extract-plugin": "2.10.2",
-    "prettier": "3.8.1",
+    "prettier": "3.8.2",
     "style-loader": "3.3.4",
     "svgo-loader": "4.0.0",
     "ts-jest": "29.4.9",
