@@ -33,7 +33,7 @@ runs:
         # fail the build if any generated javascript contains 'eval' to help mitigate the need for script-src unsafe-eval CSP
         if find html -name "*.js" | xargs grep -El "\beval\("; then echo '"eval" found'; exit 99; else echo '"eval" not found'; fi
     - name: Upload built outputs
-      uses: actions/upload-artifact@330a01c490aca151604b8cf639adc76d48f6c5d4 # v5.0.0
+      uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
       with:
         name: build-output
         path: html
