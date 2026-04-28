@@ -9,6 +9,7 @@
   "labels": ["dependencies"],
   "packageRules": [
     {
+      "matchManagers": ["npm"],
       "matchUpdateTypes": ["major"],
       "enabled": true,
       "dependencyDashboardApproval": true
