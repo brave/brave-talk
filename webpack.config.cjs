@@ -81,6 +81,10 @@ module.exports = {
             ignore: ["**/readme.md", "**/robots.txt.production"],
           },
         },
+        {
+          from: "node_modules/@brave/leo/icons/{close,copy,check-circle-filled,warning-circle-filled,warning-triangle-filled}.svg",
+          to: "icons/[name][ext]",
+        },
         ...robotsTxtForProd,
       ],
     }),
