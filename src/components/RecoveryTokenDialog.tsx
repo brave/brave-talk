@@ -116,6 +116,10 @@ export default function RecoveryTokenDialog({
   }
 
   async function performLoad(force: boolean) {
+    if (!value.trim()) {
+      setError(t("recovery_token_error_empty"));
+      return;
+    }
     setAlert(null);
     setIsRecovering(true);
     try {
@@ -213,7 +217,7 @@ export default function RecoveryTokenDialog({
           kind="plain"
           onClick={() => performLoad(false)}
           isLoading={isRecovering}
-          isDisabled={isGenerating || !value.trim()}
+          isDisabled={isGenerating}
         >
           {t("recovery_token_dialog_load_button")}
         </Button>
