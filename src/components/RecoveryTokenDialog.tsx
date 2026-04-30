@@ -11,11 +11,15 @@ import {
   loadRecoveryToken,
   NoRefreshTokensError,
   PremiumRoomsConflictError,
+  savePendingRecoveryToken,
+  TooManyRoomsError,
 } from "../recovery";
+import { premiumLoginUrl } from "../services";
 
 interface RecoveryTokenDialogProps {
   isOpen: boolean;
   onClose: () => void;
+  initialToken: string | null;
 }
 
 const bodyStyles = css`
@@ -48,19 +52,34 @@ const alertStyles = css`
   margin-top: var(--leo-spacing-xl);
 `;
 
+const conflictActionsStyles = css`
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  gap: var(--leo-spacing-m);
+  margin-top: var(--leo-spacing-m);
+  leo-button {
+    flex-grow: 0;
+    width: auto;
+  }
+`;
+
+interface AlertState {
+  type: "error" | "warning" | "success";
+  message: string;
+  showConflictActions?: boolean;
+}
+
 export default function RecoveryTokenDialog({
   isOpen,
   onClose,
+  initialToken,
 }: RecoveryTokenDialogProps) {
   const { t } = useTranslation();
-  const [value, setValue] = useState("");
-  const [alert, setAlert] = useState<{
-    type: "error" | "warning" | "success";
-    message: string;
-  } | null>(null);
+  const [value, setValue] = useState(initialToken ?? "");
+  const [alert, setAlert] = useState<AlertState | null>(null);
   const [isGenerating, setIsGenerating] = useState(false);
   const [isRecovering, setIsRecovering] = useState(false);
-  const [forceLoad, setForceLoad] = useState(false);
   const [showCopyButton, setShowCopyButton] = useState(false);
 
   function setError(message: string) {
@@ -69,7 +88,6 @@ export default function RecoveryTokenDialog({
 
   async function handleGenerate() {
     setAlert(null);
-    setForceLoad(false);
     setIsGenerating(true);
     try {
       const token = await createRecoveryToken();
@@ -78,6 +96,8 @@ export default function RecoveryTokenDialog({
     } catch (e) {
       if (e instanceof NoRefreshTokensError) {
         setError(t("recovery_token_error_no_tokens"));
+      } else if (e instanceof TooManyRoomsError) {
+        setError(t("recovery_token_error_too_many_rooms_backup"));
       } else {
         console.error(e);
         setError(t("recovery_token_error_generic"));
@@ -95,19 +115,21 @@ export default function RecoveryTokenDialog({
     });
   }
 
-  async function handleLoad() {
+  async function performLoad(force: boolean) {
     setAlert(null);
     setIsRecovering(true);
     try {
-      await loadRecoveryToken(value, forceLoad);
+      await loadRecoveryToken(value, force);
       onClose();
     } catch (e) {
       if (e instanceof PremiumRoomsConflictError) {
         setAlert({
           type: "warning",
           message: t("recovery_token_error_premium_conflict"),
+          showConflictActions: true,
         });
-        setForceLoad(true);
+      } else if (e instanceof TooManyRoomsError) {
+        setError(t("recovery_token_error_too_many_rooms_restore"));
       } else {
         console.error(e);
         setError(t("recovery_token_error_generic"));
@@ -115,6 +137,11 @@ export default function RecoveryTokenDialog({
     } finally {
       setIsRecovering(false);
     }
+  }
+
+  function handleSignIn() {
+    savePendingRecoveryToken(value);
+    window.location.href = premiumLoginUrl();
   }
 
   return (
@@ -130,7 +157,7 @@ export default function RecoveryTokenDialog({
           onInput={({ value }) => {
             setValue(value);
             setShowCopyButton(false);
-            setForceLoad(false);
+            setAlert(null);
           }}
         >
           <strong>{t("recovery_token_title")}</strong>
@@ -150,6 +177,26 @@ export default function RecoveryTokenDialog({
         {alert && (
           <Alert type={alert.type} css={alertStyles}>
             {alert.message}
+            {alert.showConflictActions && (
+              <div css={conflictActionsStyles}>
+                <Button
+                  kind="filled"
+                  size="small"
+                  onClick={handleSignIn}
+                  isDisabled={isRecovering}
+                >
+                  {t("recovery_token_dialog_signin_button")}
+                </Button>
+                <Button
+                  kind="plain"
+                  size="small"
+                  onClick={() => performLoad(true)}
+                  isLoading={isRecovering}
+                >
+                  {t("recovery_token_dialog_load_free_button")}
+                </Button>
+              </div>
+            )}
           </Alert>
         )}
 
@@ -164,7 +211,7 @@ export default function RecoveryTokenDialog({
       <div slot="actions" css={actionsStyles}>
         <Button
           kind="plain"
-          onClick={handleLoad}
+          onClick={() => performLoad(false)}
           isLoading={isRecovering}
           isDisabled={isGenerating || !value.trim()}
         >

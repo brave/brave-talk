@@ -5,6 +5,7 @@ import { Button } from "./Button";
 import { Section } from "./Section";
 import { Text } from "./Text";
 import RecoveryTokenDialog from "./RecoveryTokenDialog";
+import { consumePendingRecoveryToken } from "../recovery";
 
 const innerStyles = css`
   display: flex;
@@ -40,7 +41,15 @@ const textStyles = css`
 
 export default function RecoveryTokenBox() {
   const { t } = useTranslation();
-  const [isOpen, setIsOpen] = useState(false);
+  const [initialToken, setInitialToken] = useState(() =>
+    consumePendingRecoveryToken(),
+  );
+  const [isOpen, setIsOpen] = useState(initialToken !== null);
+
+  const handleClose = () => {
+    setIsOpen(false);
+    setInitialToken(null);
+  };
 
   return (
     <Text variant="body">
@@ -63,7 +72,8 @@ export default function RecoveryTokenBox() {
       <RecoveryTokenDialog
         key={String(isOpen)}
         isOpen={isOpen}
-        onClose={() => setIsOpen(false)}
+        onClose={handleClose}
+        initialToken={initialToken}
       />
     </Text>
   );
