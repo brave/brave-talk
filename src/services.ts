@@ -23,3 +23,7 @@ export function secondLevelDomain(
   }
   return sld;
 }
+
+export function premiumLoginUrl(): string {
+  return `${resolveService("account")}/account/?intent=recover&product=talk`;
+}
