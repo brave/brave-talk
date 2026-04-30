@@ -76,6 +76,12 @@ export async function loadRecoveryToken(
   const url = "/api/v1/recovery";
   const csrfToken = await getCsrfToken(url);
 
+  // Ensure the subscriber credential cookie is presented so the server can
+  // authorize recovery of premium rooms. Dynamically imported to keep the
+  // skus-sdk out of bundles that only need backup-token creation.
+  const subs = await import("./subscriptions");
+  await subs.setTemporaryCredentialCookie();
+
   const response = await fetchWithTimeout(url, {
     method: "POST",
     headers: { "Content-Type": "application/json", "x-csrf-token": csrfToken },
