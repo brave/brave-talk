@@ -69,6 +69,7 @@ export default function RecoveryTokenDialog({
 
   async function handleGenerate() {
     setAlert(null);
+    setForceLoad(false);
     setIsGenerating(true);
     try {
       const token = await createRecoveryToken();
@@ -129,12 +130,15 @@ export default function RecoveryTokenDialog({
           onInput={({ value }) => {
             setValue(value);
             setShowCopyButton(false);
+            setForceLoad(false);
           }}
         >
           <strong>{t("recovery_token_title")}</strong>
           {showCopyButton && (
             <button
+              type="button"
               slot="right-icon"
+              aria-label="Copy to clipboard"
               css={copyButtonStyles}
               onClick={handleCopy}
             >
@@ -162,7 +166,7 @@ export default function RecoveryTokenDialog({
           kind="plain"
           onClick={handleLoad}
           isLoading={isRecovering}
-          isDisabled={isGenerating}
+          isDisabled={isGenerating || !value.trim()}
         >
           {t("recovery_token_dialog_load_button")}
         </Button>

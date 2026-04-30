@@ -53,7 +53,6 @@ export default function RecoveryTokenBox() {
               <a href="#" rel="noreferrer">
                 {t("recovery_token_learn_more")}
               </a>
-              .
             </p>
           </div>
           <Button onClick={() => setIsOpen(true)}>

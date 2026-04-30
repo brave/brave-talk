@@ -1,6 +1,6 @@
 import { TranslationKeys } from "./i18n/i18next";
 import { loadLocalJwtStore } from "./jwt-store";
-import { fetchWithTimeout } from "./lib";
+import { fetchWithTimeout, getCsrfToken, GENERIC_ERROR_MESSAGE } from "./lib";
 import { isProduction } from "./environment";
 
 // the subscriptions service is forwarded by CloudFront onto talk.brave* so we're not
@@ -32,26 +32,12 @@ interface RoomsRequestParams {
   failureMessages: { [status: number]: string };
 }
 
-const GENERIC_ERROR_MESSAGE =
-  "Oops! We were unable to connect to your meeting room. Please try again.";
-
 export const getRoomUrl = (roomName: string): string => {
   return `${SUBSCRIPTIONS_ROOT_URL}/v1/rooms/${encodeURIComponent(roomName)}`;
 };
 
 export const getRoomCsrfToken = async (roomName: string): Promise<string> => {
-  const optionsResponse = await fetchWithTimeout(getRoomUrl(roomName), {
-    method: "OPTIONS",
-    credentials: "include",
-  });
-  const csrfToken = optionsResponse.headers.get("x-csrf-token");
-  if (!csrfToken) {
-    console.warn(
-      "!!! OPTIONS request failed to return x-csrf-token, which is likely due to incorrectly configured CORS policy",
-    );
-    throw new Error(GENERIC_ERROR_MESSAGE);
-  }
-  return csrfToken;
+  return getCsrfToken(getRoomUrl(roomName));
 };
 
 const roomsRequest = async ({
