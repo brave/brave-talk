@@ -19,6 +19,10 @@ export function savePendingRecoveryToken(token: string): void {
   localStorage.setItem(PENDING_RECOVERY_TOKEN_KEY, JSON.stringify(payload));
 }
 
+export function clearPendingRecoveryToken(): void {
+  localStorage.removeItem(PENDING_RECOVERY_TOKEN_KEY);
+}
+
 export function consumePendingRecoveryToken(): string | null {
   const stored = localStorage.getItem(PENDING_RECOVERY_TOKEN_KEY);
   if (!stored) {
@@ -106,6 +110,7 @@ export async function loadRecoveryToken(
   const body = await response.json();
   const store = loadLocalJwtStore();
   store.storeRefreshTokens(body.refreshTokens);
+  clearPendingRecoveryToken();
 }
 
 export async function createRecoveryToken(): Promise<string> {
