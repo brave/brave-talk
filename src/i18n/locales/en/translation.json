@@ -72,6 +72,7 @@
   "recovery_token_dialog_generate_button": "Generate new token",
   "recovery_token_dialog_copied_title": "Copied to clipboard!",
   "recovery_token_dialog_description": "This token will allow you to restore moderator privileges in any recurring meeting you've created. You should treat this token like a unique password and keep it in a safe place. Each time you set up a new, recurring meeting, click <strong>Generate new token</strong>. If you need to reset your browser or install Brave on a new device, you can paste your token in the text box above and click <strong>Load token</strong>. This will recover the token on the device, and restore your moderator privileges.",
+  "recovery_token_error_empty": "Please enter a recovery token.",
   "recovery_token_error_no_tokens": "No meeting rooms found. Please create a room first.",
   "recovery_token_error_premium_conflict": "Some of your rooms require an active premium subscription to recover. Sign in to your Brave account to recover them as premium rooms, or recover them as free rooms.",
   "recovery_token_error_generic": "Failed to process recovery token. Please try again.",

@@ -64,6 +64,7 @@
   "recovery_token_dialog_generate_button": "新しいトークンを生成",
   "recovery_token_dialog_copied_title": "クリップボードにコピーしました！",
   "recovery_token_dialog_description": "このトークンにより、作成したすべての定期ミーティングでモデレーター権限を回復できます。このトークンは固有のパスワードとして扱い、安全な場所に保管してください。新しい定期ミーティングを設定するたびに、<strong>新しいトークンを生成</strong>をクリックしてください。ブラウザをリセットしたり、新しいデバイスにBraveをインストールする必要がある場合は、上のテキストボックスにトークンを貼り付けて<strong>トークンを読み込む</strong>をクリックしてください。これによりデバイス上でトークンが回復され、モデレーター権限が復元されます。",
+  "recovery_token_error_empty": "回復トークンを入力してください。",
   "recovery_token_error_no_tokens": "ミーティングルームが見つかりません。まずルームに参加または作成してください。",
   "recovery_token_error_premium_conflict": "一部のルームの回復にはアクティブなプレミアムサブスクリプションが必要です。Braveアカウントにサインインしてプレミアムルームとして回復するか、無料ルームとして回復してください。",
   "recovery_token_error_generic": "回復トークンの処理に失敗しました。もう一度お試しください。",
