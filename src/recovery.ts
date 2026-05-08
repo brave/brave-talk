@@ -1,6 +1,9 @@
 import { loadLocalJwtStore } from "./jwt-store";
 import { getCsrfToken, fetchWithTimeout } from "./lib";
 
+export const RECOVERY_TOKEN_LEARN_MORE_URL =
+  "https://support.brave.app/hc/en-us/articles/45513226816013";
+
 const PENDING_RECOVERY_TOKEN_KEY = "pendingRecoveryToken";
 const PENDING_RECOVERY_TOKEN_MAX_AGE_MS = 10 * 60 * 1000;
 

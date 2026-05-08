@@ -11,6 +11,7 @@ import {
   loadRecoveryToken,
   NoRefreshTokensError,
   PremiumRoomsConflictError,
+  RECOVERY_TOKEN_LEARN_MORE_URL,
   savePendingRecoveryToken,
   TooManyRoomsError,
 } from "../recovery";
@@ -206,7 +207,11 @@ export default function RecoveryTokenDialog({
 
         <p css={descriptionStyles}>
           <Trans i18nKey="recovery_token_dialog_description" />{" "}
-          <a href="#" rel="noreferrer">
+          <a
+            href={RECOVERY_TOKEN_LEARN_MORE_URL}
+            target="_blank"
+            rel="noreferrer"
+          >
             {t("recovery_token_dialog_learn_more")}
           </a>
         </p>
