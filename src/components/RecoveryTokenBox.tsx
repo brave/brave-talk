@@ -5,7 +5,10 @@ import { Button } from "./Button";
 import { Section } from "./Section";
 import { Text } from "./Text";
 import RecoveryTokenDialog from "./RecoveryTokenDialog";
-import { consumePendingRecoveryToken } from "../recovery";
+import {
+  consumePendingRecoveryToken,
+  RECOVERY_TOKEN_LEARN_MORE_URL,
+} from "../recovery";
 
 const innerStyles = css`
   display: flex;
@@ -59,7 +62,11 @@ export default function RecoveryTokenBox() {
             <h2>{t("recovery_token_title")}</h2>
             <p>
               {t("recovery_token_description")}{" "}
-              <a href="#" rel="noreferrer">
+              <a
+                href={RECOVERY_TOKEN_LEARN_MORE_URL}
+                target="_blank"
+                rel="noreferrer"
+              >
                 {t("recovery_token_learn_more")}
               </a>
             </p>
