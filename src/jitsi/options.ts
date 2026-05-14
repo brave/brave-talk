@@ -38,6 +38,9 @@ export const jitsiOptions = (
         ],
       },
       customToolbarButtons: <CustomToolbarButton[]>[],
+      deeplinking: {
+        disabled: true,
+      },
       disabledSounds: ["E2EE_OFF_SOUND", "E2EE_ON_SOUND"],
       disableGTM: true,
       disableBeforeUnloadHandlers: true,
