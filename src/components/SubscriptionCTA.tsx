@@ -1,6 +1,6 @@
 import { useTranslation } from "react-i18next";
 import { SubscriptionStatus } from "../hooks/use-subscribed-status";
-import { resolveService } from "../services";
+import { premiumLoginUrl, resolveService } from "../services";
 import { Button } from "./Button";
 import { Section } from "./Section";
 import { Text } from "./Text";
@@ -55,10 +55,7 @@ export const SubscriptionCTA = ({ subscribed }: Props) => {
         <div css={{ marginTop: 16 }}>{t("subscribe_login_text")}</div>
         <div css={{ marginTop: 16 }}>
           {t("subscribe_login_premium")}{" "}
-          <a
-            href={`${subsUrl}/account/?intent=recover&product=talk`}
-            css={{ color: "inherit" }}
-          >
+          <a href={premiumLoginUrl()} css={{ color: "inherit" }}>
             {t("subscribe_login_link")}
           </a>
           .
