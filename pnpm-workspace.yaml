@@ -13,6 +13,13 @@ auditConfig:
     - GHSA-phwv-c562-gvmh
     - GHSA-m56q-vw4c-c2cp
     - GHSA-crpf-4hrx-3jrp
+    - GHSA-pr6f-5x2q-rwfp
+    - GHSA-rcqx-6q8c-2c42
+
+blockExoticSubdeps: true
+
+minimumReleaseAge: 10080
+minimumReleaseAgeExclude: []
 
 overrides:
   brace-expansion@<1.1.13: '^1.1.13'
