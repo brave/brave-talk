@@ -16,6 +16,12 @@ auditConfig:
     - GHSA-pr6f-5x2q-rwfp
     - GHSA-rcqx-6q8c-2c42
 
+
+blockExoticSubdeps: true
+
+minimumReleaseAge: 10080
+minimumReleaseAgeExclude: []
+
 overrides:
   brace-expansion@<1.1.13: '^1.1.13'
   brace-expansion@>=4.0.0 <5.0.5: '^5.0.6'
