@@ -16,6 +16,7 @@ auditConfig:
     - GHSA-pr6f-5x2q-rwfp
     - GHSA-rcqx-6q8c-2c42
 
+
 blockExoticSubdeps: true
 
 minimumReleaseAge: 10080
@@ -23,7 +24,7 @@ minimumReleaseAgeExclude: []
 
 overrides:
   brace-expansion@<1.1.13: '^1.1.13'
-  brace-expansion@>=4.0.0 <5.0.5: '^5.0.5'
+  brace-expansion@>=4.0.0 <5.0.5: '^5.0.6'
   fast-uri@<=3.1.0: '^3.1.2'
   flatted@<3.4.0: "^3.4.0"
   follow-redirects@<=1.15.11: '>=1.16.0'
@@ -36,6 +37,7 @@ overrides:
   postcss@<8.5.10: '^8.5.10'
   serialize-javascript@<7.0.5: '>=7.0.5'
   uuid@<14.0.0: '>=14.0.0'
+  ws@>=8.0.0 <8.20.1: '>=8.20.1'
   yaml@>=1.0.0 <1.10.3: '^1.10.3'
   yaml@>=2.0.0 <2.8.3: '^2.8.3'
 
