@@ -16,7 +16,6 @@ auditConfig:
     - GHSA-pr6f-5x2q-rwfp
     - GHSA-rcqx-6q8c-2c42
 
-
 blockExoticSubdeps: true
 
 minimumReleaseAge: 10080
@@ -35,6 +34,7 @@ overrides:
   picomatch@<2.3.2: '^2.3.2'
   picomatch@>=4.0.0 <4.0.4: '^4.0.4'
   postcss@<8.5.10: '^8.5.10'
+  qs@>=6.11.1 <=6.15.1: '>=6.15.2'
   serialize-javascript@<7.0.5: '>=7.0.5'
   uuid@<14.0.0: '>=14.0.0'
   ws@>=8.0.0 <8.20.1: '>=8.20.1'
