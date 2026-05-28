@@ -11,7 +11,6 @@ import { BrowserProperties } from "../hooks/use-browser-properties";
 import { useTranslation } from "react-i18next";
 import { TranslationKeys } from "../i18n/i18next";
 import { JitsiContext } from "../jitsi/types";
-import LeoPromo from "./LeoPromo";
 import RecoveryTokenBox from "./RecoveryTokenBox";
 
 const MeetingTranscriptDisplay = lazy(() => import("./Transcript"));
@@ -72,8 +71,6 @@ export const WelcomeScreen = ({
           disabled={disabled}
           hideButtons={hasInitialRoomName}
         />
-
-        <LeoPromo />
 
         <Recordings onRouterStatePushed={onRouterStatePushed} />
 
