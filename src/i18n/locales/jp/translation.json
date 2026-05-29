@@ -56,6 +56,7 @@
   "premium_card_title": "プレミアム通話",
   "recovery_token_title": "ミーティング回復トークン",
   "recovery_token_description": "定期的なミーティングのモデレーターは、新しいコールを設定するたびにコール固有のトークンをエクスポートし、安全な場所に保管してください。ブラウザを再インストールしたり、新しいデバイスにインストールする際にモデレーター権限を維持するにはこのトークンが必要です。",
+  "recovery_token_description_free": "定期的なミーティングのモデレーターで回復トークンをお持ちの場合は、こちらでルームを回復できます。",
   "recovery_token_learn_more": "詳細はこちら。",
   "recovery_token_manage_button": "トークンを管理",
   "recovery_token_dialog_textarea_placeholder": "下の「新しいトークンを生成」をクリックして新しい回復トークンを生成してください。トークンを回復する場合は、ここに貼り付けて「トークンを読み込む」をクリックしてください。",

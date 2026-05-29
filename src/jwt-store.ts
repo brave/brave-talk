@@ -94,7 +94,7 @@ interface LogEntry {
 
 type LogEntries = Array<LogEntry>;
 
-const CONFABS_STORAGE_KEY = "confabs";
+export const CONFABS_STORAGE_KEY = "confabs";
 const LOGS_STORAGE_KEY = "logs";
 
 const defaults: ConfabStructure = {
