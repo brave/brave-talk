@@ -76,7 +76,7 @@ export const WelcomeScreen = ({
 
         {!hasInitialRoomName && <SubscriptionCTA subscribed={subscribed} />}
 
-        <RecoveryTokenBox />
+        <RecoveryTokenBox subscribed={subscribed} />
       </React.Fragment>
     );
   };
