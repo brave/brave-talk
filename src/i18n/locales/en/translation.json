@@ -61,6 +61,7 @@
   "premium_card_title": "Premium calls",
   "recovery_token_title": "Meeting recovery token",
   "recovery_token_description": "If you're the moderator of a recurring meeting, you may export your call's unique token each time you set up a new call, and keep this token in a safe place. You'll need this token to retain moderator privileges in cases where you need to reinstall the browser or install on a new device.",
+  "recovery_token_description_free": "If you're the moderator of a recurring meeting and have a recovery token, you may recover rooms here.",
   "recovery_token_learn_more": "Learn more.",
   "recovery_token_manage_button": "Manage tokens",
   "recovery_token_dialog_textarea_placeholder": "Generate a new recovery token by clicking the \"Generate new token\" below. If you want to recover your token, paste it here and click \"Load token\".",
