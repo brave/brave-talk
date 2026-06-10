@@ -19,6 +19,7 @@ overrides:
   postcss@<8.5.10: ^8.5.10
   qs@>=6.11.1 <=6.15.1: '>=6.15.2'
   serialize-javascript@<7.0.5: '>=7.0.5'
+  shell-quote@>=1.1.0 <=1.8.3: '>=1.8.4'
   uuid@<14.0.0: '>=14.0.0'
   ws@>=8.0.0 <8.20.1: '>=8.20.1'
   yaml@>=1.0.0 <1.10.3: ^1.10.3
@@ -4115,8 +4116,8 @@ packages:
     resolution: {integrity: sha512-7++dFhtcx3353uBaq8DDR4NuxBetBzC7ZQOhmTQInHEd6bSrXdiEyzCvG07Z44UYdLShWUyXt5M/yhz8ekcb1A==}
     engines: {node: '>=8'}
 
-  shell-quote@1.8.2:
-    resolution: {integrity: sha512-AzqKpGKjrj7EM6rKVQEPpB288oCfnrEIuyoT9cyF4nmGa7V8Zk6f7RRqYisX8X9m+Q7bd632aZW4ky7EhbQztA==}
+  shell-quote@1.8.4:
+    resolution: {integrity: sha512-VsC6n6vz1ihYYyZZwX7YZSF5l5x36ca17OC+a69h94YqB7X6XLwf+5MOgynYir2SLFUbl8gIYvBo8K8RoNQ6bQ==}
     engines: {node: '>= 0.4'}
 
   side-channel-list@1.0.0:
@@ -5778,7 +5779,7 @@ snapshots:
       jsdoc-type-pratt-parser: 4.8.0
       process: 0.11.10
       recast: 0.23.11
-      semver: 7.7.4
+      semver: 7.8.1
       util: 0.12.5
       ws: 8.20.1
     optionalDependencies:
@@ -8509,7 +8510,7 @@ snapshots:
   launch-editor@2.10.0:
     dependencies:
       picocolors: 1.1.1
-      shell-quote: 1.8.2
+      shell-quote: 1.8.4
 
   leven@3.1.0: {}
 
@@ -9499,7 +9500,7 @@ snapshots:
 
   shebang-regex@3.0.0: {}
 
-  shell-quote@1.8.2: {}
+  shell-quote@1.8.4: {}
 
   side-channel-list@1.0.0:
     dependencies:
