@@ -99,6 +99,7 @@ export default function RecoveryTokenBox({ subscribed }: Props) {
         isOpen={isOpen}
         onClose={handleClose}
         initialToken={initialToken}
+        hasConfabs={hasConfabs}
       />
     </>
   );
