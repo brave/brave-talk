@@ -21,7 +21,6 @@ interface RecoveryTokenDialogProps {
   isOpen: boolean;
   onClose: () => void;
   initialToken: string | null;
-  hasConfabs: boolean;
 }
 
 const bodyStyles = css`
@@ -76,7 +75,6 @@ export default function RecoveryTokenDialog({
   isOpen,
   onClose,
   initialToken,
-  hasConfabs,
 }: RecoveryTokenDialogProps) {
   const { t } = useTranslation();
   const [value, setValue] = useState(initialToken ?? "");
@@ -158,11 +156,7 @@ export default function RecoveryTokenDialog({
       <div css={bodyStyles}>
         <Textarea
           mode="outline"
-          placeholder={t(
-            hasConfabs
-              ? "recovery_token_dialog_textarea_placeholder"
-              : "recovery_token_dialog_textarea_placeholder_no_tokens",
-          )}
+          placeholder={t("recovery_token_dialog_textarea_placeholder")}
           value={value}
           css={{ wordBreak: "break-all" }}
           onInput={({ value }) => {
@@ -212,13 +206,7 @@ export default function RecoveryTokenDialog({
         )}
 
         <p css={descriptionStyles}>
-          <Trans
-            i18nKey={
-              hasConfabs
-                ? "recovery_token_dialog_description"
-                : "recovery_token_dialog_description_no_tokens"
-            }
-          />{" "}
+          <Trans i18nKey="recovery_token_dialog_description" />{" "}
           <a
             href={RECOVERY_TOKEN_LEARN_MORE_URL}
             target="_blank"
@@ -238,16 +226,14 @@ export default function RecoveryTokenDialog({
         >
           {t("recovery_token_dialog_load_button")}
         </Button>
-        {hasConfabs && (
-          <Button
-            kind="filled"
-            onClick={handleGenerate}
-            isLoading={isGenerating}
-            isDisabled={isRecovering}
-          >
-            {t("recovery_token_dialog_generate_button")}
-          </Button>
-        )}
+        <Button
+          kind="filled"
+          onClick={handleGenerate}
+          isLoading={isGenerating}
+          isDisabled={isRecovering}
+        >
+          {t("recovery_token_dialog_generate_button")}
+        </Button>
       </div>
     </Dialog>
   );
