@@ -26,6 +26,15 @@ interface RecoveryTokenDialogProps {
 const bodyStyles = css`
   text-align: left;
   margin-bottom: calc(-1 * var(--padding));
+
+  textarea {
+    word-break: break-all;
+  }
+
+  textarea::placeholder {
+    word-break: break-word;
+    overflow-wrap: break-word;
+  }
 `;
 
 const descriptionStyles = css`
@@ -158,7 +167,6 @@ export default function RecoveryTokenDialog({
           mode="outline"
           placeholder={t("recovery_token_dialog_textarea_placeholder")}
           value={value}
-          css={{ wordBreak: "break-all" }}
           onInput={({ value }) => {
             setValue(value);
             setShowCopyButton(false);
