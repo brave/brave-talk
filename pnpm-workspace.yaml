@@ -19,11 +19,12 @@ auditConfig:
 blockExoticSubdeps: true
 
 minimumReleaseAge: 10080
-minimumReleaseAgeExclude: []
+minimumReleaseAgeExclude: [ esbuild@0.28.1, '@esbuild/aix-ppc64@0.28.1', '@esbuild/android-arm64@0.28.1', '@esbuild/android-arm@0.28.1', '@esbuild/android-x64@0.28.1', '@esbuild/darwin-arm64@0.28.1', '@esbuild/darwin-x64@0.28.1', '@esbuild/freebsd-arm64@0.28.1', '@esbuild/freebsd-x64@0.28.1', '@esbuild/linux-arm64@0.28.1', '@esbuild/linux-arm@0.28.1', '@esbuild/linux-ia32@0.28.1', '@esbuild/linux-loong64@0.28.1', '@esbuild/linux-mips64el@0.28.1', '@esbuild/linux-ppc64@0.28.1', '@esbuild/linux-riscv64@0.28.1', '@esbuild/linux-s390x@0.28.1', '@esbuild/linux-x64@0.28.1', '@esbuild/netbsd-arm64@0.28.1', '@esbuild/netbsd-x64@0.28.1', '@esbuild/openbsd-arm64@0.28.1', '@esbuild/openbsd-x64@0.28.1', '@esbuild/openharmony-arm64@0.28.1', '@esbuild/sunos-x64@0.28.1', '@esbuild/win32-arm64@0.28.1', '@esbuild/win32-ia32@0.28.1', '@esbuild/win32-x64@0.28.1' ]
 
 overrides:
   brace-expansion@<1.1.13: '^1.1.13'
   brace-expansion@>=4.0.0 <5.0.5: '^5.0.6'
+  esbuild@>=0.17.0 <0.28.1: '>=0.28.1'
   fast-uri@<=3.1.0: '^3.1.2'
   flatted@<3.4.0: "^3.4.0"
   follow-redirects@<=1.15.11: '>=1.16.0'
