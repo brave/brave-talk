@@ -36,7 +36,7 @@ importers:
     dependencies:
       '@brave/leo':
         specifier: github:brave/leo#b0d5f184aee1862a37c3bd4dfe854fae5c784daa
-        version: https://codeload.github.com/brave/leo/tar.gz/b0d5f184aee1862a37c3bd4dfe854fae5c784daa(@babel/core@7.29.7)(postcss-load-config@4.0.2(postcss@8.5.12))(postcss@8.5.12)(react@18.3.1)(storybook@8.6.17(prettier@3.8.3))(typescript@5.9.3)
+        version: https://codeload.github.com/brave/leo/tar.gz/b0d5f184aee1862a37c3bd4dfe854fae5c784daa(@babel/core@7.29.7)(postcss-load-config@4.0.2(postcss@8.5.12))(postcss@8.5.12)(react@18.3.1)(storybook@8.6.17(prettier@3.8.4))(typescript@5.9.3)
       '@emotion/react':
         specifier: 11.14.0
         version: 11.14.0(@types/react@18.3.31)(react@18.3.1)
@@ -114,8 +114,8 @@ importers:
         specifier: 2.10.2
         version: 2.10.2(webpack@5.107.2)
       prettier:
-        specifier: 3.8.3
-        version: 3.8.3
+        specifier: 3.8.4
+        version: 3.8.4
       style-loader:
         specifier: 3.3.4
         version: 3.3.4(webpack@5.107.2)
@@ -3839,8 +3839,8 @@ packages:
     resolution: {integrity: sha512-vkcDPrRZo1QZLbn5RLGPpg/WmIQ65qoWWhcGKf/b5eplkkarX0m9z8ppCat4mlOqUsWpyNuYgO3VRyrYHSzX5g==}
     engines: {node: '>= 0.8.0'}
 
-  prettier@3.8.3:
-    resolution: {integrity: sha512-7igPTM53cGHMW8xWuVTydi2KO233VFiTNyF5hLJqpilHfmn8C8gPf+PS7dUT64YcXFbiMGZxS9pCSxL/Dxm/Jw==}
+  prettier@3.8.4:
+    resolution: {integrity: sha512-N2MylSdi48+5N/6S5j+maeHbUSIzzZ5uOcX5Hm4QpV8Dkb1HFjfAKTKX6yNPJQD9AhcT3ifHNB66tWTTJDi11Q==}
     engines: {node: '>=14'}
     hasBin: true
 
@@ -5181,9 +5181,9 @@ snapshots:
 
   '@brave-intl/skus-sdk@0.1.3': {}
 
-  '@brave/leo@https://codeload.github.com/brave/leo/tar.gz/b0d5f184aee1862a37c3bd4dfe854fae5c784daa(@babel/core@7.29.7)(postcss-load-config@4.0.2(postcss@8.5.12))(postcss@8.5.12)(react@18.3.1)(storybook@8.6.17(prettier@3.8.3))(typescript@5.9.3)':
+  '@brave/leo@https://codeload.github.com/brave/leo/tar.gz/b0d5f184aee1862a37c3bd4dfe854fae5c784daa(@babel/core@7.29.7)(postcss-load-config@4.0.2(postcss@8.5.12))(postcss@8.5.12)(react@18.3.1)(storybook@8.6.17(prettier@3.8.4))(typescript@5.9.3)':
     dependencies:
-      '@storybook/test': 8.6.14(storybook@8.6.17(prettier@3.8.3))
+      '@storybook/test': 8.6.14(storybook@8.6.17(prettier@3.8.4))
       svelte: 4.2.20
       svelte-preprocess: 5.1.4(@babel/core@7.29.7)(postcss-load-config@4.0.2(postcss@8.5.12))(postcss@8.5.12)(svelte@4.2.20)(typescript@5.9.3)
       tailwindcss: 3.4.18
@@ -5859,9 +5859,9 @@ snapshots:
     dependencies:
       '@sinonjs/commons': 3.0.1
 
-  '@storybook/core@8.6.17(prettier@3.8.3)(storybook@8.6.17(prettier@3.8.3))':
+  '@storybook/core@8.6.17(prettier@3.8.4)(storybook@8.6.17(prettier@3.8.4))':
     dependencies:
-      '@storybook/theming': 8.6.17(storybook@8.6.17(prettier@3.8.3))
+      '@storybook/theming': 8.6.17(storybook@8.6.17(prettier@3.8.4))
       better-opn: 3.0.2
       browser-assert: 1.2.1
       esbuild: 0.28.1
@@ -5873,7 +5873,7 @@ snapshots:
       util: 0.12.5
       ws: 8.21.0
     optionalDependencies:
-      prettier: 3.8.3
+      prettier: 3.8.4
     transitivePeerDependencies:
       - bufferutil
       - storybook
@@ -5882,26 +5882,26 @@ snapshots:
 
   '@storybook/global@5.0.0': {}
 
-  '@storybook/instrumenter@8.6.14(storybook@8.6.17(prettier@3.8.3))':
+  '@storybook/instrumenter@8.6.14(storybook@8.6.17(prettier@3.8.4))':
     dependencies:
       '@storybook/global': 5.0.0
       '@vitest/utils': 2.1.9
-      storybook: 8.6.17(prettier@3.8.3)
+      storybook: 8.6.17(prettier@3.8.4)
 
-  '@storybook/test@8.6.14(storybook@8.6.17(prettier@3.8.3))':
+  '@storybook/test@8.6.14(storybook@8.6.17(prettier@3.8.4))':
     dependencies:
       '@storybook/global': 5.0.0
-      '@storybook/instrumenter': 8.6.14(storybook@8.6.17(prettier@3.8.3))
+      '@storybook/instrumenter': 8.6.14(storybook@8.6.17(prettier@3.8.4))
       '@testing-library/dom': 10.4.0
       '@testing-library/jest-dom': 6.5.0
       '@testing-library/user-event': 14.5.2(@testing-library/dom@10.4.0)
       '@vitest/expect': 2.0.5
       '@vitest/spy': 2.0.5
-      storybook: 8.6.17(prettier@3.8.3)
+      storybook: 8.6.17(prettier@3.8.4)
 
-  '@storybook/theming@8.6.17(storybook@8.6.17(prettier@3.8.3))':
+  '@storybook/theming@8.6.17(storybook@8.6.17(prettier@3.8.4))':
     dependencies:
-      storybook: 8.6.17(prettier@3.8.3)
+      storybook: 8.6.17(prettier@3.8.4)
 
   '@testing-library/dom@10.4.0':
     dependencies:
@@ -9220,7 +9220,7 @@ snapshots:
 
   prelude-ls@1.2.1: {}
 
-  prettier@3.8.3: {}
+  prettier@3.8.4: {}
 
   pretty-error@4.0.0:
     dependencies:
@@ -9686,11 +9686,11 @@ snapshots:
 
   statuses@2.0.2: {}
 
-  storybook@8.6.17(prettier@3.8.3):
+  storybook@8.6.17(prettier@3.8.4):
     dependencies:
-      '@storybook/core': 8.6.17(prettier@3.8.3)(storybook@8.6.17(prettier@3.8.3))
+      '@storybook/core': 8.6.17(prettier@3.8.4)(storybook@8.6.17(prettier@3.8.4))
     optionalDependencies:
-      prettier: 3.8.3
+      prettier: 3.8.4
     transitivePeerDependencies:
       - bufferutil
       - supports-color
