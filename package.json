@@ -51,7 +51,7 @@
     "typescript-eslint": "8.61.0",
     "webpack": "5.107.2",
     "webpack-cli": "5.1.4",
-    "webpack-dev-server": "5.2.4"
+    "webpack-dev-server": "5.2.5"
   },
   "dependencies": {
     "@brave/leo": "github:brave/leo#b0d5f184aee1862a37c3bd4dfe854fae5c784daa",
