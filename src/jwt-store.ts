@@ -61,6 +61,9 @@ export function loadLocalJwtStore(forceReload = false): JwtStore {
         saveLogsToStorage(logs);
       },
       storeRefreshTokens: (tokens) => {
+        for (const roomName of Object.keys(tokens)) {
+          delete confabs.JWTs[roomName];
+        }
         Object.assign(confabs.refresh, tokens);
         saveConfabsToStorage(confabs);
       },
