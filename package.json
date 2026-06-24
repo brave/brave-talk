@@ -28,7 +28,7 @@
     "@eslint/js": "^9.39.2",
     "@types/jest": "30.0.0",
     "@types/node": "^24.12.0",
-    "@types/react": "18.3.30",
+    "@types/react": "18.3.31",
     "@types/react-dom": "18.3.7",
     "copy-webpack-plugin": "12.0.2",
     "css-loader": "6.11.0",
@@ -42,16 +42,16 @@
     "jest": "30.4.2",
     "lint-staged": "15.5.2",
     "mini-css-extract-plugin": "2.10.2",
-    "prettier": "3.8.3",
+    "prettier": "3.8.4",
     "style-loader": "3.3.4",
     "svgo-loader": "4.0.0",
     "ts-jest": "29.4.11",
     "ts-loader": "9.6.0",
     "typescript": "5.9.3",
-    "typescript-eslint": "8.60.1",
+    "typescript-eslint": "8.61.1",
     "webpack": "5.107.2",
     "webpack-cli": "5.1.4",
-    "webpack-dev-server": "5.2.4"
+    "webpack-dev-server": "5.2.5"
   },
   "dependencies": {
     "@brave/leo": "github:brave/leo#b0d5f184aee1862a37c3bd4dfe854fae5c784daa",
@@ -67,5 +67,5 @@
     "*": "prettier --ignore-unknown --write",
     "*.ts?(x)": "eslint"
   },
-  "packageManager": "pnpm@10.34.1+sha512.b58fbde6dca66a929538021581f648b4570b6ca19b18e7cbd7f2c07a7b24454155388dacdf08f2af3678e88a6d1fe04f9d609df24bf51735a060ea041b374ab7"
+  "packageManager": "pnpm@10.34.3"
 }

@@ -14,11 +14,13 @@
 export interface JwtStore {
   findJwtForRoom: (roomName: string) => string | undefined;
   findRefreshTokenForRoom: (roomName: string) => string | undefined;
+  getAllRefreshTokens: () => string[];
   storeJwtForRoom: (
     roomName: string,
     encodedJwt: string,
     encodedRefreshToken?: string | undefined,
   ) => void;
+  storeRefreshTokens: (tokens: Record<string, string>) => void;
   isNewMonthlyActiveUser: () => boolean;
 }
 
@@ -34,6 +36,7 @@ export function loadLocalJwtStore(forceReload = false): JwtStore {
     jwtStore = {
       findJwtForRoom: (roomName) => confabs.JWTs[roomName],
       findRefreshTokenForRoom: (roomName) => confabs.refresh[roomName],
+      getAllRefreshTokens: () => Object.values(confabs.refresh),
       storeJwtForRoom: (roomName, encodedJwt, encodedRefreshToken) => {
         const logs = loadLogsFromStorage();
         const now = Math.ceil(new Date().getTime() / 1000);
@@ -56,6 +59,13 @@ export function loadLocalJwtStore(forceReload = false): JwtStore {
         }
         saveConfabsToStorage(confabs);
         saveLogsToStorage(logs);
+      },
+      storeRefreshTokens: (tokens) => {
+        for (const roomName of Object.keys(tokens)) {
+          delete confabs.JWTs[roomName];
+        }
+        Object.assign(confabs.refresh, tokens);
+        saveConfabsToStorage(confabs);
       },
       isNewMonthlyActiveUser: () => performMauCheck(confabs),
     };
@@ -87,7 +97,7 @@ interface LogEntry {
 
 type LogEntries = Array<LogEntry>;
 
-const CONFABS_STORAGE_KEY = "confabs";
+export const CONFABS_STORAGE_KEY = "confabs";
 const LOGS_STORAGE_KEY = "logs";
 
 const defaults: ConfabStructure = {
