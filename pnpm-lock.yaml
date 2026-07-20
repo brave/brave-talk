@@ -26,6 +26,7 @@ overrides:
   serialize-javascript@<7.0.5: '>=7.0.5'
   shell-quote@>=1.1.0 <=1.8.3: '>=1.8.4'
   uuid@<14.0.0: '>=14.0.0'
+  websocket-driver@<0.7.5: '>=0.7.5'
   ws@>=8.0.0 <8.20.1: '>=8.20.1'
   ws@>=8.0.0 <8.21.0: '>=8.21.0'
   yaml@>=1.0.0 <1.10.3: ^1.10.3
@@ -4756,8 +4757,8 @@ packages:
       webpack-cli:
         optional: true
 
-  websocket-driver@0.7.4:
-    resolution: {integrity: sha512-b17KeDIQVjvb0ssuSDF2cYXSg2iztliJ4B9WdsuB6J952qCPKmnVq4DyW5motImXHDC1cBT/1UezrJVsKw5zjg==}
+  websocket-driver@0.7.5:
+    resolution: {integrity: sha512-ZL2+3c7kMBdIRCMz6l8jQMHyGVxj+UL+xVk74Ombiciboca8rHa15L86B19E5oh1pL9Ii/uj54gtsIrZGMo6zA==}
     engines: {node: '>=0.8.0'}
 
   websocket-extensions@0.1.4:
@@ -7505,7 +7506,7 @@ snapshots:
 
   faye-websocket@0.11.4:
     dependencies:
-      websocket-driver: 0.7.4
+      websocket-driver: 0.7.5
 
   fb-watchman@2.0.2:
     dependencies:
@@ -9593,7 +9594,7 @@ snapshots:
     dependencies:
       faye-websocket: 0.11.4
       uuid: 14.0.0
-      websocket-driver: 0.7.4
+      websocket-driver: 0.7.5
 
   sorcery@0.11.1:
     dependencies:
@@ -10246,7 +10247,7 @@ snapshots:
       - postcss
       - uglify-js
 
-  websocket-driver@0.7.4:
+  websocket-driver@0.7.5:
     dependencies:
       http-parser-js: 0.5.9
       safe-buffer: 5.2.1
