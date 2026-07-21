@@ -19,34 +19,34 @@ auditConfig:
 blockExoticSubdeps: true
 
 minimumReleaseAge: 10080
-minimumReleaseAgeExclude: [ esbuild@0.28.1, '@esbuild/aix-ppc64@0.28.1', '@esbuild/android-arm64@0.28.1', '@esbuild/android-arm@0.28.1', '@esbuild/android-x64@0.28.1', '@esbuild/darwin-arm64@0.28.1', '@esbuild/darwin-x64@0.28.1', '@esbuild/freebsd-arm64@0.28.1', '@esbuild/freebsd-x64@0.28.1', '@esbuild/linux-arm64@0.28.1', '@esbuild/linux-arm@0.28.1', '@esbuild/linux-ia32@0.28.1', '@esbuild/linux-loong64@0.28.1', '@esbuild/linux-mips64el@0.28.1', '@esbuild/linux-ppc64@0.28.1', '@esbuild/linux-riscv64@0.28.1', '@esbuild/linux-s390x@0.28.1', '@esbuild/linux-x64@0.28.1', '@esbuild/netbsd-arm64@0.28.1', '@esbuild/netbsd-x64@0.28.1', '@esbuild/openbsd-arm64@0.28.1', '@esbuild/openbsd-x64@0.28.1', '@esbuild/openharmony-arm64@0.28.1', '@esbuild/sunos-x64@0.28.1', '@esbuild/win32-arm64@0.28.1', '@esbuild/win32-ia32@0.28.1', '@esbuild/win32-x64@0.28.1' ]
+minimumReleaseAgeExclude: [ ]
 
 overrides:
   '@babel/core@<=7.29.0': '>=7.29.6'
-  brace-expansion@<1.1.13: '^1.1.13'
-  brace-expansion@>=4.0.0 <5.0.5: '^5.0.6'
+  body-parser@<1.20.6: ^1.20.6
+  brace-expansion@^1: ^1.1.16
+  brace-expansion@>=3.0.0 <5.0.7: ^5.0.7
   esbuild@>=0.17.0 <0.28.1: '>=0.28.1'
   fast-uri@<=3.1.0: '^3.1.2'
   flatted@<3.4.0: "^3.4.0"
   follow-redirects@<=1.15.11: '>=1.16.0'
-  handlebars@<=4.7.8: "^4.7.9"
+  handlebars@<=4.7.8: ^4.7.9
   http-proxy-middleware@>=0.16.0 <3.0.6: '>=3.0.6'
-  js-yaml@<=4.1.1: '>=4.2.0'
+  js-yaml@>=4.0.0 <4.3.0: ^4.3.0
   launch-editor@<=2.14.0: '>=2.14.1'
-  lodash@<=4.17.23: '>=4.18.0'
-  lodash@>=4.0.0 <=4.17.23: '>=4.18.0'
+  lodash@^4: ^4.18.0
   path-to-regexp@<0.1.13: '^0.1.13'
   picomatch@<2.3.2: '^2.3.2'
   picomatch@>=4.0.0 <4.0.4: '^4.0.4'
   postcss@<8.5.10: '^8.5.10'
   qs@>=6.11.1 <=6.15.1: '>=6.15.2'
   serialize-javascript@<7.0.5: '>=7.0.5'
-  shell-quote@>=1.1.0 <=1.8.3: '>=1.8.4'
+  shell-quote@<=1.8.4: ^1.9.0
   uuid@<14.0.0: '>=14.0.0'
   websocket-driver@<0.7.5: '>=0.7.5'
   ws@>=8.0.0 <8.20.1: '>=8.20.1'
   ws@>=8.0.0 <8.21.0: '>=8.21.0'
-  yaml@>=1.0.0 <1.10.3: '^1.10.3'
-  yaml@>=2.0.0 <2.8.3: '^2.8.3'
+  yaml@>=1.0.0 <1.10.3: ^1.10.3
+  yaml@>=2.0.0 <2.8.3: ^2.8.3
 
 verifyDepsBeforeRun: install
