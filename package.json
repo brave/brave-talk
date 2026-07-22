@@ -67,6 +67,6 @@
     "*": "prettier --ignore-unknown --write",
     "*.ts?(x)": "eslint"
   },
-  "packageManager": "pnpm@10.34.5"
+  "packageManager": "pnpm@11.11.0"
 }
 
