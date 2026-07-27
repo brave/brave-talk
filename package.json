@@ -16,7 +16,8 @@
     "check:build": "tsc",
     "check:audit": "pnpm audit",
     "check:lint": "eslint src/",
-    "check:format": "prettier --check ."
+    "check:format": "prettier --check .",
+    "update:audit": "pnpm audit --fix override && pnpm install --no-frozen-lockfile && pnpm audit"
   },
   "repository": {
     "type": "git",
@@ -67,5 +68,5 @@
     "*": "prettier --ignore-unknown --write",
     "*.ts?(x)": "eslint"
   },
-  "packageManager": "pnpm@11.13.1"
+  "packageManager": "pnpm@11.15.0"
 }
