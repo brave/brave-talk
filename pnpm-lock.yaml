@@ -46,7 +46,7 @@ importers:
     dependencies:
       '@brave/leo':
         specifier: github:brave/leo#b0d5f184aee1862a37c3bd4dfe854fae5c784daa
-        version: https://codeload.github.com/brave/leo/tar.gz/b0d5f184aee1862a37c3bd4dfe854fae5c784daa(@babel/core@7.29.7(supports-color@8.1.1))(postcss-load-config@4.0.2(postcss@8.5.24))(postcss@8.5.24)(react@18.3.1)(storybook@8.6.17(prettier@3.9.6)(supports-color@8.1.1))(typescript@5.9.3)
+        version: https://codeload.github.com/brave/leo/tar.gz/b0d5f184aee1862a37c3bd4dfe854fae5c784daa(@babel/core@7.29.7(supports-color@8.1.1))(postcss-load-config@4.0.2(postcss@8.5.25))(postcss@8.5.25)(react@18.3.1)(storybook@8.6.17(prettier@3.9.6)(supports-color@8.1.1))(typescript@5.9.3)
       '@emotion/react':
         specifier: 11.14.0
         version: 11.14.0(@types/react@18.3.31)(react@18.3.1)(supports-color@8.1.1)
@@ -146,7 +146,7 @@ importers:
         version: 8.65.0(eslint@9.39.5(jiti@1.21.7)(supports-color@8.1.1))(supports-color@8.1.1)(typescript@5.9.3)
       webpack:
         specifier: 5.109.2
-        version: 5.109.2(clean-css@5.3.3)(cssnano@6.1.2(postcss@8.5.24))(csso@5.0.5)(esbuild@0.28.1)(html-minifier-terser@6.1.0)(postcss@8.5.24)(uglify-js@3.19.3)(webpack-cli@5.1.4)
+        version: 5.109.2(clean-css@5.3.3)(cssnano@6.1.2(postcss@8.5.25))(csso@5.0.5)(esbuild@0.28.1)(html-minifier-terser@6.1.0)(postcss@8.5.25)(uglify-js@3.19.3)(webpack-cli@5.1.4)
       webpack-cli:
         specifier: 5.1.4
         version: 5.1.4(webpack-dev-server@5.2.6)(webpack@5.109.2)
@@ -3856,8 +3856,8 @@ packages:
   postcss-value-parser@4.2.0:
     resolution: {integrity: sha512-1NNCs6uurfkVbeXG4S8JFT9t19m45ICnif8zWLd5oPSZ50QnwMfK+H3jv408d4jw/7Bttv5axS5IiHoLaVNHeQ==}
 
-  postcss@8.5.24:
-    resolution: {integrity: sha512-8RyVklq0owXUTa4xlpzu4l9AaVKIdQvAcOHZWaMh98HgySsUtxRVf/chRe3dsSLqb6i40BzGRzEUddRaI+9TSw==}
+  postcss@8.5.25:
+    resolution: {integrity: sha512-DTPx3RWSSnWyzLxQnlH0rJP+EW5ekl16ZU4/psbIhA0e53kJfdgaN5vKM+xP7yJtXVu+nfdVFmlgFDEKAe4Pyw==}
     engines: {node: ^10 || ^12 || >=14}
 
   prelude-ls@1.2.1:
@@ -5168,11 +5168,11 @@ snapshots:
 
   '@brave-intl/skus-sdk@0.1.3': {}
 
-  '@brave/leo@https://codeload.github.com/brave/leo/tar.gz/b0d5f184aee1862a37c3bd4dfe854fae5c784daa(@babel/core@7.29.7(supports-color@8.1.1))(postcss-load-config@4.0.2(postcss@8.5.24))(postcss@8.5.24)(react@18.3.1)(storybook@8.6.17(prettier@3.9.6)(supports-color@8.1.1))(typescript@5.9.3)':
+  '@brave/leo@https://codeload.github.com/brave/leo/tar.gz/b0d5f184aee1862a37c3bd4dfe854fae5c784daa(@babel/core@7.29.7(supports-color@8.1.1))(postcss-load-config@4.0.2(postcss@8.5.25))(postcss@8.5.25)(react@18.3.1)(storybook@8.6.17(prettier@3.9.6)(supports-color@8.1.1))(typescript@5.9.3)':
     dependencies:
       '@storybook/test': 8.6.14(storybook@8.6.17(prettier@3.9.6)(supports-color@8.1.1))
       svelte: 4.2.20
-      svelte-preprocess: 5.1.4(@babel/core@7.29.7(supports-color@8.1.1))(postcss-load-config@4.0.2(postcss@8.5.24))(postcss@8.5.24)(svelte@4.2.20)(typescript@5.9.3)
+      svelte-preprocess: 5.1.4(@babel/core@7.29.7(supports-color@8.1.1))(postcss-load-config@4.0.2(postcss@8.5.25))(postcss@8.5.25)(svelte@4.2.20)(typescript@5.9.3)
       tailwindcss: 3.4.18
       tslib: 2.8.1
     optionalDependencies:
@@ -6330,17 +6330,17 @@ snapshots:
 
   '@webpack-cli/configtest@2.1.1(webpack-cli@5.1.4)(webpack@5.109.2)':
     dependencies:
-      webpack: 5.109.2(clean-css@5.3.3)(cssnano@6.1.2(postcss@8.5.24))(csso@5.0.5)(esbuild@0.28.1)(html-minifier-terser@6.1.0)(postcss@8.5.24)(uglify-js@3.19.3)(webpack-cli@5.1.4)
+      webpack: 5.109.2(clean-css@5.3.3)(cssnano@6.1.2(postcss@8.5.25))(csso@5.0.5)(esbuild@0.28.1)(html-minifier-terser@6.1.0)(postcss@8.5.25)(uglify-js@3.19.3)(webpack-cli@5.1.4)
       webpack-cli: 5.1.4(webpack-dev-server@5.2.6)(webpack@5.109.2)
 
   '@webpack-cli/info@2.0.2(webpack-cli@5.1.4)(webpack@5.109.2)':
     dependencies:
-      webpack: 5.109.2(clean-css@5.3.3)(cssnano@6.1.2(postcss@8.5.24))(csso@5.0.5)(esbuild@0.28.1)(html-minifier-terser@6.1.0)(postcss@8.5.24)(uglify-js@3.19.3)(webpack-cli@5.1.4)
+      webpack: 5.109.2(clean-css@5.3.3)(cssnano@6.1.2(postcss@8.5.25))(csso@5.0.5)(esbuild@0.28.1)(html-minifier-terser@6.1.0)(postcss@8.5.25)(uglify-js@3.19.3)(webpack-cli@5.1.4)
       webpack-cli: 5.1.4(webpack-dev-server@5.2.6)(webpack@5.109.2)
 
   '@webpack-cli/serve@2.0.5(webpack-cli@5.1.4)(webpack-dev-server@5.2.6)(webpack@5.109.2)':
     dependencies:
-      webpack: 5.109.2(clean-css@5.3.3)(cssnano@6.1.2(postcss@8.5.24))(csso@5.0.5)(esbuild@0.28.1)(html-minifier-terser@6.1.0)(postcss@8.5.24)(uglify-js@3.19.3)(webpack-cli@5.1.4)
+      webpack: 5.109.2(clean-css@5.3.3)(cssnano@6.1.2(postcss@8.5.25))(csso@5.0.5)(esbuild@0.28.1)(html-minifier-terser@6.1.0)(postcss@8.5.25)(uglify-js@3.19.3)(webpack-cli@5.1.4)
       webpack-cli: 5.1.4(webpack-dev-server@5.2.6)(webpack@5.109.2)
     optionalDependencies:
       webpack-dev-server: 5.2.6(supports-color@8.1.1)(webpack-cli@5.1.4)(webpack@5.109.2)
@@ -6823,7 +6823,7 @@ snapshots:
       normalize-path: 3.0.0
       schema-utils: 4.3.3
       serialize-javascript: 7.0.5
-      webpack: 5.109.2(clean-css@5.3.3)(cssnano@6.1.2(postcss@8.5.24))(csso@5.0.5)(esbuild@0.28.1)(html-minifier-terser@6.1.0)(postcss@8.5.24)(uglify-js@3.19.3)(webpack-cli@5.1.4)
+      webpack: 5.109.2(clean-css@5.3.3)(cssnano@6.1.2(postcss@8.5.25))(csso@5.0.5)(esbuild@0.28.1)(html-minifier-terser@6.1.0)(postcss@8.5.25)(uglify-js@3.19.3)(webpack-cli@5.1.4)
 
   core-util-is@1.0.3: {}
 
@@ -6841,32 +6841,32 @@ snapshots:
       shebang-command: 2.0.0
       which: 2.0.2
 
-  css-declaration-sorter@7.2.0(postcss@8.5.24):
+  css-declaration-sorter@7.2.0(postcss@8.5.25):
     dependencies:
-      postcss: 8.5.24
+      postcss: 8.5.25
 
   css-loader@6.11.0(webpack@5.109.2):
     dependencies:
-      icss-utils: 5.1.0(postcss@8.5.24)
-      postcss: 8.5.24
-      postcss-modules-extract-imports: 3.1.0(postcss@8.5.24)
-      postcss-modules-local-by-default: 4.2.0(postcss@8.5.24)
-      postcss-modules-scope: 3.2.1(postcss@8.5.24)
-      postcss-modules-values: 4.0.0(postcss@8.5.24)
+      icss-utils: 5.1.0(postcss@8.5.25)
+      postcss: 8.5.25
+      postcss-modules-extract-imports: 3.1.0(postcss@8.5.25)
+      postcss-modules-local-by-default: 4.2.0(postcss@8.5.25)
+      postcss-modules-scope: 3.2.1(postcss@8.5.25)
+      postcss-modules-values: 4.0.0(postcss@8.5.25)
       postcss-value-parser: 4.2.0
       semver: 7.7.4
     optionalDependencies:
-      webpack: 5.109.2(clean-css@5.3.3)(cssnano@6.1.2(postcss@8.5.24))(csso@5.0.5)(esbuild@0.28.1)(html-minifier-terser@6.1.0)(postcss@8.5.24)(uglify-js@3.19.3)(webpack-cli@5.1.4)
+      webpack: 5.109.2(clean-css@5.3.3)(cssnano@6.1.2(postcss@8.5.25))(csso@5.0.5)(esbuild@0.28.1)(html-minifier-terser@6.1.0)(postcss@8.5.25)(uglify-js@3.19.3)(webpack-cli@5.1.4)
 
   css-minimizer-webpack-plugin@6.0.0(clean-css@5.3.3)(csso@5.0.5)(esbuild@0.28.1)(webpack@5.109.2):
     dependencies:
       '@jridgewell/trace-mapping': 0.3.31
-      cssnano: 6.1.2(postcss@8.5.24)
+      cssnano: 6.1.2(postcss@8.5.25)
       jest-worker: 29.7.0
-      postcss: 8.5.24
+      postcss: 8.5.25
       schema-utils: 4.3.3
       serialize-javascript: 7.0.5
-      webpack: 5.109.2(clean-css@5.3.3)(cssnano@6.1.2(postcss@8.5.24))(csso@5.0.5)(esbuild@0.28.1)(html-minifier-terser@6.1.0)(postcss@8.5.24)(uglify-js@3.19.3)(webpack-cli@5.1.4)
+      webpack: 5.109.2(clean-css@5.3.3)(cssnano@6.1.2(postcss@8.5.25))(csso@5.0.5)(esbuild@0.28.1)(html-minifier-terser@6.1.0)(postcss@8.5.25)(uglify-js@3.19.3)(webpack-cli@5.1.4)
     optionalDependencies:
       clean-css: 5.3.3
       csso: 5.0.5
@@ -6904,49 +6904,49 @@ snapshots:
 
   cssesc@3.0.0: {}
 
-  cssnano-preset-default@6.1.2(postcss@8.5.24):
+  cssnano-preset-default@6.1.2(postcss@8.5.25):
     dependencies:
       browserslist: 4.28.1
-      css-declaration-sorter: 7.2.0(postcss@8.5.24)
-      cssnano-utils: 4.0.2(postcss@8.5.24)
-      postcss: 8.5.24
-      postcss-calc: 9.0.1(postcss@8.5.24)
-      postcss-colormin: 6.1.0(postcss@8.5.24)
-      postcss-convert-values: 6.1.0(postcss@8.5.24)
-      postcss-discard-comments: 6.0.2(postcss@8.5.24)
-      postcss-discard-duplicates: 6.0.3(postcss@8.5.24)
-      postcss-discard-empty: 6.0.3(postcss@8.5.24)
-      postcss-discard-overridden: 6.0.2(postcss@8.5.24)
-      postcss-merge-longhand: 6.0.5(postcss@8.5.24)
-      postcss-merge-rules: 6.1.1(postcss@8.5.24)
-      postcss-minify-font-values: 6.1.0(postcss@8.5.24)
-      postcss-minify-gradients: 6.0.3(postcss@8.5.24)
-      postcss-minify-params: 6.1.0(postcss@8.5.24)
-      postcss-minify-selectors: 6.0.4(postcss@8.5.24)
-      postcss-normalize-charset: 6.0.2(postcss@8.5.24)
-      postcss-normalize-display-values: 6.0.2(postcss@8.5.24)
-      postcss-normalize-positions: 6.0.2(postcss@8.5.24)
-      postcss-normalize-repeat-style: 6.0.2(postcss@8.5.24)
-      postcss-normalize-string: 6.0.2(postcss@8.5.24)
-      postcss-normalize-timing-functions: 6.0.2(postcss@8.5.24)
-      postcss-normalize-unicode: 6.1.0(postcss@8.5.24)
-      postcss-normalize-url: 6.0.2(postcss@8.5.24)
-      postcss-normalize-whitespace: 6.0.2(postcss@8.5.24)
-      postcss-ordered-values: 6.0.2(postcss@8.5.24)
-      postcss-reduce-initial: 6.1.0(postcss@8.5.24)
-      postcss-reduce-transforms: 6.0.2(postcss@8.5.24)
-      postcss-svgo: 6.0.3(postcss@8.5.24)
-      postcss-unique-selectors: 6.0.4(postcss@8.5.24)
+      css-declaration-sorter: 7.2.0(postcss@8.5.25)
+      cssnano-utils: 4.0.2(postcss@8.5.25)
+      postcss: 8.5.25
+      postcss-calc: 9.0.1(postcss@8.5.25)
+      postcss-colormin: 6.1.0(postcss@8.5.25)
+      postcss-convert-values: 6.1.0(postcss@8.5.25)
+      postcss-discard-comments: 6.0.2(postcss@8.5.25)
+      postcss-discard-duplicates: 6.0.3(postcss@8.5.25)
+      postcss-discard-empty: 6.0.3(postcss@8.5.25)
+      postcss-discard-overridden: 6.0.2(postcss@8.5.25)
+      postcss-merge-longhand: 6.0.5(postcss@8.5.25)
+      postcss-merge-rules: 6.1.1(postcss@8.5.25)
+      postcss-minify-font-values: 6.1.0(postcss@8.5.25)
+      postcss-minify-gradients: 6.0.3(postcss@8.5.25)
+      postcss-minify-params: 6.1.0(postcss@8.5.25)
+      postcss-minify-selectors: 6.0.4(postcss@8.5.25)
+      postcss-normalize-charset: 6.0.2(postcss@8.5.25)
+      postcss-normalize-display-values: 6.0.2(postcss@8.5.25)
+      postcss-normalize-positions: 6.0.2(postcss@8.5.25)
+      postcss-normalize-repeat-style: 6.0.2(postcss@8.5.25)
+      postcss-normalize-string: 6.0.2(postcss@8.5.25)
+      postcss-normalize-timing-functions: 6.0.2(postcss@8.5.25)
+      postcss-normalize-unicode: 6.1.0(postcss@8.5.25)
+      postcss-normalize-url: 6.0.2(postcss@8.5.25)
+      postcss-normalize-whitespace: 6.0.2(postcss@8.5.25)
+      postcss-ordered-values: 6.0.2(postcss@8.5.25)
+      postcss-reduce-initial: 6.1.0(postcss@8.5.25)
+      postcss-reduce-transforms: 6.0.2(postcss@8.5.25)
+      postcss-svgo: 6.0.3(postcss@8.5.25)
+      postcss-unique-selectors: 6.0.4(postcss@8.5.25)
 
-  cssnano-utils@4.0.2(postcss@8.5.24):
+  cssnano-utils@4.0.2(postcss@8.5.25):
     dependencies:
-      postcss: 8.5.24
+      postcss: 8.5.25
 
-  cssnano@6.1.2(postcss@8.5.24):
+  cssnano@6.1.2(postcss@8.5.25):
     dependencies:
-      cssnano-preset-default: 6.1.2(postcss@8.5.24)
+      cssnano-preset-default: 6.1.2(postcss@8.5.25)
       lilconfig: 3.1.3
-      postcss: 8.5.24
+      postcss: 8.5.25
 
   csso@5.0.5:
     dependencies:
@@ -7765,7 +7765,7 @@ snapshots:
       pretty-error: 4.0.0
       tapable: 2.3.3
     optionalDependencies:
-      webpack: 5.109.2(clean-css@5.3.3)(cssnano@6.1.2(postcss@8.5.24))(csso@5.0.5)(esbuild@0.28.1)(html-minifier-terser@6.1.0)(postcss@8.5.24)(uglify-js@3.19.3)(webpack-cli@5.1.4)
+      webpack: 5.109.2(clean-css@5.3.3)(cssnano@6.1.2(postcss@8.5.25))(csso@5.0.5)(esbuild@0.28.1)(html-minifier-terser@6.1.0)(postcss@8.5.25)(uglify-js@3.19.3)(webpack-cli@5.1.4)
 
   htmlparser2@6.1.0:
     dependencies:
@@ -7847,9 +7847,9 @@ snapshots:
     dependencies:
       safer-buffer: 2.1.2
 
-  icss-utils@5.1.0(postcss@8.5.24):
+  icss-utils@5.1.0(postcss@8.5.25):
     dependencies:
-      postcss: 8.5.24
+      postcss: 8.5.25
 
   ignore@5.3.2: {}
 
@@ -8708,7 +8708,7 @@ snapshots:
     dependencies:
       schema-utils: 4.3.3
       tapable: 2.3.0
-      webpack: 5.109.2(clean-css@5.3.3)(cssnano@6.1.2(postcss@8.5.24))(csso@5.0.5)(esbuild@0.28.1)(html-minifier-terser@6.1.0)(postcss@8.5.24)(uglify-js@3.19.3)(webpack-cli@5.1.4)
+      webpack: 5.109.2(clean-css@5.3.3)(cssnano@6.1.2(postcss@8.5.25))(csso@5.0.5)(esbuild@0.28.1)(html-minifier-terser@6.1.0)(postcss@8.5.25)(uglify-js@3.19.3)(webpack-cli@5.1.4)
 
   minimalistic-assert@1.0.1: {}
 
@@ -8726,20 +8726,20 @@ snapshots:
 
   minimist@1.2.8: {}
 
-  minimizer-webpack-plugin@5.6.1(clean-css@5.3.3)(cssnano@6.1.2(postcss@8.5.24))(csso@5.0.5)(esbuild@0.28.1)(html-minifier-terser@6.1.0)(postcss@8.5.24)(uglify-js@3.19.3)(webpack@5.109.2):
+  minimizer-webpack-plugin@5.6.1(clean-css@5.3.3)(cssnano@6.1.2(postcss@8.5.25))(csso@5.0.5)(esbuild@0.28.1)(html-minifier-terser@6.1.0)(postcss@8.5.25)(uglify-js@3.19.3)(webpack@5.109.2):
     dependencies:
       '@jridgewell/trace-mapping': 0.3.31
       jest-worker: 27.5.1
       schema-utils: 4.3.3
       terser: 5.39.0
-      webpack: 5.109.2(clean-css@5.3.3)(cssnano@6.1.2(postcss@8.5.24))(csso@5.0.5)(esbuild@0.28.1)(html-minifier-terser@6.1.0)(postcss@8.5.24)(uglify-js@3.19.3)(webpack-cli@5.1.4)
+      webpack: 5.109.2(clean-css@5.3.3)(cssnano@6.1.2(postcss@8.5.25))(csso@5.0.5)(esbuild@0.28.1)(html-minifier-terser@6.1.0)(postcss@8.5.25)(uglify-js@3.19.3)(webpack-cli@5.1.4)
     optionalDependencies:
       clean-css: 5.3.3
-      cssnano: 6.1.2(postcss@8.5.24)
+      cssnano: 6.1.2(postcss@8.5.25)
       csso: 5.0.5
       esbuild: 0.28.1
       html-minifier-terser: 6.1.0
-      postcss: 8.5.24
+      postcss: 8.5.25
       uglify-js: 3.19.3
 
   minipass@7.1.2: {}
@@ -8999,185 +8999,185 @@ snapshots:
 
   possible-typed-array-names@1.1.0: {}
 
-  postcss-calc@9.0.1(postcss@8.5.24):
+  postcss-calc@9.0.1(postcss@8.5.25):
     dependencies:
-      postcss: 8.5.24
+      postcss: 8.5.25
       postcss-selector-parser: 6.1.2
       postcss-value-parser: 4.2.0
 
-  postcss-colormin@6.1.0(postcss@8.5.24):
+  postcss-colormin@6.1.0(postcss@8.5.25):
     dependencies:
       browserslist: 4.28.1
       caniuse-api: 3.0.0
       colord: 2.9.3
-      postcss: 8.5.24
+      postcss: 8.5.25
       postcss-value-parser: 4.2.0
 
-  postcss-convert-values@6.1.0(postcss@8.5.24):
+  postcss-convert-values@6.1.0(postcss@8.5.25):
     dependencies:
       browserslist: 4.28.1
-      postcss: 8.5.24
+      postcss: 8.5.25
       postcss-value-parser: 4.2.0
 
-  postcss-discard-comments@6.0.2(postcss@8.5.24):
+  postcss-discard-comments@6.0.2(postcss@8.5.25):
     dependencies:
-      postcss: 8.5.24
+      postcss: 8.5.25
 
-  postcss-discard-duplicates@6.0.3(postcss@8.5.24):
+  postcss-discard-duplicates@6.0.3(postcss@8.5.25):
     dependencies:
-      postcss: 8.5.24
+      postcss: 8.5.25
 
-  postcss-discard-empty@6.0.3(postcss@8.5.24):
+  postcss-discard-empty@6.0.3(postcss@8.5.25):
     dependencies:
-      postcss: 8.5.24
+      postcss: 8.5.25
 
-  postcss-discard-overridden@6.0.2(postcss@8.5.24):
+  postcss-discard-overridden@6.0.2(postcss@8.5.25):
     dependencies:
-      postcss: 8.5.24
+      postcss: 8.5.25
 
-  postcss-import@15.1.0(postcss@8.5.24):
+  postcss-import@15.1.0(postcss@8.5.25):
     dependencies:
-      postcss: 8.5.24
+      postcss: 8.5.25
       postcss-value-parser: 4.2.0
       read-cache: 1.0.0
       resolve: 1.22.11
 
-  postcss-js@4.0.1(postcss@8.5.24):
+  postcss-js@4.0.1(postcss@8.5.25):
     dependencies:
       camelcase-css: 2.0.1
-      postcss: 8.5.24
+      postcss: 8.5.25
 
-  postcss-load-config@4.0.2(postcss@8.5.24):
+  postcss-load-config@4.0.2(postcss@8.5.25):
     dependencies:
       lilconfig: 3.1.3
       yaml: 2.8.3
     optionalDependencies:
-      postcss: 8.5.24
+      postcss: 8.5.25
 
-  postcss-merge-longhand@6.0.5(postcss@8.5.24):
+  postcss-merge-longhand@6.0.5(postcss@8.5.25):
     dependencies:
-      postcss: 8.5.24
+      postcss: 8.5.25
       postcss-value-parser: 4.2.0
-      stylehacks: 6.1.1(postcss@8.5.24)
+      stylehacks: 6.1.1(postcss@8.5.25)
 
-  postcss-merge-rules@6.1.1(postcss@8.5.24):
+  postcss-merge-rules@6.1.1(postcss@8.5.25):
     dependencies:
       browserslist: 4.28.1
       caniuse-api: 3.0.0
-      cssnano-utils: 4.0.2(postcss@8.5.24)
-      postcss: 8.5.24
+      cssnano-utils: 4.0.2(postcss@8.5.25)
+      postcss: 8.5.25
       postcss-selector-parser: 6.1.2
 
-  postcss-minify-font-values@6.1.0(postcss@8.5.24):
+  postcss-minify-font-values@6.1.0(postcss@8.5.25):
     dependencies:
-      postcss: 8.5.24
+      postcss: 8.5.25
       postcss-value-parser: 4.2.0
 
-  postcss-minify-gradients@6.0.3(postcss@8.5.24):
+  postcss-minify-gradients@6.0.3(postcss@8.5.25):
     dependencies:
       colord: 2.9.3
-      cssnano-utils: 4.0.2(postcss@8.5.24)
-      postcss: 8.5.24
+      cssnano-utils: 4.0.2(postcss@8.5.25)
+      postcss: 8.5.25
       postcss-value-parser: 4.2.0
 
-  postcss-minify-params@6.1.0(postcss@8.5.24):
+  postcss-minify-params@6.1.0(postcss@8.5.25):
     dependencies:
       browserslist: 4.28.1
-      cssnano-utils: 4.0.2(postcss@8.5.24)
-      postcss: 8.5.24
+      cssnano-utils: 4.0.2(postcss@8.5.25)
+      postcss: 8.5.25
       postcss-value-parser: 4.2.0
 
-  postcss-minify-selectors@6.0.4(postcss@8.5.24):
+  postcss-minify-selectors@6.0.4(postcss@8.5.25):
     dependencies:
-      postcss: 8.5.24
+      postcss: 8.5.25
       postcss-selector-parser: 6.1.2
 
-  postcss-modules-extract-imports@3.1.0(postcss@8.5.24):
+  postcss-modules-extract-imports@3.1.0(postcss@8.5.25):
     dependencies:
-      postcss: 8.5.24
+      postcss: 8.5.25
 
-  postcss-modules-local-by-default@4.2.0(postcss@8.5.24):
+  postcss-modules-local-by-default@4.2.0(postcss@8.5.25):
     dependencies:
-      icss-utils: 5.1.0(postcss@8.5.24)
-      postcss: 8.5.24
+      icss-utils: 5.1.0(postcss@8.5.25)
+      postcss: 8.5.25
       postcss-selector-parser: 7.1.0
       postcss-value-parser: 4.2.0
 
-  postcss-modules-scope@3.2.1(postcss@8.5.24):
+  postcss-modules-scope@3.2.1(postcss@8.5.25):
     dependencies:
-      postcss: 8.5.24
+      postcss: 8.5.25
       postcss-selector-parser: 7.1.0
 
-  postcss-modules-values@4.0.0(postcss@8.5.24):
+  postcss-modules-values@4.0.0(postcss@8.5.25):
     dependencies:
-      icss-utils: 5.1.0(postcss@8.5.24)
-      postcss: 8.5.24
+      icss-utils: 5.1.0(postcss@8.5.25)
+      postcss: 8.5.25
 
-  postcss-nested@6.2.0(postcss@8.5.24):
+  postcss-nested@6.2.0(postcss@8.5.25):
     dependencies:
-      postcss: 8.5.24
+      postcss: 8.5.25
       postcss-selector-parser: 6.1.2
 
-  postcss-normalize-charset@6.0.2(postcss@8.5.24):
+  postcss-normalize-charset@6.0.2(postcss@8.5.25):
     dependencies:
-      postcss: 8.5.24
+      postcss: 8.5.25
 
-  postcss-normalize-display-values@6.0.2(postcss@8.5.24):
+  postcss-normalize-display-values@6.0.2(postcss@8.5.25):
     dependencies:
-      postcss: 8.5.24
+      postcss: 8.5.25
       postcss-value-parser: 4.2.0
 
-  postcss-normalize-positions@6.0.2(postcss@8.5.24):
+  postcss-normalize-positions@6.0.2(postcss@8.5.25):
     dependencies:
-      postcss: 8.5.24
+      postcss: 8.5.25
       postcss-value-parser: 4.2.0
 
-  postcss-normalize-repeat-style@6.0.2(postcss@8.5.24):
+  postcss-normalize-repeat-style@6.0.2(postcss@8.5.25):
     dependencies:
-      postcss: 8.5.24
+      postcss: 8.5.25
       postcss-value-parser: 4.2.0
 
-  postcss-normalize-string@6.0.2(postcss@8.5.24):
+  postcss-normalize-string@6.0.2(postcss@8.5.25):
     dependencies:
-      postcss: 8.5.24
+      postcss: 8.5.25
       postcss-value-parser: 4.2.0
 
-  postcss-normalize-timing-functions@6.0.2(postcss@8.5.24):
+  postcss-normalize-timing-functions@6.0.2(postcss@8.5.25):
     dependencies:
-      postcss: 8.5.24
+      postcss: 8.5.25
       postcss-value-parser: 4.2.0
 
-  postcss-normalize-unicode@6.1.0(postcss@8.5.24):
+  postcss-normalize-unicode@6.1.0(postcss@8.5.25):
     dependencies:
       browserslist: 4.28.1
-      postcss: 8.5.24
+      postcss: 8.5.25
       postcss-value-parser: 4.2.0
 
-  postcss-normalize-url@6.0.2(postcss@8.5.24):
+  postcss-normalize-url@6.0.2(postcss@8.5.25):
     dependencies:
-      postcss: 8.5.24
+      postcss: 8.5.25
       postcss-value-parser: 4.2.0
 
-  postcss-normalize-whitespace@6.0.2(postcss@8.5.24):
+  postcss-normalize-whitespace@6.0.2(postcss@8.5.25):
     dependencies:
-      postcss: 8.5.24
+      postcss: 8.5.25
       postcss-value-parser: 4.2.0
 
-  postcss-ordered-values@6.0.2(postcss@8.5.24):
+  postcss-ordered-values@6.0.2(postcss@8.5.25):
     dependencies:
-      cssnano-utils: 4.0.2(postcss@8.5.24)
-      postcss: 8.5.24
+      cssnano-utils: 4.0.2(postcss@8.5.25)
+      postcss: 8.5.25
       postcss-value-parser: 4.2.0
 
-  postcss-reduce-initial@6.1.0(postcss@8.5.24):
+  postcss-reduce-initial@6.1.0(postcss@8.5.25):
     dependencies:
       browserslist: 4.28.1
       caniuse-api: 3.0.0
-      postcss: 8.5.24
+      postcss: 8.5.25
 
-  postcss-reduce-transforms@6.0.2(postcss@8.5.24):
+  postcss-reduce-transforms@6.0.2(postcss@8.5.25):
     dependencies:
-      postcss: 8.5.24
+      postcss: 8.5.25
       postcss-value-parser: 4.2.0
 
   postcss-selector-parser@6.1.2:
@@ -9190,20 +9190,20 @@ snapshots:
       cssesc: 3.0.0
       util-deprecate: 1.0.2
 
-  postcss-svgo@6.0.3(postcss@8.5.24):
+  postcss-svgo@6.0.3(postcss@8.5.25):
     dependencies:
-      postcss: 8.5.24
+      postcss: 8.5.25
       postcss-value-parser: 4.2.0
       svgo: 3.3.4
 
-  postcss-unique-selectors@6.0.4(postcss@8.5.24):
+  postcss-unique-selectors@6.0.4(postcss@8.5.25):
     dependencies:
-      postcss: 8.5.24
+      postcss: 8.5.25
       postcss-selector-parser: 6.1.2
 
   postcss-value-parser@4.2.0: {}
 
-  postcss@8.5.24:
+  postcss@8.5.25:
     dependencies:
       nanoid: 3.3.16
       picocolors: 1.1.1
@@ -9784,12 +9784,12 @@ snapshots:
 
   style-loader@3.3.4(webpack@5.109.2):
     dependencies:
-      webpack: 5.109.2(clean-css@5.3.3)(cssnano@6.1.2(postcss@8.5.24))(csso@5.0.5)(esbuild@0.28.1)(html-minifier-terser@6.1.0)(postcss@8.5.24)(uglify-js@3.19.3)(webpack-cli@5.1.4)
+      webpack: 5.109.2(clean-css@5.3.3)(cssnano@6.1.2(postcss@8.5.25))(csso@5.0.5)(esbuild@0.28.1)(html-minifier-terser@6.1.0)(postcss@8.5.25)(uglify-js@3.19.3)(webpack-cli@5.1.4)
 
-  stylehacks@6.1.1(postcss@8.5.24):
+  stylehacks@6.1.1(postcss@8.5.25):
     dependencies:
       browserslist: 4.28.1
-      postcss: 8.5.24
+      postcss: 8.5.25
       postcss-selector-parser: 6.1.2
 
   stylis@4.2.0: {}
@@ -9814,7 +9814,7 @@ snapshots:
 
   supports-preserve-symlinks-flag@1.0.0: {}
 
-  svelte-preprocess@5.1.4(@babel/core@7.29.7(supports-color@8.1.1))(postcss-load-config@4.0.2(postcss@8.5.24))(postcss@8.5.24)(svelte@4.2.20)(typescript@5.9.3):
+  svelte-preprocess@5.1.4(@babel/core@7.29.7(supports-color@8.1.1))(postcss-load-config@4.0.2(postcss@8.5.25))(postcss@8.5.25)(svelte@4.2.20)(typescript@5.9.3):
     dependencies:
       '@types/pug': 2.0.10
       detect-indent: 6.1.0
@@ -9824,8 +9824,8 @@ snapshots:
       svelte: 4.2.20
     optionalDependencies:
       '@babel/core': 7.29.7(supports-color@8.1.1)
-      postcss: 8.5.24
-      postcss-load-config: 4.0.2(postcss@8.5.24)
+      postcss: 8.5.25
+      postcss-load-config: 4.0.2(postcss@8.5.25)
       typescript: 5.9.3
 
   svelte@4.2.20:
@@ -9881,11 +9881,11 @@ snapshots:
       normalize-path: 3.0.0
       object-hash: 3.0.0
       picocolors: 1.1.1
-      postcss: 8.5.24
-      postcss-import: 15.1.0(postcss@8.5.24)
-      postcss-js: 4.0.1(postcss@8.5.24)
-      postcss-load-config: 4.0.2(postcss@8.5.24)
-      postcss-nested: 6.2.0(postcss@8.5.24)
+      postcss: 8.5.25
+      postcss-import: 15.1.0(postcss@8.5.25)
+      postcss-js: 4.0.1(postcss@8.5.25)
+      postcss-load-config: 4.0.2(postcss@8.5.25)
+      postcss-nested: 6.2.0(postcss@8.5.25)
       postcss-selector-parser: 6.1.2
       resolve: 1.22.11
       sucrase: 3.35.0
@@ -9993,7 +9993,7 @@ snapshots:
       picomatch: 4.0.4
       source-map: 0.7.6
       typescript: 5.9.3
-      webpack: 5.109.2(clean-css@5.3.3)(cssnano@6.1.2(postcss@8.5.24))(csso@5.0.5)(esbuild@0.28.1)(html-minifier-terser@6.1.0)(postcss@8.5.24)(uglify-js@3.19.3)(webpack-cli@5.1.4)
+      webpack: 5.109.2(clean-css@5.3.3)(cssnano@6.1.2(postcss@8.5.25))(csso@5.0.5)(esbuild@0.28.1)(html-minifier-terser@6.1.0)(postcss@8.5.25)(uglify-js@3.19.3)(webpack-cli@5.1.4)
 
   tslib@1.14.1: {}
 
@@ -10172,7 +10172,7 @@ snapshots:
       import-local: 3.2.0
       interpret: 3.1.1
       rechoir: 0.8.0
-      webpack: 5.109.2(clean-css@5.3.3)(cssnano@6.1.2(postcss@8.5.24))(csso@5.0.5)(esbuild@0.28.1)(html-minifier-terser@6.1.0)(postcss@8.5.24)(uglify-js@3.19.3)(webpack-cli@5.1.4)
+      webpack: 5.109.2(clean-css@5.3.3)(cssnano@6.1.2(postcss@8.5.25))(csso@5.0.5)(esbuild@0.28.1)(html-minifier-terser@6.1.0)(postcss@8.5.25)(uglify-js@3.19.3)(webpack-cli@5.1.4)
       webpack-merge: 5.10.0
     optionalDependencies:
       webpack-dev-server: 5.2.6(supports-color@8.1.1)(webpack-cli@5.1.4)(webpack@5.109.2)
@@ -10186,7 +10186,7 @@ snapshots:
       range-parser: 1.2.1
       schema-utils: 4.3.3
     optionalDependencies:
-      webpack: 5.109.2(clean-css@5.3.3)(cssnano@6.1.2(postcss@8.5.24))(csso@5.0.5)(esbuild@0.28.1)(html-minifier-terser@6.1.0)(postcss@8.5.24)(uglify-js@3.19.3)(webpack-cli@5.1.4)
+      webpack: 5.109.2(clean-css@5.3.3)(cssnano@6.1.2(postcss@8.5.25))(csso@5.0.5)(esbuild@0.28.1)(html-minifier-terser@6.1.0)(postcss@8.5.25)(uglify-js@3.19.3)(webpack-cli@5.1.4)
 
   webpack-dev-server@5.2.6(supports-color@8.1.1)(webpack-cli@5.1.4)(webpack@5.109.2):
     dependencies:
@@ -10219,7 +10219,7 @@ snapshots:
       webpack-dev-middleware: 7.4.2(webpack@5.109.2)
       ws: 8.21.0
     optionalDependencies:
-      webpack: 5.109.2(clean-css@5.3.3)(cssnano@6.1.2(postcss@8.5.24))(csso@5.0.5)(esbuild@0.28.1)(html-minifier-terser@6.1.0)(postcss@8.5.24)(uglify-js@3.19.3)(webpack-cli@5.1.4)
+      webpack: 5.109.2(clean-css@5.3.3)(cssnano@6.1.2(postcss@8.5.25))(csso@5.0.5)(esbuild@0.28.1)(html-minifier-terser@6.1.0)(postcss@8.5.25)(uglify-js@3.19.3)(webpack-cli@5.1.4)
       webpack-cli: 5.1.4(webpack-dev-server@5.2.6)(webpack@5.109.2)
     transitivePeerDependencies:
       - bufferutil
@@ -10234,7 +10234,7 @@ snapshots:
 
   webpack-sources@3.5.1: {}
 
-  webpack@5.109.2(clean-css@5.3.3)(cssnano@6.1.2(postcss@8.5.24))(csso@5.0.5)(esbuild@0.28.1)(html-minifier-terser@6.1.0)(postcss@8.5.24)(uglify-js@3.19.3)(webpack-cli@5.1.4):
+  webpack@5.109.2(clean-css@5.3.3)(cssnano@6.1.2(postcss@8.5.25))(csso@5.0.5)(esbuild@0.28.1)(html-minifier-terser@6.1.0)(postcss@8.5.25)(uglify-js@3.19.3)(webpack-cli@5.1.4):
     dependencies:
       '@types/estree': 1.0.8
       '@types/json-schema': 7.0.15
@@ -10250,7 +10250,7 @@ snapshots:
       events: 3.3.0
       graceful-fs: 4.2.11
       mime-db: 1.54.0
-      minimizer-webpack-plugin: 5.6.1(clean-css@5.3.3)(cssnano@6.1.2(postcss@8.5.24))(csso@5.0.5)(esbuild@0.28.1)(html-minifier-terser@6.1.0)(postcss@8.5.24)(uglify-js@3.19.3)(webpack@5.109.2)
+      minimizer-webpack-plugin: 5.6.1(clean-css@5.3.3)(cssnano@6.1.2(postcss@8.5.25))(csso@5.0.5)(esbuild@0.28.1)(html-minifier-terser@6.1.0)(postcss@8.5.25)(uglify-js@3.19.3)(webpack@5.109.2)
       neo-async: 2.6.2
       schema-utils: 4.3.3
       tapable: 2.3.3
