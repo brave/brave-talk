@@ -6,6 +6,8 @@
     ":semanticCommitsDisabled",
     "group:allNonMajor"
   ],
+  "autoApprove": false,
+  "automerge": false,
   "labels": ["dependencies"],
   "packageRules": [
     {

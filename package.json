@@ -14,9 +14,10 @@
     "prepare": "husky",
     "check": "pnpm run /^check:.*/",
     "check:build": "tsc",
-    "check:audit": "pnpm audit --ignore-registry-errors",
+    "check:audit": "pnpm audit",
     "check:lint": "eslint src/",
-    "check:format": "prettier --check ."
+    "check:format": "prettier --check .",
+    "update:audit": "pnpm audit --fix override && pnpm install --no-frozen-lockfile && pnpm audit"
   },
   "repository": {
     "type": "git",
@@ -25,7 +26,7 @@
   "homepage": "https://github.com/brave/brave-talk#readme",
   "devDependencies": {
     "@brave-intl/skus-sdk": "0.1.3",
-    "@eslint/js": "^9.39.2",
+    "@eslint/js": "^9.39.4",
     "@types/jest": "30.0.0",
     "@types/node": "^24.12.0",
     "@types/react": "18.3.31",
@@ -33,25 +34,25 @@
     "copy-webpack-plugin": "12.0.2",
     "css-loader": "6.11.0",
     "css-minimizer-webpack-plugin": "6.0.0",
-    "eslint": "9.39.4",
+    "eslint": "9.39.5",
     "eslint-config-prettier": "10.1.8",
     "eslint-plugin-react": "7.37.5",
     "eslint-plugin-react-hooks": "7.1.1",
-    "html-webpack-plugin": "5.6.7",
+    "html-webpack-plugin": "5.6.8",
     "husky": "9.1.7",
     "jest": "30.4.2",
     "lint-staged": "15.5.2",
     "mini-css-extract-plugin": "2.10.2",
-    "prettier": "3.8.5",
+    "prettier": "3.9.6",
     "style-loader": "3.3.4",
     "svgo-loader": "4.0.0",
-    "ts-jest": "29.4.11",
+    "ts-jest": "29.4.12",
     "ts-loader": "9.6.2",
     "typescript": "5.9.3",
-    "typescript-eslint": "8.62.0",
-    "webpack": "5.108.1",
+    "typescript-eslint": "8.65.0",
+    "webpack": "5.109.2",
     "webpack-cli": "5.1.4",
-    "webpack-dev-server": "5.2.5"
+    "webpack-dev-server": "5.2.6"
   },
   "dependencies": {
     "@brave/leo": "github:brave/leo#b0d5f184aee1862a37c3bd4dfe854fae5c784daa",
@@ -67,5 +68,5 @@
     "*": "prettier --ignore-unknown --write",
     "*.ts?(x)": "eslint"
   },
-  "packageManager": "pnpm@10.34.4"
+  "packageManager": "pnpm@11.19.0"
 }
