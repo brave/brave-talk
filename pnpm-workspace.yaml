@@ -19,7 +19,7 @@ auditConfig:
 blockExoticSubdeps: true
 
 minimumReleaseAge: 10080
-minimumReleaseAgeExclude: [ fast-uri@3.1.3 || 3.1.4 || 3.1.5, svgo@3.3.4, postcss@8.5.18 || 8.5.23, brace-expansion@5.0.8 || 5.0.9, js-yaml@3.15.1 || 4.3.1, nanoid@3.3.17 ]
+minimumReleaseAgeExclude: [ fast-uri@3.1.3 || 3.1.4 || 3.1.5, svgo@3.3.4, postcss@8.5.18 || 8.5.23, brace-expansion@5.0.8 || 5.0.9, js-yaml@3.15.1 || 4.3.1, nanoid@3.3.17 || 3.3.18 ]
 
 overrides:
   '@babel/core@<=7.29.0': '>=7.29.6'
@@ -56,5 +56,6 @@ overrides:
   js-yaml@>=3.0.0 <3.15.1: ^3.15.1
   js-yaml@>=4.0.0 <4.3.1: ^4.3.1
   nanoid@<3.3.17: ^3.3.17
+  nanoid@<3.3.18: ^3.3.18
 
 verifyDepsBeforeRun: install
