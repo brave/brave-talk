@@ -17,7 +17,8 @@
     "check:audit": "pnpm audit",
     "check:lint": "eslint src/",
     "check:format": "prettier --check .",
-    "update:audit": "pnpm audit --fix override && pnpm install --no-frozen-lockfile && pnpm audit"
+    "update:audit": "pnpm audit --fix override && pnpm install --no-frozen-lockfile && pnpm audit",
+    "update:frozen": "pnpm install --frozen-lockfile"
   },
   "repository": {
     "type": "git",
