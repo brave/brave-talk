@@ -31,7 +31,7 @@ export const generateRoomName = () => {
     btoa(String.fromCharCode(...buf))
       .replace(/\+/g, "-")
       .replace(/\//g, "_")
-      .replace(/=/g, "") + "_boris"
+      .replace(/=/g, "") + "_altstt"
   );
 };
 
