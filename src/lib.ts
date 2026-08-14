@@ -27,12 +27,10 @@ export const generateRoomName = () => {
   const { crypto } = window;
   const buf = new Uint8Array(32);
   crypto.getRandomValues(buf);
-  return (
-    btoa(String.fromCharCode(...buf))
-      .replace(/\+/g, "-")
-      .replace(/\//g, "_")
-      .replace(/=/g, "") + "_boris"
-  );
+  return btoa(String.fromCharCode(...buf))
+    .replace(/\+/g, "-")
+    .replace(/\//g, "_")
+    .replace(/=/g, "");
 };
 
 export const isRoomValid = (room: string) => {
