@@ -36,8 +36,11 @@ export const generateRoomName = () => {
 };
 
 export const isRoomValid = (room: string) => {
-  // Format check disabled: accept any non-empty room name.
-  return typeof room === "string" && room.length > 0;
+  // e.g., "abcdefghijklmnopqrstuvwxyz0123456789-_ABCDE", with an
+  // optional "_altstt" suffix as produced by generateRoomName.
+  return (
+    typeof room === "string" && room.match(/^[A-Za-z0-9-_]{43}(_altstt)?$/)
+  );
 };
 
 export const reportAction = (action: string, params: object) => {
