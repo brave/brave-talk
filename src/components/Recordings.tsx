@@ -22,12 +22,15 @@ const EXPIRING_SOON_SECS = 3 * 60 * 60;
 const actionStyles = {
   display: "inline-flex",
   alignItems: "center",
-  gap: "calc(var(--leo-spacing-s) + var(--leo-spacing-xs))",
-  padding: "var(--leo-spacing-m) var(--leo-spacing-l)",
+  gap: "var(--leo-spacing-m)",
+  minHeight: "40px",
+  padding: "var(--leo-spacing-m) var(--leo-spacing-xl)",
   borderRadius: "var(--leo-radius-full)",
   boxShadow: "inset 0 0 0 1px var(--leo-color-primitive-neutral-30)",
   color: "var(--leo-color-white)",
-  font: "var(--leo-font-small-semibold)",
+  font: "var(--leo-font-components-button-default)",
+  letterSpacing:
+    "var(--leo-typography-components-button-default-letter-spacing)",
   textDecoration: "none",
   whiteSpace: "nowrap" as const,
   "&:hover": {
@@ -98,7 +101,7 @@ const RecordingDisplay = ({
           "var(--leo-spacing-l) var(--leo-spacing-xl) var(--leo-spacing-l) var(--leo-spacing-2xl)",
         borderRadius: "var(--leo-radius-xl)",
         background: "var(--leo-color-primitive-neutral-15)",
-        "@media only screen and (max-width: 720px)": {
+        "@media only screen and (max-width: 600px)": {
           alignItems: "stretch",
           flexDirection: "column",
           gap: "var(--leo-spacing-m)",
@@ -116,7 +119,7 @@ const RecordingDisplay = ({
           font: "var(--leo-font-large-regular)",
           letterSpacing: "var(--leo-typography-large-regular-letter-spacing)",
           whiteSpace: "nowrap",
-          "@media only screen and (max-width: 720px)": {
+          "@media only screen and (max-width: 600px)": {
             width: "100%",
             padding: "var(--leo-spacing-none) var(--leo-spacing-2xl)",
           },
@@ -144,7 +147,7 @@ const RecordingDisplay = ({
           justifyContent: "flex-end",
           gap: "var(--leo-spacing-m)",
           flexShrink: 0,
-          "@media only screen and (max-width: 720px)": {
+          "@media only screen and (max-width: 600px)": {
             alignItems: "flex-start",
             justifyContent: "flex-start",
             flexDirection: isExpiringSoon ? "column" : "row",
@@ -201,7 +204,13 @@ export const Recordings = ({ onRouterStatePushed }: Props) => {
   return (
     <Section
       css={{
+        display: "flex",
+        flexDirection: "column",
+        gap: "var(--leo-spacing-3xl)",
+        overflow: "hidden",
+        boxShadow: "var(--leo-effect-elevation-01)",
         "@media only screen and (max-width: 600px)": {
+          gap: "var(--leo-spacing-m)",
           padding: "var(--leo-spacing-m)",
         },
       }}
@@ -211,10 +220,8 @@ export const Recordings = ({ onRouterStatePushed }: Props) => {
           display: "flex",
           flexDirection: "column",
           gap: "var(--leo-spacing-m)",
-          marginBottom: "var(--leo-spacing-3xl)",
           textAlign: "left",
           "@media only screen and (max-width: 600px)": {
-            marginBottom: "var(--leo-spacing-m)",
             padding: "var(--leo-spacing-xl)",
           },
         }}
