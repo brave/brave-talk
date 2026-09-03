@@ -78,7 +78,10 @@ export const SubscriptionCTA = ({ subscribed }: Props) => {
           {t("premium_calls_description")} {t("subscribe_login_premium")}{" "}
           <a
             href={premiumLoginUrl()}
-            css={{ color: "inherit", textUnderlineOffset: "2px" }}
+            css={{
+              color: "var(--leo-color-primitive-neutral-90)",
+              textUnderlineOffset: "2px",
+            }}
           >
             {t("subscribe_login_link")}
           </a>

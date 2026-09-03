@@ -3,7 +3,7 @@ import { SubscriptionStatus } from "../hooks/use-subscribed-status";
 import { BrowserProperties } from "../hooks/use-browser-properties";
 import { Button } from "./Button";
 import { CopyLinkButton } from "./CopyLinkButton";
-import { useTranslation } from "react-i18next";
+import { Trans, useTranslation } from "react-i18next";
 import { TranslationKeys } from "../i18n/i18next";
 import { Section } from "./Section";
 import { resolveService } from "../services";
@@ -158,7 +158,10 @@ export const JoinCallSection = ({
                   {t("free_call_limit")}{" "}
                   <a
                     href={`${resolveService("account")}/plans/?intent=checkout&product=talk`}
-                    css={{ color: "inherit", textUnderlineOffset: "2px" }}
+                    css={{
+                      color: "var(--leo-color-primitive-neutral-90)",
+                      textUnderlineOffset: "2px",
+                    }}
                   >
                     {t("free_call_premium_link")}
                   </a>
@@ -268,14 +271,20 @@ export const JoinCallSection = ({
             }}
           >
             {t("leo_meetings_description")}{" "}
-            <a
-              href="https://brave.com/talk/"
-              target="_blank"
-              rel="noreferrer"
-              css={{ color: "inherit", textUnderlineOffset: "2px" }}
-            >
-              {t("recovery_token_learn_more")}
-            </a>
+            <Trans i18nKey="recovery_token_learn_more">
+              <a
+                href="https://brave.com/talk/"
+                target="_blank"
+                rel="noreferrer"
+                css={{
+                  color: "var(--leo-color-primitive-neutral-90)",
+                  textUnderlineOffset: "2px",
+                }}
+              >
+                Learn more
+              </a>
+              {"."}
+            </Trans>
           </p>
         </div>
       </div>
