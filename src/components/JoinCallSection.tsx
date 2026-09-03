@@ -176,8 +176,7 @@ export const JoinCallSection = ({
           padding:
             "var(--leo-spacing-xl) var(--leo-spacing-2xl) var(--leo-spacing-2xl)",
           "@media only screen and (max-width: 600px)": {
-            padding:
-              "var(--leo-spacing-none) var(--leo-spacing-m) var(--leo-spacing-m)",
+            display: "none",
           },
         }}
       >
@@ -193,7 +192,6 @@ export const JoinCallSection = ({
             placeItems: "center",
             borderRadius: "50%",
             background: "var(--leo-color-primitive-neutral-15)",
-            "@media only screen and (max-width: 600px)": { display: "none" },
           }}
         >
           <img
@@ -211,7 +209,6 @@ export const JoinCallSection = ({
           css={{
             marginRight: "calc(-1 * var(--leo-spacing-xs) / 2)",
             flexShrink: 0,
-            "@media only screen and (max-width: 600px)": { display: "none" },
           }}
         />
         <div
@@ -223,10 +220,6 @@ export const JoinCallSection = ({
               "var(--leo-radius-xxl) var(--leo-radius-xxl) var(--leo-radius-xxl) var(--leo-spacing-none)",
             background: "var(--leo-color-primitive-neutral-15)",
             textAlign: "left",
-            "@media only screen and (max-width: 600px)": {
-              padding: "var(--leo-spacing-2xl) var(--leo-spacing-3xl)",
-              borderRadius: "var(--leo-radius-xl)",
-            },
           }}
         >
           <div
