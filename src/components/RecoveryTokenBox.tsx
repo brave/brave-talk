@@ -78,10 +78,6 @@ export default function RecoveryTokenBox({ subscribed }: Props) {
                   href={RECOVERY_TOKEN_LEARN_MORE_URL}
                   target="_blank"
                   rel="noreferrer"
-                  css={{
-                    color: "var(--leo-color-primitive-neutral-90)",
-                    textUnderlineOffset: "2px",
-                  }}
                 >
                   Learn more
                 </a>

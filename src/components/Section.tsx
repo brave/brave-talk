@@ -15,6 +15,9 @@ export const Section = ({ children, className }: Props) => (
       border:
         "calc(var(--leo-spacing-xs) / 2) solid var(--leo-color-primitive-neutral-15)",
       borderRadius: "var(--leo-radius-xxl)",
+      a: {
+        color: "var(--leo-color-primitive-neutral-80)",
+      },
       "@media only screen and (max-width: 600px)": {
         padding: "var(--leo-spacing-2xl)",
         marginBottom: "var(--leo-spacing-xl)",
