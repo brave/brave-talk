@@ -41,7 +41,10 @@ export const WelcomeScreen = ({
   const subscribed = useSubscribedStatus();
   const { t } = useTranslation();
 
-  const Body = () => {
+  // Rendered by calling it, not as <Body />: a component declared inside the
+  // render gets a fresh identity every time, so React would throw away and
+  // remount the whole screen on each state change.
+  const renderBody = () => {
     if (displayTranscriptId) {
       return (
         <Suspense>
@@ -72,11 +75,11 @@ export const WelcomeScreen = ({
           hideButtons={hasInitialRoomName}
         />
 
-        <Recordings onRouterStatePushed={onRouterStatePushed} />
-
         {!hasInitialRoomName && <SubscriptionCTA subscribed={subscribed} />}
 
         <RecoveryTokenBox subscribed={subscribed} />
+
+        <Recordings onRouterStatePushed={onRouterStatePushed} />
       </React.Fragment>
     );
   };
@@ -84,9 +87,25 @@ export const WelcomeScreen = ({
   return (
     <Background>
       <Header subscribed={subscribed} />
-      <div css={{ flexGrow: 1, padding: "0 12px" }}>
-        <Body />
-      </div>
+      <main
+        css={{
+          display: "flex",
+          width: "100%",
+          maxWidth: "980px",
+          flexGrow: 1,
+          flexDirection: "column",
+          justifyContent: "center",
+          margin: "var(--leo-spacing-none) auto",
+          padding: "var(--leo-spacing-none) var(--leo-spacing-xl)",
+          "@media only screen and (max-width: 600px)": {
+            justifyContent: "flex-start",
+            padding:
+              "var(--leo-spacing-none) var(--leo-spacing-m) var(--leo-spacing-m)",
+          },
+        }}
+      >
+        {renderBody()}
+      </main>
       <Footer browser={browser} />
     </Background>
   );

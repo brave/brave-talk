@@ -1,15 +1,14 @@
 import {
   DownloadedTranscript,
   TranscriptAction,
+  TranscriptionEvent,
   parseTranscriptLines,
 } from "../downloaded-transcript";
-import { createRef, useEffect, useState } from "react";
-import { css } from "@emotion/react";
-import TranscriptImage from "../images/papyrus.svg";
-import DownloadImage from "../images/download_color.svg";
-import SearchImage from "../images/search.svg";
-import { formatRelativeDay } from "../recordings-utils";
+import { useEffect, useMemo, useRef, useState } from "react";
+import { css, keyframes } from "@emotion/react";
+import { formatDuration, formatRelativeDay } from "../recordings-utils";
 import Button from "@brave/leo/react/button";
+import Icon from "@brave/leo/react/icon";
 import Input from "@brave/leo/react/input";
 import { useTranslation } from "react-i18next";
 
@@ -22,162 +21,224 @@ interface MeetingTranscriptDisplayProps {
   transcriptUrlBase?: string;
 }
 
+interface BrandingConfig {
+  avatarBackgrounds?: string[];
+}
+
+const pulse = keyframes`
+  from { opacity: 0.6; }
+  to { opacity: 0.2; }
+`;
+
 const styles = {
-  outer: css`
-    margin: 93px auto;
-    max-width: 860px;
-    text-align: left;
+  card: css`
     display: flex;
-    padding: var(--leo-spacing-7xl);
     flex-direction: column;
-    align-items: center;
+    align-items: stretch;
     gap: var(--leo-spacing-4xl);
-    align-self: stretch;
+    width: min(940px, 100%);
+    margin: var(--leo-spacing-none) auto;
+    padding: var(--leo-spacing-6xl);
     border-radius: var(--leo-radius-xl);
     background: var(--leo-color-container-background);
-    box-shadow:
-      0px var(--Elevation-xxs, 1px) 0px 0px
-        var(--Semantic-Elevation-Primary, rgba(0, 0, 0, 0.05)),
-      0px var(--Elevation-xxs, 1px) var(--Elevation-xs, 4px) 0px
-        var(--Semantic-Elevation-Secondary, rgba(0, 0, 0, 0.1));
-  `,
-  transcriptEventRow: css`
-    display: flex;
-    padding: var(--leo-spacing-m, 0px);
-    align-items: flex-start;
-    gap: var(--leo-spacing-xl);
-    align-self: stretch;
-    line-height: var(--Line-height-Large, 24px);
-    font-size: var(--Size-Large, 16px);
-    font-family: var(--Family-Default, "Inter Variable"), Inter;
-  `,
-  cell: css`
-    letter-spacing: -0.2px;
-  `,
-  actor: css`
-    width: 128px;
-    font-style: normal;
-    font-weight: 600;
-  `,
-  messageOrAction: css`
-    flex: 1 0 0;
-    font-weight: 400;
-  `,
-  action: css`
-    font-style: italic;
-    color: var(--leo-color-systemfeedback-error-text);
-  `,
-  message: css`
-    color: var(--leo-color-text-primary);
-    font-style: normal;
-  `,
-  searchBoxAndDateTimeContainer: css`
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: --leo-spacing-xl;
-    align-self: stretch;
-  `,
-  transcriptMessagesContainer: css`
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: var(--Spacing-None, 0px);
-    align-self: stretch;
+    box-shadow: var(--leo-effect-elevation-01);
+    text-align: left;
 
-    ::highlight(search-results) {
-      background-color: #ffe08d;
-    }
-    @media (prefers-color-scheme: dark) {
-      ::highlight(search-results) {
-        color: #e4c780;
-        background-color: #110f0b;
-      }
+    @media only screen and (max-width: 600px) {
+      gap: var(--leo-spacing-2xl);
+      margin-bottom: 16px;
+      padding: var(--leo-spacing-2xl);
     }
   `,
-  searchBoxImage: css`
-    margin-bottom: -6px;
-    @media (prefers-color-scheme: dark) {
-      filter: invert(1);
-    }
-  `,
-  dateTime: css`
-    color: var(--leo-color-text-primary);
-    font-family: var(--Family-Headings, Poppins);
-    font-size: var(--Size-H4, 16px);
-    font-style: normal;
-    font-weight: 600;
-    line-height: var(--Line-height-H4, 26px); /* 162.5% */
-  `,
-  dateTimeContainer: css`
+  header: css`
     display: flex;
     align-items: center;
-    gap: --leo-spacing-xl;
-    align-self: stretch;
-  `,
-  downloadButtonImage: css`
-    margin-bottom: -2px;
-  `,
-  downloadButton: css`
-    display: flex;
-    min-height: 44px;
-    padding: var(--leo-spacing-l) var(--leo-spacing-xl);
-    justify-content: center;
-    align-items: center;
-    max-width: fit-content;
-  `,
-  h1: css`
-    color: var(--leo-color-text-primary);
-    font-family: var(--Family-Headings, Poppins);
-    font-size: var(--Size-H2, 28px);
-    font-style: normal;
-    font-weight: 600;
-    line-height: var(--Line-height-H2, 36px);
-    letter-spacing: var(--Letter-spacing-Headings, -0.5px);
-    text-wrap: nowrap;
-  `,
-  searchBoxContainer: css`
-    width: 100%;
+    gap: var(--leo-spacing-xl);
+
+    @media only screen and (max-width: 600px) {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: var(--leo-spacing-l);
+    }
   `,
   headerTitle: css`
     display: flex;
-    align-items: center;
-    gap: 16px;
     flex: 1 0 0;
+    align-items: center;
+    gap: var(--leo-spacing-xl);
+    min-width: 0;
   `,
-  headerAndDownloadButton: css`
+  h1: css`
+    margin: var(--leo-spacing-none);
+    color: var(--leo-color-text-primary);
+    font: var(--leo-font-heading-h2);
+    letter-spacing: var(--leo-typography-heading-h2-letter-spacing);
+    white-space: nowrap;
+  `,
+  downloadButton: css`
+    /* leo-button hosts default to flex-grow: 1 */
+    flex: 0 0 auto;
+  `,
+  headingIcon: css`
+    --leo-icon-size: 28px;
+    --leo-icon-color: var(--leo-color-icon-default);
+  `,
+  meta: css`
+    display: flex;
+    flex-direction: column;
+    gap: var(--leo-spacing-xl);
+  `,
+  metaDateTime: css`
     display: flex;
     align-items: center;
-    align-self: stretch;
+    gap: var(--leo-spacing-xl);
+    margin: var(--leo-spacing-none);
+    color: var(--leo-color-text-primary);
+    white-space: nowrap;
+  `,
+  metaDate: css`
+    font: var(--leo-font-heading-h4);
+    letter-spacing: var(--leo-typography-heading-h4-letter-spacing);
+  `,
+  metaTime: css`
+    font: var(--leo-font-large-regular);
+    letter-spacing: var(--leo-typography-large-regular-letter-spacing);
+  `,
+  events: css`
+    display: flex;
+    flex-direction: column;
+
+    ::highlight(search-results) {
+      background-color: var(--leo-color-primitive-yellow-90);
+    }
+    @media (prefers-color-scheme: dark) {
+      ::highlight(search-results) {
+        color: var(--leo-color-primitive-yellow-80);
+        background-color: var(--leo-color-primitive-yellow-5);
+      }
+    }
+  `,
+  eventRow: css`
+    display: flex;
+    align-items: flex-start;
+    gap: var(--leo-spacing-xl);
+    padding: var(--leo-spacing-m) 0;
+
+    @media only screen and (max-width: 600px) {
+      flex-direction: column;
+      gap: var(--leo-spacing-none);
+    }
+  `,
+  participant: css`
+    flex-shrink: 0;
+    width: 128px;
+    font: var(--leo-font-large-semibold);
+    letter-spacing: var(--leo-typography-large-semibold-letter-spacing);
+
+    @media only screen and (max-width: 600px) {
+      width: auto;
+    }
+  `,
+  message: css`
+    flex: 1 0 0;
+    min-width: 0;
+    color: var(--leo-color-text-primary);
+    font: var(--leo-font-large-regular);
+    letter-spacing: var(--leo-typography-large-regular-letter-spacing);
+    overflow-wrap: break-word;
+  `,
+  action: css`
+    color: var(--leo-color-text-tertiary);
+    font-style: italic;
+  `,
+  skeletonBar: css`
+    height: 16px;
+    border-radius: var(--leo-radius-s);
+    background: var(--leo-color-divider-subtle);
+    animation: ${pulse} 1s ease-in-out infinite alternate;
   `,
 };
 
-const COLORS = [
+// Speakers are assigned a colour in the order they first appear.
+const DEFAULT_PARTICIPANT_COLORS = [
   "var(--leo-color-secondary-40)",
-  "var(--leo-color-primary-40)",
+  "var(--leo-color-orange-40)",
   "var(--leo-color-green-40)",
-  "orange",
-  "#BADA55",
-  "purple",
+  "var(--leo-color-primary-40)",
+  "var(--leo-color-purple-40)",
+  "var(--leo-color-teal-40)",
+  "var(--leo-color-pink-40)",
 ];
+
+// Offsets look like "12m34s", counted from the start of the call.
+const parseTimeOffsetSecs = (timeOffset: string): number | undefined => {
+  const match = timeOffset.match(/^(\d+)m(\d\d)s$/);
+  return match ? Number(match[1]) * 60 + Number(match[2]) : undefined;
+};
+
+const transcriptDurationSecs = (
+  events: TranscriptionEvent[],
+): number | undefined =>
+  events.length
+    ? parseTimeOffsetSecs(events[events.length - 1].timeOffset)
+    : undefined;
+
+const TranscriptHeading = () => {
+  const { t } = useTranslation();
+
+  return (
+    <div css={styles.headerTitle}>
+      <h1 css={styles.h1}>{t("Meeting Transcript")}</h1>
+    </div>
+  );
+};
 
 const MeetingTranscript = ({ transcript }: MeetingTranscriptProps) => {
   const { t } = useTranslation();
-  const participantColorMap = new Map<string, string>();
-  let participantCounter = 0;
   const { events, startDateTime } = transcript;
-  events.forEach((e) => {
-    const color = participantColorMap.get(e.participant);
-    if (!color) {
-      participantColorMap.set(
-        e.participant,
-        COLORS[participantCounter++ % COLORS.length],
-      );
-    }
-  });
+  const [participantPalette, setParticipantPalette] = useState<string[]>(
+    DEFAULT_PARTICIPANT_COLORS,
+  );
+
+  useEffect(() => {
+    let cancelled = false;
+
+    fetch("/branding-config.json")
+      .then((response) => response.json() as Promise<BrandingConfig>)
+      .then((config) => {
+        if (cancelled) {
+          return;
+        }
+
+        const avatarBackgrounds = config.avatarBackgrounds?.filter(Boolean);
+        if (avatarBackgrounds && avatarBackgrounds.length > 0) {
+          setParticipantPalette(avatarBackgrounds);
+        }
+      })
+      .catch(() => {
+        // Keep fallback colours when branding config is unavailable.
+      });
+
+    return () => {
+      cancelled = true;
+    };
+  }, []);
+
+  const participantColors = useMemo(() => {
+    const colors = new Map<string, string>();
+    events.forEach(({ participant }) => {
+      if (!colors.has(participant)) {
+        colors.set(
+          participant,
+          participantPalette[colors.size % participantPalette.length],
+        );
+      }
+    });
+    return colors;
+  }, [events, participantPalette]);
 
   const [searchTerm, setSearchTerm] = useState<string>("");
-  const textRef = createRef<HTMLDivElement>();
+  const textRef = useRef<HTMLDivElement>(null);
   useEffect(() => {
     if (!window.CSS?.highlights) {
       return;
@@ -209,25 +270,19 @@ const MeetingTranscript = ({ transcript }: MeetingTranscriptProps) => {
     }
     const highlight = new Highlight(...ranges);
     CSS.highlights.set("search-results", highlight);
-  }, [searchTerm, transcript, textRef]);
+  }, [searchTerm, events]);
 
   const ACTION_MESSAGE: Record<TranscriptAction, string> = {
     [TranscriptAction.Join]: t("PARTICIPANT: joined the call"),
     [TranscriptAction.Leave]: t("PARTICIPANT: left the call"),
   };
 
+  const durationSecs = transcriptDurationSecs(events);
+
   return (
-    <div css={styles.outer}>
-      <div css={styles.headerAndDownloadButton}>
-        <div css={styles.headerTitle}>
-          <img
-            src={TranscriptImage}
-            height="28"
-            width="28"
-            alt={t("Meeting Transcript")}
-          />{" "}
-          <h1 css={styles.h1}>{t("Meeting Transcript")}</h1>
-        </div>
+    <div css={styles.card}>
+      <div css={styles.header}>
+        <TranscriptHeading />
         <Button
           css={styles.downloadButton}
           kind="outline"
@@ -239,76 +294,75 @@ const MeetingTranscript = ({ transcript }: MeetingTranscriptProps) => {
             link.click();
           }}
         >
-          <span slot="icon-before">
-            <img
-              src={DownloadImage}
-              height="16"
-              width="18"
-              alt="download"
-              css={styles.downloadButtonImage}
-            />
-          </span>
+          <Icon slot="icon-before" name="download" />
           {t("download_transcript_button")}
         </Button>
       </div>
-      <div css={styles.searchBoxAndDateTimeContainer}>
+      <div css={styles.meta}>
         {startDateTime && (
-          <div css={styles.dateTimeContainer}>
-            <p css={styles.dateTime}>
-              <strong>{formatRelativeDay(startDateTime)}</strong>
-              {", "}
-              {startDateTime.toLocaleTimeString()}{" "}
-            </p>
-          </div>
-        )}
-        <div css={styles.searchBoxContainer}>
-          <Input size="normal" onInput={(e: any) => setSearchTerm(e.value)}>
-            <span slot="left-icon">
-              <img
-                src={SearchImage}
-                css={styles.searchBoxImage}
-                height="20"
-                width="20"
-                alt="search"
-              />
+          <p css={styles.metaDateTime}>
+            <strong css={styles.metaDate}>
+              {formatRelativeDay(startDateTime)}
+            </strong>
+            <span css={styles.metaTime}>
+              {startDateTime.toLocaleTimeString()}
+              {durationSecs !== undefined &&
+                `, ${formatDuration(durationSecs)}`}
             </span>
-          </Input>
-        </div>
+          </p>
+        )}
+        <Input
+          size="normal"
+          placeholder={t("transcript_search_placeholder")}
+          onInput={(e: any) => setSearchTerm(e.value)}
+        >
+          <Icon slot="left-icon" name="search" />
+        </Input>
       </div>
-      <div ref={textRef} css={styles.transcriptMessagesContainer}>
-        {events.map((event, i) =>
-          typeof event.messageOrAction !== "string" ? (
-            <div css={styles.transcriptEventRow} key={i}>
-              <div
-                css={[
-                  styles.cell,
-                  styles.actor,
-                  { color: participantColorMap.get(event.participant) },
-                ]}
-              >
-                {event.participant}
-              </div>
-              <div css={[styles.cell, styles.messageOrAction, styles.action]}>
+      <div ref={textRef} css={styles.events}>
+        {events.map((event, i) => (
+          <div css={styles.eventRow} key={i}>
+            <div
+              css={[
+                styles.participant,
+                { color: participantColors.get(event.participant) },
+              ]}
+            >
+              {event.participant}
+            </div>
+            {typeof event.messageOrAction === "string" ? (
+              <div css={styles.message}>{event.messageOrAction}</div>
+            ) : (
+              <div css={[styles.message, styles.action]}>
                 {ACTION_MESSAGE[event.messageOrAction]}
               </div>
-            </div>
-          ) : (
-            <div css={styles.transcriptEventRow} key={i}>
-              <div
-                css={[
-                  styles.cell,
-                  styles.actor,
-                  { color: participantColorMap.get(event.participant) },
-                ]}
-              >
-                {event.participant}
-              </div>
-              <div css={[styles.cell, styles.messageOrAction, styles.message]}>
-                {event.messageOrAction}
-              </div>
-            </div>
-          ),
-        )}
+            )}
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+};
+
+const SKELETON_WIDTHS = ["82%", "64%", "91%", "48%", "76%", "58%"];
+
+const TranscriptSkeleton = () => {
+  const { t } = useTranslation();
+
+  return (
+    <div css={styles.card} aria-busy="true" aria-label={t("loading")}>
+      <div css={styles.header}>
+        <TranscriptHeading />
+      </div>
+      <div css={styles.events}>
+        {SKELETON_WIDTHS.map((width, i) => (
+          <div css={styles.eventRow} key={i}>
+            <div css={[styles.participant, styles.skeletonBar]} />
+            <div
+              css={[styles.message, styles.skeletonBar, { maxWidth: width }]}
+            />
+          </div>
+        ))}
       </div>
     </div>
   );
@@ -346,7 +400,7 @@ export const MeetingTranscriptDisplay = ({
   return transcript ? (
     <MeetingTranscript transcript={transcript} />
   ) : (
-    <p>Loading</p>
+    <TranscriptSkeleton />
   );
 };
 
