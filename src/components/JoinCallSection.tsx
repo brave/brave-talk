@@ -260,7 +260,7 @@ export const JoinCallSection = ({
             }}
           >
             {t("leo_meetings_description")}{" "}
-            <Trans i18nKey="recovery_token_learn_more">
+            <Trans i18nKey="learn_more">
               <a
                 href="https://brave.com/talk/"
                 target="_blank"
