@@ -13,15 +13,14 @@ interface Props {
 
 const styles = {
   base: css({
-    margin: "0 auto",
+    margin: "var(--leo-spacing-none) auto",
     width: "min(377px, 100%)",
-    borderRadius: "48px",
-    padding: "17px 30px 19px",
+    borderRadius: "var(--leo-radius-full)",
+    padding:
+      "calc(var(--leo-spacing-xl) + var(--leo-spacing-xs) / 2) calc(var(--leo-spacing-3xl) - var(--leo-spacing-xs)) calc(var(--leo-spacing-xl) + var(--leo-spacing-s) - var(--leo-spacing-xs) / 2)",
     cursor: "pointer",
-    fontWeight: 600,
-    fontSize: "16px",
-    lineHeight: "20px",
-    color: "#ffffff",
+    font: "var(--leo-font-components-button-large)",
+    color: "var(--leo-color-white)",
     textDecoration: "none",
     "@media only screen and (max-width: 600px)": {
       width: "100%",
@@ -32,10 +31,16 @@ const styles = {
     },
   }),
   solid: css({
-    background: "rgba(255, 255, 255, 0.24)",
-    "&:hover": { background: "rgba(255, 255, 255, 0.42)" },
-    "&:active": { background: "rgba(255, 255, 255, 0.32)" },
-    "&:disabled": { background: "rgba(255, 255, 255, 0.32)" },
+    background: "color-mix(in srgb, var(--leo-color-white) 24%, transparent)",
+    "&:hover": {
+      background: "color-mix(in srgb, var(--leo-color-white) 42%, transparent)",
+    },
+    "&:active": {
+      background: "color-mix(in srgb, var(--leo-color-white) 32%, transparent)",
+    },
+    "&:disabled": {
+      background: "color-mix(in srgb, var(--leo-color-white) 32%, transparent)",
+    },
   }),
   hollow: css({
     height: 58,
@@ -43,58 +48,71 @@ const styles = {
     flexDirection: "column",
     justifyContent: "center",
     alignItems: "center",
-    border: "1px solid rgba(255, 255, 255, 0.8)",
+    border:
+      "1px solid color-mix(in srgb, var(--leo-color-white) 80%, transparent)",
     background: "transparent",
-    "&:hover": { border: "2px solid #ffffff" },
+    "&:hover": { border: "2px solid var(--leo-color-white)" },
     "&:active": {
-      border: "2px solid rgba(255, 255, 255, 0.5)",
-      color: "rgba(255, 255, 255, 0.5)",
+      border:
+        "2px solid color-mix(in srgb, var(--leo-color-white) 50%, transparent)",
+      color: "color-mix(in srgb, var(--leo-color-white) 50%, transparent)",
     },
     "& a": { textDecoration: "none", color: "inherit" },
   }),
   light: css({
-    background: "#f5f5f7",
-    color: "#171719",
-    "&:hover": { background: "#ffffff" },
-    "&:active": { background: "#dedee1" },
+    background: "var(--leo-color-primitive-neutral-96)",
+    color: "var(--leo-color-primitive-neutral-8)",
+    "&:hover": { background: "var(--leo-color-white)" },
+    "&:active": { background: "var(--leo-color-primitive-neutral-90)" },
   }),
   hero: css({
-    background: "linear-gradient(0deg, #ff1f01 0%, #ff5601 100%)",
-    color: "#ffffff",
-    boxShadow: "0 6px 20px rgba(255, 50, 1, 0.18)",
+    background:
+      "linear-gradient(0deg, var(--leo-color-primitive-brands-rorange-3) 0%, var(--leo-color-primitive-brands-rorange-1) 100%)",
+    color: "var(--leo-color-white)",
+    boxShadow:
+      "0 6px 20px color-mix(in srgb, var(--leo-color-primitive-brands-rorange-2) 18%, transparent)",
     "&:hover": {
-      background: "linear-gradient(0deg, #ff3216 0%, #ff3ff6a1a216 100%)",
+      background:
+        "linear-gradient(0deg, color-mix(in srgb, var(--leo-color-primitive-brands-rorange-3) 85%, var(--leo-color-white)) 0%, color-mix(in srgb, var(--leo-color-primitive-brands-rorange-1) 85%, var(--leo-color-white)) 100%)",
     },
     "&:active": {
-      background: "linear-gradient(0deg, #e51b00 0%, #e94c00 100%)",
+      background:
+        "linear-gradient(0deg, color-mix(in srgb, var(--leo-color-primitive-brands-rorange-3) 90%, var(--leo-color-black)) 0%, color-mix(in srgb, var(--leo-color-primitive-brands-rorange-1) 90%, var(--leo-color-black)) 100%)",
     },
   }),
   outline: css({
     background: "transparent",
-    color: "#ffffff",
-    boxShadow: "inset 0 0 0 1px #464649",
-    "&:hover": { background: "rgba(255, 255, 255, 0.08)" },
-    "&:active": { background: "rgba(255, 255, 255, 0.12)" },
+    color: "var(--leo-color-white)",
+    boxShadow: "inset 0 0 0 1px var(--leo-color-primitive-neutral-30)",
+    "&:hover": {
+      background: "color-mix(in srgb, var(--leo-color-white) 8%, transparent)",
+    },
+    "&:active": {
+      background: "color-mix(in srgb, var(--leo-color-white) 12%, transparent)",
+    },
   }),
   plain: css({
     width: "auto",
-    padding: "8px 12px",
+    padding: "var(--leo-spacing-m) var(--leo-spacing-l)",
     background: "transparent",
-    color: "#ffffff",
-    "&:hover": { background: "rgba(255, 255, 255, 0.08)" },
+    color: "var(--leo-color-white)",
+    "&:hover": {
+      background: "color-mix(in srgb, var(--leo-color-white) 8%, transparent)",
+    },
   }),
   large: css({
     width: "auto",
-    padding: "14px 24px",
-    fontSize: "16px",
-    lineHeight: "22px",
-    letterSpacing: "-0.4px",
+    padding:
+      "calc(var(--leo-spacing-l) + var(--leo-spacing-xs)) var(--leo-spacing-2xl)",
+    font: "var(--leo-font-components-button-large)",
+    letterSpacing:
+      "var(--leo-typography-components-button-large-letter-spacing)",
   }),
   jumbo: css({
     width: "100%",
-    padding: "14px 24px",
-    fontSize: "16px",
-    lineHeight: "24px",
+    padding:
+      "calc(var(--leo-spacing-l) + var(--leo-spacing-xs)) var(--leo-spacing-2xl)",
+    font: "var(--leo-font-large-semibold)",
   }),
 };
 

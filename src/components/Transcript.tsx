@@ -35,13 +35,11 @@ const styles = {
     align-items: stretch;
     gap: var(--leo-spacing-4xl);
     width: min(940px, 100%);
-    margin: 0 auto;
+    margin: var(--leo-spacing-none) auto;
     padding: var(--leo-spacing-6xl);
     border-radius: var(--leo-radius-xl);
     background: var(--leo-color-container-background);
-    box-shadow:
-      0 1px 3px rgba(0, 0, 0, 0.08),
-      0 1px 2px -1px rgba(0, 0, 0, 0.08);
+    box-shadow: var(--leo-effect-elevation-01);
     text-align: left;
 
     @media only screen and (max-width: 600px) {
@@ -69,10 +67,10 @@ const styles = {
     min-width: 0;
   `,
   h1: css`
-    margin: 0;
+    margin: var(--leo-spacing-none);
     color: var(--leo-color-text-primary);
     font: var(--leo-font-heading-h2);
-    letter-spacing: -0.5px;
+    letter-spacing: var(--leo-typography-heading-h2-letter-spacing);
     white-space: nowrap;
   `,
   downloadButton: css`
@@ -98,29 +96,29 @@ const styles = {
     display: flex;
     align-items: center;
     gap: var(--leo-spacing-xl);
-    margin: 0;
+    margin: var(--leo-spacing-none);
     color: var(--leo-color-text-primary);
     white-space: nowrap;
   `,
   metaDate: css`
     font: var(--leo-font-heading-h4);
-    letter-spacing: -0.23px;
+    letter-spacing: var(--leo-typography-heading-h4-letter-spacing);
   `,
   metaTime: css`
     font: var(--leo-font-large-regular);
-    letter-spacing: -0.23px;
+    letter-spacing: var(--leo-typography-large-regular-letter-spacing);
   `,
   events: css`
     display: flex;
     flex-direction: column;
 
     ::highlight(search-results) {
-      background-color: #ffe08d;
+      background-color: var(--leo-color-primitive-yellow-90);
     }
     @media (prefers-color-scheme: dark) {
       ::highlight(search-results) {
-        color: #e4c780;
-        background-color: #110f0b;
+        color: var(--leo-color-primitive-yellow-80);
+        background-color: var(--leo-color-primitive-yellow-5);
       }
     }
   `,
@@ -132,14 +130,14 @@ const styles = {
 
     @media only screen and (max-width: 600px) {
       flex-direction: column;
-      gap: 0;
+      gap: var(--leo-spacing-none);
     }
   `,
   participant: css`
     flex-shrink: 0;
     width: 128px;
     font: var(--leo-font-large-semibold);
-    letter-spacing: -0.23px;
+    letter-spacing: var(--leo-typography-large-semibold-letter-spacing);
 
     @media only screen and (max-width: 600px) {
       width: auto;
@@ -150,7 +148,7 @@ const styles = {
     min-width: 0;
     color: var(--leo-color-text-primary);
     font: var(--leo-font-large-regular);
-    letter-spacing: -0.23px;
+    letter-spacing: var(--leo-typography-large-regular-letter-spacing);
     overflow-wrap: break-word;
   `,
   action: css`
