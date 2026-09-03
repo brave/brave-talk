@@ -6,6 +6,7 @@ import { CopyLinkButton } from "./CopyLinkButton";
 import { useTranslation } from "react-i18next";
 import { TranslationKeys } from "../i18n/i18next";
 import { Section } from "./Section";
+import { resolveService } from "../services";
 
 interface Props {
   subscribed: SubscriptionStatus;
@@ -92,20 +93,17 @@ export const JoinCallSection = ({
                 fontWeight: 600,
                 lineHeight: "40px",
                 letterSpacing: "-0.5px",
-                "@media only screen and (max-width: 600px)": {
-                  fontSize: "28px",
-                  lineHeight: "34px",
-                },
               }}
             >
-              {subscribed === "yes" ? t("talk_title_premium") : t("talk_title")}
+              {t("talk_title")}
             </h1>
             <p
               css={{
                 margin: 0,
                 color: "#c9c9ca",
-                fontSize: "18px",
+                fontSize: "22px",
                 lineHeight: "28px",
+                letterSpacing: "-0.5px",
               }}
             >
               {notice ? t(notice) : t("notice_text")}
@@ -127,7 +125,7 @@ export const JoinCallSection = ({
             }}
           >
             <Button
-              variant="light"
+              variant={subscribed === "yes" ? "hero" : "light"}
               size="jumbo"
               onClick={onStartCall}
               disabled={disabled}
@@ -150,7 +148,7 @@ export const JoinCallSection = ({
                 >
                   {t("free_call_limit")}{" "}
                   <a
-                    href="#premium-calls"
+                    href={`${resolveService("account")}/plans/?intent=checkout&product=talk`}
                     css={{ color: "inherit", textUnderlineOffset: "2px" }}
                   >
                     {t("free_call_premium_link")}
@@ -227,7 +225,13 @@ export const JoinCallSection = ({
               marginBottom: "6px",
             }}
           >
-            <strong css={{ fontSize: "16px", lineHeight: "24px" }}>
+            <strong
+              css={{
+                fontSize: "20px",
+                lineHeight: "26px",
+                letterSpacing: "-0.5px",
+              }}
+            >
               {t("leo_meetings_title")}
             </strong>
             <span
