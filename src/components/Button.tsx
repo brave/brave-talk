@@ -60,8 +60,8 @@ const styles = {
     "& a": { textDecoration: "none", color: "inherit" },
   }),
   light: css({
-    background: "var(--leo-color-primitive-neutral-96)",
-    color: "var(--leo-color-primitive-neutral-8)",
+    background: "var(--leo-color-primitive-neutral-95)",
+    color: "var(--leo-color-primitive-neutral-5)",
     "&:hover": { background: "var(--leo-color-white)" },
     "&:active": { background: "var(--leo-color-primitive-neutral-90)" },
   }),
@@ -102,17 +102,19 @@ const styles = {
   }),
   large: css({
     width: "auto",
-    padding:
-      "calc(var(--leo-spacing-l) + var(--leo-spacing-xs)) var(--leo-spacing-2xl)",
+    minHeight: "52px",
+    padding: "var(--leo-spacing-l) var(--leo-spacing-xl)",
     font: "var(--leo-font-components-button-large)",
     letterSpacing:
       "var(--leo-typography-components-button-large-letter-spacing)",
   }),
   jumbo: css({
     width: "100%",
-    padding:
-      "calc(var(--leo-spacing-l) + var(--leo-spacing-xs)) var(--leo-spacing-2xl)",
-    font: "var(--leo-font-large-semibold)",
+    minHeight: "60px",
+    padding: "var(--leo-spacing-xl)",
+    font: "var(--leo-font-components-button-jumbo)",
+    letterSpacing:
+      "var(--leo-typography-components-button-jumbo-letter-spacing)",
   }),
 };
 

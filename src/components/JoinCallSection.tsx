@@ -140,7 +140,7 @@ export const JoinCallSection = ({
                 {buttonStatus
                   ? t(buttonStatus)
                   : subscribed === "yes"
-                    ? t("Start Premium call")
+                    ? t("Start premium call")
                     : t("Start free call")}
               </span>
             </Button>
