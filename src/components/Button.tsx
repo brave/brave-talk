@@ -59,14 +59,14 @@ const styles = {
     "&:active": { background: "#dedee1" },
   }),
   hero: css({
-    background: "linear-gradient(135deg, #ff5601 0%, #ff1f01 100%)",
+    background: "linear-gradient(0deg, #ff1f01 0%, #ff5601 100%)",
     color: "#ffffff",
     boxShadow: "0 6px 20px rgba(255, 50, 1, 0.18)",
     "&:hover": {
-      background: "linear-gradient(135deg, #ff6a1a 0%, #ff3216 100%)",
+      background: "linear-gradient(0deg, #ff3216 0%, #ff3ff6a1a216 100%)",
     },
     "&:active": {
-      background: "linear-gradient(135deg, #e94c00 0%, #e51b00 100%)",
+      background: "linear-gradient(0deg, #e51b00 0%, #e94c00 100%)",
     },
   }),
   outline: css({
