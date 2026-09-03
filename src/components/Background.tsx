@@ -19,6 +19,9 @@ export const Background = ({ children }: Props) => {
         minHeight: "100dvh",
         overflowX: "hidden",
         overflowY: "auto",
+        "@media only screen and (max-width: 600px)": {
+          backgroundImage: "none",
+        },
       }}
     >
       {children}

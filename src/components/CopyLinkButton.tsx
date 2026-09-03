@@ -28,11 +28,11 @@ export const CopyLinkButton = () => {
 
   return (
     <Button
+      variant="light"
       onClick={onCopyLink}
       css={{
-        marginTop: 16,
         display: "flex",
-        alignContent: "center",
+        alignItems: "center",
         justifyContent: "center",
       }}
       disabled={!!buttonText}
