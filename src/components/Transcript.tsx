@@ -11,6 +11,7 @@ import Button from "@brave/leo/react/button";
 import Icon from "@brave/leo/react/icon";
 import Input from "@brave/leo/react/input";
 import { useTranslation } from "react-i18next";
+import { brandingConfigUrl } from "../environment";
 
 interface MeetingTranscriptProps {
   transcript: DownloadedTranscript;
@@ -203,7 +204,7 @@ const MeetingTranscript = ({ transcript }: MeetingTranscriptProps) => {
   useEffect(() => {
     let cancelled = false;
 
-    fetch("/branding-config.json")
+    fetch(brandingConfigUrl)
       .then((response) => response.json() as Promise<BrandingConfig>)
       .then((config) => {
         if (cancelled) {

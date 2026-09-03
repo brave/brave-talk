@@ -22,5 +22,12 @@ export const config = {
 
 export const isProduction = env === "production";
 
+export const brandingConfigUrl =
+  env === "production"
+    ? "/branding-config.json"
+    : env === "staging"
+      ? "/branding-config-staging.json"
+      : "/branding-config-dev.json";
+
 export const shouldForcePaymentsStaging =
   env.startsWith("development") && env !== "development";
