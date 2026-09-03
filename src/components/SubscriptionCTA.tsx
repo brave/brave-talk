@@ -24,8 +24,8 @@ export const SubscriptionCTA = ({ subscribed }: Props) => {
           display: "flex",
           justifyContent: "center",
           alignItems: "center",
-          gap: "12px",
-          color: "rgba(255, 255, 255, 0.5)",
+          gap: "var(--leo-spacing-l)",
+          color: "color-mix(in srgb, var(--leo-color-white) 50%, transparent)",
         }}
       >
         <img
@@ -34,7 +34,7 @@ export const SubscriptionCTA = ({ subscribed }: Props) => {
           width={22}
           height={22}
         />
-        <span css={{ fontSize: "15px", fontWeight: 600 }}>
+        <span css={{ font: "var(--leo-font-default-semibold)" }}>
           {t("Checking subscription status...")}
         </span>
       </Section>
@@ -46,35 +46,33 @@ export const SubscriptionCTA = ({ subscribed }: Props) => {
       css={{
         display: "flex",
         alignItems: "center",
-        gap: "32px",
+        gap: "var(--leo-spacing-3xl)",
         textAlign: "left",
         "@media only screen and (max-width: 720px)": {
           alignItems: "stretch",
           flexDirection: "column",
-          gap: "24px",
+          gap: "var(--leo-spacing-2xl)",
         },
       }}
     >
       <div id="premium-calls" css={{ minWidth: 0, flex: 1 }}>
         <h2
           css={{
-            margin: "0 0 8px",
-            color: "#ffffff",
-            fontWeight: 600,
-            fontSize: "22px",
-            lineHeight: "28px",
-            letterSpacing: "-0.5px",
+            margin:
+              "var(--leo-spacing-none) var(--leo-spacing-none) var(--leo-spacing-m)",
+            color: "var(--leo-color-white)",
+            font: "var(--leo-font-heading-h2)",
+            letterSpacing: "var(--leo-typography-heading-h2-letter-spacing)",
           }}
         >
           {t("premium_card_title")}
         </h2>
         <p
           css={{
-            margin: 0,
-            color: "#aaaaad",
-            fontSize: "16px",
-            lineHeight: "24px",
-            letterSpacing: "-0.23px",
+            margin: "var(--leo-spacing-none)",
+            color: "var(--leo-color-primitive-neutral-70)",
+            font: "var(--leo-font-large-regular)",
+            letterSpacing: "var(--leo-typography-large-regular-letter-spacing)",
           }}
         >
           {t("premium_calls_description")} {t("subscribe_login_premium")}{" "}

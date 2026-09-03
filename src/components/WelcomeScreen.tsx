@@ -41,7 +41,10 @@ export const WelcomeScreen = ({
   const subscribed = useSubscribedStatus();
   const { t } = useTranslation();
 
-  const Body = () => {
+  // Rendered by calling it, not as <Body />: a component declared inside the
+  // render gets a fresh identity every time, so React would throw away and
+  // remount the whole screen on each state change.
+  const renderBody = () => {
     if (displayTranscriptId) {
       return (
         <Suspense>
@@ -92,15 +95,16 @@ export const WelcomeScreen = ({
           flexGrow: 1,
           flexDirection: "column",
           justifyContent: "center",
-          margin: "0 auto",
-          padding: "0 16px",
+          margin: "var(--leo-spacing-none) auto",
+          padding: "var(--leo-spacing-none) var(--leo-spacing-xl)",
           "@media only screen and (max-width: 600px)": {
             justifyContent: "flex-start",
-            padding: "0 8px 8px",
+            padding:
+              "var(--leo-spacing-none) var(--leo-spacing-m) var(--leo-spacing-m)",
           },
         }}
       >
-        <Body />
+        {renderBody()}
       </main>
       <Footer browser={browser} />
     </Background>

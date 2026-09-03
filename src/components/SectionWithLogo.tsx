@@ -10,7 +10,12 @@ interface Props {
 
 export const SectionWithLogo = ({ children, heading, subhead }: Props) => {
   return (
-    <Section css={{ marginTop: 122 }}>
+    <Section
+      css={{
+        marginTop:
+          "calc(var(--leo-spacing-8xl) + var(--leo-spacing-2xl) + var(--leo-spacing-xs))",
+      }}
+    >
       <div
         css={{
           "--talk-logo-size": "122px",
@@ -26,21 +31,33 @@ export const SectionWithLogo = ({ children, heading, subhead }: Props) => {
       />
       <div
         css={{
-          margin: "0 auto 36px",
+          margin:
+            "var(--leo-spacing-none) auto calc(var(--leo-spacing-3xl) + var(--leo-spacing-s))",
           display: "flex",
           flexDirection: "column",
           maxWidth: "calc(100% - 40px)",
           width: "570px",
           zIndex: 2,
           "@media only screen and (max-height: 600px) and (max-width: 600px)": {
-            marginBottom: "22px",
+            marginBottom:
+              "calc(var(--leo-spacing-xl) + var(--leo-spacing-s) + var(--leo-spacing-xs))",
           },
         }}
       >
-        <h1 css={{ margin: "95px 0 0" }}>
+        <h1
+          css={{
+            margin:
+              "calc(var(--leo-spacing-8xl) - var(--leo-spacing-xs) / 2) var(--leo-spacing-none) var(--leo-spacing-none)",
+          }}
+        >
           <Text variant="header">{heading}</Text>
         </h1>
-        <p css={{ margin: "8px 0 0" }}>
+        <p
+          css={{
+            margin:
+              "var(--leo-spacing-m) var(--leo-spacing-none) var(--leo-spacing-none)",
+          }}
+        >
           <Text variant="subhead">{subhead}</Text>
         </p>
       </div>
