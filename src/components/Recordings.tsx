@@ -6,6 +6,7 @@ import DownloadImage from "../images/download.svg";
 import TranscriptImage from "../images/transcript.svg";
 import { Section } from "./Section";
 import { MouseEventHandler, useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { getTranscriptDisplayPath } from "../transcripts";
 
 interface Props {
@@ -47,37 +48,48 @@ const actionStyles = {
   },
 };
 
-const ExpiryLabel = ({ mobileOnly = false }: { mobileOnly?: boolean }) => (
-  <span
-    css={{
-      display: mobileOnly ? "none" : "inline-flex",
-      flexShrink: 0,
-      padding:
-        "calc(var(--leo-spacing-xs) / 2) calc(var(--leo-spacing-s) + var(--leo-spacing-xs) / 2)",
-      border: "1px solid var(--leo-color-primitive-yellow-80)",
-      borderRadius: "var(--leo-radius-s)",
-      color: "var(--leo-color-primitive-yellow-80)",
-      font: "var(--leo-font-x-small-regular)",
-      letterSpacing: "var(--leo-typography-x-small-regular-letter-spacing)",
-      "@media only screen and (max-width: 600px)": {
-        display: mobileOnly ? "inline-flex" : "none",
-      },
-    }}
-  >
-    Expires soon
-  </span>
-);
+const ExpiryLabel = ({ mobileOnly = false }: { mobileOnly?: boolean }) => {
+  const { t } = useTranslation();
+
+  return (
+    <span
+      css={{
+        display: mobileOnly ? "none" : "inline-flex",
+        flexShrink: 0,
+        padding:
+          "calc(var(--leo-spacing-xs) / 2) calc(var(--leo-spacing-s) + var(--leo-spacing-xs) / 2)",
+        border: "1px solid var(--leo-color-primitive-yellow-80)",
+        borderRadius: "var(--leo-radius-s)",
+        color: "var(--leo-color-primitive-yellow-80)",
+        font: "var(--leo-font-x-small-regular)",
+        letterSpacing: "var(--leo-typography-x-small-regular-letter-spacing)",
+        "@media only screen and (max-width: 600px)": {
+          display: mobileOnly ? "inline-flex" : "none",
+        },
+      }}
+    >
+      {t("recordings_expires_soon")}
+    </span>
+  );
+};
 
 const RecordingDisplay = ({
   recording: r,
   onRouterStatePushed,
   currentTimeSecs,
 }: DisplayProps) => {
+  const { t } = useTranslation();
   const recordingDate = new Date(r.createdAt * 1000);
   const isExpiringSoon = r.expiresAt - currentTimeSecs <= EXPIRING_SOON_SECS;
 
   const getTranscriptOnClick = (transcriptUrl: string, startDateTime: Date) => {
     const handler: MouseEventHandler<HTMLAnchorElement> = (e) => {
+      // Always stop the native navigation first so a malformed URL cannot
+      // fall through to a full-page load of the raw href.
+      e.preventDefault();
+      e.stopPropagation();
+      e.nativeEvent.stopImmediatePropagation();
+
       let transcriptPath: string;
       try {
         transcriptPath = getTranscriptDisplayPath(transcriptUrl);
@@ -85,10 +97,6 @@ const RecordingDisplay = ({
         // Keep malformed URLs (e.g. local preview fixtures) from crashing the page.
         return;
       }
-      // hopefully sufficient magical incantations to prevent the popup
-      e.preventDefault();
-      e.stopPropagation();
-      e.nativeEvent.stopImmediatePropagation();
       window.history.pushState(
         { startDateTime: startDateTime.getTime() },
         "",
@@ -181,13 +189,13 @@ const RecordingDisplay = ({
             onClick={getTranscriptOnClick(r.transcriptUrl, recordingDate)}
           >
             <img src={TranscriptImage} height="14" width="14" alt="" />
-            Transcript
+            {t("recordings_transcript")}
           </a>
         )}
         {r.url && (
           <a href={r.url} css={actionStyles} target="_blank" rel="noreferrer">
             <img src={DownloadImage} height="14" width="16" alt="" />
-            Download
+            {t("download_transcript_button")}
           </a>
         )}
       </div>
@@ -196,6 +204,7 @@ const RecordingDisplay = ({
 };
 
 export const Recordings = ({ onRouterStatePushed }: Props) => {
+  const { t } = useTranslation();
   const recordings = useRecordings();
   const [currentTimeSecs, setCurrentTimeSecs] = useState(() =>
     Math.ceil(Date.now() / 1000),
@@ -205,12 +214,16 @@ export const Recordings = ({ onRouterStatePushed }: Props) => {
   );
 
   useEffect(() => {
+    if (availableRecordings.length === 0) {
+      return;
+    }
+
     const timer = window.setInterval(() => {
       setCurrentTimeSecs(Math.ceil(Date.now() / 1000));
     }, 60_000);
 
     return () => window.clearInterval(timer);
-  }, []);
+  }, [availableRecordings.length]);
 
   if (availableRecordings.length === 0) {
     return null;
@@ -249,7 +262,7 @@ export const Recordings = ({ onRouterStatePushed }: Props) => {
             letterSpacing: "var(--leo-typography-heading-h2-letter-spacing)",
           }}
         >
-          Your recorded calls
+          {t("recordings_title")}
         </h2>
         <p
           css={{
@@ -259,8 +272,7 @@ export const Recordings = ({ onRouterStatePushed }: Props) => {
             letterSpacing: "var(--leo-typography-large-regular-letter-spacing)",
           }}
         >
-          Recorded calls are automatically cleared 24 hours after their
-          recording time.
+          {t("recordings_description")}
         </p>
       </div>
       <div
