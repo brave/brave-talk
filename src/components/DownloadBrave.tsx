@@ -21,7 +21,13 @@ export const DownloadBrave = () => {
           flexDirection: "column",
         }}
       >
-        <div css={{ maxWidth: 377, margin: "0 0 14px" }}>
+        <div
+          css={{
+            maxWidth: 377,
+            margin:
+              "var(--leo-spacing-none) var(--leo-spacing-none) calc(var(--leo-spacing-l) + var(--leo-spacing-xs))",
+          }}
+        >
           <Text variant="body">{t("download_brave_text")}</Text>
         </div>
         <a
@@ -30,7 +36,7 @@ export const DownloadBrave = () => {
         >
           <Button
             css={{
-              marginTop: 16,
+              marginTop: "var(--leo-spacing-xl)",
               display: "flex",
               alignContent: "center",
               justifyContent: "center",
@@ -42,7 +48,7 @@ export const DownloadBrave = () => {
                 alt="brave logo"
                 width="22"
                 height="22"
-                css={{ marginRight: 12 }}
+                css={{ marginRight: "var(--leo-spacing-l)" }}
               />
               <div>{t("welcome_page_button_download_text")}</div>
             </>

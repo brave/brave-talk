@@ -12,10 +12,9 @@ export const Footer = ({ browser }: Props) => {
     <footer
       css={{
         width: "min(940px, calc(100% - 40px))",
-        margin: "24px auto",
-        color: "#e4e4e5",
-        fontSize: "12px",
-        lineHeight: "18px",
+        margin: "var(--leo-spacing-2xl) auto",
+        color: "var(--leo-color-primitive-neutral-90)",
+        font: "var(--leo-font-small-regular)",
         textAlign: "center",
         a: {
           textDecoration: "underline",

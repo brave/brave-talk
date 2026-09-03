@@ -11,18 +11,15 @@ export const GlobalStyles = () => (
         height: "100%",
         width: "100%",
         textAlign: "center",
-        background: "#000000",
+        background: "var(--leo-color-black)",
         boxSizing: "border-box",
       },
       body: {
-        margin: "0 auto",
+        margin: "var(--leo-spacing-none) auto",
         height: "100%",
         width: "100%",
-        fontSize: "12px",
-        fontWeight: "normal",
-        fontFamily:
-          'system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif',
-        color: "#f1f1f1",
+        font: "var(--leo-font-small-regular)",
+        color: "var(--leo-color-primitive-neutral-95)",
         overflow: "hidden",
       },
       "#root": {

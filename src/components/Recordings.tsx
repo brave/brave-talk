@@ -22,18 +22,20 @@ const EXPIRING_SOON_SECS = 3 * 60 * 60;
 const actionStyles = {
   display: "inline-flex",
   alignItems: "center",
-  gap: "6px",
-  padding: "8px 12px",
-  borderRadius: "999px",
-  boxShadow: "inset 0 0 0 1px #464649",
-  color: "#ffffff",
-  fontSize: "12px",
-  fontWeight: 600,
-  lineHeight: "18px",
+  gap: "calc(var(--leo-spacing-s) + var(--leo-spacing-xs))",
+  padding: "var(--leo-spacing-m) var(--leo-spacing-l)",
+  borderRadius: "var(--leo-radius-full)",
+  boxShadow: "inset 0 0 0 1px var(--leo-color-primitive-neutral-30)",
+  color: "var(--leo-color-white)",
+  font: "var(--leo-font-small-semibold)",
   textDecoration: "none",
   whiteSpace: "nowrap" as const,
-  "&:hover": { background: "rgba(255, 255, 255, 0.08)" },
-  "&:active": { background: "rgba(255, 255, 255, 0.12)" },
+  "&:hover": {
+    background: "color-mix(in srgb, var(--leo-color-white) 8%, transparent)",
+  },
+  "&:active": {
+    background: "color-mix(in srgb, var(--leo-color-white) 12%, transparent)",
+  },
 };
 
 const ExpiryLabel = ({ mobileOnly = false }: { mobileOnly?: boolean }) => (
@@ -41,13 +43,13 @@ const ExpiryLabel = ({ mobileOnly = false }: { mobileOnly?: boolean }) => (
     css={{
       display: mobileOnly ? "none" : "inline-flex",
       flexShrink: 0,
-      padding: "1px 5px",
-      border: "1px solid #ffd43b",
-      borderRadius: "4px",
-      color: "#ffd43b",
-      fontSize: "10px",
-      lineHeight: "14px",
-      letterSpacing: "-0.08px",
+      padding:
+        "calc(var(--leo-spacing-xs) / 2) calc(var(--leo-spacing-s) + var(--leo-spacing-xs) / 2)",
+      border: "1px solid var(--leo-color-primitive-yellow-80)",
+      borderRadius: "var(--leo-radius-s)",
+      color: "var(--leo-color-primitive-yellow-80)",
+      font: "var(--leo-font-x-small-regular)",
+      letterSpacing: "var(--leo-typography-x-small-regular-letter-spacing)",
       "@media only screen and (max-width: 600px)": {
         display: mobileOnly ? "inline-flex" : "none",
       },
@@ -89,17 +91,18 @@ const RecordingDisplay = ({
         display: "flex",
         alignItems: "center",
         justifyContent: "space-between",
-        gap: "16px",
+        gap: "var(--leo-spacing-xl)",
         width: "100%",
         minHeight: "56px",
-        padding: "12px 16px 12px 24px",
-        borderRadius: "16px",
-        background: "#252527",
+        padding:
+          "var(--leo-spacing-l) var(--leo-spacing-xl) var(--leo-spacing-l) var(--leo-spacing-2xl)",
+        borderRadius: "var(--leo-radius-xl)",
+        background: "var(--leo-color-primitive-neutral-15)",
         "@media only screen and (max-width: 720px)": {
           alignItems: "stretch",
           flexDirection: "column",
-          gap: "8px",
-          padding: "12px 0",
+          gap: "var(--leo-spacing-m)",
+          padding: "var(--leo-spacing-l) var(--leo-spacing-none)",
         },
       }}
     >
@@ -107,20 +110,25 @@ const RecordingDisplay = ({
         css={{
           display: "flex",
           alignItems: "center",
-          gap: "16px",
+          gap: "var(--leo-spacing-xl)",
           minWidth: 0,
-          color: "#aaaaad",
-          fontSize: "16px",
-          lineHeight: "24px",
-          letterSpacing: "-0.23px",
+          color: "var(--leo-color-primitive-neutral-70)",
+          font: "var(--leo-font-large-regular)",
+          letterSpacing: "var(--leo-typography-large-regular-letter-spacing)",
           whiteSpace: "nowrap",
           "@media only screen and (max-width: 720px)": {
             width: "100%",
-            padding: "0 24px",
+            padding: "var(--leo-spacing-none) var(--leo-spacing-2xl)",
           },
         }}
       >
-        <strong css={{ flexShrink: 0, color: "#ffffff", fontWeight: 600 }}>
+        <strong
+          css={{
+            flexShrink: 0,
+            color: "var(--leo-color-white)",
+            font: "var(--leo-font-large-semibold)",
+          }}
+        >
           {formatRelativeDay(recordingDate)}
         </strong>
         <span>
@@ -134,14 +142,14 @@ const RecordingDisplay = ({
           display: "flex",
           alignItems: "center",
           justifyContent: "flex-end",
-          gap: "8px",
+          gap: "var(--leo-spacing-m)",
           flexShrink: 0,
           "@media only screen and (max-width: 720px)": {
             alignItems: "flex-start",
             justifyContent: "flex-start",
             flexDirection: isExpiringSoon ? "column" : "row",
             width: "100%",
-            padding: "0 16px",
+            padding: "var(--leo-spacing-none) var(--leo-spacing-xl)",
           },
         }}
       >
@@ -194,7 +202,7 @@ export const Recordings = ({ onRouterStatePushed }: Props) => {
     <Section
       css={{
         "@media only screen and (max-width: 600px)": {
-          padding: "8px",
+          padding: "var(--leo-spacing-m)",
         },
       }}
     >
@@ -202,41 +210,44 @@ export const Recordings = ({ onRouterStatePushed }: Props) => {
         css={{
           display: "flex",
           flexDirection: "column",
-          gap: "8px",
-          marginBottom: "32px",
+          gap: "var(--leo-spacing-m)",
+          marginBottom: "var(--leo-spacing-3xl)",
           textAlign: "left",
           "@media only screen and (max-width: 600px)": {
-            marginBottom: "8px",
-            padding: "16px",
+            marginBottom: "var(--leo-spacing-m)",
+            padding: "var(--leo-spacing-xl)",
           },
         }}
       >
         <h2
           css={{
-            margin: 0,
-            color: "#ffffff",
-            fontSize: "22px",
-            fontWeight: 600,
-            lineHeight: "28px",
-            letterSpacing: "-0.5px",
+            margin: "var(--leo-spacing-none)",
+            color: "var(--leo-color-white)",
+            font: "var(--leo-font-heading-h2)",
+            letterSpacing: "var(--leo-typography-heading-h2-letter-spacing)",
           }}
         >
           Your recorded calls
         </h2>
         <p
           css={{
-            margin: 0,
-            color: "#aaaaad",
-            fontSize: "16px",
-            lineHeight: "24px",
-            letterSpacing: "-0.23px",
+            margin: "var(--leo-spacing-none)",
+            color: "var(--leo-color-primitive-neutral-70)",
+            font: "var(--leo-font-large-regular)",
+            letterSpacing: "var(--leo-typography-large-regular-letter-spacing)",
           }}
         >
           Recorded calls are automatically cleared 24 hours after their
           recording time.
         </p>
       </div>
-      <div css={{ display: "flex", flexDirection: "column", gap: "8px" }}>
+      <div
+        css={{
+          display: "flex",
+          flexDirection: "column",
+          gap: "var(--leo-spacing-m)",
+        }}
+      >
         {availableRecordings.map((r, idx) => (
           <RecordingDisplay
             key={idx}
