@@ -48,26 +48,28 @@ export const Header = ({ subscribed }: Props) => {
         />
       </a>
 
-      <a
-        href={isPremium ? resolveService("account") : premiumLoginUrl()}
-        css={{
-          padding: "var(--leo-spacing-m) var(--leo-spacing-xl)",
-          borderRadius: "var(--leo-radius-full)",
-          font: "var(--leo-font-components-button-default)",
-          color: "var(--leo-color-white)",
-          textDecoration: "none",
-          transition: "var(--transition-interactive)",
-          "&:hover": {
-            background:
-              "color-mix(in srgb, var(--leo-color-white) 8%, transparent)",
-          },
-          "&:active": {
-            transform: "scale(var(--scale-pressed))",
-          },
-        }}
-      >
-        {isPremium ? t("my_account_link") : t("subscribe_login_link")}
-      </a>
+      {subscribed !== "unknown" && (
+        <a
+          href={isPremium ? resolveService("account") : premiumLoginUrl()}
+          css={{
+            padding: "var(--leo-spacing-m) var(--leo-spacing-xl)",
+            borderRadius: "var(--leo-radius-full)",
+            font: "var(--leo-font-components-button-default)",
+            color: "var(--leo-color-white)",
+            textDecoration: "none",
+            transition: "var(--transition-interactive)",
+            "&:hover": {
+              background:
+                "color-mix(in srgb, var(--leo-color-white) 8%, transparent)",
+            },
+            "&:active": {
+              transform: "scale(var(--scale-pressed))",
+            },
+          }}
+        >
+          {isPremium ? t("my_account_link") : t("subscribe_login_link")}
+        </a>
+      )}
     </header>
   );
 };
