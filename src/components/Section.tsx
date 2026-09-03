@@ -9,11 +9,9 @@ export const Section = ({ children, className }: Props) => (
     css={{
       width: "min(940px, 100%)",
       padding: "32px",
-      margin: "0 auto",
+      margin: "0 auto 40px",
       background: "rgba(20, 20, 21, 0.94)",
       border: "1px solid #252527",
-      boxShadow: "0 0 16px rgba(0, 0, 0, 0.15)",
-      backdropFilter: "blur(17.5px)",
       borderRadius: "24px",
       "@media only screen and (max-width: 600px)": {
         padding: "24px",
