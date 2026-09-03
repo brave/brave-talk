@@ -24,6 +24,18 @@ interface RecoveryTokenDialogProps {
   hasConfabs: boolean;
 }
 
+const dialogStyles = css`
+  --leo-dialog-backdrop-background: var(--leo-color-dialogs-scrim-background);
+
+  /* Leo's button/icon stylesheets are injected into this dialog's shadow root
+     the first time it opens, and their ":host { flex-grow: 1 }" rule then
+     matches the <leo-dialog> host itself. The host is a flex child of the
+     page's centered main column, so it would swallow all the free space and
+     shove the cards behind it upwards. The dialog renders in the top layer,
+     so the host never needs to occupy space in the page. */
+  position: absolute;
+`;
+
 const bodyStyles = css`
   text-align: left;
   margin-bottom: calc(-1 * var(--padding));
@@ -161,7 +173,7 @@ export default function RecoveryTokenDialog({
   }
 
   return (
-    <Dialog isOpen={isOpen} showClose onClose={onClose}>
+    <Dialog isOpen={isOpen} showClose onClose={onClose} css={dialogStyles}>
       <span slot="title">{t("recovery_token_title")}</span>
 
       <div css={bodyStyles}>
