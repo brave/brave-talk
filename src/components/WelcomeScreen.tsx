@@ -84,9 +84,24 @@ export const WelcomeScreen = ({
   return (
     <Background>
       <Header subscribed={subscribed} />
-      <div css={{ flexGrow: 1, padding: "0 12px" }}>
+      <main
+        css={{
+          display: "flex",
+          width: "100%",
+          maxWidth: "980px",
+          flexGrow: 1,
+          flexDirection: "column",
+          justifyContent: "center",
+          margin: "0 auto",
+          padding: "56px 20px 16px",
+          "@media only screen and (max-width: 600px)": {
+            justifyContent: "flex-start",
+            padding: "32px 8px 8px",
+          },
+        }}
+      >
         <Body />
-      </div>
+      </main>
       <Footer browser={browser} />
     </Background>
   );

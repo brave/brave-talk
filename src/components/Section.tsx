@@ -7,16 +7,17 @@ interface Props {
 export const Section = ({ children, className }: Props) => (
   <div
     css={{
-      width: "812px",
-      paddingBottom: "36px",
-      paddingLeft: "24px",
-      paddingRight: "24px",
-      margin: "0 auto 16px",
-      background: "rgba(255, 255, 255, 0.08)",
-      backdropFilter: "blur(32px)",
+      width: "min(940px, 100%)",
+      padding: "32px",
+      margin: "0 auto 24px",
+      background: "rgba(20, 20, 21, 0.94)",
+      border: "1px solid #252527",
+      boxShadow: "0 0 16px rgba(0, 0, 0, 0.15)",
+      backdropFilter: "blur(17.5px)",
       borderRadius: "24px",
-      "@media only screen and (max-width: 812px)": {
-        width: "100%",
+      "@media only screen and (max-width: 600px)": {
+        padding: "24px",
+        marginBottom: "16px",
       },
     }}
     className={className}

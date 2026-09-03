@@ -49,7 +49,6 @@ const styles = {
     align-self: stretch;
     line-height: var(--Line-height-Large, 24px);
     font-size: var(--Size-Large, 16px);
-    font-family: var(--Family-Default, "Inter Variable"), Inter;
   `,
   cell: css`
     letter-spacing: -0.2px;
@@ -103,7 +102,6 @@ const styles = {
   `,
   dateTime: css`
     color: var(--leo-color-text-primary);
-    font-family: var(--Family-Headings, Poppins);
     font-size: var(--Size-H4, 16px);
     font-style: normal;
     font-weight: 600;
@@ -128,7 +126,6 @@ const styles = {
   `,
   h1: css`
     color: var(--leo-color-text-primary);
-    font-family: var(--Family-Headings, Poppins);
     font-size: var(--Size-H2, 28px);
     font-style: normal;
     font-weight: 600;
