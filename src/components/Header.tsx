@@ -56,9 +56,13 @@ export const Header = ({ subscribed }: Props) => {
           font: "var(--leo-font-components-button-default)",
           color: "var(--leo-color-white)",
           textDecoration: "none",
+          transition: "var(--transition-interactive)",
           "&:hover": {
             background:
               "color-mix(in srgb, var(--leo-color-white) 8%, transparent)",
+          },
+          "&:active": {
+            transform: "scale(var(--scale-pressed))",
           },
         }}
       >
