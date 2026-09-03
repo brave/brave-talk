@@ -35,19 +35,21 @@ export const JoinCallSection = ({
   return (
     <Section
       css={{
-        padding: 0,
+        padding: "var(--leo-spacing-none)",
         overflow: "hidden",
         // This card lays out its own sections, so it opts out of Section's
         // responsive padding at every breakpoint.
-        "@media only screen and (max-width: 600px)": { padding: 0 },
+        "@media only screen and (max-width: 600px)": {
+          padding: "var(--leo-spacing-none)",
+        },
       }}
     >
       <div
         css={{
           display: "flex",
           alignItems: "center",
-          gap: "16px",
-          padding: "24px",
+          gap: "var(--leo-spacing-xl)",
+          padding: "var(--leo-spacing-2xl)",
           "@media only screen and (max-width: 720px)": {
             alignItems: "flex-start",
             flexWrap: "wrap",
@@ -55,7 +57,7 @@ export const JoinCallSection = ({
           "@media only screen and (max-width: 600px)": {
             flexDirection: "column",
             alignItems: "center",
-            gap: "24px",
+            gap: "var(--leo-spacing-2xl)",
           },
         }}
       >
@@ -67,7 +69,7 @@ export const JoinCallSection = ({
               width: "100%",
               flexDirection: "column",
               alignItems: "center",
-              gap: "16px",
+              gap: "var(--leo-spacing-xl)",
             },
           }}
         >
@@ -92,23 +94,22 @@ export const JoinCallSection = ({
           >
             <h1
               css={{
-                margin: 0,
-                color: "#ffffff",
-                fontSize: "34px",
-                fontWeight: 600,
-                lineHeight: "40px",
-                letterSpacing: "-0.5px",
+                margin: "var(--leo-spacing-none)",
+                color: "var(--leo-color-white)",
+                font: "var(--leo-font-heading-display3)",
+                letterSpacing:
+                  "var(--leo-typography-heading-display3-letter-spacing)",
               }}
             >
               {t("talk_title")}
             </h1>
             <p
               css={{
-                margin: 0,
-                color: "#c9c9ca",
-                fontSize: "22px",
-                lineHeight: "28px",
-                letterSpacing: "-0.5px",
+                margin: "var(--leo-spacing-none)",
+                color: "var(--leo-color-primitive-neutral-80)",
+                font: "var(--leo-font-heading-h2)",
+                letterSpacing:
+                  "var(--leo-typography-heading-h2-letter-spacing)",
               }}
             >
               {notice && !buttonStatus ? t(notice) : t("notice_text")}
@@ -123,7 +124,7 @@ export const JoinCallSection = ({
               width: "260px",
               flexShrink: 0,
               flexDirection: "column",
-              gap: "8px",
+              gap: "var(--leo-spacing-m)",
               "@media only screen and (max-width: 720px)": {
                 width: "100%",
               },
@@ -150,9 +151,8 @@ export const JoinCallSection = ({
               subscribed !== "yes" && (
                 <div
                   css={{
-                    color: "#aaaaad",
-                    fontSize: "12px",
-                    lineHeight: "18px",
+                    color: "var(--leo-color-primitive-neutral-70)",
+                    font: "var(--leo-font-small-regular)",
                   }}
                 >
                   {t("free_call_limit")}{" "}
@@ -174,9 +174,11 @@ export const JoinCallSection = ({
         css={{
           display: "flex",
           alignItems: "flex-end",
-          padding: "16px 24px 24px",
+          padding:
+            "var(--leo-spacing-xl) var(--leo-spacing-2xl) var(--leo-spacing-2xl)",
           "@media only screen and (max-width: 600px)": {
-            padding: "0 8px 8px",
+            padding:
+              "var(--leo-spacing-none) var(--leo-spacing-m) var(--leo-spacing-m)",
           },
         }}
       >
@@ -186,12 +188,12 @@ export const JoinCallSection = ({
             display: "grid",
             width: "48px",
             height: "48px",
-            marginRight: "-20px",
-            marginBottom: "8px",
+            marginRight: "calc(-1 * var(--leo-spacing-xl))",
+            marginBottom: "var(--leo-spacing-m)",
             flexShrink: 0,
             placeItems: "center",
             borderRadius: "50%",
-            background: "#252527",
+            background: "var(--leo-color-primitive-neutral-15)",
             "@media only screen and (max-width: 600px)": { display: "none" },
           }}
         >
@@ -208,7 +210,7 @@ export const JoinCallSection = ({
           width={32}
           height={32}
           css={{
-            marginRight: "-1px",
+            marginRight: "calc(-1 * var(--leo-spacing-xs) / 2)",
             flexShrink: 0,
             "@media only screen and (max-width: 600px)": { display: "none" },
           }}
@@ -216,13 +218,15 @@ export const JoinCallSection = ({
         <div
           css={{
             flex: 1,
-            padding: "20px 24px",
-            borderRadius: "24px 24px 24px 0",
-            background: "#252527",
+            padding:
+              "calc(var(--leo-spacing-xl) + var(--leo-spacing-s)) var(--leo-spacing-2xl)",
+            borderRadius:
+              "var(--leo-radius-xxl) var(--leo-radius-xxl) var(--leo-radius-xxl) var(--leo-spacing-none)",
+            background: "var(--leo-color-primitive-neutral-15)",
             textAlign: "left",
             "@media only screen and (max-width: 600px)": {
-              padding: "24px 32px",
-              borderRadius: "16px",
+              padding: "var(--leo-spacing-2xl) var(--leo-spacing-3xl)",
+              borderRadius: "var(--leo-radius-xl)",
             },
           }}
         >
@@ -230,26 +234,27 @@ export const JoinCallSection = ({
             css={{
               display: "flex",
               alignItems: "center",
-              gap: "8px",
-              marginBottom: "6px",
+              gap: "var(--leo-spacing-m)",
+              marginBottom:
+                "calc(var(--leo-spacing-s) + var(--leo-spacing-xs))",
             }}
           >
             <strong
               css={{
-                fontSize: "20px",
-                lineHeight: "26px",
-                letterSpacing: "-0.5px",
+                font: "var(--leo-font-heading-h3)",
+                letterSpacing:
+                  "var(--leo-typography-heading-h3-letter-spacing)",
               }}
             >
               {t("leo_meetings_title")}
             </strong>
             <span
               css={{
-                padding: "2px 6px",
-                borderRadius: "4px",
-                background: "#626267",
-                fontSize: "10px",
-                lineHeight: "14px",
+                padding:
+                  "var(--leo-spacing-xs) calc(var(--leo-spacing-s) + var(--leo-spacing-xs))",
+                borderRadius: "var(--leo-radius-s)",
+                background: "var(--leo-color-primitive-neutral-40)",
+                font: "var(--leo-font-x-small-regular)",
               }}
             >
               {t("free_call_premium_link")}
@@ -257,10 +262,9 @@ export const JoinCallSection = ({
           </div>
           <p
             css={{
-              margin: 0,
-              color: "#aaaaad",
-              fontSize: "16px",
-              lineHeight: "24px",
+              margin: "var(--leo-spacing-none)",
+              color: "var(--leo-color-primitive-neutral-70)",
+              font: "var(--leo-font-large-regular)",
             }}
           >
             {t("leo_meetings_description")}{" "}
