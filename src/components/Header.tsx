@@ -19,7 +19,7 @@ export const Header = ({ subscribed }: Props) => {
         justifyContent: "space-between",
         padding: "24px",
         "@media only screen and (max-width: 600px)": {
-          padding: "18px 20px",
+          padding: "24px",
         },
       }}
     >
@@ -51,8 +51,8 @@ export const Header = ({ subscribed }: Props) => {
       <a
         href={isPremium ? resolveService("account") : premiumLoginUrl()}
         css={{
-          padding: "8px 12px",
-          borderRadius: "10px",
+          padding: "8px 16px",
+          borderRadius: "999px",
           fontWeight: 600,
           fontSize: "14px",
           lineHeight: "20px",
