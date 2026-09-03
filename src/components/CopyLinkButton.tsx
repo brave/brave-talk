@@ -29,11 +29,14 @@ export const CopyLinkButton = () => {
   return (
     <Button
       variant="light"
+      size="large"
       onClick={onCopyLink}
       css={{
         display: "flex",
+        width: "100%",
         alignItems: "center",
         justifyContent: "center",
+        gap: "var(--leo-spacing-s)",
       }}
       disabled={!!buttonText}
     >
@@ -42,13 +45,10 @@ export const CopyLinkButton = () => {
       ) : (
         <>
           <img
-            src={require("../images/link_icon.svg")}
-            alt="link"
-            width="22"
-            height="22"
-            css={{
-              marginRight: "calc(var(--leo-spacing-s) + var(--leo-spacing-xs))",
-            }}
+            src={require("../images/link-normal.svg")}
+            alt=""
+            width="24"
+            height="24"
           />
           <div>{t("create_link")}</div>
         </>

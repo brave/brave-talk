@@ -6,11 +6,9 @@ import {
 } from "../downloaded-transcript";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { css, keyframes } from "@emotion/react";
-import TranscriptImage from "../images/papyrus.svg";
-import DownloadImage from "../images/download_color.svg";
-import SearchImage from "../images/search.svg";
 import { formatDuration, formatRelativeDay } from "../recordings-utils";
 import Button from "@brave/leo/react/button";
+import Icon from "@brave/leo/react/icon";
 import Input from "@brave/leo/react/input";
 import { useTranslation } from "react-i18next";
 
@@ -77,20 +75,14 @@ const styles = {
     /* leo-button hosts default to flex-grow: 1 */
     flex: 0 0 auto;
   `,
-  downloadButtonImage: css`
-    display: block;
+  headingIcon: css`
+    --leo-icon-size: 28px;
+    --leo-icon-color: var(--leo-color-icon-default);
   `,
   meta: css`
     display: flex;
     flex-direction: column;
     gap: var(--leo-spacing-xl);
-  `,
-  searchIcon: css`
-    display: flex;
-    align-items: center;
-  `,
-  searchIconImage: css`
-    display: block;
   `,
   metaDateTime: css`
     display: flex;
@@ -192,7 +184,6 @@ const TranscriptHeading = () => {
 
   return (
     <div css={styles.headerTitle}>
-      <img src={TranscriptImage} height="28" width="28" alt="" />
       <h1 css={styles.h1}>{t("Meeting Transcript")}</h1>
     </div>
   );
@@ -272,15 +263,7 @@ const MeetingTranscript = ({ transcript }: MeetingTranscriptProps) => {
             link.click();
           }}
         >
-          <span slot="icon-before">
-            <img
-              src={DownloadImage}
-              height="16"
-              width="18"
-              alt=""
-              css={styles.downloadButtonImage}
-            />
-          </span>
+          <Icon slot="icon-before" name="download" />
           {t("download_transcript_button")}
         </Button>
       </div>
@@ -302,15 +285,7 @@ const MeetingTranscript = ({ transcript }: MeetingTranscriptProps) => {
           placeholder={t("transcript_search_placeholder")}
           onInput={(e: any) => setSearchTerm(e.value)}
         >
-          <span slot="left-icon" css={styles.searchIcon}>
-            <img
-              src={SearchImage}
-              height="20"
-              width="20"
-              alt=""
-              css={styles.searchIconImage}
-            />
-          </span>
+          <Icon slot="left-icon" name="search" />
         </Input>
       </div>
       <div ref={textRef} css={styles.events}>
