@@ -9,7 +9,7 @@ export const Section = ({ children, className }: Props) => (
     css={{
       width: "min(940px, 100%)",
       padding: "32px",
-      margin: "0 auto 24px",
+      margin: "0 auto",
       background: "rgba(20, 20, 21, 0.94)",
       border: "1px solid #252527",
       boxShadow: "0 0 16px rgba(0, 0, 0, 0.15)",

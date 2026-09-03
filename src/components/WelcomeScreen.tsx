@@ -72,11 +72,11 @@ export const WelcomeScreen = ({
           hideButtons={hasInitialRoomName}
         />
 
-        <Recordings onRouterStatePushed={onRouterStatePushed} />
-
         {!hasInitialRoomName && <SubscriptionCTA subscribed={subscribed} />}
 
         <RecoveryTokenBox subscribed={subscribed} />
+
+        <Recordings onRouterStatePushed={onRouterStatePushed} />
       </React.Fragment>
     );
   };
@@ -93,10 +93,10 @@ export const WelcomeScreen = ({
           flexDirection: "column",
           justifyContent: "center",
           margin: "0 auto",
-          padding: "56px 20px 16px",
+          padding: "0 16px",
           "@media only screen and (max-width: 600px)": {
             justifyContent: "flex-start",
-            padding: "32px 8px 8px",
+            padding: "0 8px 8px",
           },
         }}
       >
