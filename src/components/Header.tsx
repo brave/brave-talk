@@ -1,6 +1,6 @@
 import { useTranslation } from "react-i18next";
 import { SubscriptionStatus } from "../hooks/use-subscribed-status";
-import { resolveService } from "../services";
+import { premiumLoginUrl, resolveService } from "../services";
 
 interface Props {
   subscribed: SubscriptionStatus;
@@ -8,42 +8,63 @@ interface Props {
 
 export const Header = ({ subscribed }: Props) => {
   const { t } = useTranslation();
+  const isPremium = subscribed === "yes";
+
   return (
-    <div>
+    <header
+      css={{
+        display: "flex",
+        width: "100%",
+        alignItems: "center",
+        justifyContent: "space-between",
+        padding: "24px",
+        "@media only screen and (max-width: 600px)": {
+          padding: "18px 20px",
+        },
+      }}
+    >
       <a
         css={{
-          display: "block",
-          position: "absolute",
-          width: "131px",
+          display: "flex",
+          alignItems: "center",
+          gap: "8px",
+          width: "129px",
           height: "40px",
-          top: "24px",
-          left: "24px",
           outline: "none",
         }}
         href="https://brave.com/download/bravetalk"
       >
-        <img src={require("../images/brave_logo_dark.svg")} alt="brave" />
+        <img
+          src={require("../images/homepage/brave-icon.svg")}
+          alt=""
+          width={35}
+          height={40}
+        />
+        <img
+          src={require("../images/homepage/brave-wordmark.svg")}
+          alt="Brave"
+          width={86}
+          height={24}
+        />
       </a>
 
-      {subscribed === "yes" && (
-        <a
-          href={resolveService("account")}
-          css={{
-            display: "block",
-            position: "absolute",
-            right: "24px",
-            top: "29px",
-            fontStyle: "normal",
-            fontWeight: 600,
-            fontSize: "14px",
-            lineHeight: "20px",
-            color: "#ffffff",
-            textDecoration: "none",
-          }}
-        >
-          {t("my_account_link")}
-        </a>
-      )}
-    </div>
+      <a
+        href={isPremium ? resolveService("account") : premiumLoginUrl()}
+        css={{
+          padding: "8px 12px",
+          borderRadius: "10px",
+          fontWeight: 600,
+          fontSize: "14px",
+          lineHeight: "20px",
+          color: "#ffffff",
+          textDecoration: "none",
+          "&:hover": {
+            background: "rgba(255, 255, 255, 0.08)",
+          },
+        }}
+      >
+        {isPremium ? t("my_account_link") : t("subscribe_login_link")}
+      </a>
+    </header>
   );
 };
