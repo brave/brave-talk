@@ -177,7 +177,7 @@ export const JoinCallSection = ({
             display: "grid",
             width: "48px",
             height: "48px",
-            marginRight: "-8px",
+            marginRight: "-20px",
             marginBottom: "8px",
             flexShrink: 0,
             placeItems: "center",
