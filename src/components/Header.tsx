@@ -17,9 +17,9 @@ export const Header = ({ subscribed }: Props) => {
         width: "100%",
         alignItems: "center",
         justifyContent: "space-between",
-        padding: "24px",
+        padding: "var(--leo-spacing-2xl)",
         "@media only screen and (max-width: 600px)": {
-          padding: "24px",
+          padding: "var(--leo-spacing-2xl)",
         },
       }}
     >
@@ -27,7 +27,7 @@ export const Header = ({ subscribed }: Props) => {
         css={{
           display: "flex",
           alignItems: "center",
-          gap: "8px",
+          gap: "var(--leo-spacing-m)",
           width: "129px",
           height: "40px",
           outline: "none",
@@ -51,15 +51,14 @@ export const Header = ({ subscribed }: Props) => {
       <a
         href={isPremium ? resolveService("account") : premiumLoginUrl()}
         css={{
-          padding: "8px 16px",
-          borderRadius: "999px",
-          fontWeight: 600,
-          fontSize: "14px",
-          lineHeight: "20px",
-          color: "#ffffff",
+          padding: "var(--leo-spacing-m) var(--leo-spacing-xl)",
+          borderRadius: "var(--leo-radius-full)",
+          font: "var(--leo-font-components-button-default)",
+          color: "var(--leo-color-white)",
           textDecoration: "none",
           "&:hover": {
-            background: "rgba(255, 255, 255, 0.08)",
+            background:
+              "color-mix(in srgb, var(--leo-color-white) 8%, transparent)",
           },
         }}
       >

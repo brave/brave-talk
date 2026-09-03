@@ -46,7 +46,9 @@ export const CopyLinkButton = () => {
             alt="link"
             width="22"
             height="22"
-            css={{ marginRight: 6 }}
+            css={{
+              marginRight: "calc(var(--leo-spacing-s) + var(--leo-spacing-xs))",
+            }}
           />
           <div>{t("create_link")}</div>
         </>
