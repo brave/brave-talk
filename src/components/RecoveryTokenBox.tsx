@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useTranslation } from "react-i18next";
+import { Trans, useTranslation } from "react-i18next";
 import { Button } from "./Button";
 import { Section } from "./Section";
 import RecoveryTokenDialog from "./RecoveryTokenDialog";
@@ -73,14 +73,20 @@ export default function RecoveryTokenBox({ subscribed }: Props) {
               {isPremium
                 ? t("recovery_token_description")
                 : t("recovery_token_description_free")}{" "}
-              <a
-                href={RECOVERY_TOKEN_LEARN_MORE_URL}
-                target="_blank"
-                rel="noreferrer"
-                css={{ color: "inherit", textUnderlineOffset: "2px" }}
-              >
-                {t("recovery_token_learn_more")}
-              </a>
+              <Trans i18nKey="recovery_token_learn_more">
+                <a
+                  href={RECOVERY_TOKEN_LEARN_MORE_URL}
+                  target="_blank"
+                  rel="noreferrer"
+                  css={{
+                    color: "var(--leo-color-primitive-neutral-90)",
+                    textUnderlineOffset: "2px",
+                  }}
+                >
+                  Learn more
+                </a>
+                {"."}
+              </Trans>
             </p>
           </div>
           <div css={{ flexShrink: 0 }}>
