@@ -21,6 +21,10 @@ interface MeetingTranscriptDisplayProps {
   transcriptUrlBase?: string;
 }
 
+interface BrandingConfig {
+  avatarBackgrounds?: string[];
+}
+
 const pulse = keyframes`
   from { opacity: 0.6; }
   to { opacity: 0.2; }
@@ -156,7 +160,7 @@ const styles = {
 };
 
 // Speakers are assigned a colour in the order they first appear.
-const PARTICIPANT_COLORS = [
+const DEFAULT_PARTICIPANT_COLORS = [
   "var(--leo-color-secondary-40)",
   "var(--leo-color-orange-40)",
   "var(--leo-color-green-40)",
@@ -192,6 +196,33 @@ const TranscriptHeading = () => {
 const MeetingTranscript = ({ transcript }: MeetingTranscriptProps) => {
   const { t } = useTranslation();
   const { events, startDateTime } = transcript;
+  const [participantPalette, setParticipantPalette] = useState<string[]>(
+    DEFAULT_PARTICIPANT_COLORS,
+  );
+
+  useEffect(() => {
+    let cancelled = false;
+
+    fetch("/branding-config.json")
+      .then((response) => response.json() as Promise<BrandingConfig>)
+      .then((config) => {
+        if (cancelled) {
+          return;
+        }
+
+        const avatarBackgrounds = config.avatarBackgrounds?.filter(Boolean);
+        if (avatarBackgrounds && avatarBackgrounds.length > 0) {
+          setParticipantPalette(avatarBackgrounds);
+        }
+      })
+      .catch(() => {
+        // Keep fallback colours when branding config is unavailable.
+      });
+
+    return () => {
+      cancelled = true;
+    };
+  }, []);
 
   const participantColors = useMemo(() => {
     const colors = new Map<string, string>();
@@ -199,12 +230,12 @@ const MeetingTranscript = ({ transcript }: MeetingTranscriptProps) => {
       if (!colors.has(participant)) {
         colors.set(
           participant,
-          PARTICIPANT_COLORS[colors.size % PARTICIPANT_COLORS.length],
+          participantPalette[colors.size % participantPalette.length],
         );
       }
     });
     return colors;
-  }, [events]);
+  }, [events, participantPalette]);
 
   const [searchTerm, setSearchTerm] = useState<string>("");
   const textRef = useRef<HTMLDivElement>(null);
