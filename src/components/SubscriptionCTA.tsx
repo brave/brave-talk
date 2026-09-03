@@ -76,16 +76,7 @@ export const SubscriptionCTA = ({ subscribed }: Props) => {
           }}
         >
           {t("premium_calls_description")} {t("subscribe_login_premium")}{" "}
-          <a
-            href={premiumLoginUrl()}
-            css={{
-              color: "var(--leo-color-primitive-neutral-90)",
-              textUnderlineOffset: "2px",
-            }}
-          >
-            {t("subscribe_login_link")}
-          </a>
-          .
+          <a href={premiumLoginUrl()}>{t("subscribe_login_link")}</a>.
         </p>
       </div>
       <div css={{ flexShrink: 0 }}>

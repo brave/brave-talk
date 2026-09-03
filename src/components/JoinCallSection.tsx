@@ -158,10 +158,6 @@ export const JoinCallSection = ({
                   {t("free_call_limit")}{" "}
                   <a
                     href={`${resolveService("account")}/plans/?intent=checkout&product=talk`}
-                    css={{
-                      color: "var(--leo-color-primitive-neutral-90)",
-                      textUnderlineOffset: "2px",
-                    }}
                   >
                     {t("free_call_premium_link")}
                   </a>
@@ -276,10 +272,6 @@ export const JoinCallSection = ({
                 href="https://brave.com/talk/"
                 target="_blank"
                 rel="noreferrer"
-                css={{
-                  color: "var(--leo-color-primitive-neutral-90)",
-                  textUnderlineOffset: "2px",
-                }}
               >
                 Learn more
               </a>
