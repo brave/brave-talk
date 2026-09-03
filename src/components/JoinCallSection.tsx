@@ -27,6 +27,11 @@ export const JoinCallSection = ({
 }: Props) => {
   const { t } = useTranslation();
 
+  // While a call is being established the progress messages take over the
+  // button label; anything left over afterwards (ie an error) stays in the
+  // subhead, where it's also shown when there is no button to speak of.
+  const buttonStatus = !hideButtons && disabled ? notice : undefined;
+
   return (
     <Section
       css={{
@@ -106,7 +111,7 @@ export const JoinCallSection = ({
                 letterSpacing: "-0.5px",
               }}
             >
-              {notice ? t(notice) : t("notice_text")}
+              {notice && !buttonStatus ? t(notice) : t("notice_text")}
             </p>
           </div>
         </div>
@@ -130,9 +135,13 @@ export const JoinCallSection = ({
               onClick={onStartCall}
               disabled={disabled}
             >
-              {subscribed === "yes"
-                ? t("Start Premium call")
-                : t("Start free call")}
+              <span aria-live="polite">
+                {buttonStatus
+                  ? t(buttonStatus)
+                  : subscribed === "yes"
+                    ? t("Start Premium call")
+                    : t("Start free call")}
+              </span>
             </Button>
 
             {subscribed === "yes" && !browser.isIOS ? (
