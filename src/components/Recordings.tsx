@@ -34,11 +34,13 @@ const actionStyles = {
     "var(--leo-typography-components-button-default-letter-spacing)",
   textDecoration: "none",
   whiteSpace: "nowrap" as const,
+  transition: "var(--transition-interactive)",
   "&:hover": {
     background: "color-mix(in srgb, var(--leo-color-white) 8%, transparent)",
   },
   "&:active": {
     background: "color-mix(in srgb, var(--leo-color-white) 12%, transparent)",
+    transform: "scale(var(--scale-pressed))",
   },
   "@media only screen and (max-width: 600px)": {
     width: "100%",
