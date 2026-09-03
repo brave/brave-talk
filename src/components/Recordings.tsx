@@ -22,6 +22,7 @@ const EXPIRING_SOON_SECS = 3 * 60 * 60;
 const actionStyles = {
   display: "inline-flex",
   alignItems: "center",
+  justifyContent: "center",
   gap: "var(--leo-spacing-m)",
   minHeight: "40px",
   padding: "var(--leo-spacing-m) var(--leo-spacing-xl)",
@@ -38,6 +39,9 @@ const actionStyles = {
   },
   "&:active": {
     background: "color-mix(in srgb, var(--leo-color-white) 12%, transparent)",
+  },
+  "@media only screen and (max-width: 600px)": {
+    width: "100%",
   },
 };
 
@@ -71,8 +75,14 @@ const RecordingDisplay = ({
   const isExpiringSoon = r.expiresAt - currentTimeSecs <= EXPIRING_SOON_SECS;
 
   const getTranscriptOnClick = (transcriptUrl: string, startDateTime: Date) => {
-    const transcriptPath = getTranscriptDisplayPath(transcriptUrl);
     const handler: MouseEventHandler<HTMLAnchorElement> = (e) => {
+      let transcriptPath: string;
+      try {
+        transcriptPath = getTranscriptDisplayPath(transcriptUrl);
+      } catch {
+        // Keep malformed URLs (e.g. local preview fixtures) from crashing the page.
+        return;
+      }
       // hopefully sufficient magical incantations to prevent the popup
       e.preventDefault();
       e.stopPropagation();
@@ -120,6 +130,9 @@ const RecordingDisplay = ({
           letterSpacing: "var(--leo-typography-large-regular-letter-spacing)",
           whiteSpace: "nowrap",
           "@media only screen and (max-width: 600px)": {
+            alignItems: "flex-start",
+            flexDirection: "column",
+            gap: "var(--leo-spacing-xs)",
             width: "100%",
             padding: "var(--leo-spacing-none) var(--leo-spacing-2xl)",
           },
@@ -150,7 +163,7 @@ const RecordingDisplay = ({
           "@media only screen and (max-width: 600px)": {
             alignItems: "flex-start",
             justifyContent: "flex-start",
-            flexDirection: isExpiringSoon ? "column" : "row",
+            flexDirection: "column",
             width: "100%",
             padding: "var(--leo-spacing-none) var(--leo-spacing-xl)",
           },
