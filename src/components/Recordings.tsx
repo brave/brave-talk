@@ -3,11 +3,10 @@ import { RECORDING_TTL_SECS, Recording } from "../recordings-store";
 import { formatDuration, formatRelativeDay } from "../recordings-utils";
 
 import DownloadImage from "../images/download.svg";
-import MediaPlayerImage from "../images/media_player.svg";
 import TranscriptImage from "../images/transcript.svg";
 import { Section } from "./Section";
-import { Text } from "./Text";
-import { MouseEventHandler } from "react";
+import { MouseEventHandler, useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { getTranscriptDisplayPath } from "../transcripts";
 
 interface Props {
@@ -16,21 +15,88 @@ interface Props {
 interface DisplayProps {
   recording: Recording;
   onRouterStatePushed: () => void;
+  currentTimeSecs: number;
 }
+
+const EXPIRING_SOON_SECS = 3 * 60 * 60;
+
+const actionStyles = {
+  display: "inline-flex",
+  alignItems: "center",
+  justifyContent: "center",
+  gap: "var(--leo-spacing-m)",
+  minHeight: "40px",
+  padding: "var(--leo-spacing-m) var(--leo-spacing-xl)",
+  borderRadius: "var(--leo-radius-full)",
+  boxShadow: "inset 0 0 0 1px var(--leo-color-primitive-neutral-30)",
+  color: "var(--leo-color-white)",
+  font: "var(--leo-font-components-button-default)",
+  letterSpacing:
+    "var(--leo-typography-components-button-default-letter-spacing)",
+  textDecoration: "none",
+  whiteSpace: "nowrap" as const,
+  transition: "var(--transition-interactive)",
+  "&:hover": {
+    background: "color-mix(in srgb, var(--leo-color-white) 8%, transparent)",
+  },
+  "&:active": {
+    background: "color-mix(in srgb, var(--leo-color-white) 12%, transparent)",
+    transform: "scale(var(--scale-pressed))",
+  },
+  "@media only screen and (max-width: 600px)": {
+    width: "100%",
+  },
+};
+
+const ExpiryLabel = ({ mobileOnly = false }: { mobileOnly?: boolean }) => {
+  const { t } = useTranslation();
+
+  return (
+    <span
+      css={{
+        display: mobileOnly ? "none" : "inline-flex",
+        flexShrink: 0,
+        padding:
+          "calc(var(--leo-spacing-xs) / 2) calc(var(--leo-spacing-s) + var(--leo-spacing-xs) / 2)",
+        border: "1px solid var(--leo-color-primitive-yellow-80)",
+        borderRadius: "var(--leo-radius-s)",
+        color: "var(--leo-color-primitive-yellow-80)",
+        font: "var(--leo-font-x-small-regular)",
+        letterSpacing: "var(--leo-typography-x-small-regular-letter-spacing)",
+        "@media only screen and (max-width: 600px)": {
+          display: mobileOnly ? "inline-flex" : "none",
+        },
+      }}
+    >
+      {t("recordings_expires_soon")}
+    </span>
+  );
+};
 
 const RecordingDisplay = ({
   recording: r,
   onRouterStatePushed,
+  currentTimeSecs,
 }: DisplayProps) => {
+  const { t } = useTranslation();
   const recordingDate = new Date(r.createdAt * 1000);
+  const isExpiringSoon = r.expiresAt - currentTimeSecs <= EXPIRING_SOON_SECS;
 
   const getTranscriptOnClick = (transcriptUrl: string, startDateTime: Date) => {
-    const transcriptPath = getTranscriptDisplayPath(transcriptUrl);
     const handler: MouseEventHandler<HTMLAnchorElement> = (e) => {
-      // hopefully sufficient magical incantations to prevent the popup
+      // Always stop the native navigation first so a malformed URL cannot
+      // fall through to a full-page load of the raw href.
       e.preventDefault();
       e.stopPropagation();
       e.nativeEvent.stopImmediatePropagation();
+
+      let transcriptPath: string;
+      try {
+        transcriptPath = getTranscriptDisplayPath(transcriptUrl);
+      } catch {
+        // Keep malformed URLs (e.g. local preview fixtures) from crashing the page.
+        return;
+      }
       window.history.pushState(
         { startDateTime: startDateTime.getTime() },
         "",
@@ -46,54 +112,90 @@ const RecordingDisplay = ({
     <div
       css={{
         display: "flex",
+        alignItems: "center",
         justifyContent: "space-between",
-        background: "rgba(255, 255, 255, 0.08)",
-        borderRadius: "24px",
-        margin: "21px auto 0",
-        padding: "16px 27px",
-        maxWidth: "377px",
+        gap: "var(--leo-spacing-xl)",
+        width: "100%",
+        minHeight: "56px",
+        padding:
+          "var(--leo-spacing-l) var(--leo-spacing-xl) var(--leo-spacing-l) var(--leo-spacing-2xl)",
+        borderRadius: "var(--leo-radius-xl)",
+        background: "var(--leo-color-primitive-neutral-15)",
+        "@media only screen and (max-width: 600px)": {
+          alignItems: "stretch",
+          flexDirection: "column",
+          gap: "var(--leo-spacing-m)",
+          padding: "var(--leo-spacing-l) var(--leo-spacing-none)",
+        },
       }}
     >
-      <div>
-        <Text variant="body">
-          <strong>{formatRelativeDay(recordingDate)}</strong>
-          {", "}
-          {recordingDate.toLocaleTimeString()}
-          {", "}
+      <div
+        css={{
+          display: "flex",
+          alignItems: "center",
+          gap: "var(--leo-spacing-xl)",
+          minWidth: 0,
+          color: "var(--leo-color-primitive-neutral-70)",
+          font: "var(--leo-font-large-regular)",
+          letterSpacing: "var(--leo-typography-large-regular-letter-spacing)",
+          whiteSpace: "nowrap",
+          "@media only screen and (max-width: 600px)": {
+            alignItems: "flex-start",
+            flexDirection: "column",
+            gap: "var(--leo-spacing-xs)",
+            width: "100%",
+            padding: "var(--leo-spacing-none) var(--leo-spacing-2xl)",
+          },
+        }}
+      >
+        <strong
+          css={{
+            flexShrink: 0,
+            color: "var(--leo-color-white)",
+            font: "var(--leo-font-large-semibold)",
+          }}
+        >
+          {formatRelativeDay(recordingDate)}
+        </strong>
+        <span>
+          {recordingDate.toLocaleTimeString()},{" "}
           {formatDuration(r.expiresAt - RECORDING_TTL_SECS - r.createdAt)}
-        </Text>
+        </span>
+        {isExpiringSoon && <ExpiryLabel />}
       </div>
-      <div>
-        {r.url && (
-          <a
-            href={r.url}
-            css={{ textDecoration: "none", color: "inherit" }}
-            target="_blank"
-            rel="noreferrer"
-          >
-            <img
-              src={DownloadImage}
-              height="16"
-              width="18"
-              alt="recording download"
-            />
-          </a>
-        )}
+      <div
+        css={{
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "flex-end",
+          gap: "var(--leo-spacing-m)",
+          flexShrink: 0,
+          "@media only screen and (max-width: 600px)": {
+            alignItems: "flex-start",
+            justifyContent: "flex-start",
+            flexDirection: "column",
+            width: "100%",
+            padding: "var(--leo-spacing-none) var(--leo-spacing-xl)",
+          },
+        }}
+      >
+        {isExpiringSoon && <ExpiryLabel mobileOnly />}
         {r.transcriptUrl && (
           <a
             href={r.transcriptUrl}
-            css={{ textDecoration: "none", color: "inherit" }}
+            css={actionStyles}
             target="_blank"
             rel="noreferrer"
             onClick={getTranscriptOnClick(r.transcriptUrl, recordingDate)}
           >
-            <img
-              src={TranscriptImage}
-              height="16"
-              width="18"
-              alt="transcript download"
-              css={{ marginLeft: "1em" }}
-            />
+            <img src={TranscriptImage} height="14" width="14" alt="" />
+            {t("recordings_transcript")}
+          </a>
+        )}
+        {r.url && (
+          <a href={r.url} css={actionStyles} target="_blank" rel="noreferrer">
+            <img src={DownloadImage} height="14" width="16" alt="" />
+            {t("download_transcript_button")}
           </a>
         )}
       </div>
@@ -102,40 +204,93 @@ const RecordingDisplay = ({
 };
 
 export const Recordings = ({ onRouterStatePushed }: Props) => {
+  const { t } = useTranslation();
   const recordings = useRecordings();
+  const [currentTimeSecs, setCurrentTimeSecs] = useState(() =>
+    Math.ceil(Date.now() / 1000),
+  );
+  const availableRecordings = recordings.filter(
+    (recording) => recording.transcriptUrl || recording.url,
+  );
 
-  if (recordings.length === 0) {
+  useEffect(() => {
+    if (availableRecordings.length === 0) {
+      return;
+    }
+
+    const timer = window.setInterval(() => {
+      setCurrentTimeSecs(Math.ceil(Date.now() / 1000));
+    }, 60_000);
+
+    return () => window.clearInterval(timer);
+  }, [availableRecordings.length]);
+
+  if (availableRecordings.length === 0) {
     return null;
   }
 
   return (
-    <Section css={{ padding: "16px 16px 36px" }}>
-      <p
+    <Section
+      css={{
+        display: "flex",
+        flexDirection: "column",
+        gap: "var(--leo-spacing-3xl)",
+        overflow: "hidden",
+        boxShadow: "var(--leo-effect-elevation-01)",
+        "@media only screen and (max-width: 600px)": {
+          gap: "var(--leo-spacing-m)",
+          padding: "var(--leo-spacing-m)",
+        },
+      }}
+    >
+      <div
         css={{
           display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
-          gap: 16,
+          flexDirection: "column",
+          gap: "var(--leo-spacing-m)",
+          textAlign: "left",
+          "@media only screen and (max-width: 600px)": {
+            padding: "var(--leo-spacing-xl)",
+          },
         }}
       >
-        <img src={MediaPlayerImage} alt="" />
-        <Text variant="secondary-section-head">Your recorded calls</Text>
-      </p>
-      <p css={{ margin: "8px auto 22px", maxWidth: "300px" }}>
-        <Text variant="body">
-          Recorded calls are automatically cleared 24 hours after their
-          recording time
-        </Text>
-      </p>
-      {recordings
-        .filter((r) => r.transcriptUrl || r.url)
-        .map((r, idx) => (
+        <h2
+          css={{
+            margin: "var(--leo-spacing-none)",
+            color: "var(--leo-color-white)",
+            font: "var(--leo-font-heading-h2)",
+            letterSpacing: "var(--leo-typography-heading-h2-letter-spacing)",
+          }}
+        >
+          {t("recordings_title")}
+        </h2>
+        <p
+          css={{
+            margin: "var(--leo-spacing-none)",
+            color: "var(--leo-color-primitive-neutral-70)",
+            font: "var(--leo-font-large-regular)",
+            letterSpacing: "var(--leo-typography-large-regular-letter-spacing)",
+          }}
+        >
+          {t("recordings_description")}
+        </p>
+      </div>
+      <div
+        css={{
+          display: "flex",
+          flexDirection: "column",
+          gap: "var(--leo-spacing-m)",
+        }}
+      >
+        {availableRecordings.map((r, idx) => (
           <RecordingDisplay
             key={idx}
             recording={r}
             onRouterStatePushed={onRouterStatePushed}
+            currentTimeSecs={currentTimeSecs}
           />
         ))}
+      </div>
     </Section>
   );
 };
