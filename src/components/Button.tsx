@@ -19,11 +19,15 @@ const styles = {
     padding:
       "calc(var(--leo-spacing-xl) + var(--leo-spacing-xs) / 2) calc(var(--leo-spacing-3xl) - var(--leo-spacing-xs)) calc(var(--leo-spacing-xl) + var(--leo-spacing-s) - var(--leo-spacing-xs) / 2)",
     cursor: "pointer",
+    transition: "var(--transition-interactive)",
     font: "var(--leo-font-components-button-large)",
     color: "var(--leo-color-white)",
     textDecoration: "none",
     "@media only screen and (max-width: 600px)": {
       width: "100%",
+    },
+    "&:active:not(:disabled)": {
+      transform: "scale(var(--scale-pressed))",
     },
     "&:disabled": {
       cursor: "wait",
@@ -43,6 +47,9 @@ const styles = {
     },
   }),
   hollow: css({
+    // The base transition covers border-color, but this variant also thickens
+    // its border on hover, which would otherwise snap.
+    transition: "border-width 0.12s ease-in-out, var(--transition-interactive)",
     height: 58,
     display: "flex",
     flexDirection: "column",
@@ -66,19 +73,30 @@ const styles = {
     "&:active": { background: "var(--leo-color-primitive-neutral-90)" },
   }),
   hero: css({
+    position: "relative",
+    zIndex: 0,
     background:
       "linear-gradient(0deg, var(--leo-color-primitive-brands-rorange-3) 0%, var(--leo-color-primitive-brands-rorange-1) 100%)",
     color: "var(--leo-color-white)",
     boxShadow:
       "0 6px 20px color-mix(in srgb, var(--leo-color-primitive-brands-rorange-2) 18%, transparent)",
-    "&:hover": {
-      background:
-        "linear-gradient(0deg, color-mix(in srgb, var(--leo-color-primitive-brands-rorange-3) 85%, var(--leo-color-white)) 0%, color-mix(in srgb, var(--leo-color-primitive-brands-rorange-1) 85%, var(--leo-color-white)) 100%)",
+    // Gradients cannot be transitioned, so leo-button crossfades gradient
+    // states through layers instead. White at 15% and black at 10% render the
+    // same as the 85%/90% color-mix these states applied to the gradient.
+    "&::before,&::after": {
+      content: '""',
+      position: "absolute",
+      inset: 0,
+      zIndex: -1,
+      borderRadius: "inherit",
+      opacity: 0,
+      transition: "var(--transition-interactive)",
     },
-    "&:active": {
-      background:
-        "linear-gradient(0deg, color-mix(in srgb, var(--leo-color-primitive-brands-rorange-3) 90%, var(--leo-color-black)) 0%, color-mix(in srgb, var(--leo-color-primitive-brands-rorange-1) 90%, var(--leo-color-black)) 100%)",
-    },
+    "&::before": { background: "var(--leo-color-white)" },
+    "&::after": { background: "var(--leo-color-black)" },
+    "&:hover::before": { opacity: 0.15 },
+    "&:active::before": { opacity: 0 },
+    "&:active::after": { opacity: 0.1 },
   }),
   outline: css({
     background: "transparent",
