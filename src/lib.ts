@@ -27,20 +27,15 @@ export const generateRoomName = () => {
   const { crypto } = window;
   const buf = new Uint8Array(32);
   crypto.getRandomValues(buf);
-  return (
-    btoa(String.fromCharCode(...buf))
-      .replace(/\+/g, "-")
-      .replace(/\//g, "_")
-      .replace(/=/g, "") + "_altstt"
-  );
+  return btoa(String.fromCharCode(...buf))
+    .replace(/\+/g, "-")
+    .replace(/\//g, "_")
+    .replace(/=/g, "");
 };
 
 export const isRoomValid = (room: string) => {
-  // e.g., "abcdefghijklmnopqrstuvwxyz0123456789-_ABCDE", with an
-  // optional "_altstt" suffix as produced by generateRoomName.
-  return (
-    typeof room === "string" && room.match(/^[A-Za-z0-9-_]{43}(_altstt)?$/)
-  );
+  // e.g., "abcdefghijklmnopqrstuvwxyz0123456789-_ABCDE"
+  return typeof room === "string" && room.match(/^[A-Za-z0-9-_]{43}$/);
 };
 
 export const reportAction = (action: string, params: object) => {
