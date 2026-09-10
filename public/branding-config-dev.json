@@ -54,23 +54,10 @@
       "field01": "#0F0F0F",
       "link01": "#FF6B33",
       "link01Hover": "#FF9470",
-      "link01Active": "#FF4000",
-      "success01": "#2FAB5F",
-      "success02": "#38C971",
-      "warning01": "#CFA608",
-      "warning02": "#B08C00",
-      "support01": "#FF5601",
-      "support02": "#FF4000",
-      "support03": "#D8027B",
-      "support04": "#9E50C3",
-      "support05": "#8747F7",
-      "support06": "#767ADF",
-      "support07": "#066CFF",
-      "support08": "#35A0B4",
-      "support09": "#268F4F"
+      "link01Active": "#FF4000"
     },
     "shape": {
-      "borderRadius": 24
+      "borderRadius": 16
     }
   }
 }
