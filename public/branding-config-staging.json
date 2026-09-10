@@ -1,5 +1,5 @@
 {
-  "backgroundColor": "#1E2029",
+  "backgroundColor": "#000000",
   "backgroundImageUrl": "https://talk.bravesoftware.com/images/background.svg",
   "didPageUrl": "",
   "inviteDomain": "https://talk.bravesoftware.com",
@@ -17,7 +17,7 @@
     "#F3C305",
     "#268F4F",
     "#35A0B4",
-    "#066CFF",
+    "#1B8EF5",
     "#8747F7",
     "#D8027B",
     "#9E50C3"
