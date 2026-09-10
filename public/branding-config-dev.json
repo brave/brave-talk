@@ -23,36 +23,5 @@
   ],
   "labels": {
     "en": "https://talk.brave.software/labels-english-dev.json"
-  },
-  "customTheme": {
-    "palette": {
-      "uiBackground": "#000000",
-      "action01": "#FF4000",
-      "action01Hover": "#FF6B33",
-      "action01Active": "#CC3300",
-      "disabled01": "#661A00",
-      "action02": "#303032",
-      "action02Hover": "#464649",
-      "action02Active": "#252527",
-      "action03": "transparent",
-      "action03Hover": "#303032",
-      "action03Active": "#252527",
-      "text01": "#FFFFFF",
-      "text02": "#C9C9CA",
-      "text03": "#909093",
-      "text04": "#AAAAAD",
-      "textError": "#FF7F72",
-      "icon01": "#FFFFFF",
-      "icon02": "#C9C9CA",
-      "icon03": "#909093",
-      "iconError": "#FF7F72",
-      "field01": "#0F0F0F",
-      "link01": "#FF6B33",
-      "link01Hover": "#FF9470",
-      "link01Active": "#FF4000"
-    },
-    "shape": {
-      "borderRadius": 24
-    }
   }
 }
