@@ -1,5 +1,5 @@
 {
-  "backgroundColor": "#1E2029",
+  "backgroundColor": "#000000",
   "backgroundImageUrl": "https://talk.bravesoftware.com/images/background.svg",
   "didPageUrl": "",
   "inviteDomain": "https://talk.bravesoftware.com",
@@ -27,14 +27,9 @@
   },
   "customTheme": {
     "palette": {
-      "uiBackground": "#1E2029",
-      "ui01": "#141415",
-      "ui02": "#252527",
-      "ui03": "#303032",
-      "ui04": "#464649",
-      "ui05": "#5E5E62",
+      "uiBackground": "#000000",
       "action01": "#FF4000",
-      "action01Hover": "#FF6B33",
+      "action01Hover": "#FF1F01",
       "action01Active": "#CC3300",
       "disabled01": "#661A00",
       "action02": "#303032",

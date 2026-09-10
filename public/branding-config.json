@@ -27,11 +27,6 @@
   "customTheme": {
     "palette": {
       "uiBackground": "#000000",
-      "ui01": "#141415",
-      "ui02": "#252527",
-      "ui03": "#303032",
-      "ui04": "#464649",
-      "ui05": "#5E5E62",
       "action01": "#FF4000",
       "action01Hover": "#FF1F01",
       "action01Active": "#CC3300",
