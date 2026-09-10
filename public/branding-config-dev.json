@@ -42,10 +42,6 @@
       "action03": "transparent",
       "action03Hover": "#303032",
       "action03Active": "#252527",
-      "actionDanger": "#E20314",
-      "actionDangerHover": "#FF3C36",
-      "actionDangerActive": "#B4020E",
-      "bottomSheet": "#141415",
       "text01": "#FFFFFF",
       "text02": "#C9C9CA",
       "text03": "#909093",
@@ -71,10 +67,7 @@
       "support06": "#767ADF",
       "support07": "#066CFF",
       "support08": "#35A0B4",
-      "support09": "#268F4F",
-      "prejoinActionButtonPrimary": "#FFFFFF",
-      "prejoinActionButtonPrimaryHover": "#E4E4E5",
-      "prejoinActionButtonPrimaryText": "#000000"
+      "support09": "#268F4F"
     },
     "shape": {
       "borderRadius": 24
