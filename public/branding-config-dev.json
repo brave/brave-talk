@@ -106,13 +106,6 @@
       "action01Hover": "#FF6B33",
       "action01Active": "#CC3300",
       "disabled01": "#661A00",
-      "text01": "#FFF",
-      "text02": "#C2C2C2",
-      "text03": "#858585",
-      "text04": "#AAAAAA",
-      "icon01": "#FFF",
-      "icon02": "#C2C2C2",
-      "icon03": "#858585",
       "link01": "#FF6B33",
       "link01Hover": "#FF9470",
       "link01Active": "#FF4000"
