@@ -102,5 +102,20 @@
     "IconVolumeUp": "https://talk.bravesoftware.com/icons/volume-up.svg",
     "IconWarningCircle": "https://talk.bravesoftware.com/icons/warning-circle.svg",
     "IconWarning": "https://talk.bravesoftware.com/icons/warning.svg"
+  },
+  "customTheme": {
+    "palette": {
+      "uiBackground": "#000000",
+      "action01": "#FF4000",
+      "action01Hover": "#FF6B33",
+      "action01Active": "#CC3300",
+      "disabled01": "#661A00",
+      "link01": "#FF6B33",
+      "link01Hover": "#FF9470",
+      "link01Active": "#FF4000"
+    },
+    "shape": {
+      "borderRadius": 24
+    }
   }
 }
