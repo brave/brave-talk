@@ -23,5 +23,30 @@
   ],
   "labels": {
     "en": "https://talk.brave.software/labels-english-dev.json"
+  },
+  "customTheme": {
+    "palette": {
+      "action01": "#FFFFFF",
+      "action01Hover": "#E6E6E6",
+      "action01Active": "#CCCCCC",
+      "text01": "#000000",
+      "icon01": "#000000",
+      "prejoinActionButtonPrimaryText": "#000000",
+      "link01": "#FFFFFF",
+      "link01Hover": "#E6E6E6",
+      "link01Active": "#CCCCCC",
+      "chatLink": "#FFFFFF",
+      "checkboxChecked": "#FF5601",
+      "connectionIndicatorOther": "#FF5601",
+      "notificationActionFocus": "#FF7A33",
+      "notificationActionText": "#FF7A33",
+      "notificationNormalIcon": "#FF5601",
+      "recordingNotificationAction": "#FF7A33",
+      "settingsVideoPreviewBorder": "#FF5601",
+      "switchBackgroundOn": "#FF5601",
+      "tabBorderSelected": "#FF5601",
+      "toolbarButton": "#FF5601",
+      "toolbarIconActive": "#FF5601"
+    }
   }
 }
