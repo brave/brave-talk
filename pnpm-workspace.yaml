@@ -3,6 +3,7 @@ packages:
 
 allowBuilds:
   "@brave/leo@https://codeload.github.com/brave/leo/tar.gz/b0d5f184aee1862a37c3bd4dfe854fae5c784daa": true
+  '@parcel/watcher': false
   esbuild: true
   svelte-preprocess: true
   unrs-resolver: true
