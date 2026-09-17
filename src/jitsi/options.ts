@@ -75,7 +75,7 @@ export const jitsiOptions = (
       hideEmailInSettings: true,
       inviteAppName: "Brave Talk",
       localSubject: "Brave Talk",
-      lobby: {
+      prejoinConfig: {
         showHangUp: false,
       },
       prejoinPageEnabled: true,

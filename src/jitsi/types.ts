@@ -73,7 +73,7 @@ export type JitsiOptions = {
     hideEmailInSettings: boolean;
     inviteAppName: string;
     localSubject: string;
-    lobby: {
+    prejoinConfig: {
       showHangUp: boolean;
     };
     prejoinPageEnabled: boolean;
