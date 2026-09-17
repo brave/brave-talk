@@ -3,7 +3,6 @@ import { SubscriptionStatus } from "../hooks/use-subscribed-status";
 import { premiumLoginUrl, resolveService } from "../services";
 import { Button } from "./Button";
 import { Section } from "./Section";
-import { Text } from "./Text";
 
 interface Props {
   subscribed: SubscriptionStatus;
@@ -21,12 +20,12 @@ export const SubscriptionCTA = ({ subscribed }: Props) => {
     return (
       <Section
         css={{
-          minHeight: "calc(222px + 36px)",
+          minHeight: "130px",
           display: "flex",
           justifyContent: "center",
           alignItems: "center",
-          padding: "16px",
-          color: "rgba(255, 255, 255, 0.5)",
+          gap: "var(--leo-spacing-l)",
+          color: "color-mix(in srgb, var(--leo-color-white) 50%, transparent)",
         }}
       >
         <img
@@ -34,33 +33,70 @@ export const SubscriptionCTA = ({ subscribed }: Props) => {
           alt="spinner"
           width={22}
           height={22}
-          css={{ marginRight: 12 }}
         />
-        <Text variant="subhead">{t("Checking subscription status...")}</Text>
+        <span css={{ font: "var(--leo-font-default-semibold)" }}>
+          {t("Checking subscription status...")}
+        </span>
       </Section>
     );
   }
 
   return (
-    <Text variant="body">
-      <Section>
-        <h2 css={{ paddingTop: 34 }}>{t("premium_card_title")}</h2>
-        <p css={{ marginBottom: 18 }}>{t("subscribe_text")}</p>
+    <Section
+      css={{
+        display: "flex",
+        alignItems: "center",
+        gap: "var(--leo-spacing-3xl)",
+        textAlign: "left",
+        "@media only screen and (max-width: 720px)": {
+          alignItems: "stretch",
+          flexDirection: "column",
+          gap: "var(--leo-spacing-2xl)",
+        },
+      }}
+    >
+      <div id="premium-calls" css={{ minWidth: 0, flex: 1 }}>
+        <h2
+          css={{
+            margin:
+              "var(--leo-spacing-none) var(--leo-spacing-none) var(--leo-spacing-m)",
+            color: "var(--leo-color-white)",
+            font: "var(--leo-font-heading-h2)",
+            letterSpacing: "var(--leo-typography-heading-h2-letter-spacing)",
+          }}
+        >
+          {t("premium_card_title")}
+        </h2>
+        <p
+          css={{
+            margin: "var(--leo-spacing-none)",
+            color: "var(--leo-color-primitive-neutral-70)",
+            font: "var(--leo-font-large-regular)",
+            letterSpacing: "var(--leo-typography-large-regular-letter-spacing)",
+          }}
+        >
+          {t("premium_calls_description")} {t("subscribe_login_premium")}{" "}
+          <a href={premiumLoginUrl()}>{t("subscribe_login_link")}</a>.
+        </p>
+      </div>
+      <div css={{ flexShrink: 0 }}>
         <a
           href={`${subsUrl}/plans/?intent=checkout&product=talk`}
           css={{ textDecoration: "none" }}
         >
-          <Button hollow>{t("welcome_page_button_hollow")}</Button>
+          <Button
+            variant="hero"
+            size="large"
+            css={{
+              "@media only screen and (max-width: 720px)": {
+                width: "100%",
+              },
+            }}
+          >
+            {t("start_trial_seven_days")}
+          </Button>
         </a>
-        <div css={{ marginTop: 16 }}>{t("subscribe_login_text")}</div>
-        <div css={{ marginTop: 16 }}>
-          {t("subscribe_login_premium")}{" "}
-          <a href={premiumLoginUrl()} css={{ color: "inherit" }}>
-            {t("subscribe_login_link")}
-          </a>
-          .
-        </div>
-      </Section>
-    </Text>
+      </div>
+    </Section>
   );
 };
