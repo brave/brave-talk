@@ -75,6 +75,9 @@ export const jitsiOptions = (
       hideEmailInSettings: true,
       inviteAppName: "Brave Talk",
       localSubject: "Brave Talk",
+      lobby: {
+        showHangUp: false,
+      },
       prejoinPageEnabled: true,
       recordings: {
         recordAudioAndVideo: false,
