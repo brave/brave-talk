@@ -73,6 +73,9 @@ export type JitsiOptions = {
     hideEmailInSettings: boolean;
     inviteAppName: string;
     localSubject: string;
+    prejoinConfig: {
+      showHangUp: boolean;
+    };
     prejoinPageEnabled: boolean;
     recordings: {
       recordAudioAndVideo: boolean;

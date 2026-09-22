@@ -3,37 +3,27 @@ import { ReactNode } from "react";
 
 const styles = {
   header: css({
-    fontSize: "36px",
-    fontWeight: 600,
-    lineHeight: "60px",
-    color: "#f0f2ff",
+    font: "var(--leo-font-heading-display3)",
+    color: "var(--leo-color-primitive-primary-95)",
   }),
   subhead: css({
-    fontWeight: 600,
-    fontSize: "15px",
-    lineHeight: "20px",
+    font: "var(--leo-font-default-semibold)",
     textAlign: "center",
-    letterSpacing: "0.04em",
+    letterSpacing: "var(--leo-typography-default-semibold-letter-spacing)",
   }),
   "secondary-section-head": css({
-    fontWeight: 600,
-    fontSize: "22px",
-    lineHeight: "26px",
+    font: "var(--leo-font-heading-h2)",
     textAlign: "center",
-    letterSpacing: "0.01em",
+    letterSpacing: "var(--leo-typography-heading-h2-letter-spacing)",
   }),
   body: css({
-    fontWeight: "normal",
-    fontSize: "14px",
-    lineHeight: "20px",
-    letterSpacing: "0.01em",
+    font: "var(--leo-font-default-regular)",
+    letterSpacing: "var(--leo-typography-default-regular-letter-spacing)",
   }),
   caption: css({
-    fontWeight: 400,
-    fontSize: "12px",
-    lineHeight: "18px",
-    letterSpacing: "0.01em",
-    color: "#ffffff",
+    font: "var(--leo-font-small-regular)",
+    letterSpacing: "var(--leo-typography-small-regular-letter-spacing)",
+    color: "var(--leo-color-white)",
   }),
 };
 
