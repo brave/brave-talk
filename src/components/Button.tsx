@@ -16,8 +16,7 @@ const styles = {
     margin: "var(--leo-spacing-none) auto",
     width: "min(377px, 100%)",
     borderRadius: "var(--leo-radius-full)",
-    padding:
-      "calc(var(--leo-spacing-xl) + var(--leo-spacing-xs) / 2) calc(var(--leo-spacing-3xl) - var(--leo-spacing-xs)) calc(var(--leo-spacing-xl) + var(--leo-spacing-s) - var(--leo-spacing-xs) / 2)",
+    padding: "var(--leo-spacing-xl) var(--leo-spacing-2xl)",
     cursor: "pointer",
     transition: "var(--transition-interactive)",
     font: "var(--leo-font-components-button-large)",
@@ -111,7 +110,6 @@ const styles = {
   }),
   plain: css({
     width: "auto",
-    padding: "var(--leo-spacing-m) var(--leo-spacing-l)",
     background: "transparent",
     color: "var(--leo-color-white)",
     "&:hover": {
@@ -121,7 +119,6 @@ const styles = {
   large: css({
     width: "auto",
     minHeight: "52px",
-    padding: "var(--leo-spacing-l) var(--leo-spacing-xl)",
     font: "var(--leo-font-components-button-large)",
     letterSpacing:
       "var(--leo-typography-components-button-large-letter-spacing)",
@@ -129,7 +126,6 @@ const styles = {
   jumbo: css({
     width: "100%",
     minHeight: "60px",
-    padding: "var(--leo-spacing-xl)",
     font: "var(--leo-font-components-button-jumbo)",
     letterSpacing:
       "var(--leo-typography-components-button-jumbo-letter-spacing)",
