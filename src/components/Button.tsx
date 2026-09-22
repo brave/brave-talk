@@ -120,7 +120,7 @@ const styles = {
   large: css({
     width: "auto",
     minHeight: "52px",
-    padding: "var(--leo-spacing-l) var(--leo-spacing-xl)",
+    padding: "var(--leo-spacing-xl) var(--leo-spacing-2xl)",
     font: "var(--leo-font-components-button-large)",
     letterSpacing:
       "var(--leo-typography-components-button-large-letter-spacing)",
