@@ -56,8 +56,7 @@ const ExpiryLabel = ({ mobileOnly = false }: { mobileOnly?: boolean }) => {
       css={{
         display: mobileOnly ? "none" : "inline-flex",
         flexShrink: 0,
-        padding:
-          "calc(var(--leo-spacing-xs) / 2) calc(var(--leo-spacing-s) + var(--leo-spacing-xs) / 2)",
+        padding: "var(--leo-spacing-xs) var(--leo-spacing-s)",
         border: "1px solid var(--leo-color-primitive-yellow-80)",
         borderRadius: "var(--leo-radius-s)",
         color: "var(--leo-color-primitive-yellow-80)",
