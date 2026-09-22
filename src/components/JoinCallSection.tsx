@@ -155,13 +155,15 @@ export const JoinCallSection = ({
                     font: "var(--leo-font-small-regular)",
                   }}
                 >
-                  {t("free_call_limit")}{" "}
-                  <a
-                    href={`${resolveService("account")}/plans/?intent=checkout&product=talk`}
-                  >
-                    {t("free_call_premium_link")}
-                  </a>
-                  .
+                  <Trans i18nKey="free_call_limit">
+                    Up to 4 people. Unlimited with{" "}
+                    <a
+                      href={`${resolveService("account")}/plans/?intent=checkout&product=talk`}
+                    >
+                      Premium
+                    </a>
+                    .
+                  </Trans>
                 </div>
               )
             )}
@@ -249,7 +251,7 @@ export const JoinCallSection = ({
                 font: "var(--leo-font-x-small-regular)",
               }}
             >
-              {t("free_call_premium_link")}
+              {t("premium_badge")}
             </span>
           </div>
           <p
