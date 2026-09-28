@@ -1,6 +1,10 @@
 import { useRecordings } from "../hooks/use-recordings";
-import { RECORDING_TTL_SECS, Recording } from "../recordings-store";
-import { formatDuration, formatRelativeDay } from "../recordings-utils";
+import { Recording } from "../recordings-store";
+import {
+  formatDuration,
+  formatRelativeDay,
+  secondsUntilExpiry,
+} from "../recordings-utils";
 
 import DownloadImage from "../images/download.svg";
 import TranscriptImage from "../images/transcript.svg";
@@ -56,7 +60,7 @@ const ExpiryLabel = ({ mobileOnly = false }: { mobileOnly?: boolean }) => {
       css={{
         display: mobileOnly ? "none" : "inline-flex",
         flexShrink: 0,
-        padding: "var(--leo-spacing-xl) var(--leo-spacing-2xl)",
+        padding: "var(--leo-spacing-xs) var(--leo-spacing-s)",
         border: "1px solid var(--leo-color-primitive-yellow-80)",
         borderRadius: "var(--leo-radius-s)",
         color: "var(--leo-color-primitive-yellow-80)",
@@ -79,7 +83,8 @@ const RecordingDisplay = ({
 }: DisplayProps) => {
   const { t } = useTranslation();
   const recordingDate = new Date(r.createdAt * 1000);
-  const isExpiringSoon = r.expiresAt - currentTimeSecs <= EXPIRING_SOON_SECS;
+  const secondsLeft = secondsUntilExpiry(r, currentTimeSecs);
+  const isExpiringSoon = secondsLeft <= EXPIRING_SOON_SECS;
 
   const getTranscriptOnClick = (transcriptUrl: string, startDateTime: Date) => {
     const handler: MouseEventHandler<HTMLAnchorElement> = (e) => {
@@ -158,7 +163,9 @@ const RecordingDisplay = ({
         </strong>
         <span>
           {recordingDate.toLocaleTimeString()},{" "}
-          {formatDuration(r.expiresAt - RECORDING_TTL_SECS - r.createdAt)}
+          {t("recordings_expires_in", {
+            duration: formatDuration(secondsLeft),
+          })}
         </span>
         {isExpiringSoon && <ExpiryLabel />}
       </div>

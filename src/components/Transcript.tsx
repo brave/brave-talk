@@ -204,7 +204,12 @@ const MeetingTranscript = ({ transcript }: MeetingTranscriptProps) => {
     let cancelled = false;
 
     fetch("/branding-config.json")
-      .then((response) => response.json() as Promise<BrandingConfig>)
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error(`branding-config.json: ${response.status}`);
+        }
+        return response.json() as Promise<BrandingConfig>;
+      })
       .then((config) => {
         if (cancelled) {
           return;

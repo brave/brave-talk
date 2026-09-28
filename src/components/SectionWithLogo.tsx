@@ -19,7 +19,7 @@ export const SectionWithLogo = ({ children, heading, subhead }: Props) => {
       <div
         css={{
           "--talk-logo-size": "122px",
-          backgroundImage: `url(${require("../images/talkLogo.svg")})`,
+          backgroundImage: `url(${require("../images/talk-logo.svg")})`,
           backgroundSize: "var(--talk-logo-size) var(--talk-logo-size)",
           width: "var(--talk-logo-size)",
           height: "var(--talk-logo-size)",

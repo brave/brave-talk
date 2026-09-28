@@ -44,7 +44,7 @@ export const DownloadBrave = () => {
           >
             <>
               <img
-                src={require("../images/brave_icon.svg")}
+                src={require("../images/brave-icon.svg")}
                 alt="brave logo"
                 width="22"
                 height="22"
