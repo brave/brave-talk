@@ -66,6 +66,7 @@
   "Meeting Transcript": "会議の文字起こし",
   "Method failure": "メソッド失敗",
   "Method not allowed": "許可されていないメソッド",
+  "Not listed as participant": "参加者として登録されていません",
   "Oops! We were unable to connect to your meeting room. Please try again.": "おっと！あなたのミーティングルームに接続することができませんでした。もう一度お試しください。",
   "Request timeout": "リクエストのタイムアウト",
   "Service unavailable": "サービスが利用不可",
