@@ -74,7 +74,7 @@ export const JoinCallSection = ({
           }}
         >
           <img
-            src={require("../images/homepage/talk-logo.svg")}
+            src={require("../images/talk-logo.svg")}
             alt=""
             width={72}
             height={72}
@@ -155,13 +155,15 @@ export const JoinCallSection = ({
                     font: "var(--leo-font-small-regular)",
                   }}
                 >
-                  {t("free_call_limit")}{" "}
-                  <a
-                    href={`${resolveService("account")}/plans/?intent=checkout&product=talk`}
-                  >
-                    {t("free_call_premium_link")}
-                  </a>
-                  .
+                  <Trans i18nKey="free_call_limit">
+                    Up to 4 people. Unlimited with{" "}
+                    <a
+                      href={`${resolveService("account")}/plans/?intent=checkout&product=talk`}
+                    >
+                      Premium
+                    </a>
+                    .
+                  </Trans>
                 </div>
               )
             )}
@@ -195,14 +197,14 @@ export const JoinCallSection = ({
           }}
         >
           <img
-            src={require("../images/homepage/leo-icon.svg")}
+            src={require("../images/leo-icon.svg")}
             alt=""
             width={32}
             height={32}
           />
         </div>
         <img
-          src={require("../images/homepage/leo-tail.svg")}
+          src={require("../images/leo-tail.svg")}
           alt=""
           width={32}
           height={32}
@@ -249,7 +251,7 @@ export const JoinCallSection = ({
                 font: "var(--leo-font-x-small-regular)",
               }}
             >
-              {t("free_call_premium_link")}
+              {t("premium_badge")}
             </span>
           </div>
           <p
@@ -260,7 +262,7 @@ export const JoinCallSection = ({
             }}
           >
             {t("leo_meetings_description")}{" "}
-            <Trans i18nKey="recovery_token_learn_more">
+            <Trans i18nKey="learn_more">
               <a
                 href="https://brave.com/talk/"
                 target="_blank"

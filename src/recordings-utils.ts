@@ -1,3 +1,26 @@
+import i18next from "i18next";
+import { Recording } from "./recordings-store";
+
+// the store already records an absolute `expiresAt`, so the time left is just
+// the distance to "now". subtracting the TTL and the creation time instead
+// cancels out and always yields zero.
+export function secondsUntilExpiry(
+  recording: Pick<Recording, "expiresAt">,
+  nowSecs: number,
+): number {
+  return recording.expiresAt - nowSecs;
+}
+
+// the unit key is resolved through i18next's plural handling so each locale
+// picks the form its plural rules ask for. english declares both
+// `duration_hours_one` and `duration_hours_other`, while japanese only
+// declares `duration_hours_other` and has no distinct singular form, so
+// appending a `_one`/`_other` suffix by hand falls back to english.
+const formatUnit = (unit: "hours" | "minutes" | "seconds", count: number) =>
+  i18next.t(`duration_${unit}` as const, {
+    count,
+  });
+
 // exported for testing
 export function formatRelativeDay(d: Date): string {
   const getDateString = (epochMs: number) =>
@@ -20,9 +43,26 @@ export function formatRelativeDay(d: Date): string {
   return result;
 }
 
-export function formatDuration(s: number): string {
-  const pos = s >= 3600 ? 11 : 14;
-  const len = s >= 3600 ? 8 : 5;
+// renders a duration in words, e.g. "2 hours 30 minutes", so that it is not
+// mistaken for a clock time. only the two most significant units are shown,
+// seconds are dropped once the duration is at least an hour.
+export function formatDuration(secs: number): string {
+  const total = Math.max(0, Math.floor(secs));
+  const hours = Math.floor(total / 3600);
+  const minutes = Math.floor((total % 3600) / 60);
+  const seconds = total % 60;
 
-  return new Date(s * 1000).toISOString().substr(pos, len);
+  const parts: string[] = [];
+
+  if (hours > 0) {
+    parts.push(formatUnit("hours", hours));
+    if (minutes > 0) parts.push(formatUnit("minutes", minutes));
+  } else if (minutes > 0) {
+    parts.push(formatUnit("minutes", minutes));
+    if (seconds > 0) parts.push(formatUnit("seconds", seconds));
+  } else {
+    parts.push(formatUnit("seconds", seconds));
+  }
+
+  return parts.join(" ");
 }
