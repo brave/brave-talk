@@ -35,13 +35,13 @@ export const Header = ({ subscribed }: Props) => {
         href="https://brave.com/download/bravetalk"
       >
         <img
-          src={require("../images/homepage/brave-icon.svg")}
+          src={require("../images/brave-icon.svg")}
           alt=""
           width={35}
           height={40}
         />
         <img
-          src={require("../images/homepage/brave-wordmark.svg")}
+          src={require("../images/brave-wordmark.svg")}
           alt="Brave"
           width={86}
           height={24}

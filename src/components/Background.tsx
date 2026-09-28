@@ -8,7 +8,7 @@ export const Background = ({ children }: Props) => {
     <div
       css={{
         backgroundColor: "var(--leo-color-black)",
-        backgroundImage: `url(${require("../images/homepage/background.svg")})`,
+        backgroundImage: `url(${require("../images/background.svg")})`,
         backgroundPosition: "center",
         backgroundRepeat: "repeat-y",
         backgroundSize: "cover",

@@ -74,7 +74,7 @@ export const JoinCallSection = ({
           }}
         >
           <img
-            src={require("../images/homepage/talk-logo.svg")}
+            src={require("../images/talk-logo.svg")}
             alt=""
             width={72}
             height={72}
@@ -197,14 +197,14 @@ export const JoinCallSection = ({
           }}
         >
           <img
-            src={require("../images/homepage/leo-icon.svg")}
+            src={require("../images/leo-icon.svg")}
             alt=""
             width={32}
             height={32}
           />
         </div>
         <img
-          src={require("../images/homepage/leo-tail.svg")}
+          src={require("../images/leo-tail.svg")}
           alt=""
           width={32}
           height={32}
