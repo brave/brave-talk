@@ -158,7 +158,11 @@ const RecordingDisplay = ({
         </strong>
         <span>
           {recordingDate.toLocaleTimeString()},{" "}
-          {formatDuration(r.expiresAt - RECORDING_TTL_SECS - r.createdAt)}
+          {t("recordings_expires_in", {
+            duration: formatDuration(
+              r.expiresAt - RECORDING_TTL_SECS - r.createdAt,
+            ),
+          })}
         </span>
         {isExpiringSoon && <ExpiryLabel />}
       </div>

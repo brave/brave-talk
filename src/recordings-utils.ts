@@ -1,3 +1,10 @@
+import i18next from "i18next";
+
+const formatUnit = (unit: "hours" | "minutes" | "seconds", count: number) =>
+  i18next.t(`duration_${unit}_${count === 1 ? "one" : "other"}` as const, {
+    count,
+  });
+
 // exported for testing
 export function formatRelativeDay(d: Date): string {
   const getDateString = (epochMs: number) =>
@@ -20,9 +27,26 @@ export function formatRelativeDay(d: Date): string {
   return result;
 }
 
-export function formatDuration(s: number): string {
-  const pos = s >= 3600 ? 11 : 14;
-  const len = s >= 3600 ? 8 : 5;
+// renders a duration in words, e.g. "2 hours 30 minutes", so that it is not
+// mistaken for a clock time. only the two most significant units are shown,
+// seconds are dropped once the duration is at least an hour.
+export function formatDuration(secs: number): string {
+  const total = Math.max(0, Math.floor(secs));
+  const hours = Math.floor(total / 3600);
+  const minutes = Math.floor((total % 3600) / 60);
+  const seconds = total % 60;
 
-  return new Date(s * 1000).toISOString().substr(pos, len);
+  const parts: string[] = [];
+
+  if (hours > 0) {
+    parts.push(formatUnit("hours", hours));
+    if (minutes > 0) parts.push(formatUnit("minutes", minutes));
+  } else if (minutes > 0) {
+    parts.push(formatUnit("minutes", minutes));
+    if (seconds > 0) parts.push(formatUnit("seconds", seconds));
+  } else {
+    parts.push(formatUnit("seconds", seconds));
+  }
+
+  return parts.join(" ");
 }
