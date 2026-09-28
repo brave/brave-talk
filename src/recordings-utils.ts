@@ -1,7 +1,23 @@
 import i18next from "i18next";
+import { Recording } from "./recordings-store";
 
+// the store already records an absolute `expiresAt`, so the time left is just
+// the distance to "now". subtracting the TTL and the creation time instead
+// cancels out and always yields zero.
+export function secondsUntilExpiry(
+  recording: Pick<Recording, "expiresAt">,
+  nowSecs: number,
+): number {
+  return recording.expiresAt - nowSecs;
+}
+
+// the unit key is resolved through i18next's plural handling so each locale
+// picks the form its plural rules ask for. english declares both
+// `duration_hours_one` and `duration_hours_other`, while japanese only
+// declares `duration_hours_other` and has no distinct singular form, so
+// appending a `_one`/`_other` suffix by hand falls back to english.
 const formatUnit = (unit: "hours" | "minutes" | "seconds", count: number) =>
-  i18next.t(`duration_${unit}_${count === 1 ? "one" : "other"}` as const, {
+  i18next.t(`duration_${unit}` as const, {
     count,
   });
 

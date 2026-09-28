@@ -1,5 +1,10 @@
 import i18next from "i18next";
-import { formatDuration, formatRelativeDay } from "./recordings-utils";
+import {
+  formatDuration,
+  formatRelativeDay,
+  secondsUntilExpiry,
+} from "./recordings-utils";
+import { RECORDING_TTL_SECS } from "./recordings-store";
 import "./i18n/i18next";
 
 beforeAll(() => {
@@ -46,4 +51,46 @@ test("format duration is localized", () => {
   } finally {
     i18next.changeLanguage("en");
   }
+});
+
+// japanese has no distinct singular plural category, so only the `_other`
+// forms are declared. resolving the suffix by hand used to miss them and
+// silently fall back to the english strings.
+test.each([
+  [1, "1秒"],
+  [45, "45秒"],
+  [60, "1分"],
+  [90, "1分 30秒"],
+  [3600, "1時間"],
+  [3660, "1時間 1分"],
+])("format duration renders %s secs in japanese as %s", (secs, expected) => {
+  i18next.changeLanguage("ja");
+  try {
+    expect(formatDuration(secs)).toEqual(expected);
+  } finally {
+    i18next.changeLanguage("en");
+  }
+});
+
+describe("secondsUntilExpiry", () => {
+  const createdAt = 1_700_000_000;
+  // this is exactly how the store builds an entry: expiresAt = createdAt + TTL
+  const recording = { createdAt, expiresAt: createdAt + RECORDING_TTL_SECS };
+
+  test("reports the full TTL for a recording created just now", () => {
+    expect(secondsUntilExpiry(recording, createdAt)).toEqual(
+      RECORDING_TTL_SECS,
+    );
+  });
+
+  test("counts down as time passes", () => {
+    expect(secondsUntilExpiry(recording, createdAt + 23 * 60 * 60)).toEqual(
+      60 * 60,
+    );
+  });
+
+  test("goes negative once the recording has expired", () => {
+    expect(secondsUntilExpiry(recording, createdAt + RECORDING_TTL_SECS + 5)) //
+      .toEqual(-5);
+  });
 });
