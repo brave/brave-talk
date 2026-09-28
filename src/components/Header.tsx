@@ -35,39 +35,41 @@ export const Header = ({ subscribed }: Props) => {
         href="https://brave.com/download/bravetalk"
       >
         <img
-          src={require("../images/homepage/brave-icon.svg")}
+          src={require("../images/brave-icon.svg")}
           alt=""
           width={35}
           height={40}
         />
         <img
-          src={require("../images/homepage/brave-wordmark.svg")}
+          src={require("../images/brave-wordmark.svg")}
           alt="Brave"
           width={86}
           height={24}
         />
       </a>
 
-      <a
-        href={isPremium ? resolveService("account") : premiumLoginUrl()}
-        css={{
-          padding: "var(--leo-spacing-m) var(--leo-spacing-xl)",
-          borderRadius: "var(--leo-radius-full)",
-          font: "var(--leo-font-components-button-default)",
-          color: "var(--leo-color-white)",
-          textDecoration: "none",
-          transition: "var(--transition-interactive)",
-          "&:hover": {
-            background:
-              "color-mix(in srgb, var(--leo-color-white) 8%, transparent)",
-          },
-          "&:active": {
-            transform: "scale(var(--scale-pressed))",
-          },
-        }}
-      >
-        {isPremium ? t("my_account_link") : t("subscribe_login_link")}
-      </a>
+      {subscribed !== "unknown" && (
+        <a
+          href={isPremium ? resolveService("account") : premiumLoginUrl()}
+          css={{
+            padding: "var(--leo-spacing-m) var(--leo-spacing-xl)",
+            borderRadius: "var(--leo-radius-full)",
+            font: "var(--leo-font-components-button-default)",
+            color: "var(--leo-color-white)",
+            textDecoration: "none",
+            transition: "var(--transition-interactive)",
+            "&:hover": {
+              background:
+                "color-mix(in srgb, var(--leo-color-white) 8%, transparent)",
+            },
+            "&:active": {
+              transform: "scale(var(--scale-pressed))",
+            },
+          }}
+        >
+          {isPremium ? t("my_account_link") : t("subscribe_login_link")}
+        </a>
+      )}
     </header>
   );
 };
