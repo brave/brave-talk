@@ -1,12 +1,15 @@
 import {
   DownloadedTranscript,
   TranscriptAction,
-  TranscriptionEvent,
   parseTranscriptLines,
 } from "../downloaded-transcript";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { css, keyframes } from "@emotion/react";
-import { formatDuration, formatRelativeDay } from "../recordings-utils";
+import {
+  formatDuration,
+  formatRelativeDay,
+  transcriptDurationSecs,
+} from "../recordings-utils";
 import Button from "@brave/leo/react/button";
 import Icon from "@brave/leo/react/icon";
 import Input from "@brave/leo/react/input";
@@ -19,10 +22,6 @@ interface MeetingTranscriptProps {
 interface MeetingTranscriptDisplayProps {
   transcriptId: string;
   transcriptUrlBase?: string;
-}
-
-interface BrandingConfig {
-  avatarBackgrounds?: string[];
 }
 
 const pulse = keyframes`
@@ -159,75 +158,28 @@ const styles = {
   `,
 };
 
-// Speakers are assigned a colour in the order they first appear.
-const DEFAULT_PARTICIPANT_COLORS = [
-  "var(--leo-color-secondary-40)",
-  "var(--leo-color-orange-40)",
-  "var(--leo-color-green-40)",
-  "var(--leo-color-primary-40)",
-  "var(--leo-color-purple-40)",
-  "var(--leo-color-teal-40)",
-  "var(--leo-color-pink-40)",
+// Same palette as `avatarBackgrounds` in the branding configs, so speaker
+// colours match in-call avatars without a second request.
+const PARTICIPANT_COLORS = [
+  "#066CFF",
+  "#767ADF",
+  "#C862A8",
+  "#78787C",
+  "#FF3C36",
+  "#FF5601",
+  "#FF4000",
+  "#F3C305",
+  "#268F4F",
+  "#35A0B4",
+  "#1B8EF5",
+  "#8747F7",
+  "#D8027B",
+  "#9E50C3",
 ];
 
-// Offsets look like "12m34s", counted from the start of the call.
-const parseTimeOffsetSecs = (timeOffset: string): number | undefined => {
-  const match = timeOffset.match(/^(\d+)m(\d\d)s$/);
-  return match ? Number(match[1]) * 60 + Number(match[2]) : undefined;
-};
-
-const transcriptDurationSecs = (
-  events: TranscriptionEvent[],
-): number | undefined =>
-  events.length
-    ? parseTimeOffsetSecs(events[events.length - 1].timeOffset)
-    : undefined;
-
-const TranscriptHeading = () => {
-  const { t } = useTranslation();
-
-  return (
-    <div css={styles.headerTitle}>
-      <h1 css={styles.h1}>{t("Meeting Transcript")}</h1>
-    </div>
-  );
-};
-
-const MeetingTranscript = ({ transcript }: MeetingTranscriptProps) => {
+const TranscriptContents = ({ transcript }: MeetingTranscriptProps) => {
   const { t } = useTranslation();
   const { events, startDateTime } = transcript;
-  const [participantPalette, setParticipantPalette] = useState<string[]>(
-    DEFAULT_PARTICIPANT_COLORS,
-  );
-
-  useEffect(() => {
-    let cancelled = false;
-
-    fetch("/branding-config.json")
-      .then((response) => {
-        if (!response.ok) {
-          throw new Error(`branding-config.json: ${response.status}`);
-        }
-        return response.json() as Promise<BrandingConfig>;
-      })
-      .then((config) => {
-        if (cancelled) {
-          return;
-        }
-
-        const avatarBackgrounds = config.avatarBackgrounds?.filter(Boolean);
-        if (avatarBackgrounds && avatarBackgrounds.length > 0) {
-          setParticipantPalette(avatarBackgrounds);
-        }
-      })
-      .catch(() => {
-        // Keep fallback colours when branding config is unavailable.
-      });
-
-    return () => {
-      cancelled = true;
-    };
-  }, []);
 
   const participantColors = useMemo(() => {
     const colors = new Map<string, string>();
@@ -235,12 +187,12 @@ const MeetingTranscript = ({ transcript }: MeetingTranscriptProps) => {
       if (!colors.has(participant)) {
         colors.set(
           participant,
-          participantPalette[colors.size % participantPalette.length],
+          PARTICIPANT_COLORS[colors.size % PARTICIPANT_COLORS.length],
         );
       }
     });
     return colors;
-  }, [events, participantPalette]);
+  }, [events]);
 
   const [searchTerm, setSearchTerm] = useState<string>("");
   const textRef = useRef<HTMLDivElement>(null);
@@ -285,24 +237,7 @@ const MeetingTranscript = ({ transcript }: MeetingTranscriptProps) => {
   const durationSecs = transcriptDurationSecs(events);
 
   return (
-    <div css={styles.card}>
-      <div css={styles.header}>
-        <TranscriptHeading />
-        <Button
-          css={styles.downloadButton}
-          kind="outline"
-          title={t("download_transcript_button")}
-          onClick={() => {
-            const link = document.createElement("a");
-            link.href = transcript.blobUrl;
-            link.download = `${transcript.id}.txt`;
-            link.click();
-          }}
-        >
-          <Icon slot="icon-before" name="download" />
-          {t("download_transcript_button")}
-        </Button>
-      </div>
+    <>
       <div css={styles.meta}>
         {startDateTime && (
           <p css={styles.metaDateTime}>
@@ -345,38 +280,28 @@ const MeetingTranscript = ({ transcript }: MeetingTranscriptProps) => {
           </div>
         ))}
       </div>
-    </div>
+    </>
   );
 };
 
 const SKELETON_WIDTHS = ["82%", "64%", "91%", "48%", "76%", "58%"];
 
-const TranscriptSkeleton = () => {
-  const { t } = useTranslation();
-
-  return (
-    <div css={styles.card} aria-busy="true" aria-label={t("loading")}>
-      <div css={styles.header}>
-        <TranscriptHeading />
+const TranscriptSkeleton = () => (
+  <div css={styles.events}>
+    {SKELETON_WIDTHS.map((width, i) => (
+      <div css={styles.eventRow} key={i}>
+        <div css={[styles.participant, styles.skeletonBar]} />
+        <div css={[styles.message, styles.skeletonBar, { maxWidth: width }]} />
       </div>
-      <div css={styles.events}>
-        {SKELETON_WIDTHS.map((width, i) => (
-          <div css={styles.eventRow} key={i}>
-            <div css={[styles.participant, styles.skeletonBar]} />
-            <div
-              css={[styles.message, styles.skeletonBar, { maxWidth: width }]}
-            />
-          </div>
-        ))}
-      </div>
-    </div>
-  );
-};
+    ))}
+  </div>
+);
 
 export const MeetingTranscriptDisplay = ({
   transcriptId,
   transcriptUrlBase,
 }: MeetingTranscriptDisplayProps) => {
+  const { t } = useTranslation();
   const [transcript, setTranscript] = useState<
     DownloadedTranscript | undefined
   >();
@@ -402,10 +327,39 @@ export const MeetingTranscriptDisplay = ({
       });
   }, [transcriptId, transcriptUrlBase]);
 
-  return transcript ? (
-    <MeetingTranscript transcript={transcript} />
-  ) : (
-    <TranscriptSkeleton />
+  return (
+    <div
+      css={styles.card}
+      aria-busy={transcript ? undefined : true}
+      aria-label={transcript ? undefined : t("loading")}
+    >
+      <div css={styles.header}>
+        <div css={styles.headerTitle}>
+          <h1 css={styles.h1}>{t("Meeting Transcript")}</h1>
+        </div>
+        {transcript && (
+          <Button
+            css={styles.downloadButton}
+            kind="outline"
+            title={t("download_transcript_button")}
+            onClick={() => {
+              const link = document.createElement("a");
+              link.href = transcript.blobUrl;
+              link.download = `${transcript.id}.txt`;
+              link.click();
+            }}
+          >
+            <Icon slot="icon-before" name="download" />
+            {t("download_transcript_button")}
+          </Button>
+        )}
+      </div>
+      {transcript ? (
+        <TranscriptContents transcript={transcript} />
+      ) : (
+        <TranscriptSkeleton />
+      )}
+    </div>
   );
 };
 

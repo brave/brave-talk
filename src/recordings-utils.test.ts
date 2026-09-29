@@ -2,7 +2,9 @@ import i18next from "i18next";
 import {
   formatDuration,
   formatRelativeDay,
+  parseTimeOffsetSecs,
   secondsUntilExpiry,
+  transcriptDurationSecs,
 } from "./recordings-utils";
 import { RECORDING_TTL_SECS } from "./recordings-store";
 import "./i18n/i18next";
@@ -25,6 +27,16 @@ test.each([
   ["2021-11-29T09:00:00", new Date("2021-11-29T09:00:00").toLocaleDateString()],
 ])("format relative day works as expected for %s", (dateString, expected) => {
   expect(formatRelativeDay(new Date(dateString))).toEqual(expected);
+});
+
+test("format relative day is localized", () => {
+  i18next.changeLanguage("ja");
+  try {
+    expect(formatRelativeDay(new Date("2021-12-01T11:00:00"))).toEqual("今日");
+    expect(formatRelativeDay(new Date("2021-11-30T21:00:00"))).toEqual("昨日");
+  } finally {
+    i18next.changeLanguage("en");
+  }
 });
 
 test.each([
@@ -78,19 +90,40 @@ describe("secondsUntilExpiry", () => {
   const recording = { createdAt, expiresAt: createdAt + RECORDING_TTL_SECS };
 
   test("reports the full TTL for a recording created just now", () => {
-    expect(secondsUntilExpiry(recording, createdAt)).toEqual(
+    expect(secondsUntilExpiry(recording.expiresAt, createdAt)).toEqual(
       RECORDING_TTL_SECS,
     );
   });
 
   test("counts down as time passes", () => {
-    expect(secondsUntilExpiry(recording, createdAt + 23 * 60 * 60)).toEqual(
-      60 * 60,
-    );
+    expect(
+      secondsUntilExpiry(recording.expiresAt, createdAt + 23 * 60 * 60),
+    ).toEqual(60 * 60);
   });
 
   test("goes negative once the recording has expired", () => {
-    expect(secondsUntilExpiry(recording, createdAt + RECORDING_TTL_SECS + 5)) //
-      .toEqual(-5);
+    expect(
+      secondsUntilExpiry(
+        recording.expiresAt,
+        createdAt + RECORDING_TTL_SECS + 5,
+      ),
+    ).toEqual(-5);
   });
+});
+
+test.each([
+  ["0m00s", 0],
+  ["1m30s", 90],
+  ["12m34s", 12 * 60 + 34],
+  ["2h00m", undefined],
+  ["", undefined],
+])("parseTimeOffsetSecs(%s) is %s", (input, expected) => {
+  expect(parseTimeOffsetSecs(input)).toEqual(expected);
+});
+
+test("transcript duration uses the last offset", () => {
+  expect(transcriptDurationSecs([])).toBeUndefined();
+  expect(
+    transcriptDurationSecs([{ timeOffset: "0m10s" }, { timeOffset: "1m30s" }]),
+  ).toEqual(90);
 });
