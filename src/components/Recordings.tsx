@@ -9,6 +9,7 @@ import {
 import DownloadImage from "../images/download.svg";
 import TranscriptImage from "../images/transcript.svg";
 import { Section } from "./Section";
+import { css } from "@emotion/react";
 import { MouseEventHandler, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { getTranscriptDisplayPath } from "../transcripts";
@@ -24,7 +25,7 @@ interface DisplayProps {
 
 const EXPIRING_SOON_SECS = 3 * 60 * 60;
 
-const actionStyles = {
+const actionStyles = css({
   display: "inline-flex",
   alignItems: "center",
   justifyContent: "center",
@@ -38,7 +39,7 @@ const actionStyles = {
   letterSpacing:
     "var(--leo-typography-components-button-default-letter-spacing)",
   textDecoration: "none",
-  whiteSpace: "nowrap" as const,
+  whiteSpace: "nowrap",
   transition: "var(--transition-interactive)",
   "&:hover": {
     background: "color-mix(in srgb, var(--leo-color-white) 8%, transparent)",
@@ -50,7 +51,7 @@ const actionStyles = {
   "@media only screen and (max-width: 600px)": {
     width: "100%",
   },
-};
+});
 
 const ExpiryLabel = ({ mobileOnly = false }: { mobileOnly?: boolean }) => {
   const { t } = useTranslation();
@@ -83,7 +84,7 @@ const RecordingDisplay = ({
 }: DisplayProps) => {
   const { t } = useTranslation();
   const recordingDate = new Date(r.createdAt * 1000);
-  const secondsLeft = secondsUntilExpiry(r, currentTimeSecs);
+  const secondsLeft = secondsUntilExpiry(r.expiresAt, currentTimeSecs);
   const isExpiringSoon = secondsLeft <= EXPIRING_SOON_SECS;
 
   const getTranscriptOnClick = (transcriptUrl: string, startDateTime: Date) => {

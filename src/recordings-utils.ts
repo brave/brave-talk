@@ -1,14 +1,22 @@
 import i18next from "i18next";
-import { Recording } from "./recordings-store";
 
-// the store already records an absolute `expiresAt`, so the time left is just
-// the distance to "now". subtracting the TTL and the creation time instead
-// cancels out and always yields zero.
-export function secondsUntilExpiry(
-  recording: Pick<Recording, "expiresAt">,
-  nowSecs: number,
-): number {
-  return recording.expiresAt - nowSecs;
+// `expiresAt` is an absolute unix time, so the time left is the distance to now.
+export function secondsUntilExpiry(expiresAt: number, nowSecs: number): number {
+  return expiresAt - nowSecs;
+}
+
+// transcript offsets look like "12m34s", counted from the start of the call.
+export function parseTimeOffsetSecs(timeOffset: string): number | undefined {
+  const match = timeOffset.match(/^(\d+)m(\d\d)s$/);
+  return match ? Number(match[1]) * 60 + Number(match[2]) : undefined;
+}
+
+export function transcriptDurationSecs(
+  events: { timeOffset: string }[],
+): number | undefined {
+  return events.length
+    ? parseTimeOffsetSecs(events[events.length - 1].timeOffset)
+    : undefined;
 }
 
 // the unit key is resolved through i18next's plural handling so each locale
@@ -27,20 +35,15 @@ export function formatRelativeDay(d: Date): string {
     new Date(epochMs).toLocaleDateString();
 
   const now = new Date().getTime();
-  const offsets = {
-    Today: getDateString(now),
-    Yesterday: getDateString(now - 24 * 60 * 60 * 1000),
-    Tomorrow: getDateString(now + 24 * 60 * 60 * 1000),
-  };
-
+  const day = 24 * 60 * 60 * 1000;
   const s = d.toLocaleDateString();
-  let result = s;
 
-  Object.entries(offsets).forEach(([prefix, formattedString]) => {
-    if (s === formattedString) result = prefix;
-  });
+  if (s === getDateString(now)) return i18next.t("relative_day_today");
+  if (s === getDateString(now - day))
+    return i18next.t("relative_day_yesterday");
+  if (s === getDateString(now + day)) return i18next.t("relative_day_tomorrow");
 
-  return result;
+  return s;
 }
 
 // renders a duration in words, e.g. "2 hours 30 minutes", so that it is not
