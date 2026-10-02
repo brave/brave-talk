@@ -62,7 +62,7 @@ importers:
     dependencies:
       '@brave/leo':
         specifier: github:brave/leo#b0d5f184aee1862a37c3bd4dfe854fae5c784daa
-        version: https://codeload.github.com/brave/leo/tar.gz/b0d5f184aee1862a37c3bd4dfe854fae5c784daa(@babel/core@7.29.7(supports-color@8.1.1))(postcss-load-config@4.0.2(postcss@8.5.25))(postcss@8.5.25)(react@18.3.1)(storybook@8.6.17(prettier@3.9.8)(supports-color@8.1.1))(typescript@5.9.3)
+        version: https://codeload.github.com/brave/leo/tar.gz/b0d5f184aee1862a37c3bd4dfe854fae5c784daa(@babel/core@7.29.7(supports-color@8.1.1))(postcss-load-config@4.0.2(postcss@8.5.25))(postcss@8.5.25)(react@18.3.1)(storybook@8.6.17(prettier@3.9.9)(supports-color@8.1.1))(typescript@5.9.3)
       '@emotion/react':
         specifier: 11.14.0
         version: 11.14.0(@types/react@18.3.31)(react@18.3.1)(supports-color@8.1.1)
@@ -140,8 +140,8 @@ importers:
         specifier: 2.10.2
         version: 2.10.2(webpack@5.111.1)
       prettier:
-        specifier: 3.9.8
-        version: 3.9.8
+        specifier: 3.9.9
+        version: 3.9.9
       style-loader:
         specifier: 3.3.4
         version: 3.3.4(webpack@5.111.1)
@@ -149,8 +149,8 @@ importers:
         specifier: 4.0.0
         version: 4.0.0
       ts-jest:
-        specifier: 29.4.12
-        version: 29.4.12(@babel/core@7.29.7(supports-color@8.1.1))(@jest/transform@30.5.2(supports-color@8.1.1))(@jest/types@30.5.1)(babel-jest@30.5.2(@babel/core@7.29.7(supports-color@8.1.1))(supports-color@8.1.1))(esbuild@0.28.1)(jest-util@30.5.1)(jest@30.5.2(@types/node@24.12.0)(babel-plugin-macros@3.1.0)(esbuild-register@3.6.0(esbuild@0.28.1)(supports-color@8.1.1))(supports-color@8.1.1))(typescript@5.9.3)
+        specifier: 29.4.14
+        version: 29.4.14(@babel/core@7.29.7(supports-color@8.1.1))(@jest/transform@30.5.2(supports-color@8.1.1))(@jest/types@30.5.1)(babel-jest@30.5.2(@babel/core@7.29.7(supports-color@8.1.1))(supports-color@8.1.1))(esbuild@0.28.1)(jest-util@30.5.1)(jest@30.5.2(@types/node@24.12.0)(babel-plugin-macros@3.1.0)(esbuild-register@3.6.0(esbuild@0.28.1)(supports-color@8.1.1))(supports-color@8.1.1))(typescript@5.9.3)
       ts-loader:
         specifier: 9.6.2
         version: 9.6.2(typescript@5.9.3)(webpack@5.111.1)
@@ -1626,19 +1626,9 @@ packages:
 
   ajv-formats@2.1.1:
     resolution: {integrity: sha512-Wx0Kx52hxE7C18hkMEggYlEifqWZtYaRgouJor+WMdPnQyEK13vgEWyVNup7SoeeoLMsr4kf5h6dOW11I15MUA==}
-    peerDependencies:
-      ajv: ^8.0.0
-    peerDependenciesMeta:
-      ajv:
-        optional: true
 
   ajv-formats@3.0.1:
     resolution: {integrity: sha512-8iUql50EUR+uUcdRQ3HDqa6EVyo3docL8g5WJ3FNcWmu62IbkGUue/pEyLBW8VGKKucTPgqeks4fIU1DA4yowQ==}
-    peerDependencies:
-      ajv: ^8.0.0
-    peerDependenciesMeta:
-      ajv:
-        optional: true
 
   ajv-keywords@5.1.0:
     resolution: {integrity: sha512-YCS/JNFAUyr5vAuhk1DWm1CBxRHW9LbJ2ozWeemrIqpbsqKjHVxYPyi5GC0rjZIT5JxJ3virVTS8wk4i/Z+krw==}
@@ -4102,8 +4092,8 @@ packages:
     resolution: {integrity: sha512-vkcDPrRZo1QZLbn5RLGPpg/WmIQ65qoWWhcGKf/b5eplkkarX0m9z8ppCat4mlOqUsWpyNuYgO3VRyrYHSzX5g==}
     engines: {node: '>= 0.8.0'}
 
-  prettier@3.9.8:
-    resolution: {integrity: sha512-WRFq3Wn3WId7LLROfMLdH7xaFr2jR62wU8nLO6rQUOLOxNZUviyJQs1M0iIhLexSFy+L+w0ch66wtoO2jRjG0A==}
+  prettier@3.9.9:
+    resolution: {integrity: sha512-Z/CJHIkdujO/OtN7nXUii0Rf3VT5SRuhjBA82Xvu2XhBUgX3nhP67T0LHceBdQLex7OOFGTox+Q5Yg8Jk2Qivg==}
     engines: {node: '>=14'}
     hasBin: true
 
@@ -4748,8 +4738,8 @@ packages:
   ts-interface-checker@0.1.13:
     resolution: {integrity: sha512-Y/arvbn+rrz3JCKl9C4kVNfTfSm2/mEp5FSz5EsZSANGPSlQrpRI5M4PKF+mJnE52jOO90PnPSc3Ur3bTQw0gA==}
 
-  ts-jest@29.4.12:
-    resolution: {integrity: sha512-Ov6ClY53Fflh6BGAnY2DlTq1hYDrTycz2PVTXBWFW2CU+9zrEqAp9fWdGXl42EXO5RLSFAcAZ2JFKbP+zBTFfw==}
+  ts-jest@29.4.14:
+    resolution: {integrity: sha512-+943G6wCX5E3VpzTQhBGBFntCmdT+QAkTvUlp03edTONFBvqskuXPhpyX16xdUotO4P5HQKyppldSWjocoltLQ==}
     engines: {node: ^14.15.0 || ^16.10.0 || ^18.0.0 || >=20.0.0}
     hasBin: true
     peerDependencies:
@@ -5357,9 +5347,9 @@ snapshots:
 
   '@brave-intl/skus-sdk@0.1.3': {}
 
-  '@brave/leo@https://codeload.github.com/brave/leo/tar.gz/b0d5f184aee1862a37c3bd4dfe854fae5c784daa(@babel/core@7.29.7(supports-color@8.1.1))(postcss-load-config@4.0.2(postcss@8.5.25))(postcss@8.5.25)(react@18.3.1)(storybook@8.6.17(prettier@3.9.8)(supports-color@8.1.1))(typescript@5.9.3)':
+  '@brave/leo@https://codeload.github.com/brave/leo/tar.gz/b0d5f184aee1862a37c3bd4dfe854fae5c784daa(@babel/core@7.29.7(supports-color@8.1.1))(postcss-load-config@4.0.2(postcss@8.5.25))(postcss@8.5.25)(react@18.3.1)(storybook@8.6.17(prettier@3.9.9)(supports-color@8.1.1))(typescript@5.9.3)':
     dependencies:
-      '@storybook/test': 8.6.14(storybook@8.6.17(prettier@3.9.8)(supports-color@8.1.1))
+      '@storybook/test': 8.6.14(storybook@8.6.17(prettier@3.9.9)(supports-color@8.1.1))
       svelte: 4.2.20
       svelte-preprocess: 5.1.4(@babel/core@7.29.7(supports-color@8.1.1))(postcss-load-config@4.0.2(postcss@8.5.25))(postcss@8.5.25)(svelte@4.2.20)(typescript@5.9.3)
       tailwindcss: 3.4.18
@@ -6213,9 +6203,9 @@ snapshots:
     dependencies:
       '@sinonjs/commons': 3.0.1
 
-  '@storybook/core@8.6.17(prettier@3.9.8)(storybook@8.6.17(prettier@3.9.8)(supports-color@8.1.1))(supports-color@8.1.1)':
+  '@storybook/core@8.6.17(prettier@3.9.9)(storybook@8.6.17(prettier@3.9.9)(supports-color@8.1.1))(supports-color@8.1.1)':
     dependencies:
-      '@storybook/theming': 8.6.17(storybook@8.6.17(prettier@3.9.8)(supports-color@8.1.1))
+      '@storybook/theming': 8.6.17(storybook@8.6.17(prettier@3.9.9)(supports-color@8.1.1))
       better-opn: 3.0.2
       browser-assert: 1.2.1
       esbuild: 0.28.1
@@ -6227,7 +6217,7 @@ snapshots:
       util: 0.12.5
       ws: 8.21.0
     optionalDependencies:
-      prettier: 3.9.8
+      prettier: 3.9.9
     transitivePeerDependencies:
       - bufferutil
       - storybook
@@ -6236,26 +6226,26 @@ snapshots:
 
   '@storybook/global@5.0.0': {}
 
-  '@storybook/instrumenter@8.6.14(storybook@8.6.17(prettier@3.9.8)(supports-color@8.1.1))':
+  '@storybook/instrumenter@8.6.14(storybook@8.6.17(prettier@3.9.9)(supports-color@8.1.1))':
     dependencies:
       '@storybook/global': 5.0.0
       '@vitest/utils': 2.1.9
-      storybook: 8.6.17(prettier@3.9.8)(supports-color@8.1.1)
+      storybook: 8.6.17(prettier@3.9.9)(supports-color@8.1.1)
 
-  '@storybook/test@8.6.14(storybook@8.6.17(prettier@3.9.8)(supports-color@8.1.1))':
+  '@storybook/test@8.6.14(storybook@8.6.17(prettier@3.9.9)(supports-color@8.1.1))':
     dependencies:
       '@storybook/global': 5.0.0
-      '@storybook/instrumenter': 8.6.14(storybook@8.6.17(prettier@3.9.8)(supports-color@8.1.1))
+      '@storybook/instrumenter': 8.6.14(storybook@8.6.17(prettier@3.9.9)(supports-color@8.1.1))
       '@testing-library/dom': 10.4.0
       '@testing-library/jest-dom': 6.5.0
       '@testing-library/user-event': 14.5.2(@testing-library/dom@10.4.0)
       '@vitest/expect': 2.0.5
       '@vitest/spy': 2.0.5
-      storybook: 8.6.17(prettier@3.9.8)(supports-color@8.1.1)
+      storybook: 8.6.17(prettier@3.9.9)(supports-color@8.1.1)
 
-  '@storybook/theming@8.6.17(storybook@8.6.17(prettier@3.9.8)(supports-color@8.1.1))':
+  '@storybook/theming@8.6.17(storybook@8.6.17(prettier@3.9.9)(supports-color@8.1.1))':
     dependencies:
-      storybook: 8.6.17(prettier@3.9.8)(supports-color@8.1.1)
+      storybook: 8.6.17(prettier@3.9.9)(supports-color@8.1.1)
 
   '@testing-library/dom@10.4.0':
     dependencies:
@@ -6755,12 +6745,12 @@ snapshots:
 
   agent-base@7.1.4: {}
 
-  ajv-formats@2.1.1(ajv@8.18.0):
-    optionalDependencies:
+  ajv-formats@2.1.1:
+    dependencies:
       ajv: 8.18.0
 
-  ajv-formats@3.0.1(ajv@8.20.0):
-    optionalDependencies:
+  ajv-formats@3.0.1:
+    dependencies:
       ajv: 8.20.0
 
   ajv-keywords@5.1.0(ajv@8.18.0):
@@ -9602,7 +9592,7 @@ snapshots:
 
   prelude-ls@1.2.1: {}
 
-  prettier@3.9.8: {}
+  prettier@3.9.9: {}
 
   pretty-error@4.0.0:
     dependencies:
@@ -9856,14 +9846,14 @@ snapshots:
     dependencies:
       '@types/json-schema': 7.0.15
       ajv: 8.18.0
-      ajv-formats: 2.1.1(ajv@8.18.0)
+      ajv-formats: 2.1.1
       ajv-keywords: 5.1.0(ajv@8.18.0)
 
   schema-utils@4.5.0:
     dependencies:
       '@types/json-schema': 7.0.15
       ajv: 8.20.0
-      ajv-formats: 3.0.1(ajv@8.20.0)
+      ajv-formats: 3.0.1
       ajv-keywords: 5.1.0(ajv@8.20.0)
 
   selfsigned@5.5.0:
@@ -10041,11 +10031,11 @@ snapshots:
 
   statuses@2.0.2: {}
 
-  storybook@8.6.17(prettier@3.9.8)(supports-color@8.1.1):
+  storybook@8.6.17(prettier@3.9.9)(supports-color@8.1.1):
     dependencies:
-      '@storybook/core': 8.6.17(prettier@3.9.8)(storybook@8.6.17(prettier@3.9.8)(supports-color@8.1.1))(supports-color@8.1.1)
+      '@storybook/core': 8.6.17(prettier@3.9.9)(storybook@8.6.17(prettier@3.9.9)(supports-color@8.1.1))(supports-color@8.1.1)
     optionalDependencies:
-      prettier: 3.9.8
+      prettier: 3.9.9
     transitivePeerDependencies:
       - bufferutil
       - supports-color
@@ -10322,7 +10312,7 @@ snapshots:
 
   ts-interface-checker@0.1.13: {}
 
-  ts-jest@29.4.12(@babel/core@7.29.7(supports-color@8.1.1))(@jest/transform@30.5.2(supports-color@8.1.1))(@jest/types@30.5.1)(babel-jest@30.5.2(@babel/core@7.29.7(supports-color@8.1.1))(supports-color@8.1.1))(esbuild@0.28.1)(jest-util@30.5.1)(jest@30.5.2(@types/node@24.12.0)(babel-plugin-macros@3.1.0)(esbuild-register@3.6.0(esbuild@0.28.1)(supports-color@8.1.1))(supports-color@8.1.1))(typescript@5.9.3):
+  ts-jest@29.4.14(@babel/core@7.29.7(supports-color@8.1.1))(@jest/transform@30.5.2(supports-color@8.1.1))(@jest/types@30.5.1)(babel-jest@30.5.2(@babel/core@7.29.7(supports-color@8.1.1))(supports-color@8.1.1))(esbuild@0.28.1)(jest-util@30.5.1)(jest@30.5.2(@types/node@24.12.0)(babel-plugin-macros@3.1.0)(esbuild-register@3.6.0(esbuild@0.28.1)(supports-color@8.1.1))(supports-color@8.1.1))(typescript@5.9.3):
     dependencies:
       bs-logger: 0.2.6
       fast-json-stable-stringify: 2.1.0
