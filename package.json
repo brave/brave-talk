@@ -44,13 +44,13 @@
     "jest": "30.5.2",
     "lint-staged": "15.5.2",
     "mini-css-extract-plugin": "2.10.2",
-    "prettier": "3.9.8",
+    "prettier": "3.9.9",
     "style-loader": "3.3.4",
     "svgo-loader": "4.0.0",
-    "ts-jest": "29.4.12",
+    "ts-jest": "29.4.14",
     "ts-loader": "9.6.2",
     "typescript": "5.9.3",
-    "typescript-eslint": "8.70.1",
+    "typescript-eslint": "8.71.0",
     "webpack": "5.111.1",
     "webpack-cli": "5.1.4",
     "webpack-dev-server": "6.0.0"
@@ -69,5 +69,5 @@
     "*": "prettier --ignore-unknown --write",
     "*.ts?(x)": "eslint"
   },
-  "packageManager": "pnpm@11.27.1"
+  "packageManager": "pnpm@11.28.3"
 }
