@@ -29,7 +29,10 @@ interface RoomsRequestParams {
   method: RequestMethod;
   body: RoomRequestBody;
   successCodes: number[];
-  failureMessages: { [status: number]: string };
+  // these are handed to `notice` and rendered with `t()`, so they must exist in
+  // the locale files. typing them as TranslationKeys makes a missing key a
+  // compile error rather than a raw key leaking into the UI.
+  failureMessages: { [status: number]: TranslationKeys };
 }
 
 export const getRoomUrl = (roomName: string): string => {

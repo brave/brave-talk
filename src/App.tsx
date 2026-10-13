@@ -3,8 +3,6 @@ import React from "react";
 import { GlobalStyles } from "./components/GlobalStyles";
 import { InCall } from "./components/InCall";
 import { WelcomeScreen } from "./components/WelcomeScreen";
-import "./css/poppins.css";
-import "./css/inter.css";
 import { useBrowserProperties } from "./hooks/use-browser-properties";
 import { useCallSetupStatus } from "./hooks/use-call-setup-status";
 import { useParams } from "./hooks/use-params";
