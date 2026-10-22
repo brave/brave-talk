@@ -66,5 +66,8 @@ overrides:
   proxy-addr@>=1.1.0 <2.0.8: ^2.0.8
   shell-quote@>=1.8.4 <1.11.0: ^1.11.0
   source-map-js@>=1.0.0 <1.2.2: ^1.2.2
+  '@storybook/core@>=8.0.0 <8.6.19': ^8.6.19
+  launch-editor@<=2.14.1: ^2.14.2
+  storybook@>=8.0.0 <8.6.19: ^8.6.19
 
 verifyDepsBeforeRun: install
