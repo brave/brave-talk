@@ -17,6 +17,7 @@ auditConfig:
     - GHSA-pr6f-5x2q-rwfp
     - GHSA-rcqx-6q8c-2c42
     - GHSA-vfj7-8cjw-p6xm
+    - GHSA-hp3w-g68c-fv3c
 
 blockExoticSubdeps: true
 
@@ -58,5 +59,15 @@ overrides:
   ws@>=8.0.0 <8.21.0: '>=8.21.0'
   yaml@^1: ^1.10.3
   yaml@^2: ^2.8.3
+  compression@<1.8.2: ^1.8.2
+  handlebars@>=3.0.0 <=4.7.9: ^4.7.10
+  handlebars@>=4.0.0 <=4.7.9: ^4.7.10
+  postcss-selector-parser@<7.1.6: ^7.1.6
+  proxy-addr@>=1.1.0 <2.0.8: ^2.0.8
+  shell-quote@>=1.8.4 <1.11.0: ^1.11.0
+  source-map-js@>=1.0.0 <1.2.2: ^1.2.2
+  '@storybook/core@>=8.0.0 <8.6.19': ^8.6.19
+  launch-editor@<=2.14.1: ^2.14.2
+  storybook@>=8.0.0 <8.6.19: ^8.6.19
 
 verifyDepsBeforeRun: install
