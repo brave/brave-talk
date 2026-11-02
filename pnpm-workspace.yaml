@@ -18,6 +18,7 @@ auditConfig:
     - GHSA-rcqx-6q8c-2c42
     - GHSA-vfj7-8cjw-p6xm
     - GHSA-hp3w-g68c-fv3c
+    - GHSA-gcqx-w48m-w2h4
 
 blockExoticSubdeps: true
 
