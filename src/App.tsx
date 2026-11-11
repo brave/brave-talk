@@ -42,6 +42,22 @@ export const App = () => {
 
   const browserProps = useBrowserProperties();
 
+  const [welcomeGraceElapsed, setWelcomeGraceElapsed] = React.useState(false);
+  useEffect(() => {
+    if (!hasInitialRoom) {
+      return;
+    }
+    const id = setTimeout(() => setWelcomeGraceElapsed(true), 750);
+    return () => clearTimeout(id);
+  }, [hasInitialRoom]);
+
+  // If there's an initial room and the call isn't ready yet, wait briefly before
+  // showing the welcome screen with the progress indication to avoid flashing it
+  // while the jwt is fetched.
+  // If there's a notice (e.g. an error), show the welcome screen right away.
+  const showWelcomeScreen =
+    !isCallReady && (!hasInitialRoom || welcomeGraceElapsed || !!notice);
+
   if (isCallReady && params.isCreateOnly) {
     reportAction("closing window as requested", params);
     window.close();
@@ -82,7 +98,7 @@ export const App = () => {
             jitsiContext={jitsiContext}
           />
         )}
-        {!isCallReady && (
+        {showWelcomeScreen && (
           <WelcomeScreen
             onStartCall={onStartCall}
             notice={notice}
