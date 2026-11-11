@@ -110,12 +110,26 @@ export function useCallSetupStatus(
 
   const isCallReady = !!(roomName && jwt);
 
+  // when invoked with `create=y` we hold off creating the room until a
+  // subscriber does so, to avoid accidentally creating a limited access room.
+  // But the user can decide to stop waiting and create it as a free call.
+  const [shouldWaitForSubscriber, setShouldWaitForSubscriber] = useState(
+    waitForSubscriptionBeforeCreating,
+  );
+  const [isWaitingForSubscriber, setIsWaitingForSubscriber] = useState(false);
+
   useEffect(() => {
-    (async function tryFetchJwt(
-      roomName,
-      hasInitialRoom,
-      waitForSubscriptionBeforeCreating,
-    ) {
+    // set when this effect is superseded (e.g. the user has stopped waiting
+    // for a subscriber), so that any attempt still in flight, or scheduled
+    // to retry, doesn't clobber the state of the new one.
+    let cancelled = false;
+    const reportNotice = (message: TranslationKeys) => {
+      if (!cancelled) {
+        setNotice(message);
+      }
+    };
+
+    (async function tryFetchJwt(roomName, shouldWaitForSubscriber) {
       if (roomName) {
         try {
           // keep the url in sync with the any room name configured
@@ -126,9 +140,13 @@ export function useCallSetupStatus(
           const result = await fetchOrCreateJWT(
             roomName,
             false,
-            waitForSubscriptionBeforeCreating,
-            setNotice,
+            shouldWaitForSubscriber,
+            reportNotice,
           );
+
+          if (cancelled) {
+            return;
+          }
 
           if (result.jwt) {
             setJwt(result.jwt);
@@ -138,22 +156,38 @@ export function useCallSetupStatus(
           // but we need to allow the user to recover by enabling all functionality
           setHasInitialRoom(false);
 
+          setIsWaitingForSubscriber(!!result.retryLater);
           if (result.retryLater) {
-            wait(5_000).then(() =>
-              tryFetchJwt(roomName, false, waitForSubscriptionBeforeCreating),
-            );
+            wait(5_000).then(() => {
+              if (!cancelled) {
+                tryFetchJwt(roomName, shouldWaitForSubscriber);
+              }
+            });
           }
         } catch (e: any) {
           console.error(e);
         } finally {
-          setIsEstablishingCall(false);
+          if (!cancelled) {
+            setIsEstablishingCall(false);
+          }
         }
       }
-    })(roomName, hasInitialRoom, waitForSubscriptionBeforeCreating);
-  }, [roomName, hasInitialRoom, waitForSubscriptionBeforeCreating]);
+    })(roomName, shouldWaitForSubscriber);
+
+    return () => {
+      cancelled = true;
+    };
+  }, [roomName, shouldWaitForSubscriber]);
 
   const doStartCall = () => {
-    setRoomName(generateRoomName());
+    if (isWaitingForSubscriber) {
+      // rather than keep waiting for a subscriber, create the requested
+      // room now as a free call
+      setIsWaitingForSubscriber(false);
+      setShouldWaitForSubscriber(false);
+    } else {
+      setRoomName(generateRoomName());
+    }
     // ...which will then trigger the effect above to fetch the jwt
   };
 
