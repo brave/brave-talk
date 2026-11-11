@@ -54,9 +54,15 @@ export const App = () => {
   // If there's an initial room and the call isn't ready yet, wait briefly before
   // showing the welcome screen with the progress indication to avoid flashing it
   // while the jwt is fetched.
-  // If there's a notice (e.g. an error), show the welcome screen right away.
   const showWelcomeScreen =
-    !isCallReady && (!hasInitialRoom || welcomeGraceElapsed || !!notice);
+    !isCallReady && (!hasInitialRoom || welcomeGraceElapsed);
+  console.log("showWelcomeScreen", {
+    showWelcomeScreen,
+    isCallReady,
+    hasInitialRoom,
+    welcomeGraceElapsed,
+    notice,
+  });
 
   if (isCallReady && params.isCreateOnly) {
     reportAction("closing window as requested", params);
