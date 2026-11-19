@@ -82,6 +82,7 @@
   "PARTICIPANT: left the call": "left the call",
   "Request timeout": "Request timeout",
   "Service unavailable": "Service unavailable",
+  "Sorry, that is not a valid room name": "Sorry, that is not a valid room name",
   "Sorry, the call is already full": "Sorry, the call is already full",
   "Sorry, you are not a subscriber": "Sorry, you are not a subscriber",
   "Start premium call": "Start Premium call",

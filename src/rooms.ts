@@ -89,6 +89,13 @@ const roomsRequest = async ({
           "Web3 calls are no longer supported. Please create a new room.",
         );
       }
+      // the server rejects malformed room names with a 400, which would
+      // otherwise be misreported below as e.g. the call being full
+      if (respText.includes("Not a valid room name")) {
+        throw new Error(
+          "Sorry, that is not a valid room name" satisfies TranslationKeys,
+        );
+      }
       const message =
         status === 401
           ? respText
